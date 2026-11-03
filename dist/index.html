@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/theme-init.js"></script>
   <script src="/assets/site.js" defer></script>
+  <script src="/assets/brand-3d.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Ir al contenido</a>
@@ -53,8 +54,10 @@
         <a class="email-link" href="mailto:alejandro.dev.sergio@outlook.com?subject=Contacto%20desde%20Alejandro%E2%80%99sTech">alejandro.dev.sergio@outlook.com</a>
         <div class="social-links"><span>También nos encontramos en</span><a href="https://www.linkedin.com/in/sergio-alejandro-hernandez-patino/" rel="me" title="LinkedIn de Sergio Hernández"><svg class="icon " aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10v7M7.5 7v.1M11 17v-7m0 3c0-4 6-4 6 0v4"/></svg>LinkedIn<svg class="icon external-arrow" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></a><a href="https://github.com/alejandrosergio" rel="me" title="GitHub de Sergio Hernández"><svg class="icon " aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4 1-4-2-6-2m12 5v-4a3.5 3.5 0 0 0-1-2.7c3.3-.4 6.8-1.6 6.8-7.3a5.7 5.7 0 0 0-1.5-4c.2-.7.6-2.6-.2-4 0 0-1.3-.4-4.2 1.5a14.6 14.6 0 0 0-7.6 0C4.4-.4 3.1 0 3.1 0c-.8 1.4-.4 3.3-.2 4a5.7 5.7 0 0 0-1.5 4c0 5.7 3.5 6.9 6.8 7.3A3.5 3.5 0 0 0 7 18v4" transform="translate(1 1) scale(.9)"/></svg>GitHub<svg class="icon external-arrow" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></a></div>
       </div>
-      <figure class="artwork" aria-label="Desarrollo, automatización e IA conectados alrededor de Alejandro’sTech">
-    <svg class="network-art" viewBox="0 0 520 510" fill="none" aria-hidden="true" width="520" height="510">
+      <figure class="artwork" aria-label="Desarrollo, automatización e IA conectados alrededor de Alejandro’sTech" data-brand-art>
+    <div class="brand-stage" data-brand-stage data-label="Emblema A+ tridimensional interactivo de Alejandro’sTech" data-help="Usa las flechas para girar e Inicio para restablecer la vista">
+    <canvas class="brand-canvas" data-brand-canvas aria-hidden="true" hidden></canvas>
+    <svg class="network-art brand-fallback" viewBox="0 0 520 510" fill="none" aria-hidden="true" width="520" height="510">
       <defs>
         <linearGradient id="orbit" x1="70" y1="60" x2="450" y2="460"><stop stop-color="#008bd9"/><stop offset=".55" stop-color="#6e9fe8"/><stop offset="1" stop-color="#9e79ce"/></linearGradient>
         <radialGradient id="glow"><stop stop-color="#75bfff" stop-opacity=".23"/><stop offset="1" stop-color="#75bfff" stop-opacity="0"/></radialGradient>
@@ -84,6 +87,11 @@
         <path d="M419 308h34m-26-8 9 8-9 8m-8-18v20"/>
       </g>
     </svg>
+    </div>
+    <div class="art-controls" data-art-controls hidden>
+      <span id="brand-3d-help" class="art-hint">Arrastra para explorar<span class="sr-only">. Usa las flechas para girar e Inicio para restablecer la vista</span></span>
+      <button class="art-motion" type="button" data-art-motion data-pause="Pausar animación" data-play="Activar animación"><span data-motion-icon aria-hidden="true"></span><span data-motion-text></span></button>
+    </div>
     <figcaption class="art-caption"><span>Desarrollo</span><i aria-hidden="true"></i><span>Automatización</span><i aria-hidden="true"></i><span>IA</span></figcaption>
   </figure>
     </main>

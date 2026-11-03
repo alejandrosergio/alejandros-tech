@@ -27,7 +27,7 @@ function head(lang, t, pagePath, notFound) {
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/theme-init.js"></script>
-  <script src="/assets/site.js" defer></script>
+  <script src="/assets/site.js" defer></script>${notFound ? '' : '\n  <script src="/assets/brand-3d.js" defer></script>'}
 </head>`;
 }
 
@@ -49,8 +49,10 @@ function header(lang, t) {
 }
 
 function artwork(t) {
-  return `<figure class="artwork" aria-label="${t.diagramLabel}">
-    <svg class="network-art" viewBox="0 0 520 510" fill="none" aria-hidden="true" width="520" height="510">
+  return `<figure class="artwork" aria-label="${t.diagramLabel}" data-brand-art>
+    <div class="brand-stage" data-brand-stage data-label="${t.modelLabel}" data-help="${t.modelKeyboard}">
+    <canvas class="brand-canvas" data-brand-canvas aria-hidden="true" hidden></canvas>
+    <svg class="network-art brand-fallback" viewBox="0 0 520 510" fill="none" aria-hidden="true" width="520" height="510">
       <defs>
         <linearGradient id="orbit" x1="70" y1="60" x2="450" y2="460"><stop stop-color="#008bd9"/><stop offset=".55" stop-color="#6e9fe8"/><stop offset="1" stop-color="#9e79ce"/></linearGradient>
         <radialGradient id="glow"><stop stop-color="#75bfff" stop-opacity=".23"/><stop offset="1" stop-color="#75bfff" stop-opacity="0"/></radialGradient>
@@ -80,6 +82,11 @@ function artwork(t) {
         <path d="M419 308h34m-26-8 9 8-9 8m-8-18v20"/>
       </g>
     </svg>
+    </div>
+    <div class="art-controls" data-art-controls hidden>
+      <span id="brand-3d-help" class="art-hint">${t.modelHint}<span class="sr-only">. ${t.modelKeyboard}</span></span>
+      <button class="art-motion" type="button" data-art-motion data-pause="${t.modelPause}" data-play="${t.modelPlay}"><span data-motion-icon aria-hidden="true"></span><span data-motion-text></span></button>
+    </div>
     <figcaption class="art-caption"><span>${t.development}</span><i aria-hidden="true"></i><span>${t.automation}</span><i aria-hidden="true"></i><span>${t.ai}</span></figcaption>
   </figure>`;
 }

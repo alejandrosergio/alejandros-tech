@@ -6,6 +6,8 @@ Generación estática con módulos ESM de Node.js y HTML/CSS/JavaScript de naveg
 
 La versión inicial no tiene dependencias externas. Esto permite ejecutar las comprobaciones y generar la salida sin instalar paquetes. Un framework se podrá valorar cuando una necesidad concreta lo justifique.
 
+`src/client/brand-3d.js` mejora únicamente el arte del inicio con WebGL nativo. Genera las mallas, los biseles, las órbitas y las partículas en memoria; no descarga modelos ni texturas. El SVG y los enlaces HTML permanecen disponibles sin esa mejora. El bucle de dibujo atiende visibilidad, pausa, movimiento reducido y pérdida/restauración del contexto. Los textos de sus controles se traducen desde el mismo modelo ES/EN.
+
 ## Flujo
 
 1. `src/content/site.mjs` define identidad, origen y contactos.
