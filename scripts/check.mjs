@@ -4,37 +4,67 @@ import path from 'node:path';
 import { root } from './build.mjs';
 import { locales } from '../src/content/locales.mjs';
 import { site } from '../src/content/site.mjs';
+import { routeGroups } from '../src/content/routes.mjs';
+import { skills, experience } from '../src/content/profile.mjs';
+import { projects } from '../src/content/projects.mjs';
+import { notes } from '../src/content/notes.mjs';
 
+const dist = path.join(root, 'dist');
 const manifest = JSON.parse(await readFile(path.join(root, '.openai/hosting.json'), 'utf8'));
 assert.equal(manifest.project_id, 'appgprj_6aea35f321688191a6452b8b65f782ee', 'Preserve this Site identity');
 assert.equal(manifest.static.directory, 'dist');
 assert.equal(new URL(site.origin).hostname, 'alejandros-tech.alejosergio3000.chatgpt.site');
-assert.deepEqual(Object.keys(locales.es).sort(), Object.keys(locales.en).sort(), 'Translations must have the same keys');
 
-for (const [lang, file] of [['es', 'index.html'], ['en', 'en/index.html']]) {
-  const html = await readFile(path.join(root, 'dist', file), 'utf8');
-  assert.ok(html.includes(`<html lang="${lang}">`));
-  assert.equal((html.match(/<h1\b/g) ?? []).length, 1, 'Exactly one page heading');
-  assert.ok(html.includes(locales[lang].status));
-  assert.ok(html.includes('aria-current="page"'));
-  assert.ok(html.includes('href="#main"'));
-  assert.ok(html.includes(`mailto:${site.email}`));
-  assert.ok(html.includes(site.linkedin) && html.includes(site.github));
-  assert.ok(html.includes(`${site.cv}${lang === 'en' ? 'en/' : ''}`));
-  assert.ok(!/TODO|lorem ipsum|href=""|href="#"|codex-preview|@gmail\.com/.test(html), 'No unfinished content or unintended contact address');
-  for (const match of html.matchAll(/(?:href|src)="(\/[^"?#]*)"/g)) {
-    const url = match[1];
-    const local = url.endsWith('/') ? `${url}index.html` : url;
-    await access(path.join(root, 'dist', local));
-  }
-  for (const match of html.matchAll(/href="(https:[^"]+)"/g)) {
-    const url = new URL(match[1]);
-    assert.ok(url.hostname, 'External URLs must be valid');
-  }
+function compareShape(es, en, key = 'locales') {
+  assert.equal(typeof es, typeof en, `Translation type: ${key}`);
+  if (typeof es === 'string') { assert.ok(es.trim() && en.trim(), `Empty translation: ${key}`); return; }
+  assert.deepEqual(Object.keys(es), Object.keys(en), `Translation keys: ${key}`);
+  for (const field of Object.keys(es)) compareShape(es[field], en[field], `${key}.${field}`);
+}
+compareShape(locales.es, locales.en);
+assert.equal(new Set(skills.map(s => s.id)).size, skills.length);
+for (const skill of skills) assert.ok(skill.es && skill.en && skill.context.es && skill.context.en);
+for (const record of experience) assert.ok(record.es.length && record.es.length === record.en.length);
+for (const project of projects) compareShape(project.es, project.en, `project.${project.id}`);
+for (const note of notes) compareShape(note.es, note.en, `note.${note.id}`);
+
+const ids = html => [...html.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]);
+const htmlCache = new Map();
+const fileFor = pathname => path.join(dist, pathname.endsWith('/') ? `${pathname}index.html` : pathname);
+async function readHTML(file) {
+  if (!htmlCache.has(file)) htmlCache.set(file, await readFile(file, 'utf8'));
+  return htmlCache.get(file);
 }
 
-const css = await readFile(path.join(root, 'dist/assets/styles.css'), 'utf8');
+for (const route of routeGroups) for (const lang of ['es', 'en']) {
+  const pathname = route.paths[lang], html = await readHTML(fileFor(pathname));
+  assert.ok(html.includes(`<html lang="${lang}">`), pathname);
+  assert.equal((html.match(/<h1\b/g) ?? []).length, 1, `One page heading: ${pathname}`);
+  assert.ok(html.includes('href="#main"') && html.includes('id="main" tabindex="-1"'), `Keyboard skip target: ${pathname}`);
+  assert.ok(html.includes(`<link rel="canonical" href="${site.origin}${pathname}">`));
+  for (const alternate of ['es', 'en']) assert.ok(html.includes(`<link rel="alternate" hreflang="${alternate}" href="${site.origin}${route.paths[alternate]}">`));
+  assert.equal(new Set(ids(html)).size, ids(html).length, `Unique IDs: ${pathname}`);
+  assert.ok(!/TODO|lorem ipsum|undefined|href=""|href="#"|codex-preview|@gmail\.com/.test(html), `Finished and private-contact-free content: ${pathname}`);
+  for (const match of html.matchAll(/(?:href|src)="([^"\s]+)"/g)) {
+    const target = new URL(match[1].replaceAll('&amp;', '&'), site.origin + pathname);
+    if (target.origin !== site.origin) { assert.ok(['https:', 'mailto:'].includes(target.protocol)); continue; }
+    const file = fileFor(target.pathname); await access(file);
+    if (target.hash && file.endsWith('.html')) assert.ok(ids(await readHTML(file)).includes(decodeURIComponent(target.hash.slice(1))), `Existing anchor: ${pathname} → ${target.href}`);
+  }
+  for (const match of html.matchAll(/(?:aria-controls|aria-describedby|aria-labelledby)="([^"]+)"/g)) for (const id of match[1].split(/\s+/)) assert.ok(ids(html).includes(id), `ARIA reference: ${pathname} → ${id}`);
+  if (route.type === 'home') {
+    for (const id of ['sobre-mi', 'tecnologias', 'trayectoria', 'proyectos', 'conocimiento', 'contacto']) assert.ok(ids(html).includes(id));
+    assert.ok(html.includes(`mailto:${site.email}`) && html.includes(site.linkedin) && html.includes(site.github));
+    assert.ok(html.includes(`${site.cv}${lang === 'en' ? 'en/' : ''}`));
+    assert.ok(html.includes('class="network-art brand-fallback"') && html.includes('data-skills-static'), 'HTML alternatives to 3D and skill explorer');
+    assert.ok(!/Próximamente|Coming soon|Estamos construyendo|We’re building/.test(html), 'Replace the old coming-soon homepage');
+  }
+}
+const sitemap = await readFile(path.join(dist, 'sitemap.xml'), 'utf8');
+for (const route of routeGroups) for (const pathname of Object.values(route.paths)) assert.ok(sitemap.includes(`<loc>${site.origin}${pathname}</loc>`));
+const css = await readFile(path.join(dist, 'assets/styles.css'), 'utf8');
 for (const feature of ['prefers-reduced-motion', 'forced-colors', ':focus-visible', '@media print']) assert.ok(css.includes(feature));
 assert.ok(!/overflow-x\s*:\s*hidden/.test(css), 'Fix overflow instead of hiding it');
 for (const entry of await readdir(root)) assert.ok(!/^\.env(?:\.|$)/.test(entry), 'Do not package credentials');
-console.log(JSON.stringify({ checked: true, languages: ['es', 'en'], checks: ['Site identity', 'translation parity', 'local assets', 'contact URLs', 'CV language', 'accessibility hooks', 'finished content'] }));
+await import('./check-3d.mjs');
+console.log(JSON.stringify({ checked: true, languages: ['es', 'en'], pages: routeGroups.length * 2, checks: ['Site identity', 'deep translation parity', 'content completeness', 'all local links and anchors', 'ARIA references', 'unique headings and IDs', 'canonical and alternate routes', 'CV language', 'static fallbacks', 'sitemap'] }));

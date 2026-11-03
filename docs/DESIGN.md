@@ -1,26 +1,28 @@
-# Diseño inicial
+# Diseño
 
-## Referencia
+## Dirección visual
 
-La web del CV aporta la paleta y el tono: azul marino `#102d52`, acento `#0067b8`, fondos suaves `#f0f5fc`, tipografía de sistema y controles discretos. No se copia su disposición de currículum ni su monograma SH.
+Una web profesional editorial: titulares amplios, mucho espacio, acentos azules y composiciones distintas según el contenido. dataconale.com sirve como referencia del recorrido personal e interactividad; la identidad, los textos, los componentes y los recursos de Alejandro’sTech son propios.
 
-Alejandro’sTech usa un signo A con un pequeño símbolo más y una ilustración vectorial de conexiones. Es una identidad inicial editable, no una marca registrada ni una identidad comercial certificada.
+La paleta conserva la relación con el CV: azul marino, acento azul y tipografía de sistema. El tema claro usa fondo `#f5f7fb`, tinta `#11253f` y acento `#1467e6`; el oscuro usa `#090f1b`, `#edf3ff` y `#83bbff`. Los títulos combinan la familia sans del sistema con un acento editorial en Georgia, sin descargar fuentes.
 
-El inicio mejora esa ilustración con un A+ tridimensional de geometría local: metal biselado, acentos azules, órbitas y partículas. El modelo responde al cursor, al arrastre horizontal y a las flechas del teclado; Inicio restablece la vista. El control de animación permite pausar o activar el movimiento. En móvil se mantiene el desplazamiento vertical y el zoom táctil. El SVG original queda como alternativa estática sin JavaScript o WebGL.
+## Recorrido
 
-## Composición
+- Cabecera ligera y fija con navegación, idioma, tema y menú adaptable.
+- Inicio tipográfico junto al A+ tridimensional.
+- Perfil con retrato y tarjeta de enfoque profesional.
+- Mapa de tecnologías por áreas con inspector de contexto.
+- Trayectoria y formación, con responsabilidades desplegables.
+- Proyectos públicos con vistas reales y páginas propias.
+- Proceso de trabajo y cuaderno técnico.
+- Contacto destacado y pie compacto.
 
-- Cabecera con marca, enlaces ES/EN y cambio de tema.
-- Mensaje principal y breve presentación a la izquierda.
-- Ilustración decorativa de desarrollo, automatización e IA a la derecha.
-- CV, correo y perfiles profesionales como siguientes pasos.
-- Pie compacto con próxima apertura y derechos.
-- En móvil, contenido en una columna y arte debajo, sin reducir el texto para encajarlo.
+## Identidad 3D
 
-## Accesibilidad
+El A+ es geometría local con profundidad, cuatro bandas de bisel frontal, material metálico, reflejos de estudio, órbitas y partículas. Admite cursor, arrastre, flechas, Inicio, pausa y restablecimiento. El SVG original es una alternativa estática. Se limita la resolución del lienzo y se detiene el bucle en pausa, fuera de pantalla o en una pestaña oculta. Se atiende la pérdida y recuperación de contexto.
 
-El texto es HTML real, no texto incrustado en una imagen. El arte usa SVG y tiene una descripción breve. Se conservan foco visible, salto al contenido, idioma del documento y del selector, rutas sin dependencia de JavaScript, áreas táctiles y reflujo.
+## Accesibilidad y comportamiento
 
-Las animaciones decorativas respetan `prefers-reduced-motion`. El modo de colores forzados evita elementos decorativos que compitan con la lectura. El tema se guarda solo como preferencia local del navegador. No se añaden fuentes, rastreadores ni solicitudes a terceros desde el frontend.
+Contenido HTML real, rutas ES/EN completas, encabezados semánticos, salto con destino enfocable, foco visible y controles con etiquetas. El menú y los filtros son mejoras progresivas; las responsabilidades usan `details` nativo. El retrato tiene texto alternativo y los iconos decorativos se ocultan a tecnologías de asistencia.
 
-La escena 3D comienza quieta si se solicita movimiento reducido. No renderiza continuamente cuando está pausada, fuera de pantalla o en una pestaña oculta. Limita la resolución del lienzo para reducir la carga en móvil y recupera el contexto gráfico o muestra la alternativa estática si se pierde.
+Las revelaciones respetan movimiento reducido. La escena comienza quieta cuando se solicita; el movimiento automático se puede pausar. El arrastre táctil horizontal conserva el desplazamiento vertical y el zoom. En colores forzados se simplifica el arte y se conservan límites y selección visibles. Se corrige el desbordamiento, sin ocultarlo globalmente.

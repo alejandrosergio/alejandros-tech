@@ -2,20 +2,22 @@
 
 **Español** · [English](README.md)
 
-Sitio oficial de la marca profesional de **Sergio Hernández**, desarrollador .NET y Power Platform con enfoque en desarrollo full stack, automatización e integración de IA.
-
-**Versión actual:** página inicial de próxima apertura. El propietario definirá más adelante cómo se construirá la web completa.
+Web profesional de Sergio Hernández: desarrollo con .NET y React, Power Platform, automatización e integración de IA. La primera edición completa reúne perfil, tecnologías, trayectoria, formación, proyectos públicos y notas técnicas originales.
 
 - [Web en español](https://alejandros-tech.alejosergio3000.chatgpt.site/)
 - [Web en inglés](https://alejandros-tech.alejosergio3000.chatgpt.site/en/)
 - [CV profesional](https://sergio-hernandez-cv.alejosergio3000.chatgpt.site/)
-- [LinkedIn](https://www.linkedin.com/in/sergio-alejandro-hernandez-patino/)
-- [Perfil de GitHub](https://github.com/alejandrosergio)
 - Contacto: [alejandro.dev.sergio@outlook.com](mailto:alejandro.dev.sergio@outlook.com)
+
+## Experiencia
+
+El inicio incorpora el A+ interactivo en WebGL, una tarjeta profesional, un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos de proyectos públicos reales y tres notas técnicas originales. Cada proyecto y nota tiene una página completa en español e inglés.
+
+Se mantienen temas claro y oscuro, controles por teclado, preferencias de movimiento y adaptación a pantallas estrechas. El contenido principal, las rutas y los contactos funcionan sin JavaScript. El explorador conserva una alternativa HTML y el 3D un SVG local. No se usan rastreadores, fuentes externas, cuentas ni backend de formularios.
 
 ## Trabajar en local
 
-Usar Node.js 22 o posterior. Esta versión **no depende de paquetes externos** para funcionar o generarse, por lo que no necesita instalación de dependencias.
+Usar Node.js 22 o posterior. Este sitio no necesita instalación de paquetes externos.
 
 ```sh
 pnpm build
@@ -23,33 +25,25 @@ pnpm check
 pnpm dev
 ```
 
-También se pueden ejecutar `node scripts/build.mjs`, `node scripts/check.mjs` y `node scripts/dev.mjs`. La vista local se abre en `http://127.0.0.1:4178/` y `/en/`. Después de editar, generar de nuevo y actualizar el navegador. El servidor de desarrollo no sustituye al alojamiento publicado.
+También se pueden ejecutar `node scripts/build.mjs`, `node scripts/check.mjs` y `node scripts/dev.mjs`. Vista local: `http://127.0.0.1:4178/`. Regenerar y actualizar el navegador después de editar. Cerrar el servidor propio al terminar la revisión.
 
 ## Organización
 
-```text
-src/content/       Marca, contactos públicos y textos ES/EN
-src/components/    Generadores HTML reutilizables e iconos
-src/styles/        Variables visuales y estilos adaptables
-src/client/        Mejora opcional del tema visual
-public/            Recursos estáticos de marca
-scripts/           Generación, comprobaciones y vista local
-dist/              Salida generada, guardada para comparar destinos
-docs/              Alcance, diseño, arquitectura, roles y mantenimiento
-.openai/           Vínculo con el Site existente
-.github/workflows/ Comprobación del código y contenido
-```
+- `src/content/`: identidad pública, traducciones, hechos profesionales, proyectos, notas y pares de rutas.
+- `src/components/`: generadores HTML compartidos y alternativa estática del A+.
+- `src/client/`: mejoras progresivas y renderizador WebGL nativo.
+- `src/styles/`: variables visuales, composición y estilos adaptables.
+- `public/`: marca, retrato público del CV y vistas reales de proyectos.
+- `scripts/`: generación determinista, comprobaciones y vista local.
+- `dist/`: salida generada y guardada para comparar contenidos.
+- `docs/`: alcance, diseño, procedencia del contenido, arquitectura y publicación.
 
-El contenido principal y el cambio de idioma funcionan sin JavaScript. Las páginas incorporan títulos, descripciones, URL canónica, alternativas de idioma, mapa del sitio y página 404.
+Leer [AGENTS.md](AGENTS.md) y el [flujo de publicación](docs/PUBLISHING.md). Editar las fuentes y regenerar `dist/`, sin modificar manualmente esa salida.
 
-## Mantenimiento
+Cada cambio solicitado se publica en el Site existente y se guarda en GitHub, verificando ambos resultados. Sus historiales Git son independientes. Un push a GitHub por sí solo no publica el Site. No hay sincronización permanente.
 
-Leer [AGENTS.md](AGENTS.md), la [arquitectura](docs/ARCHITECTURE.md) y el [flujo de publicación](docs/PUBLISHING.md). Editar las fuentes y regenerar `dist/`, sin modificar manualmente esa salida.
-
-Cada cambio solicitado se publica en el Site existente y se guarda en GitHub, comprobando ambos resultados. Los historiales de Sites y GitHub son independientes. **Un push a GitHub por sí solo no publica el Site.** No se han configurado despliegues continuos ni sincronizaciones permanentes.
-
-El CV conserva su proyecto independiente. Aquí se enlaza, sin reemplazarlo ni modificarlo.
+El CV conserva su proyecto y Site independientes. Es una referencia factual; mantener Alejandro’sTech no autoriza cambios allí.
 
 ## Derechos
 
-Copyright © 2026 Alejandro’sTech. Todos los derechos reservados. No se concede una licencia de código abierto para la marca o los recursos de la web. La publicación de las fuentes en GitHub no implica autorización para reutilizar la identidad personal o los recursos de marca.
+Copyright © 2026 Alejandro’sTech. Todos los derechos reservados. No se concede una licencia de código abierto para la web, la marca o los recursos personales.

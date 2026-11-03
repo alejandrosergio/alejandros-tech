@@ -1,4 +1,5 @@
 const paths = {
+  copy: '<rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>',
   arrow: '<path d="M7 17 17 7M7 7h10v10"/>',
   arrowRight: '<path d="M5 12h14m-6-6 6 6-6 6"/>',
   mail: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/>',

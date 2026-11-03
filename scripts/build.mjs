@@ -1,8 +1,9 @@
 import { mkdir, readdir, writeFile, copyFile, stat, lstat, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderPage } from '../src/components/page.mjs';
+import { renderPage, renderProject, renderNote } from '../src/components/page.mjs';
 import { site } from '../src/content/site.mjs';
+import { routeGroups } from '../src/content/routes.mjs';
 
 export const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 
@@ -28,13 +29,17 @@ export async function build() {
   for (const file of ['theme-init.js', 'site.js', 'brand-3d.js']) {
     await copyFile(path.join(root, 'src/client', file), path.join(dist, 'assets', file));
   }
-  await writeFile(path.join(dist, 'index.html'), renderPage('es'));
-  await writeFile(path.join(dist, 'en/index.html'), renderPage('en'));
+  for (const route of routeGroups) for (const lang of ['es', 'en']) {
+    const directory = path.join(dist, route.paths[lang].slice(1));
+    await mkdir(directory, { recursive: true });
+    const html = route.type === 'home' ? renderPage(lang) : route.type === 'project' ? renderProject(lang, route.entity) : renderNote(lang, route.entity);
+    await writeFile(path.join(directory, 'index.html'), html);
+  }
   await writeFile(path.join(dist, '404.html'), renderPage('es', { notFound: true }));
   await writeFile(path.join(dist, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${site.origin}/sitemap.xml\n`);
-  await writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${['/', '/en/'].map(route => `<url><loc>${site.origin}${route}</loc><xhtml:link rel="alternate" hreflang="es" href="${site.origin}/"/><xhtml:link rel="alternate" hreflang="en" href="${site.origin}/en/"/></url>`).join('')}</urlset>\n`);
+  await writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${routeGroups.flatMap(route => ['es', 'en'].map(lang => `<url><loc>${site.origin}${route.paths[lang]}</loc><xhtml:link rel="alternate" hreflang="es" href="${site.origin}${route.paths.es}"/><xhtml:link rel="alternate" hreflang="en" href="${site.origin}${route.paths.en}"/></url>`)).join('')}</urlset>\n`);
   const total = (await Promise.all(['index.html', 'assets/styles.css', 'assets/site.js', 'assets/theme-init.js', 'assets/brand-3d.js', 'assets/brand-mark.svg', 'favicon.svg'].map(file => stat(path.join(dist, file))))).reduce((sum, entry) => sum + entry.size, 0);
-  return { pages: ['/', '/en/'], initialAssetsBytes: total };
+  return { pages: routeGroups.flatMap(route => Object.values(route.paths)), initialAssetsBytes: total };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

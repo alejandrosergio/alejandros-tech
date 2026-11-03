@@ -6,6 +6,7 @@
   const canvas = art.querySelector('[data-brand-canvas]');
   const controls = art.querySelector('[data-art-controls]');
   const motion = art.querySelector('[data-art-motion]');
+  const resetButton = art.querySelector('[data-art-reset]');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const forced = matchMedia('(forced-colors: active)');
   let gl;
@@ -46,10 +47,21 @@
     for (const contour of contours) {
       for (let i = 0; i < contour.length; i++) {
         const j = (i + 1) % contour.length, a = points[offset + i], b = points[offset + j], ai = inner[offset + i], bi = inner[offset + j];
-        const rim = [at(a, depth - bevel), at(b, depth - bevel), at(bi, depth), at(ai, depth)];
         const wall = [at(a, -depth + bevel), at(b, -depth + bevel), at(b, depth - bevel), at(a, depth - bevel)];
         const back = [at(ai, -depth), at(bi, -depth), at(b, -depth + bevel), at(a, -depth + bevel)];
-        for (const [quad, tint] of [[rim, color.map((v, k) => v * .65 + side[k] * .35)], [wall, side], [back, side]]) {
+        // Four bevel bands round the metal edge and catch the studio reflections.
+        const edge = (p, innerPoint, t) => {
+          const angle = t * Math.PI / 2, amount = 1 - Math.cos(angle);
+          return [p[0] + (innerPoint[0] - p[0]) * amount, p[1] + (innerPoint[1] - p[1]) * amount, depth - bevel + bevel * Math.sin(angle)];
+        };
+        for (let band = 0; band < 4; band++) {
+          const t = band / 4, next = (band + 1) / 4;
+          const quad = [edge(a, ai, t), edge(b, bi, t), edge(b, bi, next), edge(a, ai, next)];
+          const tint = color.map((v, k) => v * .78 + side[k] * .22);
+          triangle(out, quad[0], quad[1], quad[2], tint);
+          triangle(out, quad[0], quad[2], quad[3], tint);
+        }
+        for (const [quad, tint] of [[wall, side], [back, side]]) {
           triangle(out, quad[0], quad[1], quad[2], tint);
           triangle(out, quad[0], quad[2], quad[3], tint);
         }
@@ -99,15 +111,17 @@
     varying vec3 vNormal; varying vec3 vPosition; varying vec3 vColor; varying float vGlow;
     void main() {
       vec3 n = normalize(vNormal), view = normalize(-vPosition);
-      vec3 key = normalize(vec3(-.65, .9, 1.3)), fill = normalize(vec3(1., .2, .5));
-      float diffuse = .22 + .65 * max(dot(n, key), 0.) + .3 * max(dot(n, fill), 0.);
+      vec3 key = normalize(vec3(-.65, .9, 1.3)), fill = normalize(vec3(1., -.1, .6));
       vec3 reflection = reflect(-view, n);
-      float shine = pow(max(dot(reflection, key), 0.), 38.);
-      float softbox = pow(max(dot(reflection, normalize(vec3(-.4, .9, 1.))), 0.), 5.);
+      float diffuse = .14 + .52 * max(dot(n, key), 0.) + .24 * max(dot(n, fill), 0.);
+      float shine = pow(max(dot(reflection, key), 0.), 62.);
+      float strip = exp(-pow((reflection.y - .32) / .21, 2.));
       float edge = pow(1. - max(dot(n, view), 0.), 3.);
-      vec3 color = vColor * diffuse + vec3(.65, .82, 1.) * (shine * 1.9 + softbox * .28);
-      color += vec3(.015, .25, .65) * edge * .85 + vColor * vGlow;
-      color = pow(vec3(1.) - exp(-color * 1.35), vec3(.4545));
+      vec3 studio = mix(vec3(.015, .07, .18), vec3(.45, .65, .93), smoothstep(-.7, .65, reflection.y));
+      studio += vec3(.8, .9, 1.) * strip * .48;
+      vec3 color = vColor * diffuse + studio * .38 + vec3(.85, .94, 1.) * shine * 1.8;
+      color += vec3(.02, .32, .85) * edge * .8 + vColor * vGlow;
+      color = pow(vec3(1.) - exp(-color * 1.45), vec3(.4545));
       gl_FragColor = vec4(color, 1.);
     }`;
 
@@ -149,6 +163,7 @@
   let yaw = .32, pitch = -.12, targetYaw = .32, targetPitch = -.12, hoverX = 0, hoverY = 0, drag = null;
   function updateControl() {
     motion.dataset.paused = String(paused);
+    art.dataset.paused = String(paused);
     motion.querySelector('[data-motion-text]').textContent = paused ? motion.dataset.play : motion.dataset.pause;
   }
   function fallback() {
@@ -195,6 +210,8 @@
   try { createRenderer(); enhance(); schedule(); } catch { fallback(); return; }
 
   motion.addEventListener('click', () => { paused = !paused; hoverX = hoverY = 0; last = 0; updateControl(); schedule(); });
+  const reset = () => { targetYaw = .32; targetPitch = -.12; hoverX = hoverY = 0; elapsed = 0; last = 0; schedule(); };
+  resetButton?.addEventListener('click', reset);
   stage.addEventListener('pointerdown', event => {
     if (!event.isPrimary || event.button !== 0 || lost) return;
     drag = { id: event.pointerId, x: event.clientX, y: event.clientY, yaw: targetYaw, pitch: targetPitch };
@@ -219,7 +236,7 @@
   stage.addEventListener('keydown', event => {
     if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home'].includes(event.key)) return;
     event.preventDefault();
-    if (event.key === 'Home') { targetYaw = .32; targetPitch = -.12; }
+    if (event.key === 'Home') reset();
     if (event.key === 'ArrowLeft') targetYaw -= .2;
     if (event.key === 'ArrowRight') targetYaw += .2;
     if (event.key === 'ArrowUp') targetPitch = clamp(targetPitch - .15, -.65, .65);

@@ -1,16 +1,15 @@
-# Evolución pendiente
+# Evolución
 
-## Primera entrega
+## Base actual
 
-Página inicial ES/EN, identidad visual, breve presentación, CV y contactos. Código modular, documentación, instrucciones de agentes, comprobaciones y publicación en Sites con respaldo en GitHub.
+Web profesional completa ES/EN: A+ 3D, presentación personal, tecnologías interactivas, trayectoria, formación, dos proyectos públicos, tres notas originales y contacto. Fichas localizadas, comprobaciones y publicación en el Site existente con fuentes en GitHub.
 
-## Siguiente etapa, por definir con el titular
+## Próximas ampliaciones con material del titular
 
-- Objetivos y público prioritario de la web completa.
-- Arquitectura de información y navegación.
-- Presentación ampliada de la experiencia.
-- Proyectos y casos con material confirmado.
-- Posibles servicios y contenidos técnicos.
-- Identidad visual definitiva si el titular desea evolucionarla.
+- Profundizar en su historia profesional: orígenes, motivaciones y decisiones personales.
+- Añadir casos de .NET, Power Platform e integración con material que pueda publicarse.
+- Incorporar repositorios, demostraciones y capturas de esos casos.
+- Ampliar el cuaderno con nuevos artículos, herramientas o experimentos completos.
+- Añadir certificaciones, reconocimientos o participaciones cuando estén confirmados.
 
-No convertir esta lista en secciones públicas hasta que el usuario defina el alcance. No fijar fecha de lanzamiento ni publicar páginas incompletas.
+No convertir estas posibilidades en afirmaciones, proyectos ficticios o secciones públicas vacías. El titular define prioridades. No hay automatizaciones recurrentes ni sincronización en segundo plano.

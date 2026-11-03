@@ -2,20 +2,22 @@
 
 [Español](LEEME.md) · **English**
 
-The official professional-brand website of **Sergio Hernández**, a .NET and Power Platform developer focused on full stack development, automation and AI integration.
-
-**Current release:** a focused coming-soon page. The complete website will be designed with the owner in a later phase.
+Sergio Hernández’s professional website: .NET and React development, Power Platform, automation and AI integration. The first complete edition brings together his profile, technologies, experience, education, public projects and original technical notes.
 
 - [Spanish website](https://alejandros-tech.alejosergio3000.chatgpt.site/)
 - [English website](https://alejandros-tech.alejosergio3000.chatgpt.site/en/)
 - [Professional CV](https://sergio-hernandez-cv.alejosergio3000.chatgpt.site/en/)
-- [LinkedIn](https://www.linkedin.com/in/sergio-alejandro-hernandez-patino/)
-- [GitHub profile](https://github.com/alejandrosergio)
 - Contact: [alejandro.dev.sergio@outlook.com](mailto:alejandro.dev.sergio@outlook.com)
+
+## Experience
+
+The home includes the interactive WebGL A+ identity, a professional profile card, an explorer of 18 confirmed technologies, expandable experience entries, two real public project case studies and three original technical notes. Project and note detail pages have equivalent Spanish and English routes.
+
+Light/dark themes, keyboard controls, motion preferences and narrow screens are supported. The main content, routes and contacts work without JavaScript. The skill explorer has a static HTML alternative; the 3D identity has a local SVG fallback. No analytics, external fonts, form backend or account system is used.
 
 ## Run locally
 
-Use Node.js 22 or newer. This release has **no third-party runtime or build dependencies**, so no install step is required.
+Use Node.js 22 or newer. No package installation is needed for this dependency-free site.
 
 ```sh
 pnpm build
@@ -23,33 +25,25 @@ pnpm check
 pnpm dev
 ```
 
-The equivalent commands are `node scripts/build.mjs`, `node scripts/check.mjs` and `node scripts/dev.mjs`. Preview serves `http://127.0.0.1:4178/` and `/en/`. Rebuild and refresh after editing. The preview is a local development server, not production hosting.
+Equivalent commands: `node scripts/build.mjs`, `node scripts/check.mjs`, `node scripts/dev.mjs`. Preview serves `http://127.0.0.1:4178/`. Rebuild and refresh after edits. Stop the owned server after QA.
 
-## Structure
+## Source layout
 
-```text
-src/content/       Brand, public contacts and ES/EN copy
-src/components/    Reusable HTML renderers and icons
-src/styles/        Shared design tokens and responsive styles
-src/client/        Theme enhancement
-public/            Static brand assets
-scripts/           Build, checks and local preview
-dist/              Generated static output, tracked for source parity
-docs/              Brief, design, architecture, agent roles and maintenance
-.openai/           Link to the existing ChatGPT Site
-.github/workflows/ Build and content verification
-```
+- `src/content/`: public identity, translated content, profile facts, projects, notes and route pairs.
+- `src/components/`: shared HTML renderers and the static A+ artwork.
+- `src/client/`: progressive enhancements and the native WebGL renderer.
+- `src/styles/`: shared design tokens, layouts and responsive styles.
+- `public/`: local brand assets, the public CV portrait and actual project previews.
+- `scripts/`: deterministic build, structural checks and loopback-only preview.
+- `dist/`: generated output, tracked for content comparison.
+- `docs/`: scope, design, content provenance, architecture and publishing.
 
-The main content and language navigation work without JavaScript. Pages have localized titles, descriptions, canonical URLs, language alternatives, a sitemap and a custom 404 page.
+Read [AGENTS.md](AGENTS.md) and [publishing](docs/PUBLISHING.md) before maintenance. Modify sources and regenerate `dist/`; never hand-edit the generated output.
 
-## Maintenance
+Requested changes are published to the existing Site and saved to GitHub, with both destinations verified. Their Git histories are independent. A GitHub push alone does not deploy the Site. There is no recurring synchronization service.
 
-Read [AGENTS.md](AGENTS.md), [architecture](docs/ARCHITECTURE.md) and [publishing](docs/PUBLISHING.md) before making changes. Modify sources and rebuild `dist/`; do not hand-edit generated output.
-
-Requested changes are published to the existing ChatGPT Site and saved to GitHub, with both results verified. Sites hosting and the GitHub repository have independent histories. **A GitHub push alone does not deploy this Site.** No continuous production deployment or background synchronization has been configured.
-
-The CV is a separate project. This repository links to it and does not replace or modify it.
+The CV remains a separate project and Site. Its public content is a factual reference; maintaining Alejandro’sTech does not authorize changing it.
 
 ## Rights
 
-Copyright © 2026 Alejandro’sTech. All rights reserved. No open-source license is granted for the brand or website assets. Publishing source on GitHub does not imply permission to reuse personal identity or brand assets.
+Copyright © 2026 Alejandro’sTech. All rights reserved. No open-source licence is granted for the website, brand or personal assets.

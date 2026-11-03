@@ -1,42 +1,27 @@
 # Alcance acordado
 
-## Propósito
+## Objetivo
 
-Publicar una primera URL real de Alejandro’sTech en Sites de ChatGPT y preparar un proyecto independiente en Codex y GitHub. Referencia visual inicial: el CV de Sergio Hernández.
+Alejandro’sTech reúne la vida profesional de Sergio Hernández: perfil, trayectoria, tecnologías, proyectos y conocimientos. El 3 de noviembre de 2026 el titular autorizó desarrollar la propuesta completa, con una presentación moderna, profesional e interactiva, tomando dataconale.com como referencia de recorrido y profundidad.
 
-## Entrega inicial
+## Primera edición completa
 
-Una página de próxima apertura, disponible en español e inglés, con:
+1. Inicio con identidad A+ 3D mejorada y presentación de .NET, Power Platform y React.
+2. Sobre mí, retrato del CV y enfoque profesional basado en hechos confirmados.
+3. Explorador de tecnologías con filtros, selección y alternativa HTML.
+4. Trayectoria laboral y formación verificadas contra el CV público.
+5. Dos proyectos reales: Alejandro’sTech y el CV profesional, con fichas propias.
+6. Cuaderno técnico con tres notas originales completas y rutas propias.
+7. Contacto por correo, LinkedIn, GitHub y CV.
 
-1. Nombre e identidad de Alejandro’sTech.
-2. «Estamos construyendo Alejandro’sTech» / «We’re building Alejandro’sTech».
-3. Enfoque profesional y presentación breve.
-4. Acceso al CV en el idioma correspondiente.
-5. Contacto público mediante Outlook.
-6. Enlaces a LinkedIn y GitHub.
-7. Diseño adaptado a computador y celular.
+Todas las rutas tienen equivalentes ES/EN. El CV sigue siendo un proyecto independiente.
 
-Los textos no anuncian una fecha de lanzamiento. El enlace de correo abre el cliente del visitante y no envía mensajes por sí mismo.
+## Límites
 
-## Evolución
+No se inventan proyectos de clientes, métricas, certificaciones ni historias personales. Los empleadores y las responsabilidades se toman del CV confirmado. Las notas son contenido explicativo escrito para esta edición. Ver `CONTENT.md`.
 
-El titular indicará posteriormente cómo construir el sitio completo. Experiencia ampliada, proyectos, casos, servicios y artículos son posibilidades futuras, no entregas de esta fase. No publicar páginas vacías de esas secciones ni contenido inventado.
+No se incorporan cuentas, formularios de servidor, newsletter, agenda de reservas, rastreadores ni servicios comerciales no definidos. Se mantiene el Site público existente y la sincronización de fuentes con GitHub.
 
-## Identidad y contactos
+## Aceptación
 
-- Marca: Alejandro’sTech.
-- Titular: Sergio Hernández.
-- Perfil: Desarrollador .NET y Power Platform / .NET and Power Platform Developer.
-- Subáreas confirmadas: full stack, automatización e integración de IA.
-- Contacto principal público: alejandro.dev.sergio@outlook.com.
-- Los enlaces públicos se centralizan en `src/content/site.mjs`.
-
-## Criterios de aceptación
-
-- Las rutas `/` y `/en/` funcionan con texto equivalente.
-- Los contactos y el CV apuntan a destinos reales.
-- Lectura y navegación útiles sin JavaScript.
-- Vista móvil, teclado, temas claro/oscuro y reducción de movimiento revisados.
-- Publicación satisfactoria en el nuevo Site.
-- La misma versión de fuentes y salida generada queda verificada en GitHub.
-- El proyecto del CV conserva sus fuentes y su Site independiente.
+Contenido completo y navegación útil con y sin mejoras JavaScript; rutas y traducciones equivalentes; revisión móvil y escritorio; teclado, temas y preferencias de movimiento; comprobaciones de generación y enlaces; publicación y verificación de ambos destinos.

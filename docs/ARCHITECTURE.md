@@ -1,30 +1,32 @@
 # Arquitectura
 
-## Decisión inicial
+## Base
 
-Generación estática con módulos ESM de Node.js y HTML/CSS/JavaScript de navegador. Se mantiene la misma familia técnica que el CV, con contenidos y componentes separados. Esta página no necesita un framework, un backend, una base de datos ni servicios de terceros.
+Generación estática con Node ESM y HTML/CSS/JavaScript de navegador. Sin dependencias externas, framework, servidor de aplicación o base de datos. La salida sigue siendo portable entre alojamientos estáticos.
 
-La versión inicial no tiene dependencias externas. Esto permite ejecutar las comprobaciones y generar la salida sin instalar paquetes. Un framework se podrá valorar cuando una necesidad concreta lo justifique.
+## Contenido y rutas
 
-`src/client/brand-3d.js` mejora únicamente el arte del inicio con WebGL nativo. Genera las mallas, los biseles, las órbitas y las partículas en memoria; no descarga modelos ni texturas. El SVG y los enlaces HTML permanecen disponibles sin esa mejora. El bucle de dibujo atiende visibilidad, pausa, movimiento reducido y pérdida/restauración del contexto. Los textos de sus controles se traducen desde el mismo modelo ES/EN.
+- `site.mjs`: identidad, origen y contactos públicos.
+- `locales.mjs`: etiquetas y contenido ES/EN del inicio.
+- `profile.mjs`: experiencia y tecnologías verificadas.
+- `projects.mjs`: proyectos públicos y casos completos.
+- `notes.mjs`: notas técnicas originales y lecturas de referencia.
+- `routes.mjs`: pares de rutas locales por idioma.
 
-## Flujo
+Los modelos viven en `src/content/`. No se añade una página sin contenido real. Cada ficha conserva su destino equivalente al cambiar de idioma.
 
-1. `src/content/site.mjs` define identidad, origen y contactos.
-2. `src/content/locales.mjs` define ES/EN con las mismas claves.
-3. `src/components/page.mjs` genera el documento y sus componentes compartidos.
-4. `scripts/build.mjs` genera las dos rutas, 404, robots y sitemap, y copia los recursos.
-5. `scripts/check.mjs` comprueba identidad, traducciones, enlaces, recursos y condiciones estructurales.
-6. `dist/` se empaqueta mediante el flujo oficial de Sites.
+## Renderizado
 
-La generación no usa la fecha del sistema ni datos remotos. Con las mismas entradas, produce los mismos archivos. El año de copyright se actualiza explícitamente en el contenido central.
+`src/components/page.mjs` comparte documento, metadatos, navegación y pie entre el inicio y las fichas. `artwork.mjs` conserva el SVG de respaldo. `scripts/build.mjs` genera doce rutas ES/EN, 404, robots, sitemap y recursos. El resultado es determinista y se guarda en `dist/`.
 
-## Crecimiento
+## Mejora progresiva
 
-Añadir componentes compartidos y rutas conforme se definan. Extraer colecciones de contenido para proyectos o artículos cuando existan. Mantener los textos traducidos, un origen canónico y una sola fuente para contactos.
+`site.js` controla tema, menú móvil, tarjeta, filtros de tecnologías, copiado de correo, navegación activa, progreso y revelaciones. Sin JavaScript el contenido, los enlaces, la experiencia desplegable y la lista de tecnologías siguen disponibles.
 
-Las nuevas necesidades de servidor, formularios o almacenamiento requieren una decisión documentada y revisión de compatibilidad con Sites. No incorporar infraestructura anticipada para funciones todavía no pedidas.
+`brand-3d.js` genera mallas e iluminación en WebGL nativo, sin modelos ni texturas remotas. Atiende pausa, entrada táctil, teclado, visibilidad, movimiento reducido y recuperación gráfica. No es necesario para navegar o leer el sitio.
 
-## Portabilidad
+## Comprobación
 
-La salida es estática y puede alojarse en otro proveedor compatible si el titular lo solicita. El alojamiento actual es Sites, no GitHub Pages. Un cambio de proveedor requerirá revisar origen, enlaces, rutas y metadatos, además de publicar y comprobar el nuevo destino.
+`scripts/check.mjs` valida estructura de traducciones, todas las rutas y anclas internas, referencias ARIA, metadatos, IDs, contenido, alternativas estáticas y sitemap. Incluye `check-3d.mjs`, que comprueba la lógica de pausa, entrada táctil, teclado, suspensión y recuperación del contexto con una superficie gráfica simulada. La compilación y apariencia real de los shaders se revisan en el navegador. GitHub Actions comprueba sintaxis, generación y correspondencia del `dist/` guardado.
+
+La publicación usa el helper oficial de Sites y su commit/archivo exactos. GitHub tiene un historial independiente y se compara por contenido, conservando cambios concurrentes.
