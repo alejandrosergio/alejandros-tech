@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://alejandros-tech.alejosergio3000.chatgpt.site/sitemap.xml
