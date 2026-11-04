@@ -18,20 +18,58 @@ function localMatrix(node) {
 export function createBustView(canvas, model, portrait) {
   const gl=canvas.getContext('webgl',{alpha:true,antialias:true,preserveDrawingBuffer:true,powerPreference:'low-power'});
   if(!gl) throw new Error('WebGL unavailable');
-  const vertex=`attribute vec3 aPosition; attribute vec3 aNormal; uniform mat4 uModel; uniform mat4 uRestModel; uniform float uAspect; uniform float uHead; varying vec3 vPosition; varying vec3 vNormal; varying vec2 vUV; varying float vFront;
-  void main(){vec4 world=uModel*vec4(aPosition,1.0);vPosition=world.xyz;vNormal=mat3(uModel)*aNormal;vec3 rest=(uRestModel*vec4(aPosition,1.0)).xyz-vec3(0.0,.25,8.0);vUV=vec2(.5+rest.x*3.9/(-rest.z)*.5,.5+rest.y*3.9/(-rest.z)*.5);if(uHead>.5)vUV.y=vUV.y*1.18-.171;vFront=(mat3(uRestModel)*aNormal).z;vec3 p=world.xyz-vec3(0.0,.6,8.0);gl_Position=vec4(p.x*5.1/uAspect,p.y*5.1,-1.01005*p.z-.201005,-p.z);}`;
-  const fragment=`precision mediump float; uniform vec4 uColor; uniform float uRoughness; uniform float uMetallic; uniform sampler2D uPortrait; uniform float uPhotoMode; varying vec3 vPosition; varying vec3 vNormal; varying vec2 vUV; varying float vFront;
+  const vertex=`attribute vec3 aPosition; attribute vec3 aNormal;
+  uniform mat4 uModel; uniform mat4 uRestModel; uniform float uAspect; uniform float uHead; uniform float uSkin;
+  varying vec3 vPosition; varying vec3 vNormal; varying vec2 vUV; varying float vFront; varying float vFaceZone;
+  float faceV(float y){
+    float v=.560+(y-.65)*.247;
+    if(y>.84)v=.607+(y-.84)*.314286;
+    if(y>1.12)v=.695+(y-1.12)*.300;
+    if(y>1.23)v=.728+(y-1.23)*.222727;
+    if(y>1.45)v=.777+(y-1.45)*.191667;
+    if(y>1.57)v=.800+(y-1.57)*.306;
+    return v;
+  }
+  void main(){
+    vec4 world=uModel*vec4(aPosition,1.0);vPosition=world.xyz;vNormal=mat3(uModel)*aNormal;
+    vec3 restWorld=(uRestModel*vec4(aPosition,1.0)).xyz;
+    vec3 rest=restWorld-vec3(0.0,.25,8.0);
+    vUV=vec2(.5+rest.x*3.9/(-rest.z)*.5,.5+rest.y*3.9/(-rest.z)*.5);
+    // One appearance coordinate system crosses the jaw/neck seam. The prior
+    // separate head warp projected beard onto the upper neck and detached it.
+    vFaceZone=max(uHead,uSkin*step(abs(restWorld.x),.30)*step(.40,restWorld.y));
+    if(vFaceZone>.5)vUV=vec2(.500+restWorld.x*.230,faceV(restWorld.y));
+    vFront=(mat3(uRestModel)*aNormal).z;
+    vec3 p=world.xyz-vec3(0.0,.6,8.0);gl_Position=vec4(p.x*5.1/uAspect,p.y*5.1,-1.01005*p.z-.201005,-p.z);
+  }`;
+  const fragment=`precision mediump float; uniform vec4 uColor; uniform float uRoughness; uniform float uMetallic; uniform float uHand; uniform sampler2D uPortrait; uniform float uPhotoMode;
+  varying vec3 vPosition; varying vec3 vNormal; varying vec2 vUV; varying float vFront; varying float vFaceZone;
   void main(){vec3 n=normalize(vNormal);vec3 view=normalize(vec3(0.0,.6,8.0)-vPosition);vec3 key=normalize(vec3(-.75,1.2,1.8));vec3 fill=normalize(vec3(.85,.3,.9));
-  float d=max(dot(n,key),0.0);float f=max(dot(n,fill),0.0);float ao=.65+.35*smoothstep(-.5,1.3,vPosition.y);float power=mix(110.0,10.0,uRoughness);float spec=pow(max(dot(n,normalize(key+view)),0.0),power);
-  float rim=pow(1.0-max(dot(n,view),0.0),3.0)*max(dot(n,normalize(vec3(.8,.65,-.4))),0.0);float grain=sin(vPosition.x*320.0)*sin(vPosition.y*280.0)*sin(vPosition.z*300.0)*.018;
-  vec3 base=uColor.rgb*.025;
-  if(uPhotoMode>.0){vec4 tex=texture2D(uPortrait,vUV);float grey=dot(tex.rgb,vec3(.2126,.7152,.0722));float mask=smoothstep(-.05,.65,vFront)*tex.a;mask*=step(0.0,vUV.x)*step(vUV.x,1.0)*step(0.0,vUV.y)*step(vUV.y,1.0);base=mix(base,vec3(pow(grey,2.2)*uPhotoMode),mask);}
-  vec3 color=base*(.22+d*.95+f*.06)*ao*(1.0+grain);color+=vec3(spec*(.003+(1.0-uRoughness)*.013)+rim*.038);color=mix(color,color*1.03,uMetallic);color=color/(vec3(1.0)+color);gl_FragColor=vec4(pow(max(color,vec3(0.0)),vec3(.454545)),uColor.a);}`;
+    float d=max(dot(n,key),0.0),f=max(dot(n,fill),0.0);float ao=.78+.22*smoothstep(-.5,1.3,vPosition.y);
+    float power=mix(110.0,12.0,uRoughness),spec=pow(max(dot(n,normalize(key+view)),0.0),power);
+    float rim=pow(1.0-max(dot(n,view),0.0),3.0)*max(dot(n,normalize(vec3(.8,.65,-.4))),0.0);
+    float grain=sin(vPosition.x*320.0)*sin(vPosition.y*280.0)*sin(vPosition.z*300.0)*.009;
+    vec3 base=uColor.rgb*mix(.060,.120,vFaceZone);
+    if(uPhotoMode>.0){
+      vec4 tex=texture2D(uPortrait,vUV);float grey=dot(tex.rgb,vec3(.2126,.7152,.0722));
+      // Oblique eyelids and curls retain appearance rather than turning into
+      // black holes as their normals cross a narrow frontal-facing threshold.
+      float mask=smoothstep(-.28,.16,vFront)*tex.a;
+      mask*=step(0.0,vUV.x)*step(vUV.x,1.0)*step(0.0,vUV.y)*step(vUV.y,1.0);
+      base=mix(base,vec3(pow(grey,2.2)*mix(uPhotoMode,.60,vFaceZone)),mask);
+    }
+    vec3 color=base*(.36+d*.66+f*.14)*ao*(1.0+grain);
+    float materialLight=dot(uColor.rgb,vec3(.2126,.7152,.0722));
+    float rimStrength=mix(.0025,.015,smoothstep(.05,.25,materialLight));
+    color+=vec3(spec*(.0015+(1.0-uRoughness)*.006)*mix(1.0,.2,uHand)+rim*rimStrength*mix(1.0,.3,uHand));
+    color=mix(color,color*1.03,uMetallic);color=color/(vec3(1.0)+color);
+    gl_FragColor=vec4(pow(max(color,vec3(0.0)),vec3(.454545)),uColor.a);
+  }`;
   const shaders=[];
   for(const [type,source] of [[gl.VERTEX_SHADER,vertex],[gl.FRAGMENT_SHADER,fragment]]){const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error('Bust shader unavailable');shaders.push(s);}
   const program=gl.createProgram();shaders.forEach(s=>gl.attachShader(program,s));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error('Bust renderer unavailable');shaders.forEach(s=>gl.deleteShader(s));
   const attributes=['aPosition','aNormal'].map(name=>gl.getAttribLocation(program,name));
-  const uniforms=Object.fromEntries(['uModel','uRestModel','uAspect','uColor','uRoughness','uMetallic','uPortrait','uPhotoMode','uHead'].map(name=>[name,gl.getUniformLocation(program,name)]));
+  const uniforms=Object.fromEntries(['uModel','uRestModel','uAspect','uColor','uRoughness','uMetallic','uHand','uPortrait','uPhotoMode','uHead','uSkin'].map(name=>[name,gl.getUniformLocation(program,name)]));
   const texture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,texture);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
   const hasPortrait=Boolean(portrait?.naturalWidth);
   if(hasPortrait)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,portrait);else gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([90,90,90,255]));
@@ -57,7 +95,7 @@ export function createBustView(canvas, model, portrait) {
         const world=multiply(parent,local),rest=multiply(parentRest,restLocal);
         if(node.mesh!==undefined)for(const p of meshes[node.mesh]){
           const isHead=node.name==='Head'||node.name.startsWith('Eye.');
-          gl.uniform1f(uniforms.uPhotoMode,hasPortrait?(isHead?.48:[2,3].includes(p.materialIndex)?.34:.72):0);gl.uniform1f(uniforms.uHead,isHead?1:0);gl.uniformMatrix4fv(uniforms.uRestModel,false,rest);
+          gl.uniform1f(uniforms.uPhotoMode,hasPortrait?(isHead?.60:p.materialIndex===13?.22:[2,3].includes(p.materialIndex)?.34:.72):0);gl.uniform1f(uniforms.uHead,isHead?1:0);gl.uniform1f(uniforms.uSkin,[2,3].includes(p.materialIndex)?1:0);gl.uniform1f(uniforms.uHand,p.materialIndex===13?1:0);gl.uniformMatrix4fv(uniforms.uRestModel,false,rest);
           gl.uniformMatrix4fv(uniforms.uModel,false,world);gl.uniform4fv(uniforms.uColor,p.material.color);gl.uniform1f(uniforms.uRoughness,p.material.roughness);gl.uniform1f(uniforms.uMetallic,p.material.metallic);
           [p.positions,p.normals].forEach((b,i)=>{gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.enableVertexAttribArray(attributes[i]);gl.vertexAttribPointer(attributes[i],3,gl.FLOAT,false,0,0);});
           gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,p.indices);gl.drawElements(gl.TRIANGLES,p.count,p.type,0);

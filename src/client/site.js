@@ -88,17 +88,71 @@
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   if ('IntersectionObserver' in window) {
-    if (!reduced.matches && root.dataset.motion !== 'true') {
-      const reveal = new IntersectionObserver(entries => entries.forEach(entry => {
-        if (entry.isIntersecting) { entry.target.classList.add('is-visible'); reveal.unobserve(entry.target); }
-      }), { threshold: .01, rootMargin: '0px 0px 6% 0px' });
-      document.querySelectorAll('[data-reveal]').forEach(item => {
+    const forced = matchMedia('(forced-colors: active)');
+    const quiet = () => reduced.matches || forced.matches || root.dataset.motion === 'true';
+    if (!quiet()) {
+      // Extend the same enhancement to real article content, without changing its HTML source.
+      document.querySelectorAll('.detail-heading, .case-image, .case-facts, .prose > section, .prose > .article-intro, .takeaway, .related-notes > h2, .skill-explorer, .contact-bottom').forEach(item => item.setAttribute('data-reveal', ''));
+      const targets = [...document.querySelectorAll('[data-reveal]')];
+      const protectedText = 'form, summary, button, label, [aria-live], [role="status"], [role="alert"], .sr-only, [hidden], details:not([open])';
+      function prepareHeading(heading) {
+        if (heading.dataset.revealWords || heading.closest(protectedText) || heading.querySelector('.reveal-word')) return;
+        if (heading.textContent.trim().split(/\s+/).length > 16) return;
+        const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT), nodes = [];
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          if (node.nodeValue.trim() && !node.parentElement.closest('svg, script, style, [aria-hidden="true"], .sr-only')) nodes.push(node);
+        }
+        let index = 0;
+        nodes.forEach(node => {
+          const fragment = document.createDocumentFragment();
+          node.nodeValue.split(/(\s+)/).forEach(token => {
+            if (!token) return;
+            if (/^\s+$/.test(token)) fragment.append(document.createTextNode(token));
+            else {
+              const word = document.createElement('span'); word.className = 'reveal-word'; word.textContent = token;
+              word.style.setProperty('--word-delay', `${Math.min(index++, 9) * 30}ms`); fragment.append(word);
+            }
+          });
+          node.replaceWith(fragment);
+        });
+        heading.dataset.revealWords = 'true';
+      }
+      targets.forEach(item => {
         const siblings = [...item.parentElement.children].filter(child => child.hasAttribute('data-reveal'));
-        item.style.setProperty('--reveal-delay', `${Math.min(siblings.indexOf(item), 3) * 110}ms`);
-        reveal.observe(item);
+        item.style.setProperty('--reveal-delay', `${Math.max(0, Math.min(siblings.indexOf(item), 3)) * 80}ms`);
+        const text = [...(item.matches('h1,h2,h3,p') ? [item] : []), ...item.querySelectorAll('h1,h2,h3,p')];
+        let paragraph = 0;
+        text.forEach(element => {
+          if (element.closest('[data-reveal]') !== item || element.closest(protectedText)) return;
+          if (element.matches('h1,h2,h3')) prepareHeading(element);
+          else if (!element.matches('.eyebrow,.section-label,.small-label') && element.textContent.trim()) {
+            element.dataset.revealText = 'paragraph'; element.style.setProperty('--text-delay', `${90 + Math.min(paragraph++, 3) * 70}ms`);
+          }
+        });
       });
+      const show = item => { item.classList.add('is-visible'); reveal.unobserve(item); };
+      const reveal = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) show(entry.target); }), { threshold: .04, rootMargin: '0px 0px -6% 0px' });
+      targets.forEach(item => reveal.observe(item));
       root.classList.add('has-reveals');
-      reduced.addEventListener('change', () => { if (reduced.matches) { root.classList.remove('has-reveals'); reveal.disconnect(); } });
+      // Focus/hash navigation must never wait for a visual entrance or re-hide after blur.
+      document.addEventListener('focusin', event => { const item = event.target.closest('[data-reveal]'); if (item) show(item); });
+      const revealHash = () => {
+        if (!location.hash) return;
+        let id; try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+        const target = document.getElementById(id); if (!target) return;
+        const parent = target.closest('[data-reveal]'); if (parent) show(parent);
+        target.querySelectorAll('[data-reveal]').forEach(show);
+      };
+      window.addEventListener('hashchange', revealHash); revealHash();
+      let stopped = false;
+      const stopWhenQuiet = () => {
+        if (!quiet() || stopped) return;
+        stopped = true; targets.forEach(show); reveal.disconnect(); root.classList.remove('has-reveals');
+      };
+      reduced.addEventListener('change', stopWhenQuiet); forced.addEventListener('change', stopWhenQuiet);
+      document.addEventListener('alejandro:preferences', stopWhenQuiet);
+      if ('MutationObserver' in window) new MutationObserver(stopWhenQuiet).observe(root, { attributes: true, attributeFilter: ['data-motion'] });
     }
     const links = [...document.querySelectorAll('[data-nav-section]')];
     const active = new IntersectionObserver(entries => entries.forEach(entry => {

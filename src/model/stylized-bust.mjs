@@ -36,9 +36,10 @@ const materialDefinitions = [
   ['Eye stone', [.12, .125, .13], .54],
   ['Dark iris', [.064, .066, .069], .46],
   ['Pupil and mouth detail', [.010, .011, .012], .52],
-  ['Shirt buttons', [.12, .125, .13], .66]
+  ['Shirt buttons', [.12, .125, .13], .66],
+  ['Matte graphite hands', [.135, .137, .14], .95]
 ];
-const MAT = { shirt: 0, seam: 1, skin: 2, crease: 3, hair: 4, curl: 5, beard: 6, strand: 7, lips: 8, eye: 9, iris: 10, black: 11, button: 12 };
+const MAT = { shirt: 0, seam: 1, skin: 2, crease: 3, hair: 4, curl: 5, beard: 6, strand: 7, lips: 8, eye: 9, iris: 10, black: 11, button: 12, hand: 13 };
 
 class Mesh {
   constructor(offset = [0, 0, 0]) { this.offset = offset; this.groups = new Map(); }
@@ -136,11 +137,10 @@ function sculptHead(head) {
     return [x, y, z];
   }, 96, 64);
   for (const side of [-1, 1]) {
-    ellipsoid(head, MAT.skin, [side * .455, 1.37, -.005], [.09, .15, .058], 28, 20);
-    ellipsoid(head, MAT.crease, [side * .485, 1.375, .047], [.035, .084, .012], 20, 14);
-    const helix = Array.from({ length: 15 }, (_, i) => { const a = -.8 + i / 14 * Math.PI * 1.65; return [side * (.475 + .052 * Math.cos(a)), 1.375 + .114 * Math.sin(a), .050]; });
-    tube(head, MAT.skin, helix, .013, 22, 7);
-    ellipsoid(head, MAT.skin, [side * .474, 1.27, .026], [.044, .054, .039], 20, 14);
+    ellipsoid(head, MAT.skin, [side * .454, 1.37, -.015], [.067, .133, .047], 28, 20);
+    ellipsoid(head, MAT.crease, [side * .474, 1.375, .031], [.026, .069, .009], 20, 14);
+    const helix = Array.from({ length: 15 }, (_, i) => { const a = -.8 + i / 14 * Math.PI * 1.65; return [side * (.466 + .042 * Math.cos(a)), 1.375 + .099 * Math.sin(a), .036]; });
+    tube(head, MAT.skin, helix, .009, 22, 7);
     // Eyelid hoods close over the ocular spheres, leaving a sculpted almond.
     for (const upper of [true, false]) {
       head.surface(MAT.skin, (u, v) => {
@@ -222,7 +222,7 @@ function sculptBody(body) {
   }, 64, 42);
   // Close the shirt base and neck opening with small radial discs.
   for (const [y, reverse] of [[-1.5, true], [.65, false]]) body.surface(MAT.shirt, (u, v) => [Math.cos(u * TAU) * torsoWidth(y) * v, y, Math.sin(u * TAU) * torsoDepth(y) * v], 40, 4, reverse);
-  ellipsoid(body, MAT.skin, [0, .66, -.015], [.205, .26, .19], 36, 24);
+  ellipsoid(body, MAT.skin, [0, .66, -.015], [.235, .24, .205], 36, 24);
   for (const side of [-1, 1]) {
     const armPath = [[side * .78, .33, 0], [side * .94, -.06, .015], [side * 1.04, -.47, .055], [side * 1.02, -.71, .15], [side * 1.17, -.48, .32], [side * 1.28, -.22, .47]];
     tube(body, MAT.shirt, armPath, t => mix(.225, .118, t) + .012 * Math.sin(t * Math.PI * 9) * Math.sin(t * Math.PI), 40, 18, .94);
@@ -231,7 +231,7 @@ function sculptBody(body) {
     // Folded collar surfaces are actual shaped fabric, not a photograph.
     body.surface(MAT.seam, (u, v) => {
       const x = side * ((.045 + .25 * u) * (1 - .80 * v) + .125 * v);
-      return [x, .615 - .07 * u - .335 * v, .215 + .11 * u + .13 * v + .025 * Math.sin(u * Math.PI) * Math.sin(v * Math.PI)];
+      return [x, .650 - .07 * u - .335 * v, .215 + .11 * u + .13 * v + .025 * Math.sin(u * Math.PI) * Math.sin(v * Math.PI)];
     }, 12, 12, side > 0);
     const seam = Array.from({ length: 14 }, (_, i) => { const t = i / 13, x = side * mix(.28, .70, t), y = .40 - t * .12; return [x, y, shirtZ(x, y) + .012]; });
     tube(body, MAT.seam, seam, .006, 18, 5);
@@ -240,20 +240,13 @@ function sculptBody(body) {
       const turned = rotateY([side * x, y, p[2]], side * .18);
       return add([side * 1.30, -.015, .49], turned);
     };
-    ellipsoid(body, MAT.skin, [0, 0, 0], [.132, .183, .063], 28, 22, transform);
+    ellipsoid(body, MAT.hand, [0, 0, 0], [.132, .183, .063], 28, 22, transform);
     for (let finger = 0; finger < 4; finger++) {
       const x = -.092 + finger * .061, length = [.235, .315, .292, .220][finger], splay = (finger - 1.5) * .018;
       const points = [[x, .112, .008], [x + splay * .3, .17 + length * .28, .014], [x + splay * .75, .13 + length * .72, .045], [x + splay, .12 + length, .079]].map(transform);
-      tube(body, MAT.skin, points, t => mix(.032, .021, t) * (1 + .07 * Math.cos(t * Math.PI * 4)), 17, 8, .92);
-      // Palmar joint folds, kept subtle in the same sculptural material family.
-      for (const t of [.42, .72]) {
-        const p = catmull([[x, .112, .008], [x + splay * .3, .17 + length * .28, .014], [x + splay * .75, .13 + length * .72, .045], [x + splay, .12 + length, .079]], t);
-        tube(body, MAT.crease, [transform(add(p, [-.019, 0, .026])), transform(add(p, [0, -.003, .030])), transform(add(p, [.019, 0, .026]))], .0024, 5, 5);
-      }
+      tube(body, MAT.hand, points, t => mix(.032, .021, t), 17, 8, .92);
     }
-    tube(body, MAT.skin, [[-.105, -.058, .005], [-.17, .005, .046], [-.235, .07, .088], [-.255, .135, .11]].map(transform), t => mix(.043, .025, t), 18, 9);
-    const palmCrease = [[-.093, .008, .055], [-.045, -.04, .066], [.02, -.065, .065], [.08, -.025, .052]].map(transform);
-    tube(body, MAT.crease, palmCrease, .0027, 12, 5);
+    tube(body, MAT.hand, [[-.105, -.058, .005], [-.17, .005, .046], [-.235, .07, .088], [-.255, .135, .11]].map(transform), t => mix(.043, .025, t), 18, 9);
   }
   // A raised placket and small plain buttons identify a shirt without accessories.
   body.surface(MAT.seam, (u, v) => { const y = mix(.35, -1.49, v), x = (u - .5) * .045; return [x, y, shirtZ(x, y) + .008]; }, 4, 32, true);

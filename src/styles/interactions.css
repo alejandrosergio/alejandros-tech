@@ -1,0 +1,22 @@
+/* Native disclosures keep the content and its controls available without scripts. */
+.approach-details { margin-top: 1.7rem; }
+.approach-details details { border-top: 1px solid var(--line); }
+.approach-details summary { display: flex; align-items: center; gap: 1rem; min-height: 52px; padding: .8rem 0; font-size: .8125rem; list-style: none; cursor: pointer; }
+.approach-number { color: var(--accent); font-size: .5625rem; }
+.approach-details p { color: var(--muted); font-size: .8125rem; line-height: 1.85; margin: 0 0 1.2rem 1.8rem; }
+.disclosure-plus { display: inline-block; margin-left: auto; color: var(--accent); font-size: 1rem; font-weight: 400; transition: transform .3s; }
+details[open] > summary .disclosure-plus { transform: rotate(45deg); }
+.process-steps summary { display: block; list-style: none; cursor: pointer; }
+.process-steps .process-number { display: flex; align-items: center; gap: 1rem; }
+.process-steps summary h3 { transition: color .25s; }
+.approach-details summary::-webkit-details-marker, .process-steps summary::-webkit-details-marker { display: none; }
+.approach-details summary:hover, .process-steps summary:hover h3 { color: var(--accent); }
+.project-card .project-image img { transition: transform .8s cubic-bezier(.22,.68,.18,1), filter .8s; }
+.project-card:focus-within .project-image img, .project-card:hover .project-image img { transform: scale(1.035); filter: brightness(1.07); }
+.note-card { transition: border-color .3s; }
+.note-card:hover, .note-card:focus-within { border-color: var(--accent); }
+.note-card-link h3 { transition: color .3s; }
+.note-card-link:hover h3, .note-card-link:focus-visible h3 { color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .project-card .project-image img, .disclosure-plus, .process-steps summary h3 { transition: none; } .project-card:hover .project-image img, .project-card:focus-within .project-image img { transform: none; } }
+:root[data-motion="true"] .project-card .project-image img, :root[data-motion="true"] .disclosure-plus { transition: none; transform: none; }
+@media print { .approach-details details:not([open]) > :not(summary), .process-steps details:not([open]) > :not(summary) { display: block !important; } .disclosure-plus { display: none; } }

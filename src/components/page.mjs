@@ -14,7 +14,7 @@ export const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&'
 const e = escapeHTML;
 const cvURL = lang => site.cv + (lang === 'en' ? 'en/' : '');
 const mailURL = t => `mailto:${site.email}?subject=${encodeURIComponent(t.contact.subject)}`;
-const splitTitle = lines => `${e(lines[0])}<em>${e(lines[1])}</em>`;
+const splitTitle = lines => `${e(lines[0])} <em>${e(lines[1])}</em>`;
 const tags = values => `<ul class="tags">${values.map(value => `<li>${e(value)}</li>`).join('')}</ul>`;
 const sectionLabel = (number, label) => `<p class="section-label"><span>${number}</span>${e(label)}</p>`;
 
@@ -36,7 +36,6 @@ function head(lang, { title, description, paths, notFound = false, home = false 
   <meta property="og:url" content="${site.origin}${paths[lang]}">
   <meta property="og:locale" content="${lang === 'es' ? 'es_CO' : 'en_US'}">
   <meta name="twitter:card" content="summary">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/theme-init.js"></script>
   <script src="/assets/preferences.js" defer></script>
@@ -49,11 +48,11 @@ function head(lang, { title, description, paths, notFound = false, home = false 
 function header(lang, t, paths) {
   return `<header class="site-header" id="top">
     <div class="header-inner wrap">
-      <a class="wordmark" href="${t.path}" aria-label="${site.name}"><img src="/assets/brand-mark.svg" width="36" height="36" alt=""><span>Alejandro’s<span class="wordmark-accent">Tech</span></span></a>
+      <a class="wordmark" href="${t.path}" aria-label="${site.name}"><span>Alejandro’s<span class="wordmark-accent">Tech</span></span></a>
       <nav class="primary-nav" id="primary-nav" aria-label="${t.navLabel}" data-primary-nav>${t.nav.map(n => `<a href="${t.path}#${n.id}" data-nav-section="${n.id}">${n.label}</a>`).join('')}<a class="nav-contact" href="${t.path}#contacto">${t.contactNav}${icon('arrow')}</a></nav>
-      <div class="header-controls"><nav class="languages" aria-label="${t.languages}"><a href="${paths.es}" lang="es" hreflang="es" title="Español"${lang === 'es' ? ' aria-current="page"' : ''}>ES</a><a href="${paths.en}" lang="en" hreflang="en" title="English"${lang === 'en' ? ' aria-current="page"' : ''}>EN</a></nav>
-      <button class="theme-button" type="button" data-theme-toggle aria-label="${t.themeLabel}" title="${t.themeLabel}" hidden>${icon('moon', 'moon-icon')}${icon('sun', 'sun-icon')}</button>
-      <button class="menu-button" type="button" data-menu-toggle data-open="${t.menu}" data-close="${t.closeMenu}" aria-label="${t.menu}" aria-expanded="false" aria-controls="primary-nav" hidden><span></span><span></span></button></div>
+      <div class="header-controls"><nav class="languages" aria-label="${t.languages}"><a href="${paths.es}" lang="es" hreflang="es" data-tooltip="Español"${lang === 'es' ? ' aria-current="page"' : ''}>ES</a><a href="${paths.en}" lang="en" hreflang="en" data-tooltip="English"${lang === 'en' ? ' aria-current="page"' : ''}>EN</a></nav>
+      <button class="theme-button" type="button" data-theme-toggle data-tooltip aria-label="${t.themeLabel}" hidden>${icon('moon', 'moon-icon')}${icon('sun', 'sun-icon')}</button>
+      <button class="menu-button" type="button" data-menu-toggle data-tooltip data-open="${t.menu}" data-close="${t.closeMenu}" aria-label="${t.menu}" aria-expanded="false" aria-controls="primary-nav" hidden><span></span><span></span></button></div>
     </div><div class="reading-progress" aria-hidden="true" data-reading-progress></div>
   </header>`;
 }
@@ -84,7 +83,7 @@ ${options.home ? `  ${loader(lang)}` : ''}
 function about(lang, t) {
   return `<section class="section about-section wrap" id="sobre-mi" aria-labelledby="about-title">
     <div class="about-copy" data-reveal>${sectionLabel('01', t.about.label)}<h2 id="about-title">${splitTitle(t.about.title)}</h2><p class="lead">${t.about.intro}</p>${t.about.paragraphs.map(p => `<p>${e(p)}</p>`).join('')}<a class="text-link" href="${cvURL(lang)}">${t.cv}${icon('arrow')}</a></div>
-    <aside class="about-approach" data-reveal><span class="small-label">${t.about.profileRole}</span><h3>${t.about.cardTitle}</h3><p>${t.about.cardText}</p><ul>${t.about.cardDetails.map(s => `<li>${e(s)}</li>`).join('')}</ul></aside>
+    <aside class="about-approach" data-reveal><span class="small-label">${t.about.profileRole}</span><h3>${t.about.cardTitle}</h3><p>${t.about.cardText}</p><div class="approach-details">${t.about.cardDetails.map((s, i) => `<details${i === 0 ? ' open' : ''}><summary><span class="approach-number" aria-hidden="true">0${i+1}</span>${e(s)}<span class="disclosure-plus" aria-hidden="true">+</span></summary><p>${e(i === 0 ? `${t.process.steps[0].text} ${t.process.steps[1].text}` : t.process.steps[i+1].text)}</p></details>`).join('')}</div></aside>
     <dl class="profile-facts" data-reveal>${t.about.facts.map(f => `<div><dt>${e(f.value)}</dt><dd>${e(f.label)}</dd></div>`).join('')}</dl>
   </section>`;
 }
@@ -117,7 +116,7 @@ function projectSection(lang, t) {
 }
 
 function processSection(t) {
-  return `<section class="process-section" id="proceso" aria-labelledby="process-title"><div class="wrap"><div class="process-heading" data-reveal><p class="eyebrow">${t.process.label}</p><h2 id="process-title">${t.process.title}</h2></div><ol class="process-steps">${t.process.steps.map((step, i) => `<li data-reveal><span class="process-number">0${i + 1}</span><h3>${step.title}</h3><p>${step.text}</p></li>`).join('')}</ol></div></section>`;
+  return `<section class="process-section" id="proceso" aria-labelledby="process-title"><div class="wrap"><div class="process-heading" data-reveal><p class="eyebrow">${t.process.label}</p><h2 id="process-title">${t.process.title}</h2></div><ol class="process-steps">${t.process.steps.map((step, i) => `<li data-reveal><details open><summary><span class="process-number">0${i + 1}<span class="disclosure-plus" aria-hidden="true">+</span></span><h3>${step.title}</h3></summary><p>${step.text}</p></details></li>`).join('')}</ol></div></section>`;
 }
 
 function noteCards(lang, t, items = notes) {

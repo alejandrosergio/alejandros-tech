@@ -22,6 +22,7 @@ async function initPortrait() {
   function schedule(){if(!raf&&mayRender())raf=requestAnimationFrame(frame);}
   function reset(){cancelAnimationFrame(raf);raf=0;x=y=targetX=targetY=0;render();}
   function sync(){
+    hero.dataset.sceneMotion=quiet()||paused||!visible||document.hidden||excluded()?'static':'active';
     if(!view)return;
     canvas.hidden=excluded()||lost;controls.hidden=excluded()||lost;control.hidden=!fine.matches;control.disabled=quiet();
     if(excluded()||lost){for(const name of ['tabindex','role','aria-label','aria-describedby'])stage.removeAttribute(name);}else{stage.setAttribute('role','img');stage.setAttribute('aria-label',stage.dataset.label);stage.tabIndex=quiet()||paused?-1:0;if(quiet()||paused)stage.removeAttribute('aria-describedby');else stage.setAttribute('aria-describedby','bust-help');}

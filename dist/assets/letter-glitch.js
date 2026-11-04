@@ -24,7 +24,7 @@
     [17,17,17,17,17,17,14], [17,17,17,17,17,10,4], [17,17,17,21,21,21,10], [17,17,10,4,10,17,17],
     [17,17,10,4,4,4,4], [31,1,2,4,8,16,31]
   ];
-  let cells = [], step = 21, timer = 0, resizeTimer = 0, visible = true, paused = false, dirty = true, seed = 1349;
+  let cells = [], step = 21, glyphPixel = 1.5, glyphInk = 1.2, timer = 0, resizeTimer = 0, visible = true, paused = false, dirty = true, seed = 1349;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   const excluded = () => forced.matches || root.dataset.contrast === 'true';
   const quiet = () => reduced.matches || root.dataset.motion === 'true';
@@ -39,12 +39,13 @@
     context.clearRect(cell.x, cell.y, step, step);
     if (!cell.shown) return;
     context.fillStyle = palette[cell.color]; context.globalAlpha = cell.alpha;
-    const rows = glyphs[cell.glyph], left = Math.round(cell.x + (step - 7) / 2), top = Math.round(cell.y + (step - 10) / 2);
-    for (let y = 0; y < 7; y++) for (let x = 0; x < 5; x++) if (rows[y] & (1 << (4 - x))) context.fillRect(left + x * 1.25, top + y * 1.25, 1, 1);
+    const rows = glyphs[cell.glyph], left = Math.round(cell.x + (step - 5 * glyphPixel) / 2), top = Math.round(cell.y + (step - 7 * glyphPixel) / 2);
+    for (let y = 0; y < 7; y++) for (let x = 0; x < 5; x++) if (rows[y] & (1 << (4 - x))) context.fillRect(left + x * glyphPixel, top + y * glyphPixel, glyphInk, glyphInk);
     context.globalAlpha = 1;
   }
   function rebuild() {
     const box = layer.getBoundingClientRect(), width = Math.max(1, box.width), height = Math.max(1, box.height), compact = width < 700;
+    glyphPixel = compact ? 1.4 : 1.5; glyphInk = compact ? 1.1 : 1.2;
     const budget = compact ? 360000 : 720000, maxCells = compact ? 1400 : 3600;
     const ratio = Math.min(devicePixelRatio || 1, compact ? 1 : 1.25, Math.sqrt(budget / (width * height)));
     canvas.width = Math.max(1, Math.floor(width * ratio)); canvas.height = Math.max(1, Math.floor(height * ratio));
@@ -54,7 +55,7 @@
     const columns = Math.ceil(width / step), rows = Math.ceil(height / step), density = compact ? .48 : .68;
     seed = 1349; cells = [];
     for (let row = 0; row < rows; row++) for (let column = 0; column < columns; column++) {
-      const color = random(), cell = { x: column * step, y: row * step, shown: random() < density, glyph: Math.floor(random() * glyphs.length), color: color < .55 ? 0 : 1 + Math.floor((color - .55) / .15), alpha: .16 + random() * .18 };
+      const color = random(), cell = { x: column * step, y: row * step, shown: random() < density, glyph: Math.floor(random() * glyphs.length), color: color < .55 ? 0 : 1 + Math.floor((color - .55) / .15), alpha: .23 + random() * .19 };
       cells.push(cell); drawCell(cell);
     }
     layer.dataset.cells = String(cells.length); layer.dataset.enhanced = 'true'; canvas.hidden = false; dirty = false;

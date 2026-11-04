@@ -17,7 +17,7 @@ The visual system uses charcoal, warm off-white, restrained coral and regular se
 
 Light/dark themes, keyboard controls, motion preferences and narrow screens are supported. The main content, routes and contacts work without JavaScript. The skill explorer has static HTML; the bust has a local image fallback. A visitor panel offers five accent tones, text size, card corners, contrast, line spacing, link underlines and reduced motion. New visitors start with dark/coral/6 px corners; existing saved choices are honored.
 
-An A+ guide follows the eight homepage sections with contextual suggestions; a scroll-to-top control accompanies navigation. The guide can be hidden and the system cursor restored. Optional settings are saved only with consent. No analytics, external fonts or account system is used.
+An Navigation guide follows the eight homepage sections with contextual suggestions; a scroll-to-top control accompanies navigation. The guide can be hidden and the system cursor restored. Optional settings are saved only with consent. No analytics, external fonts or account system is used.
 
 The bilingual contact form uses the owner’s verified Formspree form to forward enquiries to the public Outlook address. It includes native constraints, accessible field errors, consent, a honeypot, pending/error states and a direct email alternative. Formspree also validates all five fields before sending. The public endpoint is an address for submissions, not an API credential. An accepted HTTP request alone does not prove inbox delivery. See [contact and privacy](docs/CONTACT.md).
 

@@ -10,7 +10,7 @@ Una fotografía frontal no confirma la forma completa del cráneo, los perfiles,
 
 - Autoría: `src/model/stylized-bust.mjs`, esculpido procedural determinista propio, sin mallas de terceros ni modelos aprendidos.
 - Salida generada: `dist/assets/sergio-stylized-bust.glb`, servida como `/assets/sergio-stylized-bust.glb`.
-- Revisión documentada: 1.771.700 bytes, 51.300 vértices y 87.924 triángulos.
+- Revisión documentada: 1.724.728 bytes, 49.902 vértices y 85.664 triángulos.
 - Volumen de cabeza, cuello y torso con camisa, cabello rizado, barba y manos abiertas. Sin cadenas, gafas ni otros accesorios.
 - Articulación rígida por nodos: cuerpo, cabeza con pivote en el cuello y ojos izquierdo/derecho independientes. No se afirma un rig facial completo de expresiones.
 - El GLB incorpora geometría y materiales base. La apariencia proyectada del sitio usa el recurso separado descrito a continuación.
@@ -36,3 +36,7 @@ La edición anterior utilizaba `sergio-portrait-cutout.webp` y dos capas fotogr�
 ## Prompt completo de la herramienta integrada
 
 Use case: identity-preserve / 3D material appearance. Asset type: canonical front appearance map for an existing real volumetric 3D bust, not a website mockup. Image 1 is the EDIT TARGET: an existing front-rendered sculpted model, square framing and pose. Image 2 is the IDENTITY reference of the owner, Sergio: preserve his actual facial proportions, curly hairstyle, eyebrows, beard, nose, eyes and natural neutral expression. Image 3 is LIGHTING/MOOD reference only: dark cinematic, near-black sculptural figure with subtle grazing highlights. Do NOT use that man’s identity, accessories, lettering, or clothes. Refine image 1 into a very high quality realistic sculptural 3D character with Sergio’s recognizable likeness from image 2. He wears a fitted, natural black button-up shirt with subtle fabric folds. Both forearms are loosely raised, palms partly open like image 1. No watch, chain, glasses, earrings, tattoos or other accessories. Remove the toy/mannequin appearance: natural anatomy and eyes, refined curly hair strands, realistic beard, continuous natural neck. Material is monochrome dark graphite with soft skin/fabric detail, black shadows and restrained grey highlights, professional cinematic rendering. CRITICAL: keep the image-1 canvas exactly square, subject scale, position, framing, silhouette, facial landmark positions, shoulder width, limb positions, hands and finger endpoints as close to image 1 as possible because this will be projected back onto that exact 3D surface. Keep head/hair top at y~6%, eye line at y~20%, chin at y~36%, torso bottom y~93%, left and right hands near x~18%/82%, y~55%. Identity fidelity to image 2 matters. Preserve true alpha transparency around the entire figure. No background, no floor, no cast shadow, no text or graphic elements. One frontal bust only.
+
+## Revisión del acabado
+
+Se unificó la calibración de apariencia entre cabeza y cuello para evitar que la barba se proyectara sobre el cuello. La máscara frontal conserva mejor la textura en párpados y laterales. El cuello es algo más ancho y corto y las orejas no duplican el lóbulo. Cabello, camisa y manos tienen reflejos más mates; las manos usan un material de grafito separado y no llevan líneas geométricas añadidas sobre las palmas. La malla y la articulación siguen siendo tridimensionales.

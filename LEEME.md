@@ -17,7 +17,7 @@ El sistema visual usa carbón, blanco cálido, coral discreto y títulos serif r
 
 Se mantienen temas claro y oscuro, controles por teclado, preferencias de movimiento y adaptación a pantallas estrechas. El contenido principal, las rutas y los contactos funcionan sin JavaScript. El explorador conserva HTML estático y el busto una imagen local de respaldo. El panel ofrece cinco tonos, tamaño de texto, redondeado, contraste, interlineado, subrayado y movimiento reducido. La primera visita parte de oscuro/coral/6 px y se respetan elecciones guardadas.
 
-Una guía A+ sigue las ocho secciones del inicio con sugerencias contextuales; un botón de subida acompaña la navegación. La guía se puede ocultar y el cursor del sistema se puede restaurar. Solo se guardan ajustes opcionales con consentimiento. No se usan rastreadores, fuentes externas ni cuentas.
+Una guía de navegación sigue las ocho secciones del inicio con sugerencias contextuales; un botón de subida acompaña la navegación. La guía se puede ocultar y el cursor del sistema se puede restaurar. Solo se guardan ajustes opcionales con consentimiento. No se usan rastreadores, fuentes externas ni cuentas.
 
 El formulario bilingüe utiliza el formulario verificado de Formspree del titular para enviar consultas al Outlook público. Incluye restricciones nativas, errores accesibles, consentimiento, protección honeypot, estados de envío/error y correo directo alternativo. Formspree valida también los cinco campos antes de enviar. El endpoint público es una dirección para recibir consultas, no una credencial de API. Una petición aceptada por sí sola no demuestra recepción en la bandeja. Ver [contacto y privacidad](docs/CONTACT.md).
 

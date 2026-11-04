@@ -5,12 +5,15 @@
   const fine = matchMedia('(hover: hover) and (pointer: fine)');
   const quiet = () => reduced.matches || root.dataset.motion === 'true';
   const up = document.querySelector('[data-scroll-top]');
+  const header = document.querySelector('.site-header'), home = document.querySelector('[data-portrait-hero]');
+  const sceneNav = document.querySelector('.hero-section-dots');
+  const sceneLinks = sceneNav ? [...sceneNav.querySelectorAll('[data-scene-section]')] : [];
   const guide = document.querySelector('[data-journey-guide]');
   const entries = guide ? JSON.parse(guide.dataset.entries) : [];
   const sections = entries.map(entry => document.getElementById(entry.id));
   const panel = guide?.querySelector('[data-guide-panel]'), toggle = guide?.querySelector('[data-guide-toggle]');
   const wide = matchMedia('(min-width: 900px)');
-  let open = false, userToggled = false, current = -1, lastY = window.scrollY, tick = 0;
+  let open = false, userToggled = false, current = -1, tick = 0;
   const setOpen = value => { open = value; if (panel) { panel.hidden = !value; toggle.setAttribute('aria-expanded', String(value)); } };
   if (guide) {
     setOpen(open);
@@ -39,18 +42,23 @@
     tick = 0;
     const y = window.scrollY, available = Math.max(1, root.scrollHeight - innerHeight), progress = Math.max(0, Math.min(1, y / available));
     const typing = document.activeElement?.closest('form');
+    if (header && home) header.classList.toggle('is-past-home', home.getBoundingClientRect().bottom <= header.getBoundingClientRect().bottom);
     if (up) up.hidden = Boolean(typing) || y < Math.max(450, innerHeight * .7);
     if (guide) {
       const banner = document.querySelector('[data-cookie-banner]');
       if (typing && open) setOpen(false);
       const hidden = root.dataset.guideHidden === 'true' || (banner && !banner.hidden) || Boolean(typing) || y < 220;
       guide.hidden = hidden;
-      guide.style.setProperty('--journey-progress', String(progress));
-      guide.dataset.direction = y < lastY ? 'up' : 'down';
       let index = 0;
       const marker = Math.min(220, innerHeight * .3);
       sections.forEach((section, i) => { if (section && section.getBoundingClientRect().top <= marker) index = i; });
-      if (progress > .995) index = entries.length - 1;
+      if (progress >= 1) index = entries.length - 1;
+      const start = (sections[index]?.getBoundingClientRect().top ?? 0) + y + (index === 0 ? marker : 0);
+      const end = sections[index + 1] ? sections[index + 1].getBoundingClientRect().top + y : Math.max(start + 1, available + marker);
+      const fraction = Math.max(0, Math.min(1, (y + marker - start) / Math.max(1, end - start)));
+      const sectionProgress = progress >= 1 ? 1 : (index + fraction) / Math.max(1, entries.length);
+      guide.style.setProperty('--journey-progress', String(sectionProgress));
+      sceneNav?.style.setProperty('--section-progress', String(sectionProgress));
       if (index !== current) {
         current = index; const entry = entries[index];
         guide.querySelector('[data-guide-location]').textContent = entry.title;
@@ -59,11 +67,11 @@
         const action = guide.querySelector('[data-guide-action]'); action.href = entry.href; action.firstChild.textContent = entry.action;
         guide.querySelector('[data-guide-previous]').disabled = index === 0;
         guide.querySelector('[data-guide-next]').disabled = index === entries.length - 1;
+        sceneLinks.forEach(link => { if (link.dataset.sceneSection === entry.id) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); });
         sections.forEach((section, i) => section?.classList.toggle('is-current-section', index === i));
       }
-      guide.querySelector('[data-guide-percent]').textContent = `${Math.round(progress * 100)}%`;
+      guide.querySelector('[data-guide-percent]').textContent = `${Math.round(sectionProgress * 100)}%`;
     }
-    lastY = y;
   }
   const schedule = () => { if (!tick) tick = requestAnimationFrame(update); };
   window.addEventListener('scroll', schedule, { passive: true }); window.addEventListener('resize', schedule);
@@ -72,17 +80,77 @@
   if (guide) new MutationObserver(schedule).observe(document.querySelector('[data-cookie-banner]'), { attributes: true, attributeFilter: ['hidden'] });
   update();
 
-  // The precise dot follows input directly; its orbit eases and stops at rest.
+  // Short, explicit hints stay anchored to the control rather than covering the
+  // content around the pointer. Keyboard focus keeps the same descriptions.
+  const tooltip = document.querySelector('[data-interaction-tooltip]');
+  if (tooltip) {
+    let target = null, timer = 0, keyboard = false, pointX = 0, pointY = 0;
+    const hideTip = () => {
+      clearTimeout(timer); timer = 0; tooltip.hidden = true;
+      if (target) {
+        const ids = (target.getAttribute('aria-describedby') || '').split(/\s+/).filter(id => id && id !== tooltip.id);
+        if (ids.length) target.setAttribute('aria-describedby', ids.join(' ')); else target.removeAttribute('aria-describedby');
+      }
+      target = null;
+    };
+    const showTip = () => {
+      timer = 0;
+      if (!target?.isConnected || document.hidden || root.dataset.loading === 'true' || document.querySelector('dialog[open]')) { hideTip(); return; }
+      const text = (target.dataset.tooltip || target.getAttribute('aria-label') || '').trim().slice(0, 140);
+      const rect = target.getBoundingClientRect();
+      if (!text || !rect.width || !rect.height || rect.bottom <= 0 || rect.top >= innerHeight) { hideTip(); return; }
+      tooltip.textContent = text; tooltip.style.visibility = 'hidden'; tooltip.hidden = false;
+      const size = tooltip.getBoundingClientRect(), gap = 10;
+      const above = rect.top >= size.height + gap + 8;
+      tooltip.style.left = `${Math.max(8, Math.min(innerWidth - size.width - 8, rect.left + (rect.width - size.width) / 2))}px`;
+      tooltip.style.top = `${Math.max(8, Math.min(innerHeight - size.height - 8, above ? rect.top - size.height - gap : rect.bottom + gap))}px`;
+      tooltip.style.visibility = '';
+      const ids = new Set((target.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean));
+      ids.add(tooltip.id); target.setAttribute('aria-describedby', [...ids].join(' '));
+    };
+    const queueTip = (element, fromKeyboard = false, event = {}) => {
+      hideTip();
+      if (!element || element.matches(':disabled') || element.closest('dialog,input,textarea,select,[contenteditable="true"]')) return;
+      target = element; keyboard = fromKeyboard; pointX = event.clientX || 0; pointY = event.clientY || 0;
+      timer = setTimeout(showTip, 400);
+    };
+    document.addEventListener('pointerover', event => {
+      if (event.pointerType !== 'mouse' || !fine.matches) { hideTip(); return; }
+      const element = event.target.closest('[data-tooltip]');
+      if (element !== target) queueTip(element, false, event);
+    });
+    document.addEventListener('pointerout', event => { if (target && !target.contains(event.relatedTarget)) hideTip(); });
+    document.addEventListener('pointermove', event => {
+      if (!target || keyboard || event.pointerType !== 'mouse') return;
+      if (Math.abs(event.clientX - pointX) + Math.abs(event.clientY - pointY) > 5) queueTip(target, false, event);
+    }, { passive: true });
+    document.addEventListener('focusin', event => {
+      const element = event.target.closest('[data-tooltip]');
+      if (element && element.matches(':focus-visible')) queueTip(element, true);
+    });
+    document.addEventListener('focusout', hideTip);
+    document.addEventListener('pointerdown', hideTip); document.addEventListener('click', hideTip);
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') hideTip(); });
+    document.addEventListener('visibilitychange', hideTip); document.addEventListener('alejandro:preferences', hideTip);
+    window.addEventListener('scroll', hideTip, { passive: true }); window.addEventListener('resize', hideTip); window.addEventListener('blur', hideTip);
+    fine.addEventListener('change', hideTip); forced.addEventListener('change', hideTip);
+  }
+
+  // A precise point and a segmented reticle ease toward input, morph on hover,
+  // and stop requesting frames at rest. No directional arrow is drawn.
   const dot = document.querySelector('[data-cursor-dot]'), orbit = document.querySelector('[data-cursor-orbit]');
   if (!dot || !orbit) return;
   let x = 0, y = 0, ox = 0, oy = 0, cursorFrame = 0, active = false;
   const allowed = () => fine.matches && !quiet() && !forced.matches && root.dataset.cursor !== 'true';
-  const hide = () => { active = false; delete root.dataset.cursorActive; dot.hidden = orbit.hidden = true; cancelAnimationFrame(cursorFrame); cursorFrame = 0; };
+  const hide = () => { active = false; delete root.dataset.cursorActive; dot.hidden = orbit.hidden = true; orbit.dataset.pressed = 'false'; cancelAnimationFrame(cursorFrame); cursorFrame = 0; };
   const frame = () => {
     cursorFrame = 0; if (!active || document.hidden || !allowed()) { hide(); return; }
     ox += (x - ox) * .24; oy += (y - oy) * .24;
     orbit.style.transform = `translate3d(${ox}px,${oy}px,0)`;
-    if (Math.abs(x - ox) + Math.abs(y - oy) > .2) cursorFrame = requestAnimationFrame(frame);
+    const distance = Math.abs(x - ox) + Math.abs(y - oy), settled = distance <= .2;
+    orbit.style.setProperty('--cursor-tilt', `${settled ? 0 : Math.max(-18, Math.min(18, (x - ox) * .65))}deg`);
+    orbit.style.setProperty('--cursor-stretch', String(settled ? 1 : 1 + Math.min(distance / 160, .12)));
+    if (!settled) cursorFrame = requestAnimationFrame(frame);
   };
   document.addEventListener('pointermove', event => {
     if (event.pointerType !== 'mouse' || !allowed() || event.target.closest('dialog,input,textarea,select,[contenteditable="true"]')) { hide(); return; }
@@ -93,8 +161,13 @@
     if (!cursorFrame) cursorFrame = requestAnimationFrame(frame);
   }, { passive: true });
   document.addEventListener('pointerout', event => { if (!event.relatedTarget) hide(); });
+  document.addEventListener('pointerdown', () => { if (active) orbit.dataset.pressed = 'true'; });
+  document.addEventListener('pointerup', () => { orbit.dataset.pressed = 'false'; });
+  document.addEventListener('pointercancel', hide); window.addEventListener('blur', hide);
   document.addEventListener('keydown', hide); document.addEventListener('visibilitychange', hide);
   document.addEventListener('alejandro:preferences', () => { if (!allowed()) hide(); });
-  new MutationObserver(() => { if (document.querySelector('dialog[open]')) hide(); }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] });
+  const syncDialog = () => { const opened = Boolean(document.querySelector('dialog[open]')); root.dataset.dialogOpen = String(opened); if (opened) hide(); };
+  new MutationObserver(syncDialog).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] });
+  syncDialog();
   reduced.addEventListener('change', hide); fine.addEventListener('change', hide); forced.addEventListener('change', hide);
 })();
