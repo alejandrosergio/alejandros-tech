@@ -9,6 +9,8 @@
   const resetButton = art.querySelector('[data-art-reset]');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const forced = matchMedia('(forced-colors: active)');
+  const customReduced = () => document.documentElement?.dataset.motion === 'true';
+  const reduceMotion = () => reduced.matches || customReduced();
   let gl;
   try { gl = canvas.getContext('webgl', { alpha: true, antialias: true, powerPreference: 'low-power' }); } catch { return; }
   if (!gl) return; // The original SVG and all page content remain available.
@@ -159,10 +161,11 @@
     gl.drawArrays(gl.TRIANGLES, 0, entry.count);
   }
 
-  let paused = reduced.matches, visible = true, lost = false, raf = 0, last = 0, elapsed = 0;
+  let paused = reduceMotion(), visible = true, lost = false, raf = 0, last = 0, elapsed = 0;
   let yaw = .32, pitch = -.12, targetYaw = .32, targetPitch = -.12, hoverX = 0, hoverY = 0, drag = null;
   function updateControl() {
     motion.dataset.paused = String(paused);
+    motion.disabled = reduceMotion();
     art.dataset.paused = String(paused);
     motion.querySelector('[data-motion-text]').textContent = paused ? motion.dataset.play : motion.dataset.pause;
   }
@@ -185,7 +188,7 @@
     if (lost || !visible || document.hidden || forced.matches) { last = 0; return; }
     const dt = last ? Math.min((now - last) / 1000, .05) : 1 / 60; last = now;
     if (!paused && !drag) elapsed += dt;
-    const blend = reduced.matches ? 1 : 1 - Math.exp(-dt * 10);
+    const blend = reduceMotion() ? 1 : 1 - Math.exp(-dt * 10);
     yaw += (targetYaw - yaw) * blend; pitch += (targetPitch - pitch) * blend;
     const width = stage.clientWidth, height = stage.clientHeight;
     if (!width || !height) return;
@@ -209,7 +212,7 @@
   }
   try { createRenderer(); enhance(); schedule(); } catch { fallback(); return; }
 
-  motion.addEventListener('click', () => { paused = !paused; hoverX = hoverY = 0; last = 0; updateControl(); schedule(); });
+  motion.addEventListener('click', () => { paused = reduceMotion() ? true : !paused; hoverX = hoverY = 0; last = 0; updateControl(); schedule(); });
   const reset = () => { targetYaw = .32; targetPitch = -.12; hoverX = hoverY = 0; elapsed = 0; last = 0; schedule(); };
   resetButton?.addEventListener('click', reset);
   stage.addEventListener('pointerdown', event => {
@@ -223,7 +226,7 @@
       targetYaw = drag.yaw + (event.clientX - drag.x) / stage.clientWidth * 4;
       if (event.pointerType !== 'touch') targetPitch = clamp(drag.pitch + (event.clientY - drag.y) / stage.clientHeight * 2, -.65, .65);
       schedule();
-    } else if (event.pointerType === 'mouse' && !paused && !reduced.matches) {
+    } else if (event.pointerType === 'mouse' && !paused && !reduceMotion()) {
       const rect = stage.getBoundingClientRect();
       hoverX = ((event.clientX - rect.left) / rect.width - .5) * .24;
       hoverY = ((event.clientY - rect.top) / rect.height - .5) * .12;
@@ -243,7 +246,10 @@
     if (event.key === 'ArrowDown') targetPitch = clamp(targetPitch + .15, -.65, .65);
     schedule();
   });
-  reduced.addEventListener('change', () => { paused = reduced.matches; hoverX = hoverY = 0; updateControl(); schedule(); });
+  let previousReduced = reduceMotion();
+  const motionChanged = () => { const next = reduceMotion(); if (next === previousReduced) return; previousReduced = next; paused = next; hoverX = hoverY = 0; updateControl(); schedule(); };
+  reduced.addEventListener('change', motionChanged);
+  document.addEventListener('alejandro:preferences', motionChanged);
   forced.addEventListener('change', () => { last = 0; schedule(); });
   document.addEventListener('visibilitychange', () => { last = 0; schedule(); });
   new ResizeObserver(schedule).observe(stage);

@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const source = await readFile(new URL('../src/client/brand-3d.js', import.meta.url), 'utf8');
-function boot({ reduced = false, supported = true } = {}) {
+function boot({ reduced = false, customReduced = false, supported = true } = {}) {
   const element = () => ({
     dataset: {}, hidden: true, events: {}, attributes: {}, clientWidth: 280, clientHeight: 280,
     classList: { values: new Set(), add(v) { this.values.add(v); }, remove(v) { this.values.delete(v); } },
@@ -18,6 +18,7 @@ function boot({ reduced = false, supported = true } = {}) {
   const elements = { '[data-brand-stage]': stage, '[data-brand-canvas]': canvas, '[data-art-controls]': controls, '[data-art-motion]': motion, '[data-art-reset]': reset };
   art.querySelector = key => elements[key];
   const doc = element(); doc.hidden = false; doc.querySelector = () => art;
+  doc.documentElement = { dataset: { motion: String(customReduced) } };
   const media = { '(prefers-reduced-motion: reduce)': element(), '(forced-colors: active)': element() };
   media['(prefers-reduced-motion: reduce)'].matches = reduced;
   media['(forced-colors: active)'].matches = false;
@@ -45,6 +46,15 @@ assert.equal(fallback.art.dataset.enhanced, undefined);
 assert.equal(fallback.canvas.hidden, true);
 assert.equal(fallback.controls.hidden, true);
 assert.equal(fallback.queue.size, 0);
+
+const custom = boot({ customReduced: true }); custom.flush();
+assert.equal(custom.motion.disabled, true);
+assert.equal(custom.queue.size, 0, 'Visitor motion preference stops the WebGL loop');
+custom.motion.fire('click'); custom.flush();
+assert.equal(custom.queue.size, 0, 'A play click cannot override the visitor motion preference');
+custom.doc.documentElement.dataset.motion = 'false'; custom.doc.fire('alejandro:preferences'); custom.flush(2);
+assert.equal(custom.motion.disabled, false);
+assert.equal(custom.queue.size, 1, 'Motion resumes when the visitor switches it back on');
 
 const still = boot({ reduced: true }); still.flush();
 assert.equal(still.motion.dataset.paused, 'true');

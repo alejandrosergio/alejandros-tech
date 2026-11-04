@@ -26,7 +26,7 @@ export async function build() {
   await mkdir(path.join(dist, 'en'), { recursive: true });
   await copyDirectory(path.join(root, 'public'), dist);
   await copyFile(path.join(root, 'src/styles/styles.css'), path.join(dist, 'assets/styles.css'));
-  for (const file of ['theme-init.js', 'site.js', 'brand-3d.js']) {
+  for (const file of ['theme-init.js', 'preferences.js', 'site.js', 'brand-3d.js', 'contact.js', 'form-rules.js']) {
     await copyFile(path.join(root, 'src/client', file), path.join(dist, 'assets', file));
   }
   for (const route of routeGroups) for (const lang of ['es', 'en']) {

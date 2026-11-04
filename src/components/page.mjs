@@ -5,6 +5,8 @@ import { projects, projectPath } from '../content/projects.mjs';
 import { notes, notePath } from '../content/notes.mjs';
 import { icon } from './icons.mjs';
 import { artwork } from './artwork.mjs';
+import { preferences, loader, contactForm } from './preferences.mjs';
+import { interfaceCopy } from '../content/interface.mjs';
 
 export const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const e = escapeHTML;
@@ -35,7 +37,8 @@ function head(lang, { title, description, paths, notFound = false, home = false 
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/theme-init.js"></script>
-  <script src="/assets/site.js" defer></script>${home ? '\n  <script src="/assets/brand-3d.js" defer></script>' : ''}
+  <script src="/assets/preferences.js" defer></script>
+  <script src="/assets/site.js" defer></script>${home ? '\n  <script src="/assets/brand-3d.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
 </head>`;
 }
 
@@ -51,8 +54,8 @@ function header(lang, t, paths) {
   </header>`;
 }
 
-function footer(t) {
-  return `<footer class="site-footer wrap"><div><a class="footer-brand" href="${t.path}">${site.name}</a><p>${t.contact.footer}</p></div><small>© ${site.copyrightYear} ${site.name}<br>${t.rights}</small><a class="back-top" href="#top">${t.top}${icon('arrow')}</a></footer>`;
+function footer(t, lang) {
+  return `<footer class="site-footer wrap"><div><a class="footer-brand" href="${t.path}">${site.name}</a><p>${t.contact.footer}</p><button class="footer-privacy" type="button" data-open-privacy hidden>${interfaceCopy[lang].cookies}</button></div><small>© ${site.copyrightYear} ${site.name}<br>${t.rights}</small><a class="back-top" href="#top">${t.top}${icon('arrow')}</a></footer>`;
 }
 
 function document(lang, content, options) {
@@ -61,10 +64,12 @@ function document(lang, content, options) {
 <html lang="${lang}">
 ${head(lang, options)}
 <body${options.home ? ' class="home-page"' : ' class="detail-page"'}>
+${options.home ? `  ${loader(lang)}` : ''}
   <a class="skip-link" href="#main">${t.skip}</a>
   ${header(lang, t, options.paths)}
   ${content}
-  ${footer(t)}
+  ${footer(t, lang)}
+  ${preferences(lang)}
 </body>
 </html>
 `;
@@ -132,8 +137,8 @@ function noteSection(lang, t) {
   return `<section class="section notes-section wrap" id="conocimiento" aria-labelledby="notes-title"><div class="section-heading" data-reveal><div>${sectionLabel('05', t.notes.label)}<h2 id="notes-title">${splitTitle(t.notes.title)}</h2></div><p>${t.notes.intro}</p></div><div class="notes-grid">${noteCards(lang, t)}</div></section>`;
 }
 
-function contact(t) {
-  return `<section class="contact-section" id="contacto" aria-labelledby="contact-title"><div class="wrap"><div class="contact-heading" data-reveal>${sectionLabel('06', t.contact.label)}<h2 id="contact-title">${splitTitle(t.contact.title)}</h2><p>${t.contact.intro}</p></div><div class="contact-bottom"><div class="contact-email"><a href="${e(mailURL(t))}" class="contact-address">${site.email}${icon('arrow')}</a><button class="copy-email" type="button" data-copy-email="${site.email}" data-success="${t.contact.copied}" data-failure="${t.contact.copyFail}" hidden>${icon('copy')}<span>${t.contact.copy}</span></button><span class="sr-only" role="status" data-copy-status></span></div><div class="contact-links"><a href="${site.linkedin}" rel="me">LinkedIn${icon('arrow')}</a><a href="${site.github}" rel="me">GitHub${icon('arrow')}</a><a href="${site.cv}${t.path === '/en/' ? 'en/' : ''}">${t.cv}${icon('arrow')}</a></div></div></div></section>`;
+function contact(t, lang) {
+  return `<section class="contact-section" id="contacto" aria-labelledby="contact-title"><div class="wrap"><div class="contact-heading" data-reveal>${sectionLabel('06', t.contact.label)}<h2 id="contact-title">${splitTitle(t.contact.title)}</h2><p>${t.contact.intro}</p></div>${contactForm(lang, site.email)}<div class="contact-bottom"><div class="contact-email"><a href="${e(mailURL(t))}" class="contact-address">${site.email}${icon('arrow')}</a><button class="copy-email" type="button" data-copy-email="${site.email}" data-success="${t.contact.copied}" data-failure="${t.contact.copyFail}" hidden>${icon('copy')}<span>${t.contact.copy}</span></button><span class="sr-only" role="status" data-copy-status></span></div><div class="contact-links"><a href="${site.linkedin}" rel="me">LinkedIn${icon('arrow')}</a><a href="${site.github}" rel="me">GitHub${icon('arrow')}</a><a href="${site.cv}${t.path === '/en/' ? 'en/' : ''}">${t.cv}${icon('arrow')}</a></div></div></div></section>`;
 }
 
 export function renderPage(lang, { notFound = false } = {}) {
@@ -141,7 +146,7 @@ export function renderPage(lang, { notFound = false } = {}) {
   if (!t) throw new Error(`Unsupported language: ${lang}`);
   const paths = { es: '/', en: '/en/' };
   if (notFound) return document(lang, `<main class="not-found wrap" id="main" tabindex="-1"><p class="eyebrow">404</p><h1>${t.notFoundHeading}</h1><p>${t.notFoundText}</p><a class="button button-primary" href="${t.path}">${t.backHome}${icon('arrowRight')}</a></main>`, { title: `${t.notFoundHeading} | ${site.name}`, description: t.description, paths: { ...paths, [lang]: '/404.html' }, notFound: true });
-  return document(lang, `<main id="main" tabindex="-1">${hero(t)}${about(lang, t)}${skillExplorer(lang, t)}${career(lang, t)}${projectSection(lang, t)}${processSection(t)}${noteSection(lang, t)}${contact(t)}</main>`, { title: t.title, description: t.description, paths, home: true });
+  return document(lang, `<main id="main" tabindex="-1">${hero(t)}${about(lang, t)}${skillExplorer(lang, t)}${career(lang, t)}${projectSection(lang, t)}${processSection(t)}${noteSection(lang, t)}${contact(t, lang)}</main>`, { title: t.title, description: t.description, paths, home: true });
 }
 
 export function renderProject(lang, project) {

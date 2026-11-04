@@ -13,7 +13,9 @@ Sergio Hernández’s professional website: .NET and React development, Power Pl
 
 The home includes the interactive WebGL A+ identity, a professional profile card, an explorer of 18 confirmed technologies, expandable experience entries, two real public project case studies and three original technical notes. Project and note detail pages have equivalent Spanish and English routes.
 
-Light/dark themes, keyboard controls, motion preferences and narrow screens are supported. The main content, routes and contacts work without JavaScript. The skill explorer has a static HTML alternative; the 3D identity has a local SVG fallback. No analytics, external fonts, form backend or account system is used.
+Light/dark themes, keyboard controls, motion preferences and narrow screens are supported. The main content, routes and contacts work without JavaScript. The skill explorer has a static HTML alternative; the 3D identity has a local SVG fallback. A visitor panel offers five accent tones, text size, card corners, contrast, line spacing, link underlines and reduced motion. Optional settings are saved only with consent. No analytics, external fonts or account system is used.
+
+The bilingual contact form uses FormSubmit to forward enquiries to the public Outlook address. It includes native constraints, accessible field errors, consent, a honeypot, pending/error states and a direct email alternative. FormSubmit requires the owner to activate the form by email. An accepted HTTP request does not prove inbox delivery. See [contact and privacy](docs/CONTACT.md).
 
 ## Run locally
 

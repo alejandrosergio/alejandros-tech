@@ -5,8 +5,7 @@
     theme.hidden = false;
     theme.addEventListener('click', () => {
       const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-      root.dataset.theme = next;
-      try { localStorage.setItem('alejandros-tech-theme', next); } catch { /* Preference storage is optional. */ }
+      window.AlejandroPreferences?.set({ theme: next });
     });
   }
 
@@ -39,14 +38,20 @@
     const button = profile.querySelector('[data-profile-flip]');
     const front = profile.querySelector('[data-profile-front]');
     const back = profile.querySelector('[data-profile-back]');
-    button.addEventListener('click', () => {
-      const showBack = button.getAttribute('aria-expanded') !== 'true';
+    let hovering = false;
+    const flip = showBack => {
+      if ((button.getAttribute('aria-expanded') === 'true') === showBack) return;
       if (showBack) back.style.minHeight = `${front.offsetHeight}px`;
       front.hidden = showBack; back.hidden = !showBack;
       button.setAttribute('aria-expanded', String(showBack));
       button.querySelector('[data-flip-text]').textContent = showBack ? button.dataset.back : button.dataset.front;
       profile.classList.toggle('is-flipped', showBack);
-    });
+    };
+    profile.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovering = true; flip(true); } });
+    profile.addEventListener('pointerleave', event => { if (event.pointerType === 'mouse') { hovering = false; if (!profile.contains(document.activeElement)) flip(false); } });
+    profile.addEventListener('focusin', event => { if (event.target.matches(':focus-visible')) flip(true); });
+    profile.addEventListener('focusout', event => { if (!profile.contains(event.relatedTarget) && !hovering) flip(false); });
+    button.addEventListener('click', () => flip(button.getAttribute('aria-expanded') !== 'true'));
     button.hidden = false;
   }
 
@@ -105,7 +110,7 @@
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   if ('IntersectionObserver' in window) {
-    if (!reduced.matches) {
+    if (!reduced.matches && root.dataset.motion !== 'true') {
       const reveal = new IntersectionObserver(entries => entries.forEach(entry => {
         if (entry.isIntersecting) { entry.target.classList.add('is-visible'); reveal.unobserve(entry.target); }
       }), { threshold: .06, rootMargin: '0px 0px -20px 0px' });

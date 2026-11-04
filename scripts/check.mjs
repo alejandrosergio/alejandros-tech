@@ -8,6 +8,7 @@ import { routeGroups } from '../src/content/routes.mjs';
 import { skills, experience } from '../src/content/profile.mjs';
 import { projects } from '../src/content/projects.mjs';
 import { notes } from '../src/content/notes.mjs';
+import { interfaceCopy } from '../src/content/interface.mjs';
 
 const dist = path.join(root, 'dist');
 const manifest = JSON.parse(await readFile(path.join(root, '.openai/hosting.json'), 'utf8'));
@@ -22,6 +23,7 @@ function compareShape(es, en, key = 'locales') {
   for (const field of Object.keys(es)) compareShape(es[field], en[field], `${key}.${field}`);
 }
 compareShape(locales.es, locales.en);
+compareShape(interfaceCopy.es, interfaceCopy.en, 'interface');
 assert.equal(new Set(skills.map(s => s.id)).size, skills.length);
 for (const skill of skills) assert.ok(skill.es && skill.en && skill.context.es && skill.context.en);
 for (const record of experience) assert.ok(record.es.length && record.es.length === record.en.length);
@@ -44,6 +46,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   assert.ok(html.includes(`<link rel="canonical" href="${site.origin}${pathname}">`));
   for (const alternate of ['es', 'en']) assert.ok(html.includes(`<link rel="alternate" hreflang="${alternate}" href="${site.origin}${route.paths[alternate]}">`));
   assert.equal(new Set(ids(html)).size, ids(html).length, `Unique IDs: ${pathname}`);
+  assert.ok(html.includes('data-settings') && html.includes('data-privacy') && html.includes('data-cookie-banner'), 'Visitor controls on every route');
   assert.ok(!/TODO|lorem ipsum|undefined|href=""|href="#"|codex-preview|@gmail\.com/.test(html), `Finished and private-contact-free content: ${pathname}`);
   for (const match of html.matchAll(/(?:href|src)="([^"\s]+)"/g)) {
     const target = new URL(match[1].replaceAll('&amp;', '&'), site.origin + pathname);
@@ -53,6 +56,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   }
   for (const match of html.matchAll(/(?:aria-controls|aria-describedby|aria-labelledby)="([^"]+)"/g)) for (const id of match[1].split(/\s+/)) assert.ok(ids(html).includes(id), `ARIA reference: ${pathname} → ${id}`);
   if (route.type === 'home') {
+    assert.ok(html.includes(`action="https://formsubmit.co/${site.email}" method="POST"`) && html.includes('name="consent"') && html.includes('data-intro-loader'));
     for (const id of ['sobre-mi', 'tecnologias', 'trayectoria', 'proyectos', 'conocimiento', 'contacto']) assert.ok(ids(html).includes(id));
     assert.ok(html.includes(`mailto:${site.email}`) && html.includes(site.linkedin) && html.includes(site.github));
     assert.ok(html.includes(`${site.cv}${lang === 'en' ? 'en/' : ''}`));
@@ -67,4 +71,5 @@ for (const feature of ['prefers-reduced-motion', 'forced-colors', ':focus-visibl
 assert.ok(!/overflow-x\s*:\s*hidden/.test(css), 'Fix overflow instead of hiding it');
 for (const entry of await readdir(root)) assert.ok(!/^\.env(?:\.|$)/.test(entry), 'Do not package credentials');
 await import('./check-3d.mjs');
+await import('./check-preferences.mjs');
 console.log(JSON.stringify({ checked: true, languages: ['es', 'en'], pages: routeGroups.length * 2, checks: ['Site identity', 'deep translation parity', 'content completeness', 'all local links and anchors', 'ARIA references', 'unique headings and IDs', 'canonical and alternate routes', 'CV language', 'static fallbacks', 'sitemap'] }));

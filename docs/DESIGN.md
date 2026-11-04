@@ -4,6 +4,8 @@
 
 Una web profesional editorial: titulares amplios, mucho espacio, acentos azules y composiciones distintas según el contenido. dataconale.com sirve como referencia del recorrido personal e interactividad; la identidad, los textos, los componentes y los recursos de Alejandro’sTech son propios.
 
+La siguiente edición toma poulo.site como referencia de interacciones y marcomadonnadesign.com como referencia de personalización por tonos. El panel propio se centra en apariencia y lectura: no replica contenido, proyectos, métricas o código de esas webs. Conserva el azul predeterminado y añade violeta, coral, océano y monocromo con variantes claras/oscuras. La tuerca queda visible en móvil con nombre accesible, sin tapar el formulario. El consentimiento de preferencias permite aceptar, elegir solo necesarias y cambiar de decisión desde el pie o el panel.
+
 La paleta conserva la relación con el CV: azul marino, acento azul y tipografía de sistema. El tema claro usa fondo `#f5f7fb`, tinta `#11253f` y acento `#1467e6`; el oscuro usa `#090f1b`, `#edf3ff` y `#83bbff`. Los títulos combinan la familia sans del sistema con un acento editorial en Georgia, sin descargar fuentes.
 
 ## Recorrido

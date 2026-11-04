@@ -13,7 +13,9 @@ Web profesional de Sergio Hernández: desarrollo con .NET y React, Power Platfor
 
 El inicio incorpora el A+ interactivo en WebGL, una tarjeta profesional, un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos de proyectos públicos reales y tres notas técnicas originales. Cada proyecto y nota tiene una página completa en español e inglés.
 
-Se mantienen temas claro y oscuro, controles por teclado, preferencias de movimiento y adaptación a pantallas estrechas. El contenido principal, las rutas y los contactos funcionan sin JavaScript. El explorador conserva una alternativa HTML y el 3D un SVG local. No se usan rastreadores, fuentes externas, cuentas ni backend de formularios.
+Se mantienen temas claro y oscuro, controles por teclado, preferencias de movimiento y adaptación a pantallas estrechas. El contenido principal, las rutas y los contactos funcionan sin JavaScript. El explorador conserva una alternativa HTML y el 3D un SVG local. El panel del visitante ofrece cinco tonos, tamaño de texto, redondeado, contraste, interlineado, subrayado y movimiento reducido. Solo guarda ajustes opcionales con consentimiento. No se usan rastreadores, fuentes externas ni cuentas.
+
+El formulario bilingüe utiliza FormSubmit para enviar consultas al Outlook público. Incluye restricciones nativas, errores accesibles, consentimiento, protección honeypot, estados de envío/error y correo directo alternativo. El titular debe activar el formulario mediante el correo de FormSubmit. Una petición aceptada no demuestra recepción en la bandeja. Ver [contacto y privacidad](docs/CONTACT.md).
 
 ## Trabajar en local
 
