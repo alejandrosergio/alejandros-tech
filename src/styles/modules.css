@@ -1,8 +1,18 @@
-/* Reading surfaces fade into the shared binary backdrop between sections. */
+/* The reading surface spans the viewport; the content keeps its own gutters. */
+.home-page { --content-gutter: 48px; --module-paper: var(--page); }
+:root[data-theme="dark"] .home-page { --module-paper: #080809; }
+.home-page main > section.wrap { width: 100%; margin-inline: 0; padding-inline: max(var(--content-gutter), calc((100% - 1280px) / 2)); }
 .home-page main > section:not(.portrait-hero) { --module-focus: 1; position: relative; isolation: isolate; background: transparent; }
-.home-page main > section:not(.portrait-hero)::before { content: ''; position: absolute; z-index: -1; pointer-events: none; inset: 0; background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--page) 96%, transparent) 16%, var(--page) 28%, var(--page) 74%, color-mix(in srgb, var(--page) 96%, transparent) 88%, transparent 100%); opacity: var(--module-focus); transition: opacity .55s ease; }
+.home-page main > section:not(.portrait-hero)::before { content: ''; position: absolute; z-index: -1; pointer-events: none; inset: 0; background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--module-paper) 98%, transparent) 12%, var(--module-paper) 22%, var(--module-paper) 80%, color-mix(in srgb, var(--module-paper) 98%, transparent) 90%, transparent 100%); opacity: var(--module-focus); transition: opacity .55s ease; }
+/* Only hide the chrome when the real section navigation enhancement is ready.
+   Wheel, touch, keyboard, anchors and dialog scrollbars remain native. */
+.nav-enhanced:has(.hero-section-dots) { scrollbar-width: none; }
+.nav-enhanced:has(.hero-section-dots)::-webkit-scrollbar { width: 0; height: 0; }
+@media (max-width: 1150px) { .home-page { --content-gutter: 32px; } }
+@media (max-width: 760px) { .home-page { --content-gutter: 20px; } }
+@media (max-width: 380px) { .home-page { --content-gutter: 16px; } }
 :root[data-motion="true"] .home-page main > section::before { transition: none; }
 :root[data-contrast="true"] .home-page main > section:not(.portrait-hero)::before { opacity: 1; background: var(--page); }
 @media (prefers-reduced-motion: reduce) { .home-page main > section::before { transition: none !important; } }
-@media (forced-colors: active) { .home-page main > section:not(.portrait-hero)::before { display: none; } }
+@media (forced-colors: active) { .home-page main > section:not(.portrait-hero)::before { display: none; } .nav-enhanced:has(.hero-section-dots) { scrollbar-width: auto; } .nav-enhanced:has(.hero-section-dots)::-webkit-scrollbar { width: auto; height: auto; } }
 @media print { .home-page main > section:not(.portrait-hero)::before { display: none; } }

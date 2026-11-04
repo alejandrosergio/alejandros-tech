@@ -1,3 +1,5 @@
+> Estado actual: retrato fotográfico estático; modelo 3D conservado en fuente y excluido del build y de la publicación. Fondo Letter Glitch Pixel (A–Z, blanco/coral), excluido de la portada.
+
 # Diseño
 
 ## Dirección visual actual
@@ -11,7 +13,7 @@ La primera visita parte de oscuro, coral y radio de 6 px. Las elecciones anterio
 ## Recorrido y navegación
 
 - Cabecera con marca tipográfica, idiomas, tema y navegación expandida por encima de 760 px. En anchuras intermedias, los enlaces pueden ocupar una segunda fila. El menú se colapsa solo en móvil, hasta 760 px.
-- Inicio a pantalla completa con busto volumétrico, nombre serif superpuesto sobre el torso y firma editorial. La cara permanece despejada.
+- Inicio a pantalla completa con retrato fotográfico estático, nombre serif superpuesto sobre el torso y firma editorial. La cara permanece despejada.
 - Perfil y enfoque profesional en dos columnas de texto, sin tarjeta giratoria ni segunda fotografía del titular.
 - Explorador de tecnologías, trayectoria, proyectos y cuaderno con las mismas superficies, líneas y jerarquía tipográfica.
 - Contacto y fichas interiores integrados en el sistema visual, con controles de formulario legibles en ambos temas.
@@ -24,7 +26,7 @@ El titular eligió expresamente preparar un busto 3D estilizado basado en su fot
 
 La apariencia en gris se preparó con la herramienta integrada de imágenes, usando una vista frontal del modelo, la foto del titular y la referencia de iluminación. El visualizador proyecta esa apariencia sobre las coordenadas de las superficies en su pose de reposo y aplica iluminación en WebGL. La malla aporta profundidad, oclusión, articulación y cambios de superficie al girar. La apariencia y su imagen estática de respaldo se documentan en `ASSETS.md`.
 
-El ratón orienta la cabeza y los ojos con un recorrido acotado. El teclado permite flechas e Inicio; el arrastre táctil horizontal conserva el desplazamiento vertical y el zoom. No hay una animación continua en reposo. La pausa y el movimiento reducido mantienen una pose neutra; con mayor contraste se usa un respaldo estático atenuado y con colores forzados se simplifica la portada a contenido y navegación. Sin JavaScript, WebGL o carga del modelo permanece la imagen local.
+La interacción 3D descrita aquí permanece archivada y no se ejecuta en la web actual. El ratón orientaba la cabeza y los ojos con un recorrido acotado. El teclado permite flechas e Inicio; el arrastre táctil horizontal conserva el desplazamiento vertical y el zoom. No hay una animación continua en reposo. La pausa y el movimiento reducido mantienen una pose neutra; con mayor contraste se usa un respaldo estático atenuado y con colores forzados se simplifica la portada a contenido y navegación. Sin JavaScript, WebGL o carga del modelo permanece la imagen local.
 
 ## Movimiento y controles
 
@@ -40,7 +42,7 @@ Las rutas ES/EN, los encabezados, el salto de navegación, el foco visible, las 
 
 ## Fondo global
 
-Letter Glitch toma el preset Binary y la paleta blanca/azul/menta solicitados. Queda fijo detrás de las superficies, con velo de lectura central; se percibe en márgenes y zonas despejadas con un velo central menos opaco. No intercepta acciones ni añade letras a la lectura asistida. El pie permite pausarlo en cualquier ruta y la pausa de la escena lo detiene también. Movimiento reducido produce una textura estática; mayor contraste y colores forzados lo ocultan.
+Letter Glitch toma el preset Pixel y la paleta blanca/coral solicitados. Queda fijo detrás de las superficies, con velo de lectura central. La geometría real de la portada recorta su región: no aparecen letras en el inicio y la animación se pausa cuando queda completamente tapada. Fuera de la portada se revela con un borde suave; las páginas interiores mantienen el fondo. No intercepta acciones ni añade letras a la lectura asistida. El pie permite pausarlo. Movimiento reducido produce una textura estática; mayor contraste y colores forzados lo ocultan.
 
 ## Refinamiento de navegación y portada
 
@@ -52,7 +54,9 @@ El enfoque y el proceso incorporan desplegables nativos, operables con ratón y 
 
 ## Escala y recorrido por módulo
 
-Los títulos de portada, secciones y fichas usan una escala menor. CV y contacto se integran como enlaces de texto en la franja inferior del inicio. Las redes tienen iconos de24px y objetivos de48px, separados del raíl vertical01/02/03. Cada enlace del raíl amplía su línea de16a40px y revela una explicación al pasar el cursor o enfocar. En móvil las redes se ordenan en una fila y las descripciones se muestran bajo el inicio.
+Los títulos de portada, secciones y fichas usan una escala menor. CV y contacto son acciones destacadas en la franja inferior del inicio. Las redes tienen iconos de24px y objetivos de48px, separados del raíl vertical01/02/03. Las barras del raíl son verticales y cortas en reposo; se ensanchan sin rotar al pasar el cursor o enfocar y revelan una explicación. En móvil las redes se ordenan en una fila y las descripciones se muestran bajo el inicio.
+
+Las superficies de lectura se extienden hasta ambos bordes de la ventana y conservan los márgenes del contenido. La navegación lateral sigue el recorrido real. Al estar disponible, oculta solo la barra del navegador: rueda, gesto táctil, teclado y enlaces conservan el desplazamiento nativo. En colores forzados o sin mejora JavaScript se conserva la barra. Los diálogos mantienen sus barras de desplazamiento. El acceso a accesibilidad combina una superficie neutra, icono y detalles en el acento seleccionado; el idioma activo utiliza el mismo acento con texto de contraste.
 
 El círculo de la guía mide exclusivamente el avance de la sección actual, vuelve al inicio al cambiar de módulo y retrocede al subir. El porcentaje usa la misma fracción. Los ocho puntos laterales mantienen la posición global. El marcador de lectura se alinea con el desplazamiento de las anclas bajo la cabecera.
 

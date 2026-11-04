@@ -60,13 +60,14 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   }
   for (const match of html.matchAll(/(?:aria-controls|aria-describedby|aria-labelledby)="([^"]+)"/g)) for (const id of match[1].split(/\s+/)) assert.ok(ids(html).includes(id), `ARIA reference: ${pathname} → ${id}`);
   if (route.type === 'home') {
-    assert.ok(html.includes('data-portrait-hero') && html.includes('sergio-natural-appearance.webp') && html.includes('data-bust-stage') && html.includes('data-bust-canvas'), 'Volumetric hero retains a static alternative');
+    assert.ok(html.includes('data-portrait-hero') && html.includes('sergio-natural-appearance.webp'), 'Home retains its static portrait');
+    assert.ok(!/data-bust|data-model|portrait\.js|bust-view|bust-glb|\.glb/.test(html), 'The paused 3D feature is absent from the public page');
     assert.ok(!/brand-3d|aero-shards|data-brand-art/.test(html), 'Retired renderers are absent');
     assert.ok(html.includes('data-journey-guide'));
-    assert.equal((html.match(/class="bust-fallback"/g)??[]).length,1,'One portrait alternative');
+    assert.equal((html.match(/class="portrait-photo"/g)??[]).length,1,'One static portrait');
     assert.ok(!/data-profile-card|data-profile-flip/.test(html),'Duplicate portrait card removed');
     assert.ok(!html.includes('<span>↗</span></div>'),'No redirect arrow in cursor');
-    await access(path.join(dist,'assets/sergio-stylized-bust.glb'));
+    for (const file of ['sergio-stylized-bust.glb','portrait.js','bust-glb.js','bust-view.js']) await assert.rejects(access(path.join(dist,'assets',file)), 'The paused renderer is not shipped');
     for (const entry of journeyCopy[lang].entries) assert.ok(ids(html).includes(entry.id), `Guide section: ${entry.id}`);
     assert.ok(html.includes(`action="${site.formEndpoint}" method="POST"`) && html.includes('name="consent"') && html.includes('data-intro-loader'));
     assert.ok(html.includes('name="_gotcha"') && html.includes(`name="_language" value="${lang}"`));
@@ -74,7 +75,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
     for (const id of ['sobre-mi', 'tecnologias', 'trayectoria', 'proyectos', 'conocimiento', 'contacto']) assert.ok(ids(html).includes(id));
     assert.ok(html.includes(`mailto:${site.email}`) && html.includes(site.linkedin) && html.includes(site.github));
     assert.ok(html.includes(`${site.cv}${lang === 'en' ? 'en/' : ''}`));
-    assert.ok(html.includes('class="bust-fallback"') && html.includes('data-skills-static'), 'HTML portrait and skill explorer alternatives');
+    assert.ok(html.includes('class="portrait-photo"') && html.includes('data-skills-static'), 'HTML portrait and skill explorer alternatives');
     assert.ok(!/Próximamente|Coming soon|Estamos construyendo|We’re building/.test(html), 'Replace the old coming-soon homepage');
   }
 }
@@ -92,7 +93,5 @@ for (const entry of await readdir(root)) assert.ok(!/^\.env(?:\.|$)/.test(entry)
 await import('./check-letter-glitch.mjs');
 await import('./check-navigation.mjs');
 await import('./check-journey.mjs');
-await import('./check-bust.mjs');
-await import('./check-portrait.mjs');
 await import('./check-preferences.mjs');
 console.log(JSON.stringify({ checked: true, languages: ['es', 'en'], pages: routeGroups.length * 2, checks: ['Site identity', 'deep translation parity', 'content completeness', 'all local links and anchors', 'ARIA references', 'unique headings and IDs', 'canonical and alternate routes', 'CV language', 'static fallbacks', 'sitemap'] }));

@@ -1,3 +1,5 @@
+> Estado actual: retrato fotográfico estático; modelo 3D conservado en fuente y excluido del build y de la publicación. Fondo Letter Glitch Pixel (A–Z, blanco/coral).
+
 # Arquitectura
 
 ## Base, contenido y rutas

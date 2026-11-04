@@ -53,7 +53,7 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
 .home-page .site-header:not(.is-past-home) .wordmark-accent { color: color-mix(in srgb, var(--accent) 65%, #fff); }
 .home-page .site-header:not(.is-past-home) .theme-button, .home-page .site-header:not(.is-past-home) .menu-button { color: #eee8e2; border-color: #ffffff35; }
 .home-page .site-header:not(.is-past-home) .languages a { color: #c7c0ba; }
-.home-page .site-header:not(.is-past-home) .languages a[aria-current] { color: #fff; background: #ffffff12; }
+.home-page .site-header:not(.is-past-home) .languages a[aria-current] { color: var(--button-text); background: var(--accent); border-color: var(--accent); }
 .home-page .site-header:not(.is-past-home) .reading-progress { opacity: 0; }
 .header-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; min-height: 88px; }
 .wordmark { display: inline-flex; align-items: center; flex-shrink: 0; text-decoration: none; font-family: Georgia, "Times New Roman", serif; font-size: 1.2rem; font-weight: 400; letter-spacing: -.045em; white-space: nowrap; }
@@ -65,8 +65,8 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
 .primary-nav .icon { width: 15px; height: 15px; }
 .header-controls { display: flex; align-items: center; gap: .55rem; flex-shrink: 0; }
 .languages { display: flex; gap: .1rem; align-items: center; }
-.languages a { display: grid; place-items: center; min-width: 34px; min-height: 44px; border-radius: 2px; font-size: .6875rem; font-weight: 650; text-decoration: none; color: var(--muted); }
-.languages a[aria-current] { color: var(--accent); background: var(--soft); }
+.languages a { display: grid; place-items: center; min-width: 34px; min-height: 44px; border: 1px solid transparent; border-radius: 4px; font-size: .6875rem; font-weight: 650; text-decoration: none; color: var(--muted); }
+.languages a[aria-current] { color: var(--button-text); background: var(--accent); border-color: var(--accent); }
 .theme-button, .menu-button { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--ink); }
 .theme-button .icon { width: 17px; height: 17px; }
 .sun-icon { display: none; }
@@ -112,7 +112,7 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
 .skill-name { font-size: .625rem; line-height: 1.3; overflow-wrap: anywhere; font-weight: 550; }
 .skill-tile-arrow { position: absolute; right: .5rem; top: .4rem; color: var(--family); font-size: .75rem; opacity: 0; }
 .skill-tile[aria-pressed="true"] .skill-tile-arrow { opacity: 1; }
-.skill-inspector { position: sticky; top: 120px; min-height: 390px; border-left: 1px solid var(--line); padding-left: 2.4rem; }
+.skill-inspector { position: sticky; top: calc(var(--site-header-height, 96px) + 24px); min-height: 390px; border-left: 1px solid var(--line); padding-left: 2.4rem; }
 .inspector-symbol { display: block; font-size: 5.5rem; font-weight: 600; line-height: 1; letter-spacing: -.1em; margin-block: 1.8rem 1.5rem; color: var(--accent); }
 .inspector-category { font-size: .625rem; color: var(--muted); margin-bottom: .5rem; text-transform: uppercase; letter-spacing: .1em; }
 .skill-inspector h3 { font-size: 1.7rem; margin-bottom: .9rem; }
@@ -125,7 +125,7 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
 
 /* Career. */
 .career-section { display: grid; grid-template-columns: 1fr 1.1fr; gap: 7rem; align-items: start; }
-.career-intro { position: sticky; top: 132px; }
+.career-intro { position: sticky; top: calc(var(--site-header-height, 108px) + 24px); }
 .career-intro > p:not(.section-label) { color: var(--muted); font-size: .9375rem; max-width: 25rem; }
 .career-intro .text-link { font-size: .75rem; }
 .education { border-top: 1px solid var(--line); margin-top: 2.6rem; padding-top: 1.5rem; max-width: 25rem; }

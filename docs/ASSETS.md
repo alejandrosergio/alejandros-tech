@@ -1,12 +1,18 @@
-# Busto y recursos de la portada
+# Retrato actual y trabajo 3D conservado
 
-## Fuente y representación
+## Estado actual
+
+Por petición del titular, la portada muestra únicamente la imagen estática `public/assets/sergio-natural-appearance.webp`. No carga WebGL, GLB, canvas de retrato ni seguimiento de cabeza. El diseño editorial y el fondo Pixel permanecen.
+
+El trabajo 3D descrito a continuación se conserva en fuente para retomarlo más adelante y queda excluido de la publicación actual.
+
+## Fuente y representación (3D en pausa)
 
 `public/assets/sergio-hernandez.jpeg` es la foto pública de estudio del titular. La nueva pose del busto toma esa postura real de brazos cruzados y la ropa original. La cabeza y los ojos conservan articulación independiente y seguimiento acotado del cursor.
 
 La geometría sigue siendo una interpretación volumétrica estilizada, no un escaneo ni una reconstrucción exacta. La fotografía aporta identidad visual y detalle superficial; una sola vista no confirma perfiles, profundidad ni anatomía oculta.
 
-## Geometría actual
+## Geometría conservada, fuera del build
 
 - Autoría local determinista: `src/model/stylized-bust.mjs`.
 - Salida generada: `dist/assets/sergio-stylized-bust.glb`.
@@ -17,7 +23,7 @@ La geometría sigue siendo una interpretación volumétrica estilizada, no un es
 
 ## Apariencia actual
 
-Recurso: `public/assets/sergio-natural-appearance.webp`, 1024 × 1536, RGBA, 207.142 bytes. Se usa como apariencia sobre las superficies reales y como alternativa estática.
+Recurso: `public/assets/sergio-natural-appearance.webp`, 1024 × 1536, RGBA, 207.142 bytes. Actualmente se usa como fotografía estática. Su uso sobre superficies 3D queda en pausa.
 
 Modo: herramienta integrada ImageGen, edición de la foto original con extracción de fondo y retirada del reloj. Se conservaron el encuadre 2:3, la postura, el cuello natural, la ropa y los rasgos de la foto como referencia. Es una edición asistida, no una garantía de identidad geométrica exacta.
 
@@ -32,3 +38,5 @@ Use case: identity-preserve / background-extraction. Asset type: photographic ap
 ## Recursos retirados
 
 `sergio-bust-appearance.webp` (apariencia cuadrada de manos levantadas) y `sergio-portrait-cutout.webp` (versión fotográfica previa) ya no forman parte de la web. Su procedencia permanece en el historial de Git. La foto original se conserva como referencia.
+
+La última integración 3D completa se conserva en el commit de GitHub `6afb0d1dabf0e8bc2f9eba2b5dbb023a9d0ccb57`; el código de geometría y visualizador sigue en fuente. Para una futura reactivación, revisar también su composición y estilos en ese commit.

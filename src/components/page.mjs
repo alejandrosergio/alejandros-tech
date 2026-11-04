@@ -41,7 +41,7 @@ function head(lang, { title, description, paths, notFound = false, home = false 
   <script src="/assets/preferences.js" defer></script>
   <script src="/assets/site.js" defer></script>
   <script src="/assets/journey.js" defer></script>
-  <script src="/assets/letter-glitch.js" defer></script>${home ? '\n  <script src="/assets/portrait.js" type="module"></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
+  <script src="/assets/letter-glitch.js" defer></script>${home ? '\n  <script src="/assets/contact.js" type="module"></script>' : ''}
 </head>`;
 }
 

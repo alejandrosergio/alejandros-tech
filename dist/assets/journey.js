@@ -15,6 +15,7 @@
   const panel = guide?.querySelector('[data-guide-panel]'), toggle = guide?.querySelector('[data-guide-toggle]');
   const wide = matchMedia('(min-width: 900px)');
   let open = false, userToggled = false, current = -1, tick = 0;
+  let measuredHeader = '';
   const surfaceFocus = new WeakMap();
   const setOpen = value => { open = value; if (panel) { panel.hidden = !value; toggle.setAttribute('aria-expanded', String(value)); } };
   if (guide) {
@@ -45,8 +46,16 @@
     const y = window.scrollY, available = Math.max(1, root.scrollHeight - innerHeight), progress = Math.max(0, Math.min(1, y / available));
     const typing = document.activeElement?.closest('form');
     const headerBox = header?.getBoundingClientRect();
+    if (headerBox) {
+      const size = `${headerBox.height}px`;
+      if (size !== measuredHeader) { root.style.setProperty('--site-header-height', size); measuredHeader = size; }
+    }
     const bounds = sections.map(section => section?.getBoundingClientRect());
     const staticSurfaces = quiet() || forced.matches || root.dataset.contrast === 'true' || background?.dataset.paused === 'true';
+    if (home) {
+      const box = bounds[0] ?? home.getBoundingClientRect();
+      home.dataset.sceneMotion = staticSurfaces || document.hidden || box.bottom <= 0 || box.top >= innerHeight ? 'static' : 'active';
+    }
     sections.forEach((section, index) => {
       if (!section || index === 0) return;
       const rect = bounds[index], center = innerHeight * .5;
@@ -95,6 +104,7 @@
   document.addEventListener('focusin', schedule); document.addEventListener('focusout', schedule);
   document.addEventListener('alejandro:preferences', schedule);
   document.addEventListener('alejandro:background-motion', schedule);
+  document.addEventListener('visibilitychange', schedule);
   reduced.addEventListener('change', schedule); forced.addEventListener('change', schedule);
   if (guide) new MutationObserver(schedule).observe(document.querySelector('[data-cookie-banner]'), { attributes: true, attributeFilter: ['hidden'] });
   if (background) new MutationObserver(schedule).observe(background, { attributes: true, attributeFilter: ['data-paused'] });

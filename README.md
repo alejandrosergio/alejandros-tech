@@ -1,3 +1,5 @@
+> Current state: static photographic portrait. The 3D sources are retained for future work and excluded from the build and publication. Letter Glitch Pixel uses A–Z and white/coral.
+
 # Alejandro’sTech
 
 [Español](LEEME.md) · **English**
