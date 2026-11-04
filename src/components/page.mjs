@@ -8,6 +8,7 @@ import { artwork } from './artwork.mjs';
 import { preferences, loader, contactForm } from './preferences.mjs';
 import { interfaceCopy } from '../content/interface.mjs';
 import { journey } from './journey.mjs';
+import { aeroShards } from './aero-shards.mjs';
 
 export const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const e = escapeHTML;
@@ -40,7 +41,7 @@ function head(lang, { title, description, paths, notFound = false, home = false 
   <script src="/assets/theme-init.js"></script>
   <script src="/assets/preferences.js" defer></script>
   <script src="/assets/site.js" defer></script>
-  <script src="/assets/journey.js" defer></script>${home ? '\n  <script src="/assets/brand-3d.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
+  <script src="/assets/journey.js" defer></script>${home ? '\n  <script src="/assets/brand-3d.js" defer></script>\n  <script src="/assets/aero-shards.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
 </head>`;
 }
 
@@ -79,14 +80,14 @@ ${options.home ? `  ${loader(lang)}` : ''}
 }
 
 function hero(t) {
-  return `<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
+  return `<div class="hero-scene" data-aero-scene>${aeroShards()}<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
     <div class="hero-grid"><div class="hero-copy"><p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>${t.hero.eyebrow}</p>
       <h1 id="hero-title">${splitTitle(t.hero.heading)}</h1><p class="hero-intro">${t.hero.intro}</p>
       <div class="hero-actions"><a class="button button-primary" href="#proyectos">${t.hero.primary}${icon('arrowRight')}</a><a class="text-link" href="#sobre-mi">${t.hero.secondary}${icon('arrow')}</a></div>
       <div class="hero-stack" aria-label="${t.skills.label}"><span>.NET</span><i aria-hidden="true">/</i><span>Power Platform</span><i aria-hidden="true">/</i><span>React</span></div>
     </div><div class="hero-art"><span class="art-overline" aria-hidden="true">A<span>+</span> / ${t.hero.artLabel}</span>${artwork(t)}</div></div>
-    <div class="hero-bottom"><a href="#sobre-mi"><span class="scroll-mark" aria-hidden="true">↓</span>${t.hero.scroll}</a><span class="location">${icon('globe')}${t.hero.location}</span></div>
-  </section>`;
+    <div class="hero-bottom"><a href="#sobre-mi"><span class="scroll-mark" aria-hidden="true">↓</span>${t.hero.scroll}</a><button class="aero-pause" data-background-pause data-pause="${t.backgroundPause}" data-play="${t.backgroundPlay}" type="button" hidden>${t.backgroundPause}</button><span class="location">${icon('globe')}${t.hero.location}</span></div>
+  </section></div>`;
 }
 
 function about(lang, t) {

@@ -1,5 +1,6 @@
 export const locales = {
   es: {
+    backgroundPause: 'Pausar fondo', backgroundPlay: 'Animar fondo',
     path: '/', title: 'Sergio Hernández · Software, automatización e IA | Alejandro’sTech',
     description: 'El universo profesional de Sergio Hernández: desarrollo .NET y React, Power Platform, automatización e integración de IA. Trayectoria, proyectos y notas técnicas.',
     skip: 'Ir al contenido', languages: 'Idioma', themeLabel: 'Cambiar entre tema claro y oscuro', menu: 'Abrir navegación', closeMenu: 'Cerrar navegación', navLabel: 'Navegación principal',
@@ -17,6 +18,7 @@ export const locales = {
     notFoundHeading: 'Esta página no está aquí.', notFoundText: 'Puedes volver al inicio para explorar mi trayectoria, proyectos y notas de desarrollo.'
   },
   en: {
+    backgroundPause: 'Pause background', backgroundPlay: 'Animate background',
     path: '/en/', title: 'Sergio Hernández · Software, automation & AI | Alejandro’sTech',
     description: 'Sergio Hernández’s professional world: .NET and React development, Power Platform, automation and AI integration. Experience, projects and technical notes.',
     skip: 'Skip to content', languages: 'Language', themeLabel: 'Switch between light and dark theme', menu: 'Open navigation', closeMenu: 'Close navigation', navLabel: 'Main navigation',

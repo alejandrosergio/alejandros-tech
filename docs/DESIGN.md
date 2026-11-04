@@ -23,6 +23,8 @@ La paleta conserva la relación con el CV: azul marino, acento azul y tipografí
 
 El A+ es geometría local con profundidad, cuatro bandas de bisel frontal, material metálico, reflejos de estudio, órbitas y partículas. Admite cursor, arrastre, flechas, Inicio, pausa y restablecimiento. El SVG original es una alternativa estática. Se limita la resolución del lienzo y se detiene el bucle en pausa, fuera de pantalla o en una pestaña oculta. Se atiende la pérdida y recuperación de contexto.
 
+El fondo del inicio adapta Aero Shards de React Bits: cintas de fragmentos de cristal en capas, con brillo y una respuesta suave al ratón. Sigue el tono seleccionado, conserva un velo detrás del texto y reduce geometría y resolución en móvil. Comparte la pausa del A+, respeta movimiento reducido y se oculta con mayor contraste o colores forzados. Sin JavaScript o WebGL conserva una composición SVG local. Atribución y alcance de la adaptación en `THIRD_PARTY.md`.
+
 ## Accesibilidad y comportamiento
 
 La guía A+ acompaña las ocho secciones del inicio con el nombre actual, progreso y una sugerencia contextual. Se mantiene compacta; se puede abrir con clic, teclado o al acercar el ratón en escritorio, navegar a la sección anterior/siguiente y ocultarla. En móvil su panel se abre sobre la pastilla y admite desplazamiento interno. Se oculta mientras se usa el formulario y mientras se decide sobre cookies. Es navegación local: no envía el recorrido a un servicio ni simula una conversación de IA.

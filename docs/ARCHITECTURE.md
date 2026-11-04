@@ -29,8 +29,12 @@ Los modelos viven en `src/content/`. No se añade una página sin contenido real
 
 `brand-3d.js` genera mallas e iluminación en WebGL nativo, sin modelos ni texturas remotas. Atiende pausa, entrada táctil, teclado, visibilidad, movimiento reducido y recuperación gráfica. No es necesario para navegar o leer el sitio.
 
+`aero-shards.mjs` aporta el fondo decorativo estático del inicio; `aero-shards.js` lo mejora con prismas de cristal en WebGL nativo. La adaptación de Aero Shards comparte la pausa del A+, limita fotogramas, píxeles y geometría, y suspende el render al salir de pantalla o esconder la pestaña. No requiere React, WebGPU ni nuevas dependencias. Su licencia se conserva en los recursos públicos; ver `THIRD_PARTY.md`.
+
 ## Comprobación
 
 `scripts/check.mjs` valida estructura de traducciones, todas las rutas y anclas internas, referencias ARIA, metadatos, IDs, contenido, alternativas estáticas y sitemap. Incluye `check-3d.mjs`, que comprueba la lógica de pausa, entrada táctil, teclado, suspensión y recuperación del contexto con una superficie gráfica simulada. La compilación y apariencia real de los shaders se revisan en el navegador. GitHub Actions comprueba sintaxis, generación y correspondencia del `dist/` guardado.
 
 La publicación usa el helper oficial de Sites y su commit/archivo exactos. GitHub tiene un historial independiente y se compara por contenido, conservando cambios concurrentes.
+
+`check-aero-shards.mjs` verifica el ciclo de vida del fondo con una superficie gráfica simulada: pausa compartida, movimiento reducido, suspensión, límites de recursos, alternativa estática y recuperación del contexto. Su apariencia y compilación real de shaders se verifican además en navegador, en ambos idiomas y tamaños.

@@ -59,6 +59,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   }
   for (const match of html.matchAll(/(?:aria-controls|aria-describedby|aria-labelledby)="([^"]+)"/g)) for (const id of match[1].split(/\s+/)) assert.ok(ids(html).includes(id), `ARIA reference: ${pathname} → ${id}`);
   if (route.type === 'home') {
+    assert.ok(html.includes('data-aero-scene') && html.includes('class="aero-fallback"') && html.includes('data-aero-canvas hidden'), 'Decorative background has a static alternative');
     assert.ok(html.includes('data-journey-guide'));
     for (const entry of journeyCopy[lang].entries) assert.ok(ids(html).includes(entry.id), `Guide section: ${entry.id}`);
     assert.ok(html.includes(`action="${site.formEndpoint}" method="POST"`) && html.includes('name="consent"') && html.includes('data-intro-loader'));
@@ -83,5 +84,6 @@ for (const feature of ['prefers-reduced-motion', 'forced-colors', ':focus-visibl
 assert.ok(!/overflow-x\s*:\s*hidden/.test(css), 'Fix overflow instead of hiding it');
 for (const entry of await readdir(root)) assert.ok(!/^\.env(?:\.|$)/.test(entry), 'Do not package credentials');
 await import('./check-3d.mjs');
+await import('./check-aero-shards.mjs');
 await import('./check-preferences.mjs');
 console.log(JSON.stringify({ checked: true, languages: ['es', 'en'], pages: routeGroups.length * 2, checks: ['Site identity', 'deep translation parity', 'content completeness', 'all local links and anchors', 'ARIA references', 'unique headings and IDs', 'canonical and alternate routes', 'CV language', 'static fallbacks', 'sitemap'] }));
