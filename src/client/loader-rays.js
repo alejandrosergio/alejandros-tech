@@ -158,9 +158,9 @@ void main() {
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const smoother = value => { const t = clamp(value, 0, 1); return t * t * t * (t * (t * 6 - 15) + 10); };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)'), forced = matchMedia('(forced-colors: active)');
-  // Underwater-derived loader: faster flow and a slightly stronger light field
-  // make its motion visible during the short visit intro. The accent stays local.
-  const preset = Object.freeze({ speed: 1.5, spread: 1, length: 3, density: 1.6, sharpness: .5, glow: .75, haze: .5, atmosphere: .7, intensity: 1.2, fade: 1, saturation: 1, noise: 0, distortion: .12, opacity: 1 });
+  // Underwater-derived loader: a slower flow keeps the bright light field calm
+  // during the short visit intro. The accent and reading veil stay unchanged.
+  const preset = Object.freeze({ speed: .65, spread: 1, length: 3, density: 1.6, sharpness: .5, glow: .75, haze: .5, atmosphere: .7, intensity: 1.2, fade: 1, saturation: 1, noise: 0, distortion: .12, opacity: 1 });
   // The brief site loader needs its field visible promptly; this reveal timing
   // is local and does not change the Underwater shader or preset parameters.
   const OPENING_SECONDS = .26;
@@ -231,8 +231,8 @@ void main() {
       gl.uniform2f(u.uResolution, canvas.width, canvas.height); gl.uniform1f(u.uScale, size.ratio);
       // A continuous, normalized sway sweeps the beams gently across the field.
       // No pulses or brightness oscillation: text remains steady and readable.
-      const sway = .1 * Math.sin(time * 2.2), aimLength = Math.hypot(sway, 1);
-      gl.uniform1f(u.uTime, time); gl.uniform2f(u.uSource, (.5 + .035 * Math.sin(time * 1.7)) * width, -.2 * height); gl.uniform2f(u.uAim, sway / aimLength, 1 / aimLength);
+      const sway = .045 * Math.sin(time * 2.2), aimLength = Math.hypot(sway, 1);
+      gl.uniform1f(u.uTime, time); gl.uniform2f(u.uSource, (.5 + .015 * Math.sin(time * 1.7)) * width, -.2 * height); gl.uniform2f(u.uAim, sway / aimLength, 1 / aimLength);
       gl.uniform1f(u.uReach, Math.max(width, height)); gl.uniform3f(u.uColor, color[0], color[1], color[2]);
       gl.uniform1f(u.uSpread, preset.spread); gl.uniform1f(u.uLength, preset.length); gl.uniform1f(u.uFade, preset.fade);
       gl.uniform1f(u.uSaturation, preset.saturation); gl.uniform1f(u.uPulsating, 0); gl.uniform1f(u.uNoise, preset.noise);

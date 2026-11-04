@@ -44,7 +44,7 @@ La pausa común y las preferencias de accesibilidad prevalecen. La decoración n
 - Fuente: `src/content/Backgrounds/LightRays/LightRays.jsx`, blob `8133de5fefcc6856c6e3d43a363191e30a918049`, commit `4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4` de https://github.com/DavidHDev/react-bits.
 - Presets: `src/demo/Backgrounds/presets/LightRays.js`, blob `f33e4854d9cf5861a013c9ca9ed6b2a2609c5f64`.
 - Preset Underwater original: origen superior central, velocidad 0,5, apertura 1, longitud 3, densidad 1,6, inclinación 0, nitidez 0,5, brillo 0,6, neblina 0,5, atmósfera 0,7, intensidad 1, atenuación 1, saturación 1, ruido 0, distorsión 0,12, opacidad 1 y sin pulsación.
-- Ajuste local solicitado para el loader: velocidad 1,5, brillo 0,75 e intensidad 1,2. Los demás parámetros indicados se conservan; estos tres valores no se atribuyen al preset original.
+- Ajuste local solicitado para el loader: velocidad 0,65, brillo 0,75 e intensidad 1,2. Los demás parámetros indicados se conservan; estos tres valores no se atribuyen al preset original.
 - El cian de referencia se sustituye por `--accent`, el tono elegido en accesibilidad; se utiliza la variante clara del shader cuando corresponde al tema.
 - Autor y licencia: David Haz2026, MIT + Commons Clause, aviso íntegro conservado en `/assets/licenses/react-bits.txt`.
 

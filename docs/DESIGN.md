@@ -38,7 +38,7 @@ Letter Glitch Pixel usa letras localesA–Z y blanco/coral, con cambios pequeño
 
 Splash Cursor Smoke aparece únicamente en la portada, detrás de la foto: gris, intensidad0,6 y tamaño0,5. Una entrada única responde después al puntero. La cola de animación es finita y no hay trabajo de render en reposo o fuera de vista.
 
-Cada carga o recarga de documento, con o sin fragmento, muestra una adaptación de Light Rays Underwater en el loader. Toma el acento consentido ya aplicado por el arranque; el flujo local usa velocidad 1,5, brillo 0,75 e intensidad 1,2 para ser visible durante la introducción. Mantiene el mínimo normal de 1200 ms, límite independiente de 2400 ms y salida inmediata por teclado o botón; no espera recursos decorativos. Movimiento reducido evita el loader. WebGL tiene un respaldo CSS estático y sus recursos se liberan al cerrar.
+Cada carga o recarga de documento, con o sin fragmento, muestra una adaptación de Light Rays Underwater en el loader. Toma el acento consentido ya aplicado por el arranque; el flujo local usa velocidad 0,65, brillo 0,75 e intensidad 1,2 para ser visible durante la introducción. Mantiene el mínimo normal de 1200 ms, límite independiente de 2400 ms y salida inmediata por teclado o botón; no espera recursos decorativos. Movimiento reducido evita el loader. WebGL tiene un respaldo CSS estático y sus recursos se liberan al cerrar.
 
 Los efectos se suspenden con visibilidad y preferencias. Contraste alto y colores forzados mantienen una presentación simple. Letter Glitch se pausa también detrás del loader. Parámetros, procedencia y licencias constan en THIRD_PARTY.md.
 
