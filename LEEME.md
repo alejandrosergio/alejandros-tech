@@ -11,9 +11,9 @@ Web profesional de Sergio Hernández: desarrollo con .NET y React, Power Platfor
 
 ## Experiencia
 
-El inicio incorpora el A+ interactivo en WebGL, una tarjeta profesional, un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos de proyectos públicos reales y tres notas técnicas originales. Cada proyecto y nota tiene una página completa en español e inglés.
+El inicio incorpora un retrato editorial a pantalla completa que sigue suavemente al ratón, una tarjeta profesional, un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos de proyectos públicos reales y tres notas técnicas originales. Cada proyecto y nota tiene una página completa en español e inglés.
 
-Se mantienen temas claro y oscuro, controles por teclado, preferencias de movimiento y adaptación a pantallas estrechas. El contenido principal, las rutas y los contactos funcionan sin JavaScript. El explorador conserva una alternativa HTML y el 3D un SVG local. El panel del visitante ofrece cinco tonos, tamaño de texto, redondeado, contraste, interlineado, subrayado y movimiento reducido. Una guía A+ sigue las ocho secciones del inicio con sugerencias contextuales; un botón de subida y un cursor animado acompañan la navegación. La guía se puede ocultar y el cursor del sistema se puede restaurar. Solo guarda ajustes opcionales con consentimiento. No se usan rastreadores, fuentes externas ni cuentas.
+Se mantienen temas claro y oscuro, controles por teclado, preferencias de movimiento y adaptación a pantallas estrechas. El contenido principal, las rutas y los contactos funcionan sin JavaScript. El explorador conserva una alternativa HTML y el retrato sigue siendo una imagen local sin JavaScript. El panel del visitante ofrece cinco tonos, tamaño de texto, redondeado, contraste, interlineado, subrayado y movimiento reducido. Una guía A+ sigue las ocho secciones del inicio con sugerencias contextuales; un botón de subida y un cursor animado acompañan la navegación. La guía se puede ocultar y el cursor del sistema se puede restaurar. Solo guarda ajustes opcionales con consentimiento. No se usan rastreadores, fuentes externas ni cuentas.
 
 El formulario bilingüe utiliza el formulario verificado de Formspree del titular para enviar consultas al Outlook público. Incluye restricciones nativas, errores accesibles, consentimiento, protección honeypot, estados de envío/error y correo directo alternativo. Formspree valida también los cinco campos antes de enviar. El endpoint público es una dirección para recibir consultas, no una credencial de API. Una petición aceptada por sí sola no demuestra recepción en la bandeja. Ver [contacto y privacidad](docs/CONTACT.md).
 
@@ -32,8 +32,8 @@ También se pueden ejecutar `node scripts/build.mjs`, `node scripts/check.mjs` y
 ## Organización
 
 - `src/content/`: identidad pública, traducciones, hechos profesionales, proyectos, notas y pares de rutas.
-- `src/components/`: generadores HTML compartidos y alternativa estática del A+.
-- `src/client/`: mejoras progresivas y renderizador WebGL nativo.
+- `src/components/`: generadores HTML compartidos y portada editorial.
+- `src/client/`: mejoras progresivas y seguimiento ligero del retrato.
 - `src/styles/`: variables visuales, composición y estilos adaptables.
 - `public/`: marca, retrato público del CV y vistas reales de proyectos.
 - `scripts/`: generación determinista, comprobaciones y vista local.

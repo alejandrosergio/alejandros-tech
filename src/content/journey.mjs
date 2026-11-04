@@ -2,7 +2,7 @@ export const journeyCopy = {
   es: {
     label: 'Guía A+', navigation: 'Explorar con la guía A+', dismiss: 'Ocultar guía', previous: 'Sección anterior', next: 'Sección siguiente', up: 'Volver al principio', progress: 'Tu recorrido',
     entries: [
-      { id: 'inicio', title: 'Inicio', text: 'Empieza por el A+: arrástralo y descubre mi universo profesional.', action: 'Conóceme', href: '#sobre-mi' },
+      { id: 'inicio', title: 'Inicio', text: 'Bienvenido a mi mundo profesional. Empieza por conocer a la persona detrás del código.', action: 'Conóceme', href: '#sobre-mi' },
       { id: 'sobre-mi', title: 'Sobre mí', text: 'Pasa sobre mi tarjeta para descubrir mi enfoque. En móvil, toca su botón.', action: 'Explorar tecnologías', href: '#tecnologias' },
       { id: 'tecnologias', title: 'Tecnologías', text: 'Filtra por área y elige una tecnología para ver cómo la uso.', action: 'Ver proyectos', href: '#proyectos' },
       { id: 'trayectoria', title: 'Trayectoria', text: 'Abre cada etapa para explorar responsabilidades, herramientas y contexto.', action: 'Seguir con los proyectos', href: '#proyectos' },
@@ -15,7 +15,7 @@ export const journeyCopy = {
   en: {
     label: 'A+ guide', navigation: 'Explore with the A+ guide', dismiss: 'Hide guide', previous: 'Previous section', next: 'Next section', up: 'Back to the top', progress: 'Your journey',
     entries: [
-      { id: 'inicio', title: 'Home', text: 'Start with the A+: drag it to explore my professional world.', action: 'Get to know me', href: '#sobre-mi' },
+      { id: 'inicio', title: 'Home', text: 'Welcome to my professional world. Start with the person behind the code.', action: 'Get to know me', href: '#sobre-mi' },
       { id: 'sobre-mi', title: 'About', text: 'Hover over my card to discover my approach. On mobile, use its button.', action: 'Explore technologies', href: '#tecnologias' },
       { id: 'tecnologias', title: 'Technologies', text: 'Filter by area and choose a technology to see how I use it.', action: 'See projects', href: '#proyectos' },
       { id: 'trayectoria', title: 'Experience', text: 'Open each chapter to explore responsibilities, tools and context.', action: 'Continue to projects', href: '#proyectos' },

@@ -11,9 +11,9 @@ Sergio Hernández’s professional website: .NET and React development, Power Pl
 
 ## Experience
 
-The home includes the interactive WebGL A+ identity, a professional profile card, an explorer of 18 confirmed technologies, expandable experience entries, two real public project case studies and three original technical notes. Project and note detail pages have equivalent Spanish and English routes.
+The home includes a full-screen editorial portrait that subtly follows the mouse, a professional profile card, an explorer of 18 confirmed technologies, expandable experience entries, two real public project case studies and three original technical notes. Project and note detail pages have equivalent Spanish and English routes.
 
-Light/dark themes, keyboard controls, motion preferences and narrow screens are supported. The main content, routes and contacts work without JavaScript. The skill explorer has a static HTML alternative; the 3D identity has a local SVG fallback. A visitor panel offers five accent tones, text size, card corners, contrast, line spacing, link underlines and reduced motion. An A+ guide follows the eight homepage sections with contextual suggestions; a scroll-to-top control and an animated precision cursor accompany navigation. The guide can be hidden and the system cursor restored. Optional settings are saved only with consent. No analytics, external fonts or account system is used.
+Light/dark themes, keyboard controls, motion preferences and narrow screens are supported. The main content, routes and contacts work without JavaScript. The skill explorer has a static HTML alternative; the portrait remains a normal local image without JavaScript. A visitor panel offers five accent tones, text size, card corners, contrast, line spacing, link underlines and reduced motion. An A+ guide follows the eight homepage sections with contextual suggestions; a scroll-to-top control and an animated precision cursor accompany navigation. The guide can be hidden and the system cursor restored. Optional settings are saved only with consent. No analytics, external fonts or account system is used.
 
 The bilingual contact form uses the owner’s verified Formspree form to forward enquiries to the public Outlook address. It includes native constraints, accessible field errors, consent, a honeypot, pending/error states and a direct email alternative. Formspree also validates all five fields before sending. The public endpoint is an address for submissions, not an API credential. An accepted HTTP request alone does not prove inbox delivery. See [contact and privacy](docs/CONTACT.md).
 
@@ -32,8 +32,8 @@ Equivalent commands: `node scripts/build.mjs`, `node scripts/check.mjs`, `node s
 ## Source layout
 
 - `src/content/`: public identity, translated content, profile facts, projects, notes and route pairs.
-- `src/components/`: shared HTML renderers and the static A+ artwork.
-- `src/client/`: progressive enhancements and the native WebGL renderer.
+- `src/components/`: shared HTML renderers and the editorial portrait hero.
+- `src/client/`: progressive enhancements and the lightweight portrait controller.
 - `src/styles/`: shared design tokens, layouts and responsive styles.
 - `public/`: local brand assets, the public CV portrait and actual project previews.
 - `scripts/`: deterministic build, structural checks and loopback-only preview.

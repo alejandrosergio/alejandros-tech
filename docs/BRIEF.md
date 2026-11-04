@@ -6,7 +6,7 @@ Alejandro’sTech reúne la vida profesional de Sergio Hernández: perfil, traye
 
 ## Primera edición completa
 
-1. Inicio con identidad A+ 3D mejorada y presentación de .NET, Power Platform y React.
+1. Inicio editorial a pantalla completa con retrato central, seguimiento sutil de la cabeza y presentación de .NET, Power Platform y React.
 2. Sobre mí, retrato del CV y enfoque profesional basado en hechos confirmados.
 3. Explorador de tecnologías con filtros, selección y alternativa HTML.
 4. Trayectoria laboral y formación verificadas contra el CV público.

@@ -59,7 +59,8 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   }
   for (const match of html.matchAll(/(?:aria-controls|aria-describedby|aria-labelledby)="([^"]+)"/g)) for (const id of match[1].split(/\s+/)) assert.ok(ids(html).includes(id), `ARIA reference: ${pathname} → ${id}`);
   if (route.type === 'home') {
-    assert.ok(html.includes('data-aero-scene') && html.includes('class="aero-fallback"') && html.includes('data-aero-canvas hidden'), 'Decorative background has a static alternative');
+    assert.ok(html.includes('data-portrait-hero') && html.includes('sergio-portrait-cutout.webp') && html.includes('data-portrait-head'), 'Photographic hero works without motion');
+    assert.ok(!/brand-3d|aero-shards|data-brand-art/.test(html), 'Retired renderers are absent');
     assert.ok(html.includes('data-journey-guide'));
     for (const entry of journeyCopy[lang].entries) assert.ok(ids(html).includes(entry.id), `Guide section: ${entry.id}`);
     assert.ok(html.includes(`action="${site.formEndpoint}" method="POST"`) && html.includes('name="consent"') && html.includes('data-intro-loader'));
@@ -68,7 +69,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
     for (const id of ['sobre-mi', 'tecnologias', 'trayectoria', 'proyectos', 'conocimiento', 'contacto']) assert.ok(ids(html).includes(id));
     assert.ok(html.includes(`mailto:${site.email}`) && html.includes(site.linkedin) && html.includes(site.github));
     assert.ok(html.includes(`${site.cv}${lang === 'en' ? 'en/' : ''}`));
-    assert.ok(html.includes('class="network-art brand-fallback"') && html.includes('data-skills-static'), 'HTML alternatives to 3D and skill explorer');
+    assert.ok(html.includes('class="portrait-body"') && html.includes('data-skills-static'), 'HTML portrait and skill explorer alternatives');
     assert.ok(!/Próximamente|Coming soon|Estamos construyendo|We’re building/.test(html), 'Replace the old coming-soon homepage');
   }
 }
@@ -83,7 +84,6 @@ const css = await readFile(path.join(dist, 'assets/styles.css'), 'utf8');
 for (const feature of ['prefers-reduced-motion', 'forced-colors', ':focus-visible', '@media print']) assert.ok(css.includes(feature));
 assert.ok(!/overflow-x\s*:\s*hidden/.test(css), 'Fix overflow instead of hiding it');
 for (const entry of await readdir(root)) assert.ok(!/^\.env(?:\.|$)/.test(entry), 'Do not package credentials');
-await import('./check-3d.mjs');
-await import('./check-aero-shards.mjs');
+await import('./check-portrait.mjs');
 await import('./check-preferences.mjs');
 console.log(JSON.stringify({ checked: true, languages: ['es', 'en'], pages: routeGroups.length * 2, checks: ['Site identity', 'deep translation parity', 'content completeness', 'all local links and anchors', 'ARIA references', 'unique headings and IDs', 'canonical and alternate routes', 'CV language', 'static fallbacks', 'sitemap'] }));

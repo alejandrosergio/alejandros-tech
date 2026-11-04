@@ -11,7 +11,7 @@ La paleta conserva la relación con el CV: azul marino, acento azul y tipografí
 ## Recorrido
 
 - Cabecera ligera y fija con navegación, idioma, tema y menú adaptable.
-- Inicio tipográfico junto al A+ tridimensional.
+- Inicio editorial a pantalla completa, con retrato central y nombre superpuesto.
 - Perfil con retrato y tarjeta de enfoque profesional.
 - Mapa de tecnologías por áreas con inspector de contexto.
 - Trayectoria y formación, con responsabilidades desplegables.
@@ -19,11 +19,11 @@ La paleta conserva la relación con el CV: azul marino, acento azul y tipografí
 - Proceso de trabajo y cuaderno técnico.
 - Contacto destacado y pie compacto.
 
-## Identidad 3D
+## Portada fotográfica
 
-El A+ es geometría local con profundidad, cuatro bandas de bisel frontal, material metálico, reflejos de estudio, órbitas y partículas. Admite cursor, arrastre, flechas, Inicio, pausa y restablecimiento. El SVG original es una alternativa estática. Se limita la resolución del lienzo y se detiene el bucle en pausa, fuera de pantalla o en una pestaña oculta. Se atiende la pérdida y recuperación de contexto.
+La nueva dirección toma la composición editorial de la referencia aportada por el titular: fondo carbón, retrato central, tipografía amplia y círculos finos. Conserva nombre, acentos y contenido propios. El recorte del retrato se presenta con un tratamiento casi monocromo, manteniendo el rostro despejado y situando el nombre sobre el torso. Los accesos laterales pasan a una distribución compacta en móvil.
 
-El fondo del inicio adapta Aero Shards de React Bits: cintas de fragmentos de cristal en capas, con brillo y una respuesta suave al ratón. Sigue el tono seleccionado, conserva un velo detrás del texto y reduce geometría y resolución en móvil. Comparte la pausa del A+, respeta movimiento reducido y se oculta con mayor contraste o colores forzados. Sin JavaScript o WebGL conserva una composición SVG local. Atribución y alcance de la adaptación en `THIRD_PARTY.md`.
+La cabeza responde al ratón con perspectiva y un giro suave, sobre una capa fotográfica separada del torso. Es profundidad 2,5D, no una reconstrucción facial volumétrica. No hay movimiento automático en reposo; se puede pausar y se desactiva con puntero táctil, movimiento reducido y contraste elevado. Se retiran por completo el A+ WebGL, Aero Shards y sus estilos, controles y pruebas exclusivos. La marca A+ permanece en la navegación y la guía.
 
 ## Accesibilidad y comportamiento
 
@@ -33,4 +33,4 @@ El cursor propio combina un punto preciso con una órbita que lo sigue y cambia 
 
 Contenido HTML real, rutas ES/EN completas, encabezados semánticos, salto con destino enfocable, foco visible y controles con etiquetas. El menú y los filtros son mejoras progresivas; las responsabilidades usan `details` nativo. El retrato tiene texto alternativo y los iconos decorativos se ocultan a tecnologías de asistencia.
 
-Las revelaciones respetan movimiento reducido. La escena comienza quieta cuando se solicita; el movimiento automático se puede pausar. El arrastre táctil horizontal conserva el desplazamiento vertical y el zoom. En colores forzados se simplifica el arte y se conservan límites y selección visibles. Se corrige el desbordamiento, sin ocultarlo globalmente.
+Las revelaciones respetan movimiento reducido. El retrato permanece quieto cuando se solicita; el seguimiento se puede pausar. La portada no intercepta gestos táctiles ni el zoom. En colores forzados se simplifica el arte y se conservan límites y selección visibles. Se corrige el desbordamiento, sin ocultarlo globalmente.

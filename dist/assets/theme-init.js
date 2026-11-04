@@ -25,6 +25,7 @@
     root.dataset.theme = values.theme === 'system' ? (systemDark.matches ? 'dark' : 'light') : values.theme;
     root.dataset.tone = values.tone;
     root.style.fontSize = `${values.text}%`;
+    root.dataset.text = String(values.text);
     root.style.setProperty('--card-radius', `${values.radius}px`);
     for (const key of ['contrast', 'spacing', 'links', 'motion', 'cursor', 'guideHidden']) root.dataset[key] = String(values[key]);
   };

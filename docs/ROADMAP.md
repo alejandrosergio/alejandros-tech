@@ -2,7 +2,7 @@
 
 ## Base actual
 
-Web profesional completa ES/EN: A+ 3D, presentación personal, tecnologías interactivas, trayectoria, formación, dos proyectos públicos, tres notas originales y contacto. Fichas localizadas, comprobaciones y publicación en el Site existente con fuentes en GitHub.
+Web profesional completa ES/EN: retrato editorial interactivo a pantalla completa, presentación personal, tecnologías interactivas, trayectoria, formación, dos proyectos públicos, tres notas originales y contacto. Fichas localizadas, comprobaciones y publicación en el Site existente con fuentes en GitHub.
 
 ## Próximas ampliaciones con material del titular
 

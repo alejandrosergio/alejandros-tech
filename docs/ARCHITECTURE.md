@@ -17,7 +17,7 @@ Los modelos viven en `src/content/`. No se añade una página sin contenido real
 
 ## Renderizado
 
-`src/components/page.mjs` comparte documento, metadatos, navegación y pie entre el inicio y las fichas. `artwork.mjs` conserva el SVG de respaldo. `scripts/build.mjs` genera doce rutas ES/EN, 404, robots, sitemap y recursos. El resultado es determinista y se guarda en `dist/`.
+`src/components/page.mjs` comparte documento, metadatos, navegación y pie entre el inicio y las fichas. `hero.mjs` concentra la portada fotográfica. `scripts/build.mjs` genera doce rutas ES/EN, 404, robots, sitemap y recursos. El resultado es determinista y se guarda en `dist/`.
 
 ## Mejora progresiva
 
@@ -27,14 +27,12 @@ Los modelos viven en `src/content/`. No se añade una página sin contenido real
 
 `journey.mjs` contiene las ocho sugerencias localizadas del recorrido y su componente renderiza guía, control de subida y cursor. `journey.js` calcula contexto y progreso con un único fotograma por evento de scroll; las animaciones del cursor se detienen en reposo. No hay peticiones de red para estas funciones. `cursor` y `guideHidden` son preferencias opcionales sujetas al mismo consentimiento que el resto de ajustes. Sin JavaScript esos controles permanecen ocultos y el enlace normal del pie permite volver al principio.
 
-`brand-3d.js` genera mallas e iluminación en WebGL nativo, sin modelos ni texturas remotas. Atiende pausa, entrada táctil, teclado, visibilidad, movimiento reducido y recuperación gráfica. No es necesario para navegar o leer el sitio.
+`portrait.js` aplica una transformación 2,5D a una capa de cabeza y mantiene el torso estable. Solo sigue un ratón con puntero fino y se detiene al llegar a su objetivo, pausar, salir de pantalla, ocultar la pestaña o solicitar movimiento reducido. Sin JavaScript, en móvil o con mayor contraste, se presenta la foto estática completa. No hay modelo volumétrico, WebGL ni dependencias. El retrato recortado conserva su original de estudio; ver `ASSETS.md`.
 
-`aero-shards.mjs` aporta el fondo decorativo estático del inicio; `aero-shards.js` lo mejora con prismas de cristal en WebGL nativo. La adaptación de Aero Shards comparte la pausa del A+, limita fotogramas, píxeles y geometría, y suspende el render al salir de pantalla o esconder la pestaña. No requiere React, WebGPU ni nuevas dependencias. Su licencia se conserva en los recursos públicos; ver `THIRD_PARTY.md`.
+Los estilos fuente se separan en base y contenido (`styles.css`), controles del visitante (`preferences.css`), navegación contextual (`journey.css`) e inicio (`hero.css`). El generador los concatena en un único recurso CSS.
 
 ## Comprobación
 
-`scripts/check.mjs` valida estructura de traducciones, todas las rutas y anclas internas, referencias ARIA, metadatos, IDs, contenido, alternativas estáticas y sitemap. Incluye `check-3d.mjs`, que comprueba la lógica de pausa, entrada táctil, teclado, suspensión y recuperación del contexto con una superficie gráfica simulada. La compilación y apariencia real de los shaders se revisan en el navegador. GitHub Actions comprueba sintaxis, generación y correspondencia del `dist/` guardado.
+`scripts/check.mjs` valida estructura de traducciones, todas las rutas y anclas internas, referencias ARIA, metadatos, IDs, contenido, alternativas estáticas y sitemap. Incluye `check-portrait.mjs`, que comprueba entrada de ratón, reposo, pausa, preferencias, visibilidad y alternativa estática. La apariencia y el movimiento se revisan también en navegador. GitHub Actions comprueba sintaxis, generación y correspondencia del `dist/` guardado.
 
 La publicación usa el helper oficial de Sites y su commit/archivo exactos. GitHub tiene un historial independiente y se compara por contenido, conservando cambios concurrentes.
-
-`check-aero-shards.mjs` verifica el ciclo de vida del fondo con una superficie gráfica simulada: pausa compartida, movimiento reducido, suspensión, límites de recursos, alternativa estática y recuperación del contexto. Su apariencia y compilación real de shaders se verifican además en navegador, en ambos idiomas y tamaños.

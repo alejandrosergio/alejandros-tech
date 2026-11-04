@@ -63,8 +63,6 @@
       }
       guide.querySelector('[data-guide-percent]').textContent = `${Math.round(progress * 100)}%`;
     }
-    // A small background shift follows scroll without moving the content itself.
-    if (!quiet()) root.style.setProperty('--scroll-glow', `${Math.round(progress * 160)}px`);
     lastY = y;
   }
   const schedule = () => { if (!tick) tick = requestAnimationFrame(update); };
@@ -91,7 +89,7 @@
     x = event.clientX; y = event.clientY;
     if (!active) { ox = x; oy = y; active = true; dot.hidden = orbit.hidden = false; root.dataset.cursorActive = 'true'; }
     dot.style.transform = `translate3d(${x}px,${y}px,0)`;
-    orbit.dataset.interactive = String(Boolean(event.target.closest('a,button,summary,[data-brand-stage]')));
+    orbit.dataset.interactive = String(Boolean(event.target.closest('a,button,summary')));
     if (!cursorFrame) cursorFrame = requestAnimationFrame(frame);
   }, { passive: true });
   document.addEventListener('pointerout', event => { if (!event.relatedTarget) hide(); });
