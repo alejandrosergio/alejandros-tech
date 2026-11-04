@@ -18,7 +18,7 @@
   background: radial-gradient(ellipse at 50% -18%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 72%), conic-gradient(from 155deg at 50% -20%, transparent 0deg 7deg, color-mix(in srgb, var(--accent) 12%, transparent) 10deg 12deg, transparent 15deg 21deg, color-mix(in srgb, var(--accent) 16%, transparent) 24deg 26deg, transparent 29deg 36deg, color-mix(in srgb, var(--accent) 12%, transparent) 39deg 41deg, transparent 44deg);
   opacity: .75;
 }
-.intro-loader[data-rays-enhanced="true"]::before { opacity: .1; }
+.intro-loader[data-rays-enhanced="true"]::before { opacity: .06; }
 .intro-loader .loader-content {
   position: relative;
   z-index: 1;
@@ -29,7 +29,7 @@
   width: min(100%, 60rem);
 }
 .intro-loader::after {
-  background: radial-gradient(ellipse at 50% 58%, color-mix(in srgb, var(--page) 90%, transparent) 0%, color-mix(in srgb, var(--page) 50%, transparent) 22%, transparent 64%);
+  background: radial-gradient(ellipse at 50% 58%, color-mix(in srgb, var(--page) 88%, transparent) 0%, color-mix(in srgb, var(--page) 28%, transparent) 17%, transparent 48%);
 }
 [data-loader-rays] {
   position: absolute;

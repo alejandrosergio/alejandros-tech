@@ -114,9 +114,10 @@
   // content around the pointer. Keyboard focus keeps the same descriptions.
   const tooltip = document.querySelector('[data-interaction-tooltip]');
   if (tooltip) {
-    let target = null, timer = 0, keyboard = false, pointX = 0, pointY = 0;
+    let target = null, timer = 0, keyboard = false, pointX = 0, pointY = 0, labelObserver = null;
     const hideTip = () => {
       clearTimeout(timer); timer = 0; tooltip.hidden = true;
+      labelObserver?.disconnect();
       if (target) {
         const ids = (target.getAttribute('aria-describedby') || '').split(/\s+/).filter(id => id && id !== tooltip.id);
         if (ids.length) target.setAttribute('aria-describedby', ids.join(' ')); else target.removeAttribute('aria-describedby');
@@ -138,10 +139,14 @@
       const ids = new Set((target.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean));
       ids.add(tooltip.id); target.setAttribute('aria-describedby', [...ids].join(' '));
     };
+    // A system theme or music state can change a control without pointer input.
+    // Excluding aria-describedby prevents our own tooltip linkage from looping.
+    if ('MutationObserver' in window) labelObserver = new MutationObserver(() => { if (target && !tooltip.hidden) showTip(); });
     const queueTip = (element, fromKeyboard = false, event = {}) => {
       hideTip();
       if (!element || element.matches(':disabled') || element.closest('dialog,input,textarea,select,[contenteditable="true"]')) return;
       target = element; keyboard = fromKeyboard; pointX = event.clientX || 0; pointY = event.clientY || 0;
+      labelObserver?.observe(target, { attributes: true, attributeFilter: ['aria-label', 'data-tooltip'] });
       timer = setTimeout(showTip, 400);
     };
     document.addEventListener('pointerover', event => {

@@ -9,6 +9,7 @@ import { letterGlitch } from './letter-glitch.mjs';
 import { preferences, loader, contactForm } from './preferences.mjs';
 import { interfaceCopy } from '../content/interface.mjs';
 import { journey } from './journey.mjs';
+import { soundtrack } from './soundtrack.mjs';
 
 const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const e = escapeHTML;
@@ -43,6 +44,7 @@ function head(lang, { title, description, paths, notFound = false, home = false 
   <script src="/assets/site.js" defer></script>
   <script src="/assets/journey.js" defer></script>
   <script src="/assets/letter-glitch.js" defer></script>${home ? '\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
+  <script src="/assets/soundtrack.js" defer></script>
 </head>`;
 }
 
@@ -74,6 +76,7 @@ ${head(lang, options)}
   ${header(lang, t, options.paths)}
   ${content}
   ${footer(t, lang)}${options.home ? `\n  ${sectionNavigation(t)}` : ''}
+  ${soundtrack(lang)}
   ${preferences(lang)}
   ${journey(lang, options.home)}
 </body>

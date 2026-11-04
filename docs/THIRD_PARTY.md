@@ -43,8 +43,13 @@ La pausa común y las preferencias de accesibilidad prevalecen. La decoración n
 - Referencia solicitada: https://reactbits.dev/tools/background-studio?bg=light-rays&preset=underwater
 - Fuente: `src/content/Backgrounds/LightRays/LightRays.jsx`, blob `8133de5fefcc6856c6e3d43a363191e30a918049`, commit `4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4` de https://github.com/DavidHDev/react-bits.
 - Presets: `src/demo/Backgrounds/presets/LightRays.js`, blob `f33e4854d9cf5861a013c9ca9ed6b2a2609c5f64`.
-- Underwater: origen superior central, velocidad0,5, apertura1, longitud3, densidad1,6, inclinación0, nitidez0,5, brillo0,6, neblina0,5, atmósfera0,7, intensidad1, atenuación1, saturación1, ruido0, distorsión0,12, opacidad1 y sin pulsación.
+- Preset Underwater original: origen superior central, velocidad 0,5, apertura 1, longitud 3, densidad 1,6, inclinación 0, nitidez 0,5, brillo 0,6, neblina 0,5, atmósfera 0,7, intensidad 1, atenuación 1, saturación 1, ruido 0, distorsión 0,12, opacidad 1 y sin pulsación.
+- Ajuste local solicitado para el loader: velocidad 1,5, brillo 0,75 e intensidad 1,2. Los demás parámetros indicados se conservan; estos tres valores no se atribuyen al preset original.
 - El cian de referencia se sustituye por `--accent`, el tono elegido en accesibilidad; se utiliza la variante clara del shader cuando corresponde al tema.
 - Autor y licencia: David Haz2026, MIT + Commons Clause, aviso íntegro conservado en `/assets/licenses/react-bits.txt`.
 
-La adaptación usa el shader local con un único pase WebGL2, sin React, OGL, texturas o red. La apertura visual se adapta a260ms para que se aprecie durante el loader breve. El lienzo está limitado a900.000 píxeles en escritorio y360.000 en móvil, con render máximo30fps. Al finalizar se cancelan los fotogramas, se eliminan programa/VAO y la superficie vuelve a1×1. Sin WebGL se muestra un abanico de luz CSS estático en el mismo tono. Movimiento reducido, mayor contraste y colores forzados conservan la entrada directa al contenido.
+La adaptación usa el shader local con un único pase WebGL2, sin React, OGL, texturas o red. La apertura visual se adapta a 260 ms para que se aprecie durante el loader breve; no se añaden pulsos ni oscilaciones de brillo. El mínimo normal de 1200 ms, límite independiente de 2400 ms y salida directa son lógica del sitio, no del preset. El lienzo está limitado a 900.000 píxeles en escritorio y 360.000 en móvil, con render máximo 30 fps. Al finalizar se cancelan los fotogramas, se eliminan programa/VAO y la superficie vuelve a 1×1. Sin WebGL se muestra un abanico de luz CSS estático en el mismo tono. Movimiento reducido, mayor contraste y colores forzados conservan la entrada directa al contenido.
+
+## Composición musical local
+
+La composición de 112 BPM de `src/client/soundtrack.js` se escribió para Alejandro’sTech y usa síntesis Web Audio, sin grabaciones, pistas, samples ni servicios externos. No procede de React Bits. Los avisos anteriores no conceden una licencia sobre esa composición. Ver [AUDIO.md](AUDIO.md) para comportamiento y procedencia; no se presenta como «sin copyright».

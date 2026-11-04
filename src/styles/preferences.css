@@ -101,7 +101,7 @@ button:disabled { cursor: default; opacity: .65; }
   .settings-launcher { width: 44px; min-height: 44px; right: .75rem; bottom: .75rem; }
   .settings-grid { grid-template-columns: 1fr; gap: 2rem; }
   .settings-dialog { max-height: calc(100dvh - 24px); }
-  .cookie-banner { left: .75rem; bottom: .75rem; width: calc(100% - 4.5rem); padding: 1rem; }
+  .cookie-banner { left: .75rem; bottom: calc(4.5rem + env(safe-area-inset-bottom)); width: calc(100% - 1.5rem); padding: 1rem; }
   .cookie-actions { gap: .45rem; }
   .contact-form-wrap { grid-template-columns: 1fr; gap: 1.5rem; margin-top: 2rem; padding-top: 2rem; }
   .form-intro h3 { max-width: 25rem; }

@@ -23,7 +23,7 @@
       if (input.type === 'checkbox') input.checked = v;
       else input.value = String(v);
     });
-    document.querySelectorAll('[data-tone]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.tone === values.tone)));
+    document.querySelectorAll('button[data-tone]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.tone === values.tone)));
     document.querySelectorAll('[data-toggle-preference]').forEach(button => button.setAttribute('aria-checked', String(values[button.dataset.togglePreference])));
     document.querySelector('[data-output="text"]').textContent = `${values.text}%`;
     document.querySelector('[data-output="radius"]').textContent = `${values.radius} px`;
@@ -49,7 +49,8 @@
   document.querySelectorAll('[data-preference]').forEach(input => input.addEventListener(input.type === 'range' ? 'input' : 'change', () => {
     update({ [input.dataset.preference]: input.type === 'checkbox' ? input.checked : input.type === 'range' ? Number(input.value) : input.value });
   }));
-  document.querySelectorAll('[data-tone]').forEach(button => button.addEventListener('click', () => update({ tone: button.dataset.tone })));
+  // The root also stores data-tone; only palette buttons are interactive.
+  document.querySelectorAll('button[data-tone]').forEach(button => button.addEventListener('click', () => update({ tone: button.dataset.tone })));
   document.querySelectorAll('[data-toggle-preference]').forEach(button => button.addEventListener('click', () => update({ [button.dataset.togglePreference]: !state.values[button.dataset.togglePreference] })));
   document.querySelector('[data-reset-preferences]').addEventListener('click', () => {
     update(state.defaults);

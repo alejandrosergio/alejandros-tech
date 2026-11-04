@@ -26,7 +26,8 @@ export const locales = {
       "disciplines": [
         "Desarrollo de software",
         "Automatización",
-        "IA aplicada"
+        "IA aplicada",
+        "Integraciones"
       ],
       "tagline": "Conectar ideas. Construir soluciones.",
       "go": "VER",
@@ -34,7 +35,8 @@ export const locales = {
       "disciplineDescriptions": [
         ".NET y React, del frontend a las integraciones.",
         "Power Platform para aplicaciones y procesos.",
-        "IA conectada a aplicaciones, con revisión técnica."
+        "IA conectada a aplicaciones, con revisión técnica.",
+        "APIs y sistemas conectados dentro de una solución."
       ],
       "actionsLabel": "CV y contacto"
     },
@@ -72,7 +74,8 @@ export const locales = {
       "disciplines": [
         "Software development",
         "Automation",
-        "Applied AI"
+        "Applied AI",
+        "Integrations"
       ],
       "tagline": "Connect ideas. Build solutions.",
       "go": "GO",
@@ -80,7 +83,8 @@ export const locales = {
       "disciplineDescriptions": [
         ".NET and React, from frontend to integrations.",
         "Power Platform for applications and processes.",
-        "AI connected to applications, with technical review."
+        "AI connected to applications, with technical review.",
+        "APIs and systems connected within a solution."
       ],
       "actionsLabel": "CV and contact"
     },
