@@ -25,6 +25,8 @@ Los modelos viven en `src/content/`. No se añade una página sin contenido real
 
 `interface.mjs` mantiene la equivalencia ES/EN de los controles del visitante y del formulario; `preferences.mjs` los renderiza. `theme-init.js` aplica valores acotados antes del primer render y un loader con límite. `preferences.js` controla los diálogos y la persistencia consentida. `contact.js` importa las reglas puras de `form-rules.js` y usa el endpoint público de Formspree al enviar. No hay claves ni servidor propio. Ver `CONTACT.md` para activación, datos y límites de verificación.
 
+`journey.mjs` contiene las ocho sugerencias localizadas del recorrido y su componente renderiza guía, control de subida y cursor. `journey.js` calcula contexto y progreso con un único fotograma por evento de scroll; las animaciones del cursor se detienen en reposo. No hay peticiones de red para estas funciones. `cursor` y `guideHidden` son preferencias opcionales sujetas al mismo consentimiento que el resto de ajustes. Sin JavaScript esos controles permanecen ocultos y el enlace normal del pie permite volver al principio.
+
 `brand-3d.js` genera mallas e iluminación en WebGL nativo, sin modelos ni texturas remotas. Atiende pausa, entrada táctil, teclado, visibilidad, movimiento reducido y recuperación gráfica. No es necesario para navegar o leer el sitio.
 
 ## Comprobación

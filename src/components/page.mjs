@@ -7,6 +7,7 @@ import { icon } from './icons.mjs';
 import { artwork } from './artwork.mjs';
 import { preferences, loader, contactForm } from './preferences.mjs';
 import { interfaceCopy } from '../content/interface.mjs';
+import { journey } from './journey.mjs';
 
 export const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const e = escapeHTML;
@@ -38,7 +39,8 @@ function head(lang, { title, description, paths, notFound = false, home = false 
   <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/theme-init.js"></script>
   <script src="/assets/preferences.js" defer></script>
-  <script src="/assets/site.js" defer></script>${home ? '\n  <script src="/assets/brand-3d.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
+  <script src="/assets/site.js" defer></script>
+  <script src="/assets/journey.js" defer></script>${home ? '\n  <script src="/assets/brand-3d.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
 </head>`;
 }
 
@@ -70,13 +72,14 @@ ${options.home ? `  ${loader(lang)}` : ''}
   ${content}
   ${footer(t, lang)}
   ${preferences(lang)}
+  ${journey(lang, options.home)}
 </body>
 </html>
 `;
 }
 
 function hero(t) {
-  return `<section class="hero wrap" aria-labelledby="hero-title">
+  return `<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
     <div class="hero-grid"><div class="hero-copy"><p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>${t.hero.eyebrow}</p>
       <h1 id="hero-title">${splitTitle(t.hero.heading)}</h1><p class="hero-intro">${t.hero.intro}</p>
       <div class="hero-actions"><a class="button button-primary" href="#proyectos">${t.hero.primary}${icon('arrowRight')}</a><a class="text-link" href="#sobre-mi">${t.hero.secondary}${icon('arrow')}</a></div>
@@ -126,7 +129,7 @@ function projectSection(lang, t) {
 }
 
 function processSection(t) {
-  return `<section class="process-section" aria-labelledby="process-title"><div class="wrap"><div class="process-heading" data-reveal><p class="eyebrow">${t.process.label}</p><h2 id="process-title">${t.process.title}</h2></div><ol class="process-steps">${t.process.steps.map((step, i) => `<li data-reveal><span class="process-number">0${i + 1}</span><h3>${step.title}</h3><p>${step.text}</p></li>`).join('')}</ol></div></section>`;
+  return `<section class="process-section" id="proceso" aria-labelledby="process-title"><div class="wrap"><div class="process-heading" data-reveal><p class="eyebrow">${t.process.label}</p><h2 id="process-title">${t.process.title}</h2></div><ol class="process-steps">${t.process.steps.map((step, i) => `<li data-reveal><span class="process-number">0${i + 1}</span><h3>${step.title}</h3><p>${step.text}</p></li>`).join('')}</ol></div></section>`;
 }
 
 function noteCards(lang, t, items = notes) {

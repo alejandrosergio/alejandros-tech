@@ -6,6 +6,7 @@ import { site } from '../src/content/site.mjs';
 import { routeGroups } from '../src/content/routes.mjs';
 
 export const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
+const clientFiles = ['theme-init.js', 'preferences.js', 'site.js', 'journey.js', 'brand-3d.js', 'contact.js', 'form-rules.js'];
 
 async function copyDirectory(from, to) {
   await mkdir(to, { recursive: true });
@@ -26,7 +27,7 @@ export async function build() {
   await mkdir(path.join(dist, 'en'), { recursive: true });
   await copyDirectory(path.join(root, 'public'), dist);
   await copyFile(path.join(root, 'src/styles/styles.css'), path.join(dist, 'assets/styles.css'));
-  for (const file of ['theme-init.js', 'preferences.js', 'site.js', 'brand-3d.js', 'contact.js', 'form-rules.js']) {
+  for (const file of clientFiles) {
     await copyFile(path.join(root, 'src/client', file), path.join(dist, 'assets', file));
   }
   for (const route of routeGroups) for (const lang of ['es', 'en']) {
@@ -38,7 +39,7 @@ export async function build() {
   await writeFile(path.join(dist, '404.html'), renderPage('es', { notFound: true }));
   await writeFile(path.join(dist, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${site.origin}/sitemap.xml\n`);
   await writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${routeGroups.flatMap(route => ['es', 'en'].map(lang => `<url><loc>${site.origin}${route.paths[lang]}</loc><xhtml:link rel="alternate" hreflang="es" href="${site.origin}${route.paths.es}"/><xhtml:link rel="alternate" hreflang="en" href="${site.origin}${route.paths.en}"/></url>`)).join('')}</urlset>\n`);
-  const total = (await Promise.all(['index.html', 'assets/styles.css', 'assets/site.js', 'assets/theme-init.js', 'assets/brand-3d.js', 'assets/brand-mark.svg', 'favicon.svg'].map(file => stat(path.join(dist, file))))).reduce((sum, entry) => sum + entry.size, 0);
+  const total = (await Promise.all(['index.html', 'assets/styles.css', ...clientFiles.map(file => `assets/${file}`), 'assets/brand-mark.svg', 'favicon.svg'].map(file => stat(path.join(dist, file))))).reduce((sum, entry) => sum + entry.size, 0);
   return { pages: routeGroups.flatMap(route => Object.values(route.paths)), initialAssetsBytes: total };
 }
 

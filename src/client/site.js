@@ -114,7 +114,11 @@
       const reveal = new IntersectionObserver(entries => entries.forEach(entry => {
         if (entry.isIntersecting) { entry.target.classList.add('is-visible'); reveal.unobserve(entry.target); }
       }), { threshold: .06, rootMargin: '0px 0px -20px 0px' });
-      document.querySelectorAll('[data-reveal]').forEach(item => reveal.observe(item));
+      document.querySelectorAll('[data-reveal]').forEach(item => {
+        const siblings = [...item.parentElement.children].filter(child => child.hasAttribute('data-reveal'));
+        item.style.setProperty('--reveal-delay', `${Math.min(siblings.indexOf(item), 3) * 75}ms`);
+        reveal.observe(item);
+      });
       root.classList.add('has-reveals');
       reduced.addEventListener('change', () => { if (reduced.matches) { root.classList.remove('has-reveals'); reveal.disconnect(); } });
     }

@@ -1,13 +1,13 @@
 (() => {
   const root = document.documentElement;
-  const defaults = { theme: 'system', tone: 'blue', text: 100, radius: 20, contrast: false, spacing: false, links: false, motion: false };
+  const defaults = { theme: 'system', tone: 'blue', text: 100, radius: 20, contrast: false, spacing: false, links: false, motion: false, cursor: false, guideHidden: false };
   const sanitize = value => {
     const p = { ...defaults }, data = value && typeof value === 'object' ? value : {};
     if (['system', 'light', 'dark'].includes(data.theme)) p.theme = data.theme;
     if (['blue', 'violet', 'coral', 'ocean', 'mono'].includes(data.tone)) p.tone = data.tone;
     if (Number.isFinite(data.text)) p.text = Math.round(Math.max(100, Math.min(125, data.text)) / 5) * 5;
     if (Number.isFinite(data.radius)) p.radius = Math.round(Math.max(0, Math.min(28, data.radius)) / 2) * 2;
-    for (const key of ['contrast', 'spacing', 'links', 'motion']) p[key] = data[key] === true;
+    for (const key of ['contrast', 'spacing', 'links', 'motion', 'cursor', 'guideHidden']) p[key] = data[key] === true;
     return p;
   };
   let values = { ...defaults }, consent = '';
@@ -26,7 +26,7 @@
     root.dataset.tone = values.tone;
     root.style.fontSize = `${values.text}%`;
     root.style.setProperty('--card-radius', `${values.radius}px`);
-    for (const key of ['contrast', 'spacing', 'links', 'motion']) root.dataset[key] = String(values[key]);
+    for (const key of ['contrast', 'spacing', 'links', 'motion', 'cursor', 'guideHidden']) root.dataset[key] = String(values[key]);
   };
   window.AlejandroPreferences = { defaults, sanitize, apply, get values() { return { ...values }; }, set values(v) { values = sanitize(v); }, get consent() { return consent; }, set consent(v) { consent = v; } };
   systemDark.addEventListener('change', apply); apply();

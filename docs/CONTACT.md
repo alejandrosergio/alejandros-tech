@@ -14,6 +14,8 @@ Sin JavaScript, el POST navega a Formspree, que gestiona la confirmación y cual
 
 La cuenta y el correo destino fueron verificados por el titular antes de crear el formulario. El mismo endpoint se usa para ambos idiomas. No dar por verificada la recepción únicamente por un HTTP 200 o `ok: true`: la comprobación definitiva requiere enviar desde la web publicada y comprobar el mensaje recibido en Outlook. No publicar credenciales, enlaces de verificación ni contenido de mensajes privados en GitHub. El proveedor está sujeto a los límites del plan de su cuenta; el correo directo sigue siendo una alternativa.
 
+Las primeras pruebas ES/EN desde el navegador del agente se retuvieron en Spam de Formspree. Se identificaron como las dos pruebas legítimas, se marcaron como Not Spam y ambos correos llegaron al Outlook configurado. La protección general permanece activa. Ante una consulta ausente, revisar primero las consultas retenidas en el panel y el correo no deseado de Outlook; no interpretar una respuesta positiva como garantía de paso por todos los filtros.
+
 Documentación primaria consultada el 3 de noviembre de 2026:
 
 - https://help.formspree.io/articles/building-your-form/building-an-html-form

@@ -46,6 +46,8 @@ const expired = boot({ consent: 'preferences', stored: JSON.stringify({ expires:
 assert.equal(expired.root.dataset.theme, 'light');
 const unsafe = accepted.state.sanitize({ text: 999, radius: -4, tone: 'url(evil)', theme: 'unexpected', motion: 'true' });
 assert.equal(unsafe.text, 125); assert.equal(unsafe.radius, 0); assert.equal(unsafe.tone, 'blue'); assert.equal(unsafe.theme, 'system'); assert.equal(unsafe.motion, false);
+assert.equal(accepted.state.sanitize({ cursor: 'true', guideHidden: 'true' }).cursor, false);
+assert.equal(accepted.state.sanitize({ cursor: true, guideHidden: true }).guideHidden, true);
 const loading = boot();
 assert.equal(loading.root.dataset.loading, 'true');
 const deadline = loading.timers.find(t => t.delay === 1400); assert.ok(deadline);
