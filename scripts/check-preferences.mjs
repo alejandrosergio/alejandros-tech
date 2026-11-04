@@ -1,17 +1,22 @@
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
-import { validateContact, submissionState } from '../src/client/form-rules.js';
+import { validateContact, submissionState, providerFieldErrors } from '../src/client/form-rules.js';
 
 const valid = { name: 'Sergio Hernández', email: 'person@example.com', topic: 'Project', message: 'A real message with enough detail.', consent: 'on' };
 assert.deepEqual(validateContact(valid, ['Project']), []);
 assert.deepEqual(validateContact({ name: ' ', email: 'a@@b.com', topic: 'forged', message: ' ', consent: '' }, ['Project']), ['name','email','topic','message','consent']);
 assert.ok(validateContact({ ...valid, name: 'x'.repeat(81) }, ['Project']).includes('name'));
 assert.ok(validateContact({ ...valid, message: 'x'.repeat(4001) }, ['Project']).includes('message'));
-assert.equal(submissionState(false, { success: true }), 'failed');
-assert.equal(submissionState(true, { success: 'false' }), 'failed');
-assert.equal(submissionState(true, { success: 'true' }), 'received');
-assert.equal(submissionState(true, { success: false, message: 'Please activate your form' }), 'activation');
+assert.ok(validateContact({ ...valid, consent: 'false' }, ['Project']).includes('consent'));
+assert.equal(submissionState(false, { ok: true }), 'failed');
+assert.equal(submissionState(true, { ok: false }), 'failed');
+assert.equal(submissionState(true, { ok: true }), 'received');
+assert.equal(submissionState(true, { ok: true, errors: [{ code: 'TYPE_EMAIL' }] }), 'failed');
+assert.equal(submissionState(true, null), 'failed');
+assert.equal(submissionState(true, {}), 'failed');
+assert.equal(submissionState(false, { errors: [{ code: 'INACTIVE' }] }), 'activation');
+assert.deepEqual(providerFieldErrors({ errors: [{ field: 'email' }, { field: 'email' }, { field: '__proto__' }] }), ['email']);
 
 const init = await readFile(new URL('../src/client/theme-init.js', import.meta.url), 'utf8');
 function boot({ consent = '', stored = null, blocked = false, reduced = false } = {}) {

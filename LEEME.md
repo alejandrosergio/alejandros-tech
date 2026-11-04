@@ -15,7 +15,7 @@ El inicio incorpora el A+ interactivo en WebGL, una tarjeta profesional, un expl
 
 Se mantienen temas claro y oscuro, controles por teclado, preferencias de movimiento y adaptación a pantallas estrechas. El contenido principal, las rutas y los contactos funcionan sin JavaScript. El explorador conserva una alternativa HTML y el 3D un SVG local. El panel del visitante ofrece cinco tonos, tamaño de texto, redondeado, contraste, interlineado, subrayado y movimiento reducido. Solo guarda ajustes opcionales con consentimiento. No se usan rastreadores, fuentes externas ni cuentas.
 
-El formulario bilingüe utiliza FormSubmit para enviar consultas al Outlook público. Incluye restricciones nativas, errores accesibles, consentimiento, protección honeypot, estados de envío/error y correo directo alternativo. El titular debe activar el formulario mediante el correo de FormSubmit. Una petición aceptada no demuestra recepción en la bandeja. Ver [contacto y privacidad](docs/CONTACT.md).
+El formulario bilingüe utiliza el formulario verificado de Formspree del titular para enviar consultas al Outlook público. Incluye restricciones nativas, errores accesibles, consentimiento, protección honeypot, estados de envío/error y correo directo alternativo. Formspree valida también los cinco campos antes de enviar. El endpoint público es una dirección para recibir consultas, no una credencial de API. Una petición aceptada por sí sola no demuestra recepción en la bandeja. Ver [contacto y privacidad](docs/CONTACT.md).
 
 ## Trabajar en local
 

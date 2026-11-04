@@ -56,7 +56,9 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   }
   for (const match of html.matchAll(/(?:aria-controls|aria-describedby|aria-labelledby)="([^"]+)"/g)) for (const id of match[1].split(/\s+/)) assert.ok(ids(html).includes(id), `ARIA reference: ${pathname} → ${id}`);
   if (route.type === 'home') {
-    assert.ok(html.includes(`action="https://formsubmit.co/${site.email}" method="POST"`) && html.includes('name="consent"') && html.includes('data-intro-loader'));
+    assert.ok(html.includes(`action="${site.formEndpoint}" method="POST"`) && html.includes('name="consent"') && html.includes('data-intro-loader'));
+    assert.ok(html.includes('name="_gotcha"') && html.includes(`name="_language" value="${lang}"`));
+    assert.ok(!/formsubmit\.co|FormSubmit/.test(html), 'Use the verified Formspree integration');
     for (const id of ['sobre-mi', 'tecnologias', 'trayectoria', 'proyectos', 'conocimiento', 'contacto']) assert.ok(ids(html).includes(id));
     assert.ok(html.includes(`mailto:${site.email}`) && html.includes(site.linkedin) && html.includes(site.github));
     assert.ok(html.includes(`${site.cv}${lang === 'en' ? 'en/' : ''}`));

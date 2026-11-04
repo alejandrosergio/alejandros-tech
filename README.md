@@ -15,7 +15,7 @@ The home includes the interactive WebGL A+ identity, a professional profile card
 
 Light/dark themes, keyboard controls, motion preferences and narrow screens are supported. The main content, routes and contacts work without JavaScript. The skill explorer has a static HTML alternative; the 3D identity has a local SVG fallback. A visitor panel offers five accent tones, text size, card corners, contrast, line spacing, link underlines and reduced motion. Optional settings are saved only with consent. No analytics, external fonts or account system is used.
 
-The bilingual contact form uses FormSubmit to forward enquiries to the public Outlook address. It includes native constraints, accessible field errors, consent, a honeypot, pending/error states and a direct email alternative. FormSubmit requires the owner to activate the form by email. An accepted HTTP request does not prove inbox delivery. See [contact and privacy](docs/CONTACT.md).
+The bilingual contact form uses the owner’s verified Formspree form to forward enquiries to the public Outlook address. It includes native constraints, accessible field errors, consent, a honeypot, pending/error states and a direct email alternative. Formspree also validates all five fields before sending. The public endpoint is an address for submissions, not an API credential. An accepted HTTP request alone does not prove inbox delivery. See [contact and privacy](docs/CONTACT.md).
 
 ## Run locally
 

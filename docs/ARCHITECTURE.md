@@ -23,7 +23,7 @@ Los modelos viven en `src/content/`. No se añade una página sin contenido real
 
 `site.js` controla tema, menú móvil, tarjeta, filtros de tecnologías, copiado de correo, navegación activa, progreso y revelaciones. Sin JavaScript el contenido, los enlaces, la experiencia desplegable y la lista de tecnologías siguen disponibles.
 
-`interface.mjs` mantiene la equivalencia ES/EN de los controles del visitante y del formulario; `preferences.mjs` los renderiza. `theme-init.js` aplica valores acotados antes del primer render y un loader con límite. `preferences.js` controla los diálogos y la persistencia consentida. `contact.js` importa las reglas puras de `form-rules.js` y usa el endpoint público de FormSubmit al enviar. No hay claves ni servidor propio. Ver `CONTACT.md` para activación, datos y límites de verificación.
+`interface.mjs` mantiene la equivalencia ES/EN de los controles del visitante y del formulario; `preferences.mjs` los renderiza. `theme-init.js` aplica valores acotados antes del primer render y un loader con límite. `preferences.js` controla los diálogos y la persistencia consentida. `contact.js` importa las reglas puras de `form-rules.js` y usa el endpoint público de Formspree al enviar. No hay claves ni servidor propio. Ver `CONTACT.md` para activación, datos y límites de verificación.
 
 `brand-3d.js` genera mallas e iluminación en WebGL nativo, sin modelos ni texturas remotas. Atiende pausa, entrada táctil, teclado, visibilidad, movimiento reducido y recuperación gráfica. No es necesario para navegar o leer el sitio.
 

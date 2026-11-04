@@ -5,13 +5,17 @@ export function validateContact(values, topics) {
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('email');
   if (!topics.includes(values.topic)) errors.push('topic');
   if (message.length < 20 || message.length > 4000) errors.push('message');
-  if (!values.consent) errors.push('consent');
+  if (values.consent !== 'on') errors.push('consent');
   return errors;
 }
 
 export function submissionState(responseOK, data) {
-  if (!responseOK) return 'failed';
-  if (/activat|confirm your email/i.test(data?.message || '')) return 'activation';
-  if (data?.success !== true && data?.success !== 'true') return 'failed';
-  return 'received';
+  if (data?.errors?.some?.(error => error.code === 'INACTIVE')) return 'activation';
+  return responseOK && data?.ok === true && !data.errors?.length ? 'received' : 'failed';
+}
+
+export function providerFieldErrors(data) {
+  const allowed = ['name', 'email', 'topic', 'message', 'consent'];
+  if (!Array.isArray(data?.errors)) return [];
+  return [...new Set(data.errors.map(error => error.field).filter(field => allowed.includes(field)))];
 }

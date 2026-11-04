@@ -2,7 +2,7 @@
 
 ## Purpose and current scope
 
-This is Sergio Hernández’s official professional-brand website. On 3 November 2026 the owner authorized expansion from the coming-soon page into a complete bilingual professional website, inspired by dataconale.com and retaining Alejandro’sTech’s own identity. The current scope includes the home, profile, technology explorer, experience and education, public project case studies, technical notes and contact. The owner subsequently requested visitor accessibility/appearance controls, cookie preferences, hover profile, an introductory loader and a validated form forwarding to the public Outlook address. See docs/CONTACT.md for the external FormSubmit activation and verification boundary. Further personal history and professional cases need confirmed source material.
+This is Sergio Hernández’s official professional-brand website. On 3 November 2026 the owner authorized expansion from the coming-soon page into a complete bilingual professional website, inspired by dataconale.com and retaining Alejandro’sTech’s own identity. The current scope includes the home, profile, technology explorer, experience and education, public project case studies, technical notes and contact. The owner subsequently requested visitor accessibility/appearance controls, cookie preferences, hover profile, an introductory loader and a validated form forwarding to the public Outlook address. See docs/CONTACT.md for the external Formspree activation and verification boundary. Further personal history and professional cases need confirmed source material.
 
 Use the brand **Alejandro’sTech**, with the curly apostrophe and no space before Tech. Repository and URL slugs use `alejandros-tech`.
 
