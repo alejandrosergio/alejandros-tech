@@ -21,24 +21,14 @@ export function createBustView(canvas, model, portrait) {
   const vertex=`attribute vec3 aPosition; attribute vec3 aNormal;
   uniform mat4 uModel; uniform mat4 uRestModel; uniform float uAspect; uniform float uHead; uniform float uSkin;
   varying vec3 vPosition; varying vec3 vNormal; varying vec2 vUV; varying float vFront; varying float vFaceZone;
-  float faceV(float y){
-    float v=.560+(y-.65)*.247;
-    if(y>.84)v=.607+(y-.84)*.314286;
-    if(y>1.12)v=.695+(y-1.12)*.300;
-    if(y>1.23)v=.728+(y-1.23)*.222727;
-    if(y>1.45)v=.777+(y-1.45)*.191667;
-    if(y>1.57)v=.800+(y-1.57)*.306;
-    return v;
-  }
   void main(){
     vec4 world=uModel*vec4(aPosition,1.0);vPosition=world.xyz;vNormal=mat3(uModel)*aNormal;
     vec3 restWorld=(uRestModel*vec4(aPosition,1.0)).xyz;
-    vec3 rest=restWorld-vec3(0.0,.25,8.0);
-    vUV=vec2(.5+rest.x*3.9/(-rest.z)*.5,.5+rest.y*3.9/(-rest.z)*.5);
-    // One appearance coordinate system crosses the jaw/neck seam. The prior
-    // separate head warp projected beard onto the upper neck and detached it.
     vFaceZone=max(uHead,uSkin*step(abs(restWorld.x),.30)*step(.40,restWorld.y));
-    if(vFaceZone>.5)vUV=vec2(.500+restWorld.x*.230,faceV(restWorld.y));
+    // A 2:3 appearance preserving the real source photograph uses a single
+    // calibrated projection for the face, neck, polo and crossed forearms.
+    // These are texture coordinates on closed 3D surfaces, never a photo plane.
+    vUV=vec2(.510+restWorld.x*(315.0/1024.0),1.0-(646.0-320.0*(restWorld.y-.65))/1536.0);
     vFront=(mat3(uRestModel)*aNormal).z;
     vec3 p=world.xyz-vec3(0.0,.6,8.0);gl_Position=vec4(p.x*5.1/uAspect,p.y*5.1,-1.01005*p.z-.201005,-p.z);
   }`;
@@ -51,7 +41,9 @@ export function createBustView(canvas, model, portrait) {
     float grain=sin(vPosition.x*320.0)*sin(vPosition.y*280.0)*sin(vPosition.z*300.0)*.009;
     vec3 base=uColor.rgb*mix(.060,.120,vFaceZone);
     if(uPhotoMode>.0){
-      vec4 tex=texture2D(uPortrait,vUV);float grey=dot(tex.rgb,vec3(.2126,.7152,.0722));
+      vec4 tex=texture2D(uPortrait,vUV);
+      if(tex.a<.30)discard;
+      float grey=dot(tex.rgb,vec3(.2126,.7152,.0722));
       // Oblique eyelids and curls retain appearance rather than turning into
       // black holes as their normals cross a narrow frontal-facing threshold.
       float mask=smoothstep(-.28,.16,vFront)*tex.a;
@@ -90,7 +82,7 @@ export function createBustView(canvas, model, portrait) {
       function drawNode(index,parent,parentRest) {
         const node=model.nodes[index];let local=localMatrix(node),restLocal=local;
         if(node.name==='Head')restLocal=multiply(restLocal,rotate(-.035,0));
-        if(node.name==='Head')local=multiply(local,rotate(-.035-y*.11,x*.23));
+        if(node.name==='Head')local=multiply(local,rotate(-.035-y*.11,x*.16));
         if(node.name.startsWith('Eye.'))local=multiply(local,rotate(-y*.11,x*.14));
         const world=multiply(parent,local),rest=multiply(parentRest,restLocal);
         if(node.mesh!==undefined)for(const p of meshes[node.mesh]){

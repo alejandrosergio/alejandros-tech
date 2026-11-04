@@ -20,7 +20,7 @@ La cabecera se superpone transparente sobre el inicio y adquiere fondo al alcanz
 
 ## Busto 3D y apariencia
 
-El titular eligió expresamente preparar un busto 3D estilizado basado en su foto. La geometría tiene volumen de cabeza y torso, cabello rizado, barba, camisa y manos abiertas, sin cadenas, gafas ni accesorios. La cabeza gira alrededor del cuello y cada ojo tiene su propio nodo móvil. Es una interpretación artística aproximada; no se afirma un escaneo ni una reconstrucción exacta del rostro o del cuerpo.
+El titular eligió expresamente preparar un busto 3D estilizado basado en su foto. La geometría tiene volumen de cabeza y torso, cabello rizado, barba, polo y brazos cruzados basados en la foto original, sin cadenas, gafas ni accesorios. La cabeza gira alrededor del cuello y cada ojo tiene su propio nodo móvil. Es una interpretación artística aproximada; no se afirma un escaneo ni una reconstrucción exacta del rostro o del cuerpo.
 
 La apariencia en gris se preparó con la herramienta integrada de imágenes, usando una vista frontal del modelo, la foto del titular y la referencia de iluminación. El visualizador proyecta esa apariencia sobre las coordenadas de las superficies en su pose de reposo y aplica iluminación en WebGL. La malla aporta profundidad, oclusión, articulación y cambios de superficie al girar. La apariencia y su imagen estática de respaldo se documentan en `ASSETS.md`.
 
@@ -40,7 +40,7 @@ Las rutas ES/EN, los encabezados, el salto de navegación, el foco visible, las 
 
 ## Fondo global
 
-Letter Glitch toma el preset Pixel y la paleta blanca/coral/menta/azul solicitados. Queda fijo detrás de las superficies, con velo de lectura central; se percibe en márgenes y zonas despejadas con un velo central menos opaco. No intercepta acciones ni añade letras a la lectura asistida. El pie permite pausarlo en cualquier ruta y la pausa de la escena lo detiene también. Movimiento reducido produce una textura estática; mayor contraste y colores forzados lo ocultan.
+Letter Glitch toma el preset Binary y la paleta blanca/azul/menta solicitados. Queda fijo detrás de las superficies, con velo de lectura central; se percibe en márgenes y zonas despejadas con un velo central menos opaco. No intercepta acciones ni añade letras a la lectura asistida. El pie permite pausarlo en cualquier ruta y la pausa de la escena lo detiene también. Movimiento reducido produce una textura estática; mayor contraste y colores forzados lo ocultan.
 
 ## Refinamiento de navegación y portada
 
@@ -49,3 +49,11 @@ La portada incluye accesos directos al CV web, contacto, LinkedIn, GitHub y corr
 El cursor cambia de órbita a un retículo abierto sobre enlaces y controles, sin flecha. Los tooltips son breves, se sitúan junto a sus controles y se retiran al desplazarse o pulsar Escape. El botón de accesibilidad usa el acento elegido con su color de texto de contraste.
 
 El enfoque y el proceso incorporan desplegables nativos, operables con ratón y teclado incluso sin JavaScript. Las tecnologías conservan su explorador; trayectoria, proyectos, notas y contacto mantienen interacciones ligadas a su contenido. Los textos originales no se duplican para animarlos. Con texto ampliado, la portada móvil gana altura para separar títulos y botones.
+
+## Escala y recorrido por módulo
+
+Los títulos de portada, secciones y fichas usan una escala menor. CV y contacto se integran como enlaces de texto en la franja inferior del inicio. Las redes tienen iconos de24px y objetivos de48px, separados del raíl vertical01/02/03. Cada enlace del raíl amplía su línea de16a40px y revela una explicación al pasar el cursor o enfocar. En móvil las redes se ordenan en una fila y las descripciones se muestran bajo el inicio.
+
+El círculo de la guía mide exclusivamente el avance de la sección actual, vuelve al inicio al cambiar de módulo y retrocede al subir. El porcentaje usa la misma fracción. Los ocho puntos laterales mantienen la posición global. El marcador de lectura se alinea con el desplazamiento de las anclas bajo la cabecera.
+
+El cursor decorativo queda excluido desde que existe cualquier diálogo abierto, incluso antes de ejecutarse el observador de estado. La modal y su fondo conservan cursor nativo visible.

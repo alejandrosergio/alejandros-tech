@@ -11,7 +11,7 @@ Web profesional de Sergio Hernández: desarrollo con .NET y React, Power Platfor
 
 ## Experiencia
 
-El inicio a pantalla completa incorpora un busto 3D estilizado aprobado por el titular: cabeza con volumen, ojos articulados, camisa y manos abiertas. La apariencia en gris está asistida por imagen; es una interpretación artística basada en su foto, no un escaneo ni una reconstrucción exacta. El perfil usa columnas editoriales de texto sin tarjeta fotográfica duplicada, seguidas de un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos de proyectos públicos reales y tres notas técnicas originales. Cada proyecto y nota tiene una página completa en español e inglés.
+El inicio a pantalla completa incorpora un busto 3D estilizado aprobado por el titular: cabeza con volumen, ojos articulados, polo y brazos cruzados basados en la foto original. La apariencia en gris está asistida por imagen; es una interpretación artística basada en su foto, no un escaneo ni una reconstrucción exacta. El perfil usa columnas editoriales de texto sin tarjeta fotográfica duplicada, seguidas de un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos de proyectos públicos reales y tres notas técnicas originales. Cada proyecto y nota tiene una página completa en español e inglés.
 
 El sistema visual usa carbón, blanco cálido, coral discreto y títulos serif regulares en toda la web. La navegación permanece expandida por encima de 760 px y puede ocupar varias filas; el menú se colapsa solo en móvil. Las entradas de contenido duran 1,2 segundos con escalonado limitado. El cursor conserva punto y anillo sin flecha de redirección.
 

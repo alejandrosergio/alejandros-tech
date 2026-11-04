@@ -6,10 +6,10 @@ import { letterGlitch } from '../src/components/letter-glitch.mjs';
 const source = await readFile(new URL('../src/client/letter-glitch.js', import.meta.url), 'utf8');
 
 function fixture({ width = 1440, height = 900, dpr = 2, reduced = false, forced = false, contrast = false, noCanvas = false, throws = false } = {}) {
-  const handlers = new Map(), timers = new Map(), media = new Map(), colors = new Set(); let id = 0, intersection, mutation;
+  const handlers = new Map(), timers = new Map(), media = new Map(), colors = new Set(), patterns = new Set(); let id = 0, intersection, mutation, glyph = [], cellX = 0, cellY = 0;
   const stats = { fills: 0, clears: 0, transform: [] };
   const events = name => ({ addEventListener(event, callback) { handlers.set(name + ':' + event, callback); } });
-  const context2d = { clearRect() { stats.clears++; }, fillRect() { stats.fills++; colors.add(this.fillStyle); }, setTransform(...values) { stats.transform = values; } };
+  const context2d = { clearRect(x, y) { stats.clears++; if (glyph.length) patterns.add(glyph.join('|')); glyph = []; cellX = x; cellY = y; }, fillRect(x, y, width, height) { stats.fills++; colors.add(this.fillStyle); glyph.push([x - cellX, y - cellY, width, height].map(value => value.toFixed(3)).join(',')); }, setTransform(...values) { stats.transform = values; } };
   const canvas = { width: 0, height: 0, hidden: true, getContext() { if (throws) throw new Error('Unavailable'); return noCanvas ? null : context2d; } };
   const layer = { hidden: false, dataset: {}, querySelector: () => canvas, getBoundingClientRect: () => ({ width, height }) };
   const control = { hidden: true, disabled: false, dataset: { pause: 'Pause background', play: 'Animate background' }, textContent: '', attrs: {}, ...events('control'), setAttribute(name, value) { this.attrs[name] = value; } };
@@ -26,7 +26,7 @@ function fixture({ width = 1440, height = 900, dpr = 2, reduced = false, forced 
   };
   vm.runInNewContext(source, context);
   const fire = (target, event, detail) => { const callback = handlers.get(target + ':' + event); assert.ok(callback, 'Registered ' + target + ':' + event); callback({ detail }); };
-  return { layer, canvas, control, root, document, timers, stats, colors, handlers, fire,
+  return { layer, canvas, control, root, document, timers, stats, colors, patterns, handlers, fire,
     tick() { assert.equal(timers.size, 1, 'Only one bounded timer is pending'); const [key, timer] = [...timers][0]; timers.delete(key); timer.callback(); return timer.delay; },
     visible(value) { intersection([{ isIntersecting: value }]); },
     resize(w, h) { width = w; height = h; fire('window', 'resize'); },
@@ -40,7 +40,9 @@ for (const options of [{ noCanvas: true }, { throws: true }]) {
 const normal = fixture();
 assert.equal(normal.layer.dataset.enhanced, 'true'); assert.equal(normal.control.hidden, false); assert.equal(normal.canvas.hidden, false);
 assert.ok(normal.canvas.width * normal.canvas.height <= 720000); assert.ok(Number(normal.layer.dataset.cells) <= 3600);
-assert.deepEqual([...normal.colors].sort(), ['#ffffff', '#ff6b6b', '#40ffaa', '#4079ff'].sort(), 'The requested palette is retained exactly');
+assert.deepEqual([...normal.colors].sort(), ['#ffffff', '#60a5fa', '#40ffaa'].sort(), 'The requested Binary palette is retained exactly');
+assert.equal(normal.layer.dataset.characters, '01');
+assert.equal(normal.patterns.size, 2, 'The rendered field contains only the two binary glyph shapes');
 const before = normal.stats.clears, beforeFills = normal.stats.fills, delay = normal.tick(), changed = normal.stats.clears - before;
 assert.ok(delay >= 100 && delay <= 300, 'Updates are periodic and quiet');
 assert.ok(changed > 0 && changed < Number(normal.layer.dataset.cells) / 100, 'Only a handful of cells change, not a full-screen flash');
@@ -71,7 +73,7 @@ assert.ok(mobile.canvas.width * mobile.canvas.height <= 360000); assert.ok(Numbe
 assert.ok(mobile.stats.fills / Number(mobile.layer.dataset.cells) < desktop.stats.fills / Number(desktop.layer.dataset.cells) * .85, 'The mobile glyph field is less dense');
 assert.ok(large.canvas.width * large.canvas.height <= 720000); assert.ok(Number(large.layer.dataset.cells) <= 3600, 'Large screens do not create unbounded cell arrays');
 assert.ok(!normal.handlers.has('window:pointermove') && !normal.handlers.has('document:click'), 'The decorative field does not intercept pointer navigation');
-assert.ok(letterGlitch().includes('aria-hidden="true"') && letterGlitch().includes('data-letter-canvas hidden'), 'The optional canvas is decorative and absent without enhancement');
+assert.ok(letterGlitch().includes('aria-hidden="true"') && letterGlitch().includes('data-letter-canvas hidden') && letterGlitch().includes('data-characters="01"'), 'The optional binary canvas is decorative and absent without enhancement');
 const license = await readFile(new URL('../public/assets/licenses/react-bits.txt', import.meta.url));
 assert.equal(createHash('sha1').update('blob ' + license.length + '\0').update(license).digest('hex'), '4069ce9d0ef1a712c93d6ce48ade5d5667e0f5ee', 'The full upstream license is retained verbatim');
 console.log(JSON.stringify({ letterGlitchChecks: ['requested palette and local pixels', 'bounded pixels/cells/mobile density', 'small periodic repaint', 'footer and scene pause', 'reduced static mode', 'hidden/offscreen suspension', 'contrast/forced exclusion', 'no remote runtime resources', 'upstream license'] }));

@@ -42,8 +42,9 @@
 .interaction-tooltip { position: fixed; z-index: 115; width: max-content; max-width: min(220px, calc(100vw - 16px)); padding: .45rem .65rem; border: 1px solid var(--line); border-radius: 3px; background: var(--paper); color: var(--ink); font-size: .6875rem; line-height: 1.4; letter-spacing: .015em; overflow-wrap: anywhere; pointer-events: none; box-shadow: 0 4px 18px #0002; }
 .loader-wordmark { font: 400 clamp(2rem, 7.5vw, 4.8rem)/1.1 Georgia, "Times New Roman", serif; letter-spacing: -.055em; padding-inline: 1rem; white-space: nowrap; }
 :root[data-dialog-open="true"] .hero-section-dots { visibility: hidden; pointer-events: none; }
-:root[data-cursor-active="true"] body, :root[data-cursor-active="true"] body * { cursor: none !important; }
-:root[data-cursor-active="true"] dialog, :root[data-cursor-active="true"] dialog * { cursor: auto !important; }
+:root[data-cursor-active="true"]:not([data-dialog-open="true"]):not(:has(dialog[open])) body, :root[data-cursor-active="true"]:not([data-dialog-open="true"]):not(:has(dialog[open])) body * { cursor: none !important; }
+:root:has(dialog[open]) .cursor-dot, :root:has(dialog[open]) .cursor-orbit { display: none !important; }
+dialog[open]::backdrop { cursor: default; }
 @media (max-width: 899px) {
   .journey-guide { width: min(214px, calc(100% - 92px)); left: .75rem; bottom: calc(.75rem + env(safe-area-inset-bottom)); }
   .guide-toggle { padding: .45rem .65rem; gap: .55rem; min-height: 48px; }

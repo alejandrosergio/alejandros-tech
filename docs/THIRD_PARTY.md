@@ -2,19 +2,21 @@
 
 ## Letter Glitch · React Bits
 
-El titular solicitó el fondo Letter Glitch del Background Studio, preset Pixel, con la paleta `#ffffff`, `#ff6b6b`, `#40ffaa`, `#4079ff`:
+La petición actual utiliza el preset Binary con la paleta exacta `#ffffff`, `#60a5fa`, `#40ffaa`:
 
-- Referencia: https://reactbits.dev/tools/background-studio?bg=letter-glitch&preset=pixel&glitchColors=ffffff%2Cff6b6b%2C40ffaa%2C4079ff
+- Referencia: https://reactbits.dev/tools/background-studio?bg=letter-glitch&preset=binary&glitchColors=ffffff%2C60a5fa%2C40ffaa
 - Código original: https://github.com/DavidHDev/react-bits/blob/main/src/content/Backgrounds/LetterGlitch/LetterGlitch.jsx
 - Blob del componente consultado: `19b40635beb5c05b0e3881e5dbd79e453be22ca4`.
-- Definición del preset: `src/demo/Backgrounds/presets/LetterGlitch.js`, blob `3e75aaadcb43a6f4f683517b217c03ab77a00421`.
+- Presets: `src/demo/Backgrounds/presets/LetterGlitch.js`, blob `3e75aaadcb43a6f4f683517b217c03ab77a00421`. Binary define caracteres binarios, tamaño13 y espaciado0,8.
 - Autor: David Haz, copyright 2026.
-- Licencia: MIT + Commons Clause; texto íntegro en `public/assets/licenses/react-bits.txt`, publicado en `/assets/licenses/react-bits.txt`. Blob de la licencia: `4069ce9d0ef1a712c93d6ce48ade5d5667e0f5ee`.
+- Licencia MIT + Commons Clause íntegra en `public/assets/licenses/react-bits.txt`, publicada en `/assets/licenses/react-bits.txt`. Blob de licencia: `4069ce9d0ef1a712c93d6ce48ade5d5667e0f5ee`.
 
-La web incluye una adaptación integrada de la cuadrícula y los cambios de letras del efecto. El original actual utiliza React y WebGL2. Su preset Pixel usa letras A–Z, tamaño 10, espaciado 1 y Press Start 2P. Esta adaptación conserva el alfabeto y la paleta solicitados mediante un pequeño alfabeto local de píxeles y Canvas 2D, sin descargar fuentes ni incorporar React/WebGL al fondo. Los glifos, el renderer y la integración del ciclo de vida son propios. No se distribuye el Studio ni una biblioteca reutilizable de componentes.
+La adaptación integrada dibuja exclusivamente 0/1 mediante dos glifos locales de unos 12px y Canvas2D. No descarga fuentes ni incorpora React/WebGL al fondo. Los glifos, el renderer y su integración son propios. No se distribuye el Studio ni una biblioteca reutilizable de componentes. La anterior selección Pixel/A–Z se retiró.
 
-La densidad y los cambios se reducen para conservar la lectura y compartir recursos con el busto 3D. Solo cambian unas pocas letras cada 180 ms, sin destellos extensos, reacción al clic, intro ni ráfagas. El lienzo se limita a 720.000 píxeles en escritorio y 360.000 en móvil, con cuadrícula y memoria acotadas; los temporizadores se suspenden en pestañas ocultas o fuera de vista. Movimiento reducido deja una versión estática tenue; mayor contraste y colores forzados ocultan el efecto.
+Solo cambia un grupo pequeño de dígitos cada 180ms, sin destellos extensos ni repintado completo periódico. El lienzo se limita a 720.000 píxeles en escritorio y 360.000 en móvil; cuadrícula y memoria están acotadas y los temporizadores se suspenden en pestañas ocultas o fuera de vista. Movimiento reducido deja textura estática; contraste elevado y colores forzados ocultan la decoración.
 
-El botón del pie controla solo el fondo. La pausa de la escena puede sincronizarlo mediante el evento `alejandro:background-motion` con `{ paused: boolean }`; los ajustes de movimiento del visitante tienen prioridad. Sin JavaScript o Canvas 2D queda una textura CSS decorativa. La capa está detrás del contenido, no intercepta el ratón y se oculta a tecnologías de asistencia.
+Los espacios libres y los bordes de las secciones dejan ver el fondo. Las superficies de lectura se oscurecen al ocupar el centro de la vista; se ajustan desde el mismo ciclo de desplazamiento de la guía. La pausa y las preferencias de movimiento conservan superficies estáticas.
 
-La licencia indicada corresponde a la adaptación de este efecto y no altera la titularidad de las fotografías, la marca, el contenido o el resto del código del sitio. La integración forma parte de esta web; el efecto y sus exportaciones no se ofrecen como producto o paquete independiente.
+El botón del pie pausa el fondo; la pausa de la escena puede sincronizarlo mediante `alejandro:background-motion` con `{ paused: boolean }`. La capa es decorativa, está detrás del contenido y no intercepta el ratón ni añade lectura asistida. Sin JavaScript o Canvas2D queda una textura CSS.
+
+La licencia del efecto no altera la titularidad de fotografías, marca, contenido ni el resto del código. El efecto integrado no se ofrece como producto independiente.

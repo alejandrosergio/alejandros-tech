@@ -9,11 +9,13 @@
   const sceneNav = document.querySelector('.hero-section-dots');
   const sceneLinks = sceneNav ? [...sceneNav.querySelectorAll('[data-scene-section]')] : [];
   const guide = document.querySelector('[data-journey-guide]');
+  const background = document.querySelector('[data-letter-glitch]');
   const entries = guide ? JSON.parse(guide.dataset.entries) : [];
   const sections = entries.map(entry => document.getElementById(entry.id));
   const panel = guide?.querySelector('[data-guide-panel]'), toggle = guide?.querySelector('[data-guide-toggle]');
   const wide = matchMedia('(min-width: 900px)');
   let open = false, userToggled = false, current = -1, tick = 0;
+  const surfaceFocus = new WeakMap();
   const setOpen = value => { open = value; if (panel) { panel.hidden = !value; toggle.setAttribute('aria-expanded', String(value)); } };
   if (guide) {
     setOpen(open);
@@ -42,7 +44,19 @@
     tick = 0;
     const y = window.scrollY, available = Math.max(1, root.scrollHeight - innerHeight), progress = Math.max(0, Math.min(1, y / available));
     const typing = document.activeElement?.closest('form');
-    if (header && home) header.classList.toggle('is-past-home', home.getBoundingClientRect().bottom <= header.getBoundingClientRect().bottom);
+    const headerBox = header?.getBoundingClientRect();
+    const bounds = sections.map(section => section?.getBoundingClientRect());
+    const staticSurfaces = quiet() || forced.matches || root.dataset.contrast === 'true' || background?.dataset.paused === 'true';
+    sections.forEach((section, index) => {
+      if (!section || index === 0) return;
+      const rect = bounds[index], center = innerHeight * .5;
+      const distance = rect.top > center ? rect.top - center : rect.bottom < center ? center - rect.bottom : 0;
+      const present = rect.bottom > 0 && rect.top < innerHeight;
+      const focus = staticSurfaces ? 1 : present ? .65 + .35 * Math.max(0, 1 - distance / Math.max(1, center)) : .65;
+      const value = focus.toFixed(3);
+      if (surfaceFocus.get(section) !== value) { section.style.setProperty('--module-focus', value); surfaceFocus.set(section, value); }
+    });
+    if (header && home) header.classList.toggle('is-past-home', home.getBoundingClientRect().bottom <= headerBox.bottom);
     if (up) up.hidden = Boolean(typing) || y < Math.max(450, innerHeight * .7);
     if (guide) {
       const banner = document.querySelector('[data-cookie-banner]');
@@ -50,14 +64,17 @@
       const hidden = root.dataset.guideHidden === 'true' || (banner && !banner.hidden) || Boolean(typing) || y < 220;
       guide.hidden = hidden;
       let index = 0;
-      const marker = Math.min(220, innerHeight * .3);
-      sections.forEach((section, i) => { if (section && section.getBoundingClientRect().top <= marker) index = i; });
+      const marker = Math.min(innerHeight * .35, (headerBox?.height ?? 86) + 24);
+      // Native anchor scrolling can round the destination by a fractional CSS
+      // pixel, particularly after text zoom. Treat that arrival as its section.
+      bounds.forEach((rect, i) => { if (rect && rect.top <= marker + 1) index = i; });
       if (progress >= 1) index = entries.length - 1;
-      const start = (sections[index]?.getBoundingClientRect().top ?? 0) + y + (index === 0 ? marker : 0);
-      const end = sections[index + 1] ? sections[index + 1].getBoundingClientRect().top + y : Math.max(start + 1, available + marker);
+      const start = (bounds[index]?.top ?? 0) + y + (index === 0 ? marker : 0);
+      const end = bounds[index + 1] ? bounds[index + 1].top + y : Math.max(start + 1, available + marker);
       const fraction = Math.max(0, Math.min(1, (y + marker - start) / Math.max(1, end - start)));
       const sectionProgress = progress >= 1 ? 1 : (index + fraction) / Math.max(1, entries.length);
-      guide.style.setProperty('--journey-progress', String(sectionProgress));
+      const localProgress = progress >= 1 ? 1 : fraction;
+      guide.style.setProperty('--journey-progress', String(localProgress));
       sceneNav?.style.setProperty('--section-progress', String(sectionProgress));
       if (index !== current) {
         current = index; const entry = entries[index];
@@ -70,14 +87,17 @@
         sceneLinks.forEach(link => { if (link.dataset.sceneSection === entry.id) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); });
         sections.forEach((section, i) => section?.classList.toggle('is-current-section', index === i));
       }
-      guide.querySelector('[data-guide-percent]').textContent = `${Math.round(sectionProgress * 100)}%`;
+      guide.querySelector('[data-guide-percent]').textContent = `${Math.round(localProgress * 100)}%`;
     }
   }
   const schedule = () => { if (!tick) tick = requestAnimationFrame(update); };
   window.addEventListener('scroll', schedule, { passive: true }); window.addEventListener('resize', schedule);
   document.addEventListener('focusin', schedule); document.addEventListener('focusout', schedule);
   document.addEventListener('alejandro:preferences', schedule);
+  document.addEventListener('alejandro:background-motion', schedule);
+  reduced.addEventListener('change', schedule); forced.addEventListener('change', schedule);
   if (guide) new MutationObserver(schedule).observe(document.querySelector('[data-cookie-banner]'), { attributes: true, attributeFilter: ['hidden'] });
+  if (background) new MutationObserver(schedule).observe(background, { attributes: true, attributeFilter: ['data-paused'] });
   update();
 
   // Short, explicit hints stay anchored to the control rather than covering the
@@ -141,7 +161,8 @@
   const dot = document.querySelector('[data-cursor-dot]'), orbit = document.querySelector('[data-cursor-orbit]');
   if (!dot || !orbit) return;
   let x = 0, y = 0, ox = 0, oy = 0, cursorFrame = 0, active = false;
-  const allowed = () => fine.matches && !quiet() && !forced.matches && root.dataset.cursor !== 'true';
+  const dialogOpen = () => Boolean(document.querySelector('dialog[open]'));
+  const allowed = () => fine.matches && !quiet() && !forced.matches && root.dataset.cursor !== 'true' && !dialogOpen();
   const hide = () => { active = false; delete root.dataset.cursorActive; dot.hidden = orbit.hidden = true; orbit.dataset.pressed = 'false'; cancelAnimationFrame(cursorFrame); cursorFrame = 0; };
   const frame = () => {
     cursorFrame = 0; if (!active || document.hidden || !allowed()) { hide(); return; }
@@ -166,7 +187,7 @@
   document.addEventListener('pointercancel', hide); window.addEventListener('blur', hide);
   document.addEventListener('keydown', hide); document.addEventListener('visibilitychange', hide);
   document.addEventListener('alejandro:preferences', () => { if (!allowed()) hide(); });
-  const syncDialog = () => { const opened = Boolean(document.querySelector('dialog[open]')); root.dataset.dialogOpen = String(opened); if (opened) hide(); };
+  const syncDialog = () => { const opened = dialogOpen(); root.dataset.dialogOpen = String(opened); if (opened) hide(); };
   new MutationObserver(syncDialog).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] });
   syncDialog();
   reduced.addEventListener('change', hide); fine.addEventListener('change', hide); forced.addEventListener('change', hide);

@@ -29,7 +29,7 @@ export async function build() {
   await copyDirectory(path.join(root, 'public'), dist);
   const bust=createBustGLB();
   await writeFile(path.join(dist,'assets/sergio-stylized-bust.glb'),bust);
-  const styles = await Promise.all(['styles.css', 'preferences.css', 'journey.css', 'hero.css', 'background.css', 'interactions.css', 'reveals.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
+  const styles = await Promise.all(['styles.css', 'preferences.css', 'journey.css', 'hero.css', 'background.css', 'interactions.css', 'reveals.css', 'modules.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
   await writeFile(path.join(dist, 'assets/styles.css'), styles.join('\n'));
   for (const file of clientFiles) {
     await copyFile(path.join(root, 'src/client', file), path.join(dist, 'assets', file));

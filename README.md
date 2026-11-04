@@ -11,7 +11,7 @@ Sergio Hernández’s professional website: .NET and React development, Power Pl
 
 ## Experience
 
-The full-screen home features an owner-approved stylized 3D bust with a volumetric head, articulated eyes, a shirt and open hands. Its grayscale appearance is image-assisted; it is an artistic approximation based on his photo, not a scan or an exact reconstruction. The profile uses plain editorial text without a duplicate photo card, followed by an explorer of 18 confirmed technologies, expandable experience entries, two real public project case studies and three original technical notes. Project and note detail pages have equivalent Spanish and English routes.
+The full-screen home features an owner-approved stylized 3D bust with a volumetric head, articulated eyes, a polo and crossed arms based on the original photograph. Its grayscale appearance is image-assisted; it is an artistic approximation based on his photo, not a scan or an exact reconstruction. The profile uses plain editorial text without a duplicate photo card, followed by an explorer of 18 confirmed technologies, expandable experience entries, two real public project case studies and three original technical notes. Project and note detail pages have equivalent Spanish and English routes.
 
 The visual system uses charcoal, warm off-white, restrained coral and regular serif headings throughout the website. Desktop navigation stays expanded above 760 px and may wrap; only the mobile menu collapses. Content reveals take 1.2 seconds with bounded stagger. The custom cursor keeps a dot and ring without a redirect arrow.
 

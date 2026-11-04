@@ -14,14 +14,11 @@ const TAU = Math.PI * 2;
 const add = (a, b) => a.map((v, i) => v + b[i]);
 const sub = (a, b) => a.map((v, i) => v - b[i]);
 const mul = (a, s) => a.map(v => v * s);
-const dot = (a, b) => a.reduce((s, v, i) => s + v * b[i], 0);
 const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 const normal = a => { const n = Math.hypot(...a); return n > 1e-12 ? mul(a, 1 / n) : [0, 1, 0]; };
 const mix = (a, b, t) => a + (b - a) * t;
 const clamp = (v, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, v));
 const gaussian = (x, mean, width) => Math.exp(-(((x - mean) / width) ** 2));
-const lerpPoint = (a, b, t) => a.map((v, i) => mix(v, b[i], t));
-const rotateY = (p, angle) => [p[0] * Math.cos(angle) + p[2] * Math.sin(angle), p[1], -p[0] * Math.sin(angle) + p[2] * Math.cos(angle)];
 
 const materialDefinitions = [
   ['Charcoal shirt', [.050, .055, .061], .95],
@@ -37,9 +34,10 @@ const materialDefinitions = [
   ['Dark iris', [.064, .066, .069], .46],
   ['Pupil and mouth detail', [.010, .011, .012], .52],
   ['Shirt buttons', [.12, .125, .13], .66],
-  ['Matte graphite hands', [.135, .137, .14], .95]
+  ['Matte graphite hands', [.135, .137, .14], .95],
+  ['Inner cotton crewneck', [.18, .18, .18], .97]
 ];
-const MAT = { shirt: 0, seam: 1, skin: 2, crease: 3, hair: 4, curl: 5, beard: 6, strand: 7, lips: 8, eye: 9, iris: 10, black: 11, button: 12, hand: 13 };
+const MAT = { shirt: 0, seam: 1, skin: 2, crease: 3, hair: 4, curl: 5, beard: 6, strand: 7, lips: 8, eye: 9, iris: 10, black: 11, button: 12, hand: 13, cotton: 14 };
 
 class Mesh {
   constructor(offset = [0, 0, 0]) { this.offset = offset; this.groups = new Map(); }
@@ -137,10 +135,6 @@ function sculptHead(head) {
     return [x, y, z];
   }, 96, 64);
   for (const side of [-1, 1]) {
-    ellipsoid(head, MAT.skin, [side * .454, 1.37, -.015], [.067, .133, .047], 28, 20);
-    ellipsoid(head, MAT.crease, [side * .474, 1.375, .031], [.026, .069, .009], 20, 14);
-    const helix = Array.from({ length: 15 }, (_, i) => { const a = -.8 + i / 14 * Math.PI * 1.65; return [side * (.466 + .042 * Math.cos(a)), 1.375 + .099 * Math.sin(a), .036]; });
-    tube(head, MAT.skin, helix, .009, 22, 7);
     // Eyelid hoods close over the ocular spheres, leaving a sculpted almond.
     for (const upper of [true, false]) {
       head.surface(MAT.skin, (u, v) => {
@@ -210,47 +204,49 @@ function sculptHead(head) {
   }
 }
 
-const torsoWidth = y => .72 + .21 * gaussian(y, -.2, .9) - .55 * gaussian(y, .67, .19);
-const torsoDepth = y => .245 + .115 * gaussian(y, -.05, .85) - .055 * gaussian(y, .67, .18);
-function shirtZ(x, y) { return torsoDepth(y) * Math.sqrt(Math.max(.01, 1 - (x / torsoWidth(y)) ** 2)) + .010 * Math.sin(x * 20 + y * 7) * gaussian(y, -.45, .8); }
-
 function sculptBody(body) {
-  body.surface(MAT.shirt, (u, v) => {
-    const y = mix(.65, -1.5, v), phi = u * TAU, x = torsoWidth(y) * Math.cos(phi);
-    const fold = .009 * Math.sin(phi * 9 + y * 8) * Math.sin(phi * 3 - y * 11);
-    return [x * (1 + fold), y, torsoDepth(y) * Math.sin(phi) + fold + .010 * Math.sin(x * 20 + y * 7) * gaussian(y, -.45, .8) * Math.max(0, Math.sin(phi))];
-  }, 64, 42);
-  // Close the shirt base and neck opening with small radial discs.
-  for (const [y, reverse] of [[-1.5, true], [.65, false]]) body.surface(MAT.shirt, (u, v) => [Math.cos(u * TAU) * torsoWidth(y) * v, y, Math.sin(u * TAU) * torsoDepth(y) * v], 40, 4, reverse);
-  ellipsoid(body, MAT.skin, [0, .66, -.015], [.235, .24, .205], 36, 24);
-  for (const side of [-1, 1]) {
-    const armPath = [[side * .78, .33, 0], [side * .94, -.06, .015], [side * 1.04, -.47, .055], [side * 1.02, -.71, .15], [side * 1.17, -.48, .32], [side * 1.28, -.22, .47]];
-    tube(body, MAT.shirt, armPath, t => mix(.225, .118, t) + .012 * Math.sin(t * Math.PI * 9) * Math.sin(t * Math.PI), 40, 18, .94);
-    const cuff = [armPath.at(-1), [side * 1.29, -.165, .484]];
-    tube(body, MAT.seam, cuff, .122, 4, 18, .9);
-    // Folded collar surfaces are actual shaped fabric, not a photograph.
-    body.surface(MAT.seam, (u, v) => {
-      const x = side * ((.045 + .25 * u) * (1 - .80 * v) + .125 * v);
-      return [x, .650 - .07 * u - .335 * v, .215 + .11 * u + .13 * v + .025 * Math.sin(u * Math.PI) * Math.sin(v * Math.PI)];
-    }, 12, 12, side > 0);
-    const seam = Array.from({ length: 14 }, (_, i) => { const t = i / 13, x = side * mix(.28, .70, t), y = .40 - t * .12; return [x, y, shirtZ(x, y) + .012]; });
-    tube(body, MAT.seam, seam, .006, 18, 5);
-    const transform = p => {
-      const angle = -.10, x = p[0] * Math.cos(angle) - p[1] * Math.sin(angle), y = p[0] * Math.sin(angle) + p[1] * Math.cos(angle);
-      const turned = rotateY([side * x, y, p[2]], side * .18);
-      return add([side * 1.30, -.015, .49], turned);
-    };
-    ellipsoid(body, MAT.hand, [0, 0, 0], [.132, .183, .063], 28, 22, transform);
-    for (let finger = 0; finger < 4; finger++) {
-      const x = -.092 + finger * .061, length = [.235, .315, .292, .220][finger], splay = (finger - 1.5) * .018;
-      const points = [[x, .112, .008], [x + splay * .3, .17 + length * .28, .014], [x + splay * .75, .13 + length * .72, .045], [x + splay, .12 + length, .079]].map(transform);
-      tube(body, MAT.hand, points, t => mix(.032, .021, t), 17, 8, .92);
-    }
-    tube(body, MAT.hand, [[-.105, -.058, .005], [-.17, .005, .046], [-.235, .07, .088], [-.255, .135, .11]].map(transform), t => mix(.043, .025, t), 18, 9);
+  // A single closed anatomical loft follows the real photographic silhouette.
+  // Crossed arms/hands are represented by its continuous front volume and the
+  // shared appearance, rather than disconnected balls, tubes or photo planes.
+  const slices = [
+    [-1.50,185,883,.340,-.010],
+    [-1.00,123,862,.400,-.010],
+    [-.50,100,886,.410,-.010],
+    [0,103,877,.380,-.015],
+    [.40,110,860,.330,-.020],
+    [.65,193,802,.250,-.025],
+    [.80,300,730,.180,-.030],
+    [.94,365,650,.130,-.035]
+  ].map(([y,left,right,depth,z]) => [y,(left-522)/315,(right-522)/315,depth,z]);
+  const delta=(i,k)=>(slices[i+1][k]-slices[i][k])/(slices[i+1][0]-slices[i][0]);
+  const slope=(i,k)=>{
+    if(i===0)return delta(0,k);
+    if(i===slices.length-1)return delta(i-1,k);
+    const before=delta(i-1,k),after=delta(i,k);
+    if(before*after<=0)return 0;
+    const h0=slices[i][0]-slices[i-1][0],h1=slices[i+1][0]-slices[i][0];
+    const w0=2*h1+h0,w1=h1+2*h0;
+    return (w0+w1)/(w0/before+w1/after);
+  };
+  // Monotone Hermite interpolation cannot overshoot into shoulder bubbles.
+  const value=(y,k)=>{
+    if(y<=slices[0][0])return slices[0][k];
+    if(y>=slices.at(-1)[0])return slices.at(-1)[k];
+    let i=0;while(slices[i+1][0]<y)i++;
+    const h=slices[i+1][0]-slices[i][0],t=(y-slices[i][0])/h;
+    return (2*t*t*t-3*t*t+1)*slices[i][k]+(t*t*t-2*t*t+t)*h*slope(i,k)+(-2*t*t*t+3*t*t)*slices[i+1][k]+(t*t*t-t*t)*h*slope(i+1,k);
+  };
+  const point=(u,v)=>{
+    const y=mix(.94,-1.5,v),phi=u*TAU,left=value(y,1),right=value(y,2);
+    const x=(left+right)/2+(right-left)/2*Math.cos(phi),front=Math.max(0,Math.sin(phi));
+    const armRelief=(.040*gaussian(y,-.81+.16*x,.15)*gaussian(x,-.10,.95)+.025*gaussian(y,-1.02-.12*x,.13)*gaussian(x,.05,.90))*Math.sin(v*Math.PI)**2;
+    return [x,y,value(y,4)+value(y,3)*Math.sin(phi)+armRelief*front*front];
+  };
+  body.surface(MAT.shirt,point,64,48);
+  for(const [v,reverse] of [[0,false],[1,true]]) {
+    const y=mix(.94,-1.5,v),centerX=(value(y,1)+value(y,2))/2,centerZ=value(y,4);
+    body.surface(MAT.shirt,(u,r)=>{const p=point(u,v);return [mix(centerX,p[0],r),y,mix(centerZ,p[2],r)];},64,4,reverse);
   }
-  // A raised placket and small plain buttons identify a shirt without accessories.
-  body.surface(MAT.seam, (u, v) => { const y = mix(.35, -1.49, v), x = (u - .5) * .045; return [x, y, shirtZ(x, y) + .008]; }, 4, 32, true);
-  for (const y of [.11, -.26, -.64, -1.02, -1.36]) ellipsoid(body, MAT.button, [0, y, shirtZ(0, y) + .019], [.021, .021, .009], 16, 10);
 }
 
 function sculptEye(eye) {
@@ -287,7 +283,7 @@ function packGLB(meshes) {
       const index = accessors.length; accessors.push({ bufferView: append(indices, 34963), componentType: shortIndices ? 5123 : 5125, count: indices.length, type: 'SCALAR' });
       primitives.push({ attributes: { POSITION: position, NORMAL: normalAccessor }, indices: index, material, mode: 4 });
     }
-    gltfMeshes.push({ name: ['Shirted body and relaxed open hands', 'Sculpted head curls and beard', 'Gaze eye'][meshIndex], primitives });
+    gltfMeshes.push({ name: ['Continuous clothed body and crossed-arm relief', 'Sculpted head curls and beard', 'Gaze eye'][meshIndex], primitives });
   }
   const doc = {
     asset: { version: '2.0', generator: 'Alejandro’sTech deterministic stylized bust sculptor', copyright: 'Sergio Alejandro Hernández Patiño' },
@@ -296,7 +292,7 @@ function packGLB(meshes) {
     meshes: gltfMeshes,
     materials: materialDefinitions.map(([name, color, roughness]) => ({ name, pbrMetallicRoughness: { baseColorFactor: [...color, 1], metallicFactor: .015, roughnessFactor: roughness }, doubleSided: false })),
     buffers: [{ byteLength: byteOffset }], bufferViews, accessors,
-    extras: { representation: 'Original stylized volumetric approximation, not a biometric scan or exact likeness', reference: 'Owner-approved public portrait of Sergio Hernández', style: 'Graphite sculpture, curly hair and short beard, plain shirt, relaxed open hands, no accessories', coordinates: '+Y up, +Z front', rig: BUST_RIG }
+    extras: { representation: 'Original stylized volumetric approximation, not a biometric scan or exact likeness', reference: 'Owner-approved public portrait of Sergio Hernández', style: 'Closed continuous anatomical torso loft, natural crossed-arm relief, curly hair and short beard, dark polo, no accessories', appearanceProjection: { sourceFrame: [1024,1536], centerU: .510, pixelsPerWorldX: 315, neckSourceY: 646, pixelsPerWorldY: 320, neckWorldY: .65 }, coordinates: '+Y up, +Z front', rig: BUST_RIG }
   };
   const jsonBytes = Buffer.from(JSON.stringify(doc)), json = Buffer.alloc(Math.ceil(jsonBytes.length / 4) * 4, 32); jsonBytes.copy(json);
   const binary = Buffer.concat(chunks), bin = Buffer.alloc(Math.ceil(binary.length / 4) * 4); binary.copy(bin);

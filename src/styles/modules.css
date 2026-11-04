@@ -1,0 +1,8 @@
+/* Reading surfaces fade into the shared binary backdrop between sections. */
+.home-page main > section:not(.portrait-hero) { --module-focus: 1; position: relative; isolation: isolate; background: transparent; }
+.home-page main > section:not(.portrait-hero)::before { content: ''; position: absolute; z-index: -1; pointer-events: none; inset: 0; background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--page) 96%, transparent) 16%, var(--page) 28%, var(--page) 74%, color-mix(in srgb, var(--page) 96%, transparent) 88%, transparent 100%); opacity: var(--module-focus); transition: opacity .55s ease; }
+:root[data-motion="true"] .home-page main > section::before { transition: none; }
+:root[data-contrast="true"] .home-page main > section:not(.portrait-hero)::before { opacity: 1; background: var(--page); }
+@media (prefers-reduced-motion: reduce) { .home-page main > section::before { transition: none !important; } }
+@media (forced-colors: active) { .home-page main > section:not(.portrait-hero)::before { display: none; } }
+@media print { .home-page main > section:not(.portrait-hero)::before { display: none; } }

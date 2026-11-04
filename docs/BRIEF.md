@@ -8,7 +8,7 @@ El titular eligió preparar un busto 3D estilizado basado en su foto, aceptando 
 
 ## Experiencia actual
 
-1. Inicio a pantalla completa con busto vestido, manos abiertas, cabeza y ojos articulados, nombre serif y presentación de .NET, Power Platform y React.
+1. Inicio a pantalla completa con busto vestido, brazos cruzados, cabeza y ojos articulados, nombre serif y presentación de .NET, Power Platform, React e IA.
 2. Sobre mí y enfoque profesional basado en hechos confirmados, en columnas de texto y sin repetir la tarjeta fotográfica del inicio.
 3. Explorador de tecnologías con filtros, selección y alternativa HTML.
 4. Trayectoria y formación verificadas contra el CV público.

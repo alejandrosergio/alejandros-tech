@@ -60,7 +60,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   }
   for (const match of html.matchAll(/(?:aria-controls|aria-describedby|aria-labelledby)="([^"]+)"/g)) for (const id of match[1].split(/\s+/)) assert.ok(ids(html).includes(id), `ARIA reference: ${pathname} → ${id}`);
   if (route.type === 'home') {
-    assert.ok(html.includes('data-portrait-hero') && html.includes('sergio-bust-appearance.webp') && html.includes('data-bust-stage') && html.includes('data-bust-canvas'), 'Volumetric hero retains a static alternative');
+    assert.ok(html.includes('data-portrait-hero') && html.includes('sergio-natural-appearance.webp') && html.includes('data-bust-stage') && html.includes('data-bust-canvas'), 'Volumetric hero retains a static alternative');
     assert.ok(!/brand-3d|aero-shards|data-brand-art/.test(html), 'Retired renderers are absent');
     assert.ok(html.includes('data-journey-guide'));
     assert.equal((html.match(/class="bust-fallback"/g)??[]).length,1,'One portrait alternative');
@@ -91,6 +91,7 @@ assert.ok(!/overflow-x\s*:\s*hidden/.test(css), 'Fix overflow instead of hiding 
 for (const entry of await readdir(root)) assert.ok(!/^\.env(?:\.|$)/.test(entry), 'Do not package credentials');
 await import('./check-letter-glitch.mjs');
 await import('./check-navigation.mjs');
+await import('./check-journey.mjs');
 await import('./check-bust.mjs');
 await import('./check-portrait.mjs');
 await import('./check-preferences.mjs');

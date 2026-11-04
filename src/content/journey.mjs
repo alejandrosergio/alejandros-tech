@@ -1,6 +1,6 @@
 export const journeyCopy = {
   es: {
-    label: 'Guía de navegación', navigation: 'Explorar con la guía de navegación', dismiss: 'Ocultar guía', previous: 'Sección anterior', next: 'Sección siguiente', up: 'Volver al principio', progress: 'Tu recorrido',
+    label: 'Guía de navegación', navigation: 'Explorar con la guía de navegación', dismiss: 'Ocultar guía', previous: 'Sección anterior', next: 'Sección siguiente', up: 'Volver al principio', progress: 'En esta sección',
     entries: [
       { id: 'inicio', title: 'Inicio', text: 'Bienvenido a mi mundo profesional. Empieza por conocer a la persona detrás del código.', action: 'Conóceme', href: '#sobre-mi' },
       { id: 'sobre-mi', title: 'Sobre mí', text: 'Conoce mi recorrido y cómo conecto desarrollo, integración y automatización.', action: 'Explorar tecnologías', href: '#tecnologias' },
@@ -13,7 +13,7 @@ export const journeyCopy = {
     ]
   },
   en: {
-    label: 'Navigation guide', navigation: 'Explore with the navigation guide', dismiss: 'Hide guide', previous: 'Previous section', next: 'Next section', up: 'Back to the top', progress: 'Your journey',
+    label: 'Navigation guide', navigation: 'Explore with the navigation guide', dismiss: 'Hide guide', previous: 'Previous section', next: 'Next section', up: 'Back to the top', progress: 'In this section',
     entries: [
       { id: 'inicio', title: 'Home', text: 'Welcome to my professional world. Start with the person behind the code.', action: 'Get to know me', href: '#sobre-mi' },
       { id: 'sobre-mi', title: 'About', text: 'Discover my background and how I connect development, integration and automation.', action: 'Explore technologies', href: '#tecnologias' },

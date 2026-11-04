@@ -2,7 +2,7 @@
 
 ## Base actual
 
-Web profesional completa ES/EN con sistema editorial carbón/coral, títulos serif, navegación expandida en escritorio y menú móvil. El inicio usa un busto 3D estilizado aprobado por el titular, con geometría real y apariencia asistida por imagen; cabeza y ojos articulados, camisa y manos abiertas. Se conservan controles y una alternativa estática, con la aproximación documentada.
+Web profesional completa ES/EN con sistema editorial carbón/coral, títulos serif, navegación expandida en escritorio y menú móvil. El inicio usa un busto 3D estilizado aprobado por el titular, con geometría real y apariencia asistida por imagen; cabeza y ojos articulados, polo y brazos cruzados basados en la foto original. Se conservan controles y una alternativa estática, con la aproximación documentada.
 
 Perfil y enfoque sin tarjeta fotográfica duplicada, tecnologías interactivas, trayectoria, formación, dos proyectos públicos, tres notas originales y formulario verificado. Las fichas mantienen rutas localizadas y el mismo sistema visual. Revelaciones de 1,2 segundos, guía A+, subida y cursor de punto/anillo acompañan el recorrido sin glifo de redirección. Accesibilidad, consentimiento y preferencias siguen formando parte de la base.
 
