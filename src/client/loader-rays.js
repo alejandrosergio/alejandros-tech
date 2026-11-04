@@ -255,7 +255,10 @@ void main() {
     raf = 0;
     if (!allowed()) { sync(); return; }
     if (now - lastDraw < 1000 / 30 - .5) { raf = requestAnimationFrame(frame); return; }
-    const dt = clamp((now - last) / 1000, 0, .05); last = lastDraw = now;
+    // This shader is analytical, not an iterative simulation: advance by the
+    // actual visible elapsed time so slow GPUs do not stretch the short reveal.
+    // No extra catch-up draws are needed; hidden/paused intervals reset `last`.
+    const dt = clamp((now - last) / 1000, 0, 2.4); last = lastDraw = now;
     time += dt * preset.speed; opening = Math.min(1, opening + dt / OPENING_SECONDS);
     try {
       if (dirty) { renderer.resize(); dirty = false; }
