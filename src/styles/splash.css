@@ -1,0 +1,20 @@
+/* Decorative, contained fluid layer: the portrait and all controls stay above it. */
+[data-portrait-hero] > [data-splash-cursor] {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  pointer-events: none;
+  user-select: none;
+}
+[data-portrait-hero] > [data-splash-cursor]:not([data-enhanced="true"]),
+[data-portrait-hero] > [data-splash-cursor][hidden],
+html[data-motion="true"] [data-splash-cursor],
+html[data-contrast="true"] [data-splash-cursor],
+html[data-loading="true"] [data-splash-cursor] { visibility: hidden; }
+@media (prefers-reduced-motion: reduce), (forced-colors: active), print {
+  [data-splash-cursor] { display: none !important; }
+}

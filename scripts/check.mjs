@@ -60,6 +60,8 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   }
   for (const match of html.matchAll(/(?:aria-controls|aria-describedby|aria-labelledby)="([^"]+)"/g)) for (const id of match[1].split(/\s+/)) assert.ok(ids(html).includes(id), `ARIA reference: ${pathname} → ${id}`);
   if (route.type === 'home') {
+    assert.equal((html.match(/data-splash-cursor/g) ?? []).length,1,'One optional smoke surface in the home');
+    assert.ok(html.includes('data-intensity="0.6" data-size="0.5"') && html.includes('/assets/splash-cursor.js'),'Requested Smoke settings are home-only');
     assert.ok(html.includes('data-portrait-hero') && html.includes('sergio-natural-appearance.webp'), 'Home retains its static portrait');
     assert.ok(!/data-bust|data-model|portrait\.js|bust-view|bust-glb|\.glb/.test(html), 'The paused 3D feature is absent from the public page');
     assert.ok(!/brand-3d|aero-shards|data-brand-art/.test(html), 'Retired renderers are absent');
@@ -77,7 +79,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
     assert.ok(html.includes(`${site.cv}${lang === 'en' ? 'en/' : ''}`));
     assert.ok(html.includes('class="portrait-photo"') && html.includes('data-skills-static'), 'HTML portrait and skill explorer alternatives');
     assert.ok(!/Próximamente|Coming soon|Estamos construyendo|We’re building/.test(html), 'Replace the old coming-soon homepage');
-  }
+  } else assert.ok(!html.includes('data-splash-cursor') && !html.includes('/assets/splash-cursor.js'),'Interior pages do not load the hero smoke');
 }
 const sitemap = await readFile(path.join(dist, 'sitemap.xml'), 'utf8');
 for (const lang of ['es', 'en']) for (const entry of journeyCopy[lang].entries) {
@@ -91,6 +93,7 @@ for (const feature of ['prefers-reduced-motion', 'forced-colors', ':focus-visibl
 assert.ok(!/overflow-x\s*:\s*hidden/.test(css), 'Fix overflow instead of hiding it');
 for (const entry of await readdir(root)) assert.ok(!/^\.env(?:\.|$)/.test(entry), 'Do not package credentials');
 await import('./check-letter-glitch.mjs');
+await import('./check-splash.mjs');
 await import('./check-navigation.mjs');
 await import('./check-journey.mjs');
 await import('./check-preferences.mjs');

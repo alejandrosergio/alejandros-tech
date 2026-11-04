@@ -8,9 +8,11 @@ Generación estática con Node ESM y HTML/CSS/JavaScript de navegador. Sin frame
 
 Los modelos de contenido viven en `src/content/`: `site.mjs` centraliza identidad y contactos; `locales.mjs` mantiene ES/EN; `profile.mjs`, `projects.mjs`, `notes.mjs` y `routes.mjs` contienen hechos profesionales, casos, notas y pares de rutas. No se añade una página sin contenido completo. Cada ficha mantiene su equivalente al cambiar de idioma.
 
-`src/components/page.mjs` comparte documento, metadatos, navegación y pie. `hero.mjs` renderiza la portada del busto y su alternativa estática. El perfil usa texto y una columna `.about-approach`; no conserva tarjeta fotográfica ni lógica de volteo. `scripts/build.mjs` genera doce rutas ES/EN, 404, robots, sitemap y recursos en `dist/`.
+`src/components/page.mjs` comparte documento, metadatos, navegación y pie. `hero.mjs` renderiza la fotografía estática y un lienzo decorativo de humo situado detrás. El perfil usa texto y una columna `.about-approach`; no conserva tarjeta fotográfica ni lógica de volteo. `scripts/build.mjs` genera doce rutas ES/EN, 404, robots, sitemap y recursos en `dist/`.
 
 ## Modelo y visualizador
+
+Esta sección describe el trabajo 3D archivado. El build actual no genera ni publica el GLB o sus visualizadores; la portada muestra únicamente la fotografía.
 
 `src/model/stylized-bust.mjs` esculpe determinísticamente un busto volumétrico original y devuelve un GLB 2.0. El build escribe `/assets/sergio-stylized-bust.glb`. La revisión documentada contiene 1.413.336 bytes, 40.931 vértices y 69.996 triángulos. Incluye materiales base, cuerpo vestido y brazos cruzados, cabeza con pivote en el cuello y dos ojos articulados que reutilizan su propia malla. La geometría es una aproximación estilizada aprobada por el titular, no un escaneo ni una reconstrucción exacta.
 
@@ -38,6 +40,8 @@ Los estilos fuente se separan en base/contenido (`styles.css`), controles (`pref
 
 La publicación usa el helper oficial de Sites y su commit/archivo exactos. GitHub tiene un historial independiente y se compara por contenido, conservando cambios concurrentes. El estado local de sincronización se actualiza solo tras verificar ambos destinos.
 
-`letter-glitch.js` mejora el fondo de todas las rutas mediante dígitos locales0/1 del preset Binary y cambios periódicos acotados. La pausa del pie y el evento de la escena `alejandro:background-motion` lo controlan; las preferencias de movimiento tienen prioridad. La capa queda detrás del contenido y se suspende cuando no es visible. Ver `THIRD_PARTY.md`.
+`letter-glitch.js` mejora el fondo mediante26 letras locales A–Z del preset Pixel y cambios periódicos acotados. La portada recorta su región y detiene el trabajo mientras lo tapa por completo. Las superficies negras translúcidas dejan ver letras más contrastadas en los márgenes y transiciones. La pausa del pie y las preferencias de movimiento tienen prioridad. Ver `THIRD_PARTY.md`.
+
+`splash-cursor.js` controla el humo del inicio con WebGL local y sin React ni peticiones de red. `splash.css` limita su superficie y conserva el orden visual detrás del retrato. Solo las dos portadas ES/EN cargan este controlador. El ciclo del fluido se acota y se suspende según visibilidad y ajustes de accesibilidad; el diseño estático no depende de él.
 
 La guía calcula por separado la fracción local del módulo y la posición global de la navegación. Su mismo ciclo de desplazamiento actualiza la opacidad de superficies; no añade un ciclo continuo de animación. El cursor custom se excluye en diálogos y deja libre el puntero nativo, también sobre el fondo de la modal.

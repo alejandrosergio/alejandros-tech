@@ -4,7 +4,7 @@ import { experience, skills } from '../content/profile.mjs';
 import { projects, projectPath } from '../content/projects.mjs';
 import { notes, notePath } from '../content/notes.mjs';
 import { icon } from './icons.mjs';
-import { hero } from './hero.mjs';
+import { hero, sectionNavigation } from './hero.mjs';
 import { letterGlitch } from './letter-glitch.mjs';
 import { preferences, loader, contactForm } from './preferences.mjs';
 import { interfaceCopy } from '../content/interface.mjs';
@@ -41,7 +41,7 @@ function head(lang, { title, description, paths, notFound = false, home = false 
   <script src="/assets/preferences.js" defer></script>
   <script src="/assets/site.js" defer></script>
   <script src="/assets/journey.js" defer></script>
-  <script src="/assets/letter-glitch.js" defer></script>${home ? '\n  <script src="/assets/contact.js" type="module"></script>' : ''}
+  <script src="/assets/letter-glitch.js" defer></script>${home ? '\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
 </head>`;
 }
 
@@ -72,7 +72,7 @@ ${options.home ? `  ${loader(lang)}` : ''}
   <a class="skip-link" href="#main">${t.skip}</a>
   ${header(lang, t, options.paths)}
   ${content}
-  ${footer(t, lang)}
+  ${footer(t, lang)}${options.home ? `\n  ${sectionNavigation(t)}` : ''}
   ${preferences(lang)}
   ${journey(lang, options.home)}
 </body>

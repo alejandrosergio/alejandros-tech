@@ -4,7 +4,7 @@ import { icon } from './icons.mjs';
 const e = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export function preferences(lang) {
   const t = interfaceCopy[lang];
-  return `<button class="settings-launcher" type="button" data-open-settings aria-label="${t.settings}" aria-haspopup="dialog" aria-controls="experience-settings" hidden>${icon('settings')}<span>${t.settings}</span></button>
+  return `<button class="settings-launcher" type="button" data-open-settings aria-label="${t.settings}" aria-haspopup="dialog" aria-controls="experience-settings" hidden>${icon('settings')}<span>${t.settingsShort}</span></button>
   <dialog class="settings-dialog" id="experience-settings" aria-labelledby="settings-title" data-settings>
     <div class="dialog-header"><div><p class="eyebrow">${t.settings}</p><h2 id="settings-title">${t.title}</h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="${t.close}">×</button></div><p class="dialog-intro">${t.intro}</p>
     <div class="settings-grid"><fieldset><legend>${t.appearance}</legend><label class="setting-label" for="preference-theme">${t.theme}</label><select id="preference-theme" data-preference="theme">${['system','light','dark'].map((v,i)=>`<option value="${v}">${t.themes[i]}</option>`).join('')}</select>

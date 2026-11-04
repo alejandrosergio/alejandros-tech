@@ -7,9 +7,9 @@ const source = await readFile(new URL('../src/client/letter-glitch.js', import.m
 
 function fixture({ width = 1440, height = 900, dpr = 2, reduced = false, forced = false, contrast = false, noCanvas = false, throws = false, homeBottom = null } = {}) {
   const handlers = new Map(), timers = new Map(), animationFrames = new Map(), media = new Map(), colors = new Set(), patterns = new Set(), drawings = new Map(); let id = 0, intersection, mutation, glyph = [], cellX = 0, cellY = 0;
-  const stats = { fills: 0, clears: 0, transform: [] };
+  const stats = { fills: 0, clears: 0, alphaMin: Infinity, alphaMax: 0, transform: [] };
   const events = name => ({ addEventListener(event, callback) { handlers.set(name + ':' + event, callback); } });
-  const context2d = { clearRect(x, y) { stats.clears++; if (glyph.length) patterns.add(glyph.join('|')); glyph = []; drawings.set(`${x},${y}`, glyph); cellX = x; cellY = y; }, fillRect(x, y, width, height) { stats.fills++; colors.add(this.fillStyle); glyph.push([x - cellX, y - cellY, width, height].map(value => value.toFixed(3)).join(',')); }, setTransform(...values) { stats.transform = values; } };
+  const context2d = { clearRect(x, y) { stats.clears++; if (glyph.length) patterns.add(glyph.join('|')); glyph = []; drawings.set(`${x},${y}`, glyph); cellX = x; cellY = y; }, fillRect(x, y, width, height) { stats.fills++; stats.alphaMin = Math.min(stats.alphaMin, this.globalAlpha); stats.alphaMax = Math.max(stats.alphaMax, this.globalAlpha); colors.add(this.fillStyle); glyph.push([x - cellX, y - cellY, width, height].map(value => value.toFixed(3)).join(',')); }, setTransform(...values) { stats.transform = values; } };
   const canvas = { width: 0, height: 0, hidden: true, getContext() { if (throws) throw new Error('Unavailable'); return noCanvas ? null : context2d; } };
   const layer = { hidden: false, dataset: {}, style: { setProperty(key, value) { this[key] = value; } }, querySelector: () => canvas, getBoundingClientRect: () => ({ width, height }) };
   const home = homeBottom === null ? null : { getBoundingClientRect: () => ({ bottom: homeBottom }) };
@@ -50,6 +50,7 @@ assert.ok(normal.canvas.width * normal.canvas.height <= 720000); assert.ok(Numbe
 assert.deepEqual([...normal.colors].sort(), ['#ffffff', '#ff6b6b'].sort(), 'The Pixel preset default palette is retained exactly');
 assert.equal(normal.layer.dataset.characters, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 assert.equal(normal.patterns.size, 26, 'The rendered field contains the complete A–Z pixel alphabet');
+assert.ok(normal.stats.alphaMin >= .4 && normal.stats.alphaMax <= .65, 'Pixel ink is visible but does not use opaque flashes');
 assert.equal(normal.layer.dataset.frames, '0');
 const before = normal.stats.clears, beforeFills = normal.stats.fills, previousPixels = normal.snapshot(), delay = normal.tick(), changed = normal.stats.clears - before;
 assert.ok(delay >= 100 && delay <= 150, 'The visible glitch cadence stays within 100–150ms');

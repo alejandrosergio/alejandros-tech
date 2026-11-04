@@ -82,7 +82,7 @@
     const columns = Math.ceil(width / step), rows = Math.ceil(height / step), density = compact ? .58 : .8;
     seed = 1349; cells = []; shownCells = [];
     for (let row = 0; row < rows; row++) for (let column = 0; column < columns; column++) {
-      const color = random(), cell = { x: column * step, y: row * step, shown: random() < density, glyph: Math.floor(random() * glyphs.length), color: color < .7 ? 0 : 1, alpha: .3 + random() * .22 };
+      const color = random(), cell = { x: column * step, y: row * step, shown: random() < density, glyph: Math.floor(random() * glyphs.length), color: color < .7 ? 0 : 1, alpha: .42 + random() * .22 };
       cells.push(cell); if (cell.shown) shownCells.push(cell); drawCell(cell);
     }
     layer.dataset.cells = String(cells.length); layer.dataset.characters = characters; layer.dataset.frames = String(frames); layer.dataset.changedCells = '0'; layer.dataset.enhanced = 'true'; canvas.hidden = false; dirty = false;

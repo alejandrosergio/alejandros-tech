@@ -1,4 +1,4 @@
-> Estado actual: retrato fotográfico estático; modelo 3D conservado en fuente y excluido del build y de la publicación. Fondo Letter Glitch Pixel (A–Z, blanco/coral), excluido de la portada.
+> Estado actual: retrato fotográfico estático; modelo 3D conservado en fuente y excluido del build y de la publicación. Fondo Letter Glitch Pixel (A–Z, blanco/coral), excluido de la portada. Splash Cursor Smoke gris se limita a la portada, detrás del retrato.
 
 # Diseño
 
@@ -43,6 +43,22 @@ Las rutas ES/EN, los encabezados, el salto de navegación, el foco visible, las 
 ## Fondo global
 
 Letter Glitch toma el preset Pixel y la paleta blanca/coral solicitados. Queda fijo detrás de las superficies, con velo de lectura central. La geometría real de la portada recorta su región: no aparecen letras en el inicio y la animación se pausa cuando queda completamente tapada. Fuera de la portada se revela con un borde suave; las páginas interiores mantienen el fondo. No intercepta acciones ni añade letras a la lectura asistida. El pie permite pausarlo. Movimiento reducido produce una textura estática; mayor contraste y colores forzados lo ocultan.
+
+La revisión de visibilidad conserva el negro a todo el ancho, con un velo central translúcido y menor opacidad en los márgenes. Las letras tienen más tinta y contraste, sin aumentar la superficie que cambia a la vez ni generar destellos de pantalla completa.
+
+## Humo interactivo de portada
+
+Splash Cursor utiliza el preset Smoke gris `#e4e4e7`, intensidad0,6 y tamaño0,5 del enlace del titular. Una simulación de fluido responde al puntero sin capturar clics ni gestos. Se sitúa sobre el fondo radial y detrás del retrato, los anillos, los títulos y las acciones. Solo la portada incluye el lienzo y carga su controlador; las fichas y notas no lo ejecutan.
+
+La calidad se acota por dispositivo. La pausa común, el movimiento reducido, el contraste y la visibilidad tienen prioridad. Sin JavaScript o contexto gráfico permanece el diseño estático. La procedencia y los parámetros se documentan en `THIRD_PARTY.md`.
+
+## Proporciones de portada y capa de navegación
+
+El nombre es menor y queda algo más abajo; las tres disciplinas verticales aumentan su tamaño y sus explicaciones conservan espacio propio. La invitación «Software que conecta» sube para separarse de las acciones. Los botones CV y Contacto tienen más presencia, sin la línea transversal de la franja inferior. La portada móvil reserva altura para separar nombre, redes, invitación y acciones, también al ampliar texto.
+
+Tres anillos de49/69/90vw, con límites propios, giran a distinta velocidad. En móvil se adaptan al recorte. La fotografía conserva su apariencia normal y flota solo4px, con escala1,003 y ciclo8s; pausa y movimiento reducido restauran una pose neutra.
+
+La navegación de puntos se renderiza directamente bajo `body`, con nivel43, fuera del contexto aislado de la portada y por encima de módulos y cabecera. Los diálogos abiertos la ocultan. El botón de ajustes muestra «Accesibilidad»/«Accessibility», conserva su nombre accesible completo y un objetivo mínimo de44px; en móvil utiliza solo el icono.
 
 ## Refinamiento de navegación y portada
 
