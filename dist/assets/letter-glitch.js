@@ -36,7 +36,7 @@
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   const excluded = () => forced.matches || root.dataset.contrast === 'true';
   const quiet = () => reduced.matches || root.dataset.motion === 'true';
-  const present = () => visible && !document.hidden && !excluded() && !homeOccluded;
+  const present = () => visible && !document.hidden && root.dataset.loading !== 'true' && !excluded() && !homeOccluded;
   const active = () => present() && !quiet() && !paused;
   function stop() {
     if (timer) clearTimeout(timer);
@@ -54,10 +54,10 @@
     homeOccluded = cut >= height; layer.dataset.homeOccluded = String(homeOccluded);
   }
   function scheduleHome() {
-    if (homeFrame || document.hidden) return;
+    if (homeFrame || document.hidden || root.dataset.loading === 'true') return;
     homeFrame = requestAnimationFrame(() => {
       homeFrame = 0;
-      if (document.hidden) return;
+      if (document.hidden || root.dataset.loading === 'true') return;
       const wasOccluded = homeOccluded; measureHome();
       if (wasOccluded !== homeOccluded) sync();
     });
@@ -82,7 +82,7 @@
     const columns = Math.ceil(width / step), rows = Math.ceil(height / step), density = compact ? .58 : .8;
     seed = 1349; cells = []; shownCells = [];
     for (let row = 0; row < rows; row++) for (let column = 0; column < columns; column++) {
-      const color = random(), cell = { x: column * step, y: row * step, shown: random() < density, glyph: Math.floor(random() * glyphs.length), color: color < .7 ? 0 : 1, alpha: .42 + random() * .22 };
+      const color = random(), cell = { x: column * step, y: row * step, shown: random() < density, glyph: Math.floor(random() * glyphs.length), color: color < .7 ? 0 : 1, alpha: .72 + random() * .22 };
       cells.push(cell); if (cell.shown) shownCells.push(cell); drawCell(cell);
     }
     layer.dataset.cells = String(cells.length); layer.dataset.characters = characters; layer.dataset.frames = String(frames); layer.dataset.changedCells = '0'; layer.dataset.enhanced = 'true'; canvas.hidden = false; dirty = false;
@@ -125,7 +125,7 @@
   controls.forEach(control => control.addEventListener('click', () => { paused = !paused; sync(); }));
   document.addEventListener('alejandro:background-motion', event => { if (typeof event.detail?.paused === 'boolean') { paused = event.detail.paused; sync(); } });
   document.addEventListener('alejandro:preferences', sync); document.addEventListener('visibilitychange', sync);
-  new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['data-motion', 'data-contrast'] });
+  new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['data-motion', 'data-contrast', 'data-loading'] });
   for (const media of [reduced, forced]) media.addEventListener('change', sync);
   window.addEventListener('resize', resize);
   if (home) window.addEventListener('scroll', scheduleHome, { passive: true });

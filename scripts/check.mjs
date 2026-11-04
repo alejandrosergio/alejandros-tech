@@ -50,6 +50,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   assert.equal(new Set(ids(html)).size, ids(html).length, `Unique IDs: ${pathname}`);
   assert.ok(html.includes('data-letter-glitch') && html.includes('data-background-motion'), 'Decorative background and pause control on every route');
   assert.ok(html.includes('data-settings') && html.includes('data-privacy') && html.includes('data-cookie-banner'), 'Visitor controls on every route');
+  assert.ok(html.includes('data-intro-loader') && html.includes('data-loader-rays data-preset="underwater"') && html.includes('/assets/loader-rays.js'), 'Bounded optional loader on every route');
   assert.ok(html.includes('data-scroll-top') && html.includes('data-cursor-dot'), 'Progressive navigation controls on every route');
   assert.ok(!/TODO|lorem ipsum|undefined|href=""|href="#"|codex-preview|@gmail\.com/.test(html), `Finished and private-contact-free content: ${pathname}`);
   for (const match of html.matchAll(/(?:href|src)="([^"\s]+)"/g)) {
@@ -63,13 +64,13 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
     assert.equal((html.match(/data-splash-cursor/g) ?? []).length,1,'One optional smoke surface in the home');
     assert.ok(html.includes('data-intensity="0.6" data-size="0.5"') && html.includes('/assets/splash-cursor.js'),'Requested Smoke settings are home-only');
     assert.ok(html.includes('data-portrait-hero') && html.includes('sergio-natural-appearance.webp'), 'Home retains its static portrait');
-    assert.ok(!/data-bust|data-model|portrait\.js|bust-view|bust-glb|\.glb/.test(html), 'The paused 3D feature is absent from the public page');
+    assert.ok(!/data-bust|data-model|portrait\.js|bust-view|bust-glb|\.glb/.test(html), 'The retired 3D feature is absent from the public page');
     assert.ok(!/brand-3d|aero-shards|data-brand-art/.test(html), 'Retired renderers are absent');
     assert.ok(html.includes('data-journey-guide'));
     assert.equal((html.match(/class="portrait-photo"/g)??[]).length,1,'One static portrait');
     assert.ok(!/data-profile-card|data-profile-flip/.test(html),'Duplicate portrait card removed');
     assert.ok(!html.includes('<span>↗</span></div>'),'No redirect arrow in cursor');
-    for (const file of ['sergio-stylized-bust.glb','portrait.js','bust-glb.js','bust-view.js']) await assert.rejects(access(path.join(dist,'assets',file)), 'The paused renderer is not shipped');
+    for (const file of ['sergio-stylized-bust.glb','portrait.js','bust-glb.js','bust-view.js']) await assert.rejects(access(path.join(dist,'assets',file)), 'The removed renderer cannot return to the public output');
     for (const entry of journeyCopy[lang].entries) assert.ok(ids(html).includes(entry.id), `Guide section: ${entry.id}`);
     assert.ok(html.includes(`action="${site.formEndpoint}" method="POST"`) && html.includes('name="consent"') && html.includes('data-intro-loader'));
     assert.ok(html.includes('name="_gotcha"') && html.includes(`name="_language" value="${lang}"`));
@@ -94,6 +95,7 @@ assert.ok(!/overflow-x\s*:\s*hidden/.test(css), 'Fix overflow instead of hiding 
 for (const entry of await readdir(root)) assert.ok(!/^\.env(?:\.|$)/.test(entry), 'Do not package credentials');
 await import('./check-letter-glitch.mjs');
 await import('./check-splash.mjs');
+await import('./check-loader-rays.mjs');
 await import('./check-navigation.mjs');
 await import('./check-journey.mjs');
 await import('./check-preferences.mjs');

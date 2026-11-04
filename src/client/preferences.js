@@ -1,3 +1,5 @@
+// Bind the optional settings UI to theme-init's already-sanitized state.
+// Controls work for the visit even when storage is denied or unavailable.
 (() => {
   const state = window.AlejandroPreferences;
   if (!state) return;
@@ -7,6 +9,7 @@
   const preferenceKey = 'alejandros-tech-preferences-v1';
   const period = 15552000000;
   const persist = () => {
+    // Optional preference storage follows consent, including its withdrawal.
     try {
       localStorage.removeItem('alejandros-tech-theme');
       if (state.consent === 'preferences') localStorage.setItem(preferenceKey, JSON.stringify({ values: state.values, expires: Date.now() + period }));
@@ -32,6 +35,7 @@
   };
   state.set = update;
   const open = dialog => {
+    // Keep one native modal open at a time; native focus containment is retained.
     for (const other of [settings, privacy]) if (other !== dialog && other.open) other.close();
     if (!dialog.open) dialog.showModal();
   };

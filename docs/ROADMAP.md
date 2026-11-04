@@ -1,12 +1,10 @@
-> Estado actual: retrato fotográfico estático; modelo 3D conservado en fuente y excluido del build y de la publicación. Fondo Letter Glitch Pixel (A–Z, blanco/coral).
-
 # Evolución
 
 ## Base actual
 
-Web profesional completa ES/EN con sistema editorial carbón/coral, títulos serif, navegación expandida en escritorio y menú móvil. El inicio usa un busto 3D estilizado aprobado por el titular, con geometría real y apariencia asistida por imagen; cabeza y ojos articulados, polo y brazos cruzados basados en la foto original. Se conservan controles y una alternativa estática, con la aproximación documentada.
+Web profesional completa ES/EN con sistema editorial carbón/coral, títulos serif, navegación expandida en escritorio y menú móvil. El inicio usa el retrato fotográfico preparado del titular, tres anillos, un zoom CSS lento y humo decorativo independiente. El código del antiguo busto 3D fue eliminado por petición expresa; su historial y la procedencia de la foto están referenciados en `ASSETS.md`.
 
-Perfil y enfoque sin tarjeta fotográfica duplicada, tecnologías interactivas, trayectoria, formación, dos proyectos públicos, tres notas originales y formulario verificado. Las fichas mantienen rutas localizadas y el mismo sistema visual. Revelaciones de 1,2 segundos, guía A+, subida y cursor de punto/anillo acompañan el recorrido sin glifo de redirección. Accesibilidad, consentimiento y preferencias siguen formando parte de la base.
+Perfil y enfoque sin tarjeta fotográfica duplicada, tecnologías interactivas, trayectoria, formación, dos proyectos públicos, tres notas originales y formulario verificado. Las fichas mantienen rutas localizadas y el mismo sistema visual. Revelaciones de unos 1,1 segundos, guía contextual, indicador de ocho secciones, subida y cursor de punto/anillo acompañan el recorrido sin glifo de redirección. Accesibilidad, consentimiento, preferencias y loader acotado siguen formando parte de la base.
 
 ## Próximas ampliaciones con material del titular
 
@@ -15,6 +13,5 @@ Perfil y enfoque sin tarjeta fotográfica duplicada, tecnologías interactivas, 
 - Incorporar repositorios, demostraciones y capturas de esos casos.
 - Ampliar el cuaderno con artículos, herramientas o experimentos completos.
 - Añadir certificaciones, reconocimientos o participaciones cuando estén confirmados.
-- Si el titular desea mayor precisión anatómica, sustituir la interpretación actual por un modelo personalizado con referencias de varios ángulos o captura específica, conservando la interacción y sus alternativas.
 
 No convertir estas posibilidades en afirmaciones, proyectos ficticios o secciones públicas vacías. El titular define prioridades. No hay automatizaciones recurrentes ni sincronización en segundo plano.

@@ -31,13 +31,30 @@
   };
   window.AlejandroPreferences = { defaults, sanitize, apply, get values() { return { ...values }; }, set values(v) { values = sanitize(v); }, get consent() { return consent; }, set consent(v) { consent = v; } };
   systemDark.addEventListener('change', apply); apply();
-  // The intro has a hard deadline; HTML remains usable if later scripts fail.
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !values.motion && !location.hash && /^\/(en\/)?$/.test(location.pathname)) {
+  // Each new document gets a perceptible intro, independent of later effects.
+  // The hard deadline and immediate keyboard exit keep navigation fail-open.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !values.motion) {
     root.dataset.loading = 'true';
-    const finish = () => { delete root.dataset.loading; };
-    setTimeout(finish, 1400);
-    document.addEventListener('DOMContentLoaded', () => setTimeout(finish, 180), { once: true });
-    document.addEventListener('keydown', finish, { once: true });
-    document.addEventListener('click', event => { if (event.target.closest('[data-enter-site]')) finish(); });
+    let finished = false, ready = document.readyState !== 'loading', minimumElapsed = false, minimumTimer = 0, deadlineTimer = 0;
+    const finish = () => {
+      if (finished) return;
+      finished = true; delete root.dataset.loading;
+      clearTimeout(minimumTimer); clearTimeout(deadlineTimer);
+      document.removeEventListener('DOMContentLoaded', onReady);
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('click', onClick);
+      window.removeEventListener('pageshow', onPageShow);
+    };
+    const finishWhenReady = () => { if (ready && minimumElapsed) finish(); };
+    const onReady = () => { ready = true; finishWhenReady(); };
+    const onKey = () => finish();
+    const onClick = event => { if (event.target.closest('[data-enter-site]')) finish(); };
+    const onPageShow = event => { if (event.persisted) finish(); };
+    minimumTimer = setTimeout(() => { minimumElapsed = true; finishWhenReady(); }, 1200);
+    deadlineTimer = setTimeout(finish, 2400);
+    if (!ready) document.addEventListener('DOMContentLoaded', onReady, { once: true });
+    document.addEventListener('keydown', onKey, { once: true });
+    document.addEventListener('click', onClick);
+    window.addEventListener('pageshow', onPageShow);
   }
 })();

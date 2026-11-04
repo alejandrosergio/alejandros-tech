@@ -1,10 +1,12 @@
 import { interfaceCopy } from '../content/interface.mjs';
 import { icon } from './icons.mjs';
 
+// Server-render the labels and native form/dialog semantics. Data attributes are
+// contracts with the optional preferences, loader and contact client modules.
 const e = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export function preferences(lang) {
   const t = interfaceCopy[lang];
-  return `<button class="settings-launcher" type="button" data-open-settings aria-label="${t.settings}" aria-haspopup="dialog" aria-controls="experience-settings" hidden>${icon('settings')}<span>${t.settingsShort}</span></button>
+  return `<button class="settings-launcher" type="button" data-open-settings data-tooltip aria-label="${t.settings}" aria-haspopup="dialog" aria-controls="experience-settings" hidden>${icon('settings')}</button>
   <dialog class="settings-dialog" id="experience-settings" aria-labelledby="settings-title" data-settings>
     <div class="dialog-header"><div><p class="eyebrow">${t.settings}</p><h2 id="settings-title">${t.title}</h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="${t.close}">×</button></div><p class="dialog-intro">${t.intro}</p>
     <div class="settings-grid"><fieldset><legend>${t.appearance}</legend><label class="setting-label" for="preference-theme">${t.theme}</label><select id="preference-theme" data-preference="theme">${['system','light','dark'].map((v,i)=>`<option value="${v}">${t.themes[i]}</option>`).join('')}</select>
@@ -19,11 +21,15 @@ export function preferences(lang) {
 }
 
 export function loader(lang) {
+  // theme-init owns the bounded loading interval; the decorative renderer only
+  // observes it, so a missing WebGL context cannot delay access to the page.
   const t = interfaceCopy[lang];
-  return `<div class="intro-loader" data-intro-loader><div class="loader-wordmark" aria-hidden="true">Alejandro’s<span class="wordmark-accent">Tech</span></div><p>${t.loader}</p><span class="loader-track" aria-hidden="true"></span><button type="button" data-enter-site>${t.enter} →</button></div>`;
+  return `<div class="intro-loader" data-intro-loader role="region" aria-label="${t.loader}"><canvas data-loader-rays data-preset="underwater" aria-hidden="true" hidden></canvas><div class="loader-content"><div class="loader-wordmark" aria-hidden="true">Alejandro’s<span class="wordmark-accent">Tech</span></div><p role="status">${t.loader}</p><span class="loader-track" aria-hidden="true"></span><button type="button" data-enter-site>${t.enter} →</button></div></div>`;
 }
 
 export function contactForm(lang, endpoint) {
+  // Preserve a real POST action and native constraints for the no-JavaScript path.
+  // Keep field limits aligned with the pure rules in client/form-rules.js.
   const t = interfaceCopy[lang], f = t.form;
   const field = (name, type, max, min) => `<div class="form-field"><label for="contact-${name}">${f[name]}</label><input id="contact-${name}" name="${name}" type="${type}" autocomplete="${name==='name'?'name':'email'}" required maxlength="${max}"${min?` minlength="${min}"`:''} aria-describedby="error-${name}"><span class="field-error" id="error-${name}" data-error="${name}"></span></div>`;
   return `<div class="contact-form-wrap" data-reveal><div class="form-intro"><h3>${f.label}</h3><p>${f.intro}</p><p class="form-fine">${f.required}</p></div><form class="contact-form" action="${e(endpoint)}" method="POST" data-contact-form data-messages="${e(JSON.stringify(f))}">

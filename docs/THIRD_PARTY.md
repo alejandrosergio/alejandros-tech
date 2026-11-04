@@ -37,3 +37,14 @@ La integración conserva la simulación de fluidos WebGL y adapta su ciclo de vi
 Una introducción única de1,1s se inicia tras el loader; la estela tiene una cola máxima de5,9s y después no solicita más fotogramas en reposo. El render se limita a30fps y la calidad se reduce en pantallas estrechas. El contexto WebGL2, los formatos y los shaders se comprueban antes de mostrar el lienzo; ante un fallo permanece la portada sin humo.
 
 La pausa común y las preferencias de accesibilidad prevalecen. La decoración no es necesaria para comprender o navegar la web, y el diseño estático permanece cuando el contexto gráfico no está disponible. No se distribuye un paquete o biblioteca del efecto.
+
+## Light Rays · loader Underwater
+
+- Referencia solicitada: https://reactbits.dev/tools/background-studio?bg=light-rays&preset=underwater
+- Fuente: `src/content/Backgrounds/LightRays/LightRays.jsx`, blob `8133de5fefcc6856c6e3d43a363191e30a918049`, commit `4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4` de https://github.com/DavidHDev/react-bits.
+- Presets: `src/demo/Backgrounds/presets/LightRays.js`, blob `f33e4854d9cf5861a013c9ca9ed6b2a2609c5f64`.
+- Underwater: origen superior central, velocidad0,5, apertura1, longitud3, densidad1,6, inclinación0, nitidez0,5, brillo0,6, neblina0,5, atmósfera0,7, intensidad1, atenuación1, saturación1, ruido0, distorsión0,12, opacidad1 y sin pulsación.
+- El cian de referencia se sustituye por `--accent`, el tono elegido en accesibilidad; se utiliza la variante clara del shader cuando corresponde al tema.
+- Autor y licencia: David Haz2026, MIT + Commons Clause, aviso íntegro conservado en `/assets/licenses/react-bits.txt`.
+
+La adaptación usa el shader local con un único pase WebGL2, sin React, OGL, texturas o red. La apertura visual se adapta a260ms para que se aprecie durante el loader breve. El lienzo está limitado a900.000 píxeles en escritorio y360.000 en móvil, con render máximo30fps. Al finalizar se cancelan los fotogramas, se eliminan programa/VAO y la superficie vuelve a1×1. Sin WebGL se muestra un abanico de luz CSS estático en el mismo tono. Movimiento reducido, mayor contraste y colores forzados conservan la entrada directa al contenido.

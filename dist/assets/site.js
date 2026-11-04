@@ -2,11 +2,19 @@
   const root = document.documentElement;
   const theme = document.querySelector('[data-theme-toggle]');
   if (theme) {
+    const syncThemeLabel = () => {
+      const label = root.dataset.theme === 'dark' ? theme.dataset.themeLight : theme.dataset.themeDark;
+      if (label) theme.setAttribute('aria-label', label);
+    };
+    syncThemeLabel();
     theme.hidden = false;
     theme.addEventListener('click', () => {
       const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
       window.AlejandroPreferences?.set({ theme: next });
     });
+    document.addEventListener('alejandro:preferences', syncThemeLabel);
+    // Following the system theme updates data-theme without a preference event.
+    if ('MutationObserver' in window) new MutationObserver(syncThemeLabel).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
   }
 
   const menu = document.querySelector('[data-menu-toggle]');

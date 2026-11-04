@@ -3,6 +3,8 @@ import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { build, root } from './build.mjs';
 
+// Loopback-only preview: build once at startup, then serve the generated tree.
+// Restart after source edits; production publication uses the Sites workflow.
 await build();
 const dist = path.join(root, 'dist');
 const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8', '.png': 'image/png' };
@@ -10,6 +12,7 @@ const server = createServer(async (req, res) => {
   try {
     const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
     const target = path.resolve(dist, `.${pathname}`);
+    // The separator check rejects both traversal and sibling-prefix paths.
     if (target !== dist && !target.startsWith(dist + path.sep)) { res.writeHead(403).end(); return; }
     let file = target;
     try { if ((await stat(file)).isDirectory()) file = path.join(file, 'index.html'); }

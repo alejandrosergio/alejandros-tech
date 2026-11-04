@@ -5,8 +5,8 @@ import { createHash } from 'node:crypto';
 import { letterGlitch } from '../src/components/letter-glitch.mjs';
 const source = await readFile(new URL('../src/client/letter-glitch.js', import.meta.url), 'utf8');
 
-function fixture({ width = 1440, height = 900, dpr = 2, reduced = false, forced = false, contrast = false, noCanvas = false, throws = false, homeBottom = null } = {}) {
-  const handlers = new Map(), timers = new Map(), animationFrames = new Map(), media = new Map(), colors = new Set(), patterns = new Set(), drawings = new Map(); let id = 0, intersection, mutation, glyph = [], cellX = 0, cellY = 0;
+function fixture({ width = 1440, height = 900, dpr = 2, reduced = false, forced = false, contrast = false, noCanvas = false, throws = false, homeBottom = null, loading = false } = {}) {
+  const handlers = new Map(), timers = new Map(), animationFrames = new Map(), media = new Map(), colors = new Set(), patterns = new Set(), drawings = new Map(); let id = 0, intersection, mutation, mutationFilter = [], glyph = [], cellX = 0, cellY = 0;
   const stats = { fills: 0, clears: 0, alphaMin: Infinity, alphaMax: 0, transform: [] };
   const events = name => ({ addEventListener(event, callback) { handlers.set(name + ':' + event, callback); } });
   const context2d = { clearRect(x, y) { stats.clears++; if (glyph.length) patterns.add(glyph.join('|')); glyph = []; drawings.set(`${x},${y}`, glyph); cellX = x; cellY = y; }, fillRect(x, y, width, height) { stats.fills++; stats.alphaMin = Math.min(stats.alphaMin, this.globalAlpha); stats.alphaMax = Math.max(stats.alphaMax, this.globalAlpha); colors.add(this.fillStyle); glyph.push([x - cellX, y - cellY, width, height].map(value => value.toFixed(3)).join(',')); }, setTransform(...values) { stats.transform = values; } };
@@ -14,7 +14,7 @@ function fixture({ width = 1440, height = 900, dpr = 2, reduced = false, forced 
   const layer = { hidden: false, dataset: {}, style: { setProperty(key, value) { this[key] = value; } }, querySelector: () => canvas, getBoundingClientRect: () => ({ width, height }) };
   const home = homeBottom === null ? null : { getBoundingClientRect: () => ({ bottom: homeBottom }) };
   const control = { hidden: true, disabled: false, dataset: { pause: 'Pause background', play: 'Animate background' }, textContent: '', attrs: {}, ...events('control'), setAttribute(name, value) { this.attrs[name] = value; } };
-  const root = { dataset: { contrast: String(contrast) } };
+  const root = { dataset: { contrast: String(contrast), loading: String(loading) } };
   const document = { documentElement: root, hidden: false, querySelector: selector => selector === '[data-letter-glitch]' ? layer : selector === '[data-portrait-hero]' ? home : null, querySelectorAll: () => [control], ...events('document') };
   const window = { ...events('window'), innerHeight: height, ResizeObserver: true, IntersectionObserver: true };
   const context = { document, window, devicePixelRatio: dpr,
@@ -22,7 +22,7 @@ function fixture({ width = 1440, height = 900, dpr = 2, reduced = false, forced 
     requestAnimationFrame(callback) { animationFrames.set(++id, callback); return id; }, cancelAnimationFrame(key) { animationFrames.delete(key); },
     fetch() { throw new Error('The decorative background must not make network requests'); },
     matchMedia(query) { const value = { matches: query.includes('reduced') ? reduced : forced, addEventListener(_name, callback) { this.change = callback; } }; media.set(query, value); return value; },
-    MutationObserver: class { constructor(callback) { mutation = callback; } observe() {} },
+    MutationObserver: class { constructor(callback) { mutation = callback; } observe(_target, options) { mutationFilter = options.attributeFilter ?? []; } },
     ResizeObserver: class { constructor(callback) { this.callback = callback; } observe() {} },
     IntersectionObserver: class { constructor(callback) { intersection = callback; } observe() {} }
   };
@@ -35,7 +35,7 @@ function fixture({ width = 1440, height = 900, dpr = 2, reduced = false, forced 
     visible(value) { intersection([{ isIntersecting: value }]); },
     resize(w, h) { width = w; height = h; window.innerHeight = h; fire('window', 'resize'); },
     homeAt(bottom, flush = true) { assert.ok(home, 'The fixture has a hero'); homeBottom = bottom; fire('window', 'scroll'); if (flush) flushFrames(); },
-    preference(key, value) { root.dataset[key] = value; mutation(); },
+    preference(key, value) { root.dataset[key] = value; if (mutationFilter.includes(`data-${key}`)) mutation(); },
     mediaChange(fragment, value) { const item = [...media.entries()].find(([query]) => query.includes(fragment))[1]; item.matches = value; item.change(); }
   };
 }
@@ -50,7 +50,7 @@ assert.ok(normal.canvas.width * normal.canvas.height <= 720000); assert.ok(Numbe
 assert.deepEqual([...normal.colors].sort(), ['#ffffff', '#ff6b6b'].sort(), 'The Pixel preset default palette is retained exactly');
 assert.equal(normal.layer.dataset.characters, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 assert.equal(normal.patterns.size, 26, 'The rendered field contains the complete A–Z pixel alphabet');
-assert.ok(normal.stats.alphaMin >= .4 && normal.stats.alphaMax <= .65, 'Pixel ink is visible but does not use opaque flashes');
+assert.ok(normal.stats.alphaMin >= .7 && normal.stats.alphaMax <= .95, 'Transition letters use strong ink without fully opaque flashes');
 assert.equal(normal.layer.dataset.frames, '0');
 const before = normal.stats.clears, beforeFills = normal.stats.fills, previousPixels = normal.snapshot(), delay = normal.tick(), changed = normal.stats.clears - before;
 assert.ok(delay >= 100 && delay <= 150, 'The visible glitch cadence stays within 100–150ms');
@@ -125,10 +125,27 @@ const staticHome = fixture({ reduced: true, homeBottom: 1100 });
 assert.equal(staticHome.stats.fills, 0); assert.equal(staticHome.timers.size, 0);
 staticHome.homeAt(0); assert.ok(staticHome.stats.fills > 0); assert.equal(staticHome.timers.size, 0, 'Reduced motion reveals only a static field beyond the cover');
 staticHome.homeAt(900); assert.equal(staticHome.layer.dataset.homeOccluded, 'true'); assert.equal(staticHome.timers.size, 0);
+const underLoader = fixture({ loading: true });
+assert.equal(underLoader.stats.fills, 0); assert.equal(underLoader.canvas.hidden, true); assert.equal(underLoader.timers.size, 0, 'The global loader defers invisible Canvas work');
+underLoader.preference('loading', 'false');
+assert.ok(underLoader.stats.fills > 0); assert.equal(underLoader.timers.size, 1, 'Observing the loading attribute starts the field when the overlay closes');
+underLoader.tick(); const loadedFrames = underLoader.layer.dataset.frames, loadedFills = underLoader.stats.fills;
+underLoader.preference('loading', 'true');
+assert.equal(underLoader.timers.size, 0); assert.equal(underLoader.layer.dataset.frames, loadedFrames);
+underLoader.resize(1280, 720);
+assert.equal(underLoader.stats.fills, loadedFills); assert.equal(underLoader.timers.size, 0, 'Resizing behind the loader does not paint hidden glyphs');
+underLoader.preference('loading', 'false');
+assert.ok(underLoader.stats.fills > loadedFills); assert.equal(underLoader.timers.size, 1, 'Closing the overlay refreshes a deferred resize');
+const loadedCover = fixture({ loading: true, homeBottom: 900 });
+loadedCover.homeAt(0, false); assert.equal(loadedCover.animationFrames.size, 0, 'A covered page does not schedule scroll geometry frames');
+loadedCover.preference('loading', 'false'); assert.equal(loadedCover.timers.size, 1, 'The home boundary is refreshed when the loader closes');
+const quietLoader = fixture({ loading: true, reduced: true });
+assert.equal(quietLoader.stats.fills, 0); quietLoader.preference('loading', 'false');
+assert.ok(quietLoader.stats.fills > 0); assert.equal(quietLoader.timers.size, 0, 'Reduced motion stays static after the loader closes');
 assert.ok(letterGlitch().includes('aria-hidden="true"') && letterGlitch().includes('data-letter-canvas hidden') && letterGlitch().includes('data-preset="pixel"') && letterGlitch().includes('data-characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"') && letterGlitch().includes('data-palette="#ffffff,#ff6b6b"'), 'The optional Pixel canvas is decorative and absent without enhancement');
 const css = await readFile(new URL('../src/styles/background.css', import.meta.url), 'utf8');
 assert.match(css, /\.home-page \.letter-backdrop\s*\{[^}]*clip-path:\s*inset\(var\(--letter-home-cut,\s*100%\)/, 'The homepage defaults to fully clipped decoration before JavaScript or without it');
 assert.match(css, /mask-image:\s*linear-gradient\([^}]*--letter-home-cut[^}]*36px/, 'A short gradient softly reveals only the region beyond the cover');
 const license = await readFile(new URL('../public/assets/licenses/react-bits.txt', import.meta.url));
 assert.equal(createHash('sha1').update('blob ' + license.length + '\0').update(license).digest('hex'), '4069ce9d0ef1a712c93d6ce48ade5d5667e0f5ee', 'The full upstream license is retained verbatim');
-console.log(JSON.stringify({ letterGlitchChecks: ['Pixel default palette and actual A–Z pixels', 'bounded pixels/cells/mobile density', 'perceptible 120ms glyph mutations', 'cover-region clipping and idle pause', 'footer and scene pause', 'reduced static mode', 'hidden/offscreen suspension', 'contrast/forced exclusion', 'no remote runtime resources', 'upstream license'] }));
+console.log(JSON.stringify({ letterGlitchChecks: ['Pixel default palette and actual A–Z pixels', 'bounded pixels/cells/mobile density', 'perceptible 120ms glyph mutations', 'cover-region clipping and idle pause', 'global loader suspension', 'footer and scene pause', 'reduced static mode', 'hidden/offscreen suspension', 'contrast/forced exclusion', 'no remote runtime resources', 'upstream license'] }));

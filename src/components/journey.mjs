@@ -2,6 +2,8 @@ import { journeyCopy } from '../content/journey.mjs';
 import { icon } from './icons.mjs';
 const e = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+// Emit global enhancement hooks on every route, but section-aware guidance only
+// on the home. JSON is attribute-escaped; the client decides when controls appear.
 export function journey(lang, home) {
   const t = journeyCopy[lang];
   const label = lang === 'es' ? 'Guía de navegación' : 'Navigation guide';

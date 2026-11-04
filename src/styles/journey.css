@@ -39,7 +39,7 @@
 .cursor-orbit[data-interactive="true"] .cursor-ring { opacity: .15; }
 .cursor-orbit[data-interactive="true"] .cursor-corners { opacity: 1; }
 .cursor-orbit[data-pressed="true"] .cursor-reticle { transform: scale(.82); }
-.interaction-tooltip { position: fixed; z-index: 115; width: max-content; max-width: min(220px, calc(100vw - 16px)); padding: .45rem .65rem; border: 1px solid var(--line); border-radius: 3px; background: var(--paper); color: var(--ink); font-size: .6875rem; line-height: 1.4; letter-spacing: .015em; overflow-wrap: anywhere; pointer-events: none; box-shadow: 0 4px 18px #0002; }
+.interaction-tooltip { position: fixed; z-index: 115; width: max-content; max-width: min(220px, calc(100vw - 16px)); padding: .45rem .65rem; border: 1px solid var(--accent); border-radius: 4px; background: var(--accent); color: var(--button-text); font-size: .6875rem; line-height: 1.4; letter-spacing: .015em; overflow-wrap: anywhere; pointer-events: none; box-shadow: 0 4px 18px color-mix(in srgb, var(--accent) 18%, transparent); }
 .loader-wordmark { font: 400 clamp(2rem, 7.5vw, 4.8rem)/1.1 Georgia, "Times New Roman", serif; letter-spacing: -.055em; padding-inline: 1rem; white-space: nowrap; }
 :root[data-dialog-open="true"] .hero-section-dots { visibility: hidden; pointer-events: none; }
 :root[data-cursor-active="true"]:not([data-dialog-open="true"]):not(:has(dialog[open])) body, :root[data-cursor-active="true"]:not([data-dialog-open="true"]):not(:has(dialog[open])) body * { cursor: none !important; }

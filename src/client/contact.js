@@ -1,5 +1,7 @@
 import { validateContact, submissionState, providerFieldErrors } from './form-rules.js';
 
+// Enhance the native POST form only where it exists. Validation/state decisions
+// stay in the pure rules module so browser behaviour and Node checks share them.
 const form = document.querySelector('[data-contact-form]');
 if (form) {
   const messages = JSON.parse(form.dataset.messages);
@@ -34,6 +36,8 @@ if (form) {
       showErrors(errors); return;
     }
     if (values._gotcha) return;
+    // One in-flight request prevents duplicate submissions; every exit restores
+    // the controls. Unconfirmed delivery retains the visitor's entered values.
     submitting = true; button.disabled = true; form.setAttribute('aria-busy', 'true'); label.textContent = messages.sending;
     const controller = new AbortController(), timeout = setTimeout(() => controller.abort(), 20000);
     try {
@@ -45,6 +49,7 @@ if (form) {
       const fieldErrors = providerFieldErrors(payload);
       if (fieldErrors.length) showErrors(fieldErrors);
       status.textContent = messages[result]; status.dataset.state = result;
+      // Clear fields only after the provider explicitly acknowledges success.
       if (result === 'received') form.reset();
     } catch {
       status.textContent = messages.failed; status.dataset.state = 'failed';

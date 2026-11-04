@@ -405,7 +405,7 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
 @media print {
   :root { --page: #fff !important; --paper: #fff !important; --surface: #fff !important; --ink: #000 !important; --muted: #333 !important; --line: #ccc !important; }
   body { background: #fff; color: #000; }
-  .primary-nav, .header-controls, .reading-progress, .hero-bottom, .copy-email, .skill-explorer, .article-toc { display: none !important; }
+  .primary-nav, .header-controls, .reading-progress, .copy-email, .skill-explorer, .article-toc { display: none !important; }
   .site-header, .home-page .site-header, .home-page .site-header:not(.is-past-home), .nav-enhanced .home-page .site-header { position: static; border: 0; background: #fff; color: #000; }
   .home-page .site-header:not(.is-past-home) .wordmark, .home-page .site-header:not(.is-past-home) .wordmark-accent { color: #000; }
   .wrap { width: 100%; }

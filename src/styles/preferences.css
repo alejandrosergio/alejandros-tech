@@ -17,16 +17,13 @@
 .note-card, .project-image, .case-image img, .takeaway, .skill-tile { border-radius: var(--card-radius); }
 .intro-loader { display: none; }
 :root[data-loading="true"] .intro-loader { position: fixed; inset: 0; z-index: 120; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--page); color: var(--ink); gap: 1rem; }
-.loader-sign { font-size: clamp(5rem, 18vw, 10rem); font-weight: 650; letter-spacing: -.12em; line-height: 1; padding-right: .15em; }
-.loader-sign span { color: var(--accent); }
 .intro-loader p { font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; margin: 0; }
 .loader-track { width: 140px; height: 2px; background: var(--line); position: relative; overflow: hidden; }
 .loader-track::after { content: ''; position: absolute; inset: 0; background: var(--accent); transform-origin: left; animation: intro-sweep 1.2s ease-in-out infinite; }
 .intro-loader button { min-height: 44px; padding: .5rem 1rem; border: 0; background: none; color: var(--muted); font: inherit; font-size: .75rem; }
 @keyframes intro-sweep { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
-.settings-launcher { position: fixed; bottom: 1.1rem; right: 1.1rem; z-index: 45; display: flex; align-items: center; gap: .4rem; min-height: 44px; padding: .2rem .75rem .2rem .3rem; border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--line)); border-radius: 99px; background: color-mix(in srgb, var(--paper) 96%, transparent); color: var(--ink); box-shadow: 0 6px 24px #0003, inset 0 1px 0 color-mix(in srgb, var(--ink) 7%, transparent); backdrop-filter: blur(16px); font-size: clamp(.6875rem, .75vw, .75rem); font-weight: 550; transition: border-color .25s, box-shadow .25s; }
-.settings-launcher .icon { box-sizing: content-box; width: 16px; height: 16px; padding: 7px; border-radius: 50%; background: color-mix(in srgb, var(--accent) 13%, var(--paper)); color: var(--accent); }
-.settings-launcher::after { content: ''; width: 3px; height: 3px; margin-left: .1rem; border-radius: 50%; background: var(--accent); }
+.settings-launcher { position: fixed; bottom: 1.1rem; right: 1.1rem; z-index: 45; display: grid; place-items: center; width: 46px; min-height: 46px; padding: 0; border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--line)); border-radius: 50%; background: color-mix(in srgb, var(--paper) 96%, transparent); color: var(--accent); box-shadow: 0 6px 24px #0003, inset 0 1px 0 color-mix(in srgb, var(--ink) 7%, transparent); backdrop-filter: blur(16px); transition: border-color .25s, box-shadow .25s; }
+.settings-launcher .icon { box-sizing: content-box; width: 20px; height: 20px; padding: 7px; border-radius: 50%; background: color-mix(in srgb, var(--accent) 10%, var(--paper)); color: var(--accent); }
 .settings-launcher:hover, .settings-launcher:focus-visible { border-color: var(--accent); box-shadow: 0 6px 24px #0003, 0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent); }
 .settings-dialog { width: min(880px, calc(100% - 32px)); max-height: calc(100dvh - 48px); margin: auto; padding: clamp(1.2rem, 4vw, 2.5rem); border: 1px solid var(--line); border-radius: 6px; background: var(--paper); color: var(--ink); box-shadow: 0 30px 100px #0005; overflow-y: auto; overscroll-behavior: contain; }
 .settings-dialog::backdrop { background: #09090bc9; backdrop-filter: blur(7px); }
@@ -101,9 +98,7 @@ button:disabled { cursor: default; opacity: .65; }
 :root[data-motion="true"] [data-reveal] { opacity: 1 !important; transform: none !important; }
 :root[data-motion="true"] .intro-loader { display: none; }
 @media (max-width: 760px) {
-  .settings-launcher { width: 44px; padding: 0; justify-content: center; right: .75rem; bottom: .75rem; }
-  .settings-launcher > span { display: none; }
-  .settings-launcher::after { display: none; }
+  .settings-launcher { width: 44px; min-height: 44px; right: .75rem; bottom: .75rem; }
   .settings-grid { grid-template-columns: 1fr; gap: 2rem; }
   .settings-dialog { max-height: calc(100dvh - 24px); }
   .cookie-banner { left: .75rem; bottom: .75rem; width: calc(100% - 4.5rem); padding: 1rem; }

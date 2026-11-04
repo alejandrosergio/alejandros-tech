@@ -2,10 +2,10 @@
 .home-page { --content-gutter: 48px; --module-paper: var(--page); }
 :root[data-theme="dark"] .home-page { --module-paper: #080809; }
 .home-page main > section.wrap { width: 100%; margin-inline: 0; padding-inline: max(var(--content-gutter), calc((100% - 1280px) / 2)); }
-.home-page main > section:not(.portrait-hero) { --module-focus: 1; --module-edge: max(var(--content-gutter), calc((100% - 1280px) / 2)); position: relative; isolation: isolate; background: transparent; }
-/* Preserve the full-width black base while leaving the fixed letters visible
-   in gutters and section transitions. The central veil protects reading. */
-.home-page main > section:not(.portrait-hero)::before { content: ''; position: absolute; z-index: -1; pointer-events: none; inset: 0; background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--module-paper) 68%, transparent) 12%, color-mix(in srgb, var(--module-paper) 78%, transparent) 22%, color-mix(in srgb, var(--module-paper) 78%, transparent) 80%, color-mix(in srgb, var(--module-paper) 68%, transparent) 90%, transparent 100%); mask-image: linear-gradient(90deg, #0005, #000 calc(var(--module-edge) + 24px), #000 calc(100% - var(--module-edge) - 24px), #0005); opacity: var(--module-focus); transition: opacity .55s ease; }
+.home-page main > section:not(.portrait-hero) { --module-focus: 1; position: relative; isolation: isolate; background: transparent; }
+/* The full-width reading area stays almost opaque, including its gutters.
+   Only the short padding transitions reveal the stronger letters below. */
+.home-page main > section:not(.portrait-hero)::before { content: ''; position: absolute; z-index: -1; pointer-events: none; inset: 0; background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--module-paper) 99%, transparent) min(12%, 72px), color-mix(in srgb, var(--module-paper) 99%, transparent) max(88%, calc(100% - 72px)), transparent 100%); opacity: clamp(.99, var(--module-focus), 1); transition: opacity .55s ease; }
 /* Only hide the chrome when the real section navigation enhancement is ready.
    Wheel, touch, keyboard, anchors and dialog scrollbars remain native. */
 .nav-enhanced:has(.hero-section-dots) { scrollbar-width: none; }

@@ -1,5 +1,3 @@
-> Estado actual: retrato fotográfico estático; modelo 3D conservado en fuente y excluido del build y de la publicación. Fondo Letter Glitch Pixel (A–Z, blanco/coral).
-
 # Alejandro’sTech
 
 **Español** · [English](README.md)
@@ -13,11 +11,11 @@ Web profesional de Sergio Hernández: desarrollo con .NET y React, Power Platfor
 
 ## Experiencia
 
-El inicio a pantalla completa incorpora un busto 3D estilizado aprobado por el titular: cabeza con volumen, ojos articulados, polo y brazos cruzados basados en la foto original. La apariencia en gris está asistida por imagen; es una interpretación artística basada en su foto, no un escaneo ni una reconstrucción exacta. El perfil usa columnas editoriales de texto sin tarjeta fotográfica duplicada, seguidas de un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos de proyectos públicos reales y tres notas técnicas originales. Cada proyecto y nota tiene una página completa en español e inglés.
+El inicio a pantalla completa incorpora un retrato fotográfico en gris, tres anillos de giro lento y un acercamiento suave de la imagen. La foto es un recorte asistido del retrato de estudio original del titular; su preparación está documentada en [recursos visuales](docs/ASSETS.md). El generador, visualizador y pruebas del antiguo 3D se han eliminado por petición del titular. El perfil usa columnas editoriales de texto sin tarjeta fotográfica duplicada, seguidas de un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos de proyectos públicos reales y tres notas técnicas originales. Cada proyecto y nota tiene una página completa en español e inglés.
 
-El sistema visual usa carbón, blanco cálido, coral discreto y títulos serif regulares en toda la web. La navegación permanece expandida por encima de 760 px y puede ocupar varias filas; el menú se colapsa solo en móvil. Las entradas de contenido duran 1,2 segundos con escalonado limitado. El cursor conserva punto y anillo sin flecha de redirección.
+El sistema visual usa carbón, blanco cálido, coral discreto y títulos serif regulares en toda la web. La navegación permanece expandida por encima de 760 px y puede ocupar varias filas; el menú se colapsa solo en móvil. Las entradas de contenido duran unos 1,1 segundos con escalonado limitado. El cursor conserva punto y anillo sin flecha de redirección.
 
-Se mantienen temas claro y oscuro, controles por teclado, preferencias de movimiento y adaptación a pantallas estrechas. El contenido principal, las rutas y los contactos funcionan sin JavaScript. El explorador conserva HTML estático y el busto una imagen local de respaldo. El panel ofrece cinco tonos, tamaño de texto, redondeado, contraste, interlineado, subrayado y movimiento reducido. La primera visita parte de oscuro/coral/6 px y se respetan elecciones guardadas.
+Se mantienen temas claro y oscuro, controles por teclado, preferencias de movimiento y adaptación a pantallas estrechas. El contenido principal, las rutas, el retrato y los contactos funcionan sin JavaScript. El explorador conserva HTML estático. El panel ofrece cinco tonos, tamaño de texto, redondeado, contraste, interlineado, subrayado y movimiento reducido. La primera visita parte de oscuro/coral/6 px y se respetan elecciones guardadas. Los movimientos decorativos respetan pausa, movimiento reducido, visibilidad y contraste.
 
 Una guía de navegación sigue las ocho secciones del inicio con sugerencias contextuales; un botón de subida acompaña la navegación. La guía se puede ocultar y el cursor del sistema se puede restaurar. Solo se guardan ajustes opcionales con consentimiento. No se usan rastreadores, fuentes externas ni cuentas.
 
@@ -39,15 +37,14 @@ También se pueden ejecutar `node scripts/build.mjs`, `node scripts/check.mjs` y
 
 - `src/content/`: identidad pública, traducciones, hechos profesionales, proyectos, notas y pares de rutas.
 - `src/components/`: generadores HTML compartidos y portada editorial.
-- `src/client/`: mejoras progresivas, lector GLB local acotado, visualizador WebGL nativo y control del busto.
-- `src/model/`: autoría determinista del busto GLB volumétrico con articulación por nodos.
+- `src/client/`: mejoras progresivas de navegación, preferencias, formulario, movimiento y fondos decorativos.
 - `src/styles/`: variables visuales, composición y estilos adaptables.
-- `public/`: marca, apariencia/respaldo del busto, foto original conservada como procedencia y vistas reales de proyectos.
+- `public/`: fotografía preparada del inicio, retrato original también usado en las firmas de notas, capturas de proyectos y avisos locales de atribución.
 - `scripts/`: generación determinista, comprobaciones y vista local.
 - `dist/`: salida generada y guardada para comparar contenidos.
 - `docs/`: alcance, diseño, procedencia del contenido, arquitectura y publicación.
 
-Consultar la [procedencia del busto y su apariencia](docs/ASSETS.md) para geometría, foto fuente, preparación de imagen y límites de representación. Leer [AGENTS.md](AGENTS.md) y el [flujo de publicación](docs/PUBLISHING.md). Editar las fuentes y regenerar `dist/`, sin modificar manualmente esa salida.
+Consultar la [procedencia de los recursos visuales](docs/ASSETS.md) para la foto fuente, su preparación y la implementación histórica. Leer [AGENTS.md](AGENTS.md) y el [flujo de publicación](docs/PUBLISHING.md). Editar las fuentes y regenerar `dist/`, sin modificar manualmente esa salida.
 
 Cada cambio solicitado se publica en el Site existente y se guarda en GitHub, verificando ambos resultados. Sus historiales Git son independientes. Un push a GitHub por sí solo no publica el Site. No hay sincronización permanente.
 
@@ -57,4 +54,4 @@ El CV conserva su proyecto y Site independientes. Es una referencia factual; man
 
 Copyright © 2026 Alejandro’sTech. Todos los derechos reservados. No se concede una licencia de código abierto para la web, la marca o los recursos personales.
 
-El fondo global Pixel Letter Glitch usa glifos locales y la paleta blanca/coral/menta/azul solicitada. Queda detrás del contenido, con pausa en el pie y respeto a movimiento reducido; atribución en [THIRD_PARTY.md](docs/THIRD_PARTY.md).
+Pixel Letter Glitch usa letras locales A–Z en blanco/coral fuera de la portada. Splash Cursor Smoke decora solo el inicio detrás de la fotografía. Light Rays Underwater aparece en el loader introductorio acotado. Estos efectos locales conservan sus controles de pausa y movimiento; atribución en [THIRD_PARTY.md](docs/THIRD_PARTY.md).

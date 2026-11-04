@@ -10,7 +10,7 @@ import { preferences, loader, contactForm } from './preferences.mjs';
 import { interfaceCopy } from '../content/interface.mjs';
 import { journey } from './journey.mjs';
 
-export const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const e = escapeHTML;
 const cvURL = lang => site.cv + (lang === 'en' ? 'en/' : '');
 const mailURL = t => `mailto:${site.email}?subject=${encodeURIComponent(t.contact.subject)}`;
@@ -39,6 +39,7 @@ function head(lang, { title, description, paths, notFound = false, home = false 
   <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/theme-init.js"></script>
   <script src="/assets/preferences.js" defer></script>
+  <script src="/assets/loader-rays.js" defer></script>
   <script src="/assets/site.js" defer></script>
   <script src="/assets/journey.js" defer></script>
   <script src="/assets/letter-glitch.js" defer></script>${home ? '\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
@@ -51,7 +52,7 @@ function header(lang, t, paths) {
       <a class="wordmark" href="${t.path}" aria-label="${site.name}"><span>Alejandro’s<span class="wordmark-accent">Tech</span></span></a>
       <nav class="primary-nav" id="primary-nav" aria-label="${t.navLabel}" data-primary-nav>${t.nav.map(n => `<a href="${t.path}#${n.id}" data-nav-section="${n.id}">${n.label}</a>`).join('')}<a class="nav-contact" href="${t.path}#contacto">${t.contactNav}${icon('arrow')}</a></nav>
       <div class="header-controls"><nav class="languages" aria-label="${t.languages}"><a href="${paths.es}" lang="es" hreflang="es" data-tooltip="Español"${lang === 'es' ? ' aria-current="page"' : ''}>ES</a><a href="${paths.en}" lang="en" hreflang="en" data-tooltip="English"${lang === 'en' ? ' aria-current="page"' : ''}>EN</a></nav>
-      <button class="theme-button" type="button" data-theme-toggle data-tooltip aria-label="${t.themeLabel}" hidden>${icon('moon', 'moon-icon')}${icon('sun', 'sun-icon')}</button>
+      <button class="theme-button" type="button" data-theme-toggle data-theme-light="${t.themeLight}" data-theme-dark="${t.themeDark}" data-tooltip aria-label="${t.themeLight}" hidden>${icon('moon', 'moon-icon')}${icon('sun', 'sun-icon')}</button>
       <button class="menu-button" type="button" data-menu-toggle data-tooltip data-open="${t.menu}" data-close="${t.closeMenu}" aria-label="${t.menu}" aria-expanded="false" aria-controls="primary-nav" hidden><span></span><span></span></button></div>
     </div><div class="reading-progress" aria-hidden="true" data-reading-progress></div>
   </header>`;
@@ -68,7 +69,7 @@ function document(lang, content, options) {
 ${head(lang, options)}
 <body${options.home ? ' class="home-page"' : ' class="detail-page"'}>
   ${letterGlitch()}
-${options.home ? `  ${loader(lang)}` : ''}
+  ${loader(lang)}
   <a class="skip-link" href="#main">${t.skip}</a>
   ${header(lang, t, options.paths)}
   ${content}
@@ -82,7 +83,7 @@ ${options.home ? `  ${loader(lang)}` : ''}
 
 function about(lang, t) {
   return `<section class="section about-section wrap" id="sobre-mi" aria-labelledby="about-title">
-    <div class="about-copy" data-reveal>${sectionLabel('01', t.about.label)}<h2 id="about-title">${splitTitle(t.about.title)}</h2><p class="lead">${t.about.intro}</p>${t.about.paragraphs.map(p => `<p>${e(p)}</p>`).join('')}<a class="text-link" href="${cvURL(lang)}">${t.cv}${icon('arrow')}</a></div>
+    <div class="about-copy" data-reveal>${sectionLabel('01', t.about.label)}<h2 id="about-title">${splitTitle(t.about.title)}</h2><p class="lead">${t.about.intro}</p>${t.about.paragraphs.map(p => `<p>${e(p)}</p>`).join('')}<a class="text-link" href="${cvURL(lang)}" target="_blank" rel="noopener noreferrer">${t.cv}${icon('arrow')}</a></div>
     <aside class="about-approach" data-reveal><span class="small-label">${t.about.profileRole}</span><h3>${t.about.cardTitle}</h3><p>${t.about.cardText}</p><div class="approach-details">${t.about.cardDetails.map((s, i) => `<details${i === 0 ? ' open' : ''}><summary><span class="approach-number" aria-hidden="true">0${i+1}</span>${e(s)}<span class="disclosure-plus" aria-hidden="true">+</span></summary><p>${e(i === 0 ? `${t.process.steps[0].text} ${t.process.steps[1].text}` : t.process.steps[i+1].text)}</p></details>`).join('')}</div></aside>
     <dl class="profile-facts" data-reveal>${t.about.facts.map(f => `<div><dt>${e(f.value)}</dt><dd>${e(f.label)}</dd></div>`).join('')}</dl>
   </section>`;
@@ -102,7 +103,7 @@ function skillExplorer(lang, t) {
 }
 
 function career(lang, t) {
-  return `<section class="section career-section wrap" id="trayectoria" aria-labelledby="career-title"><div class="career-intro" data-reveal>${sectionLabel('03', t.career.label)}<h2 id="career-title">${splitTitle(t.career.title)}</h2><p>${t.career.intro}</p><a class="text-link" href="${cvURL(lang)}">${t.career.cvLink}${icon('arrow')}</a><div class="education"><span class="small-label">${t.career.educationLabel} / ${t.career.educationDate}</span><h3>${t.career.educationTitle}</h3><p>${t.career.educationDegree}</p><p>${t.career.educationSchool}</p></div></div>
+  return `<section class="section career-section wrap" id="trayectoria" aria-labelledby="career-title"><div class="career-intro" data-reveal>${sectionLabel('03', t.career.label)}<h2 id="career-title">${splitTitle(t.career.title)}</h2><p>${t.career.intro}</p><a class="text-link" href="${cvURL(lang)}" target="_blank" rel="noopener noreferrer">${t.career.cvLink}${icon('arrow')}</a><div class="education"><span class="small-label">${t.career.educationLabel} / ${t.career.educationDate}</span><h3>${t.career.educationTitle}</h3><p>${t.career.educationDegree}</p><p>${t.career.educationSchool}</p></div></div>
     <ol class="timeline">${experience.map((job, i) => `<li data-reveal><details class="career-entry"${i === 0 ? ' open' : ''}><summary><span class="career-meta"><span>${job.dates[lang]}</span><span>${job.place[lang]}</span></span><span class="career-name">${e(job.company)}<span class="entry-toggle" aria-hidden="true">+</span></span><span class="career-role">${e(job.role[lang])}</span></summary><div class="career-body"><ul>${job[lang].map(p => `<li>${e(p)}</li>`).join('')}</ul>${tags(job.tags)}</div></details></li>`).join('')}</ol>
   </section>`;
 }
@@ -128,7 +129,7 @@ function noteSection(lang, t) {
 }
 
 function contact(t, lang) {
-  return `<section class="contact-section" id="contacto" aria-labelledby="contact-title"><div class="wrap"><div class="contact-heading" data-reveal>${sectionLabel('06', t.contact.label)}<h2 id="contact-title">${splitTitle(t.contact.title)}</h2><p>${t.contact.intro}</p></div>${contactForm(lang, site.formEndpoint)}<div class="contact-bottom"><div class="contact-email"><a href="${e(mailURL(t))}" class="contact-address">${site.email}${icon('arrow')}</a><button class="copy-email" type="button" data-copy-email="${site.email}" data-success="${t.contact.copied}" data-failure="${t.contact.copyFail}" hidden>${icon('copy')}<span>${t.contact.copy}</span></button><span class="sr-only" role="status" data-copy-status></span></div><div class="contact-links"><a href="${site.linkedin}" rel="me">LinkedIn${icon('arrow')}</a><a href="${site.github}" rel="me">GitHub${icon('arrow')}</a><a href="${site.cv}${t.path === '/en/' ? 'en/' : ''}">${t.cv}${icon('arrow')}</a></div></div></div></section>`;
+  return `<section class="contact-section" id="contacto" aria-labelledby="contact-title"><div class="wrap"><div class="contact-heading" data-reveal>${sectionLabel('06', t.contact.label)}<h2 id="contact-title">${splitTitle(t.contact.title)}</h2><p>${t.contact.intro}</p></div>${contactForm(lang, site.formEndpoint)}<div class="contact-bottom"><div class="contact-email"><a href="${e(mailURL(t))}" class="contact-address">${site.email}${icon('arrow')}</a><button class="copy-email" type="button" data-copy-email="${site.email}" aria-label="${t.contact.copy}" data-success="${t.contact.copied}" data-failure="${t.contact.copyFail}" hidden>${icon('copy')}<span>${t.contact.copy}</span></button><span class="sr-only" role="status" data-copy-status></span></div><div class="contact-links"><a href="${site.linkedin}" rel="me">LinkedIn${icon('arrow')}</a><a href="${site.github}" rel="me">GitHub${icon('arrow')}</a><a target="_blank" rel="noopener noreferrer" href="${site.cv}${t.path === '/en/' ? 'en/' : ''}">${t.cv}${icon('arrow')}</a></div></div></div></section>`;
 }
 
 export function renderPage(lang, { notFound = false } = {}) {
@@ -142,7 +143,7 @@ export function renderPage(lang, { notFound = false } = {}) {
 export function renderProject(lang, project) {
   const t = locales[lang], p = project[lang], paths = { es: projectPath(project, 'es'), en: projectPath(project, 'en') };
   const live = `${project.live}${lang === 'en' ? '/en/' : '/'}`;
-  const content = `<main id="main" tabindex="-1"><article class="case-study wrap"><header class="detail-heading"><a class="back-link" href="${t.path}#proyectos">← ${t.backProjects}</a><p class="eyebrow">${p.type} / 2026</p><h1>${e(p.title)}</h1><p class="detail-lead">${e(p.summary)}</p><div class="hero-actions"><a class="button button-primary" href="${live}">${t.visit}${icon('arrow')}</a>${project.repository ? `<a class="text-link" href="${project.repository}">${t.source}${icon('github')}</a>` : ''}</div></header><figure class="case-image"><img src="${project.caseImage ?? project.image}" alt="${e(project.name)}" width="1280" height="900"><figcaption>${project.id === 'cv' ? t.projects.cvCaption : t.projects.imageCaption}</figcaption></figure><div class="case-content"><aside class="case-facts"><span class="small-label">${t.projects.overview}</span><h2>${e(project.name)}</h2><h3>${t.projects.scope}</h3><p>${e(p.contribution)}</p><h3>${t.projects.stack}</h3>${tags(project.stack)}<a class="text-link" href="${cvURL(lang)}">${t.cv}${icon('arrow')}</a></aside><div class="prose"><section><h2>${t.projects.problem}</h2><p>${e(p.problem)}</p></section><section><h2>${t.projects.approach}</h2><ul>${p.approach.map(item => `<li>${e(item)}</li>`).join('')}</ul></section><section><h2>${t.projects.result}</h2><p>${e(p.result)}</p></section><a class="button button-secondary" href="${t.path}#contacto">${t.contactNav}${icon('arrowRight')}</a></div></div></article><div class="detail-end wrap"><a class="text-link" href="${t.path}#proyectos">← ${t.backProjects}</a><a class="text-link" href="${t.path}#conocimiento">${t.backNotes}${icon('arrowRight')}</a></div></main>`;
+  const content = `<main id="main" tabindex="-1"><article class="case-study wrap"><header class="detail-heading"><a class="back-link" href="${t.path}#proyectos">← ${t.backProjects}</a><p class="eyebrow">${p.type} / 2026</p><h1>${e(p.title)}</h1><p class="detail-lead">${e(p.summary)}</p><div class="hero-actions"><a class="button button-primary" href="${live}"${project.id === 'cv' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${t.visit}${icon('arrow')}</a>${project.repository ? `<a class="text-link" href="${project.repository}">${t.source}${icon('github')}</a>` : ''}</div></header><figure class="case-image"><img src="${project.caseImage ?? project.image}" alt="${e(project.name)}" width="1280" height="900"><figcaption>${project.id === 'cv' ? t.projects.cvCaption : t.projects.imageCaption}</figcaption></figure><div class="case-content"><aside class="case-facts"><span class="small-label">${t.projects.overview}</span><h2>${e(project.name)}</h2><h3>${t.projects.scope}</h3><p>${e(p.contribution)}</p><h3>${t.projects.stack}</h3>${tags(project.stack)}<a class="text-link" href="${cvURL(lang)}" target="_blank" rel="noopener noreferrer">${t.cv}${icon('arrow')}</a></aside><div class="prose"><section><h2>${t.projects.problem}</h2><p>${e(p.problem)}</p></section><section><h2>${t.projects.approach}</h2><ul>${p.approach.map(item => `<li>${e(item)}</li>`).join('')}</ul></section><section><h2>${t.projects.result}</h2><p>${e(p.result)}</p></section><a class="button button-secondary" href="${t.path}#contacto">${t.contactNav}${icon('arrowRight')}</a></div></div></article><div class="detail-end wrap"><a class="text-link" href="${t.path}#proyectos">← ${t.backProjects}</a><a class="text-link" href="${t.path}#conocimiento">${t.backNotes}${icon('arrowRight')}</a></div></main>`;
   return document(lang, content, { title: `${project.name} — ${p.title} | ${site.name}`, description: p.summary, paths });
 }
 
