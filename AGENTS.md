@@ -2,7 +2,9 @@
 
 ## Purpose and current scope
 
-This is Sergio Hernández’s official professional-brand website. On 3 November 2026 the owner authorized expansion from the coming-soon page into a complete bilingual professional website, inspired by dataconale.com and retaining Alejandro’sTech’s own identity. The current scope includes the home, profile, technology explorer, experience and education, public project case studies, technical notes and contact. The owner subsequently requested visitor accessibility/appearance controls, cookie preferences, hover profile, an introductory loader and a validated form forwarding to the public Outlook address. See docs/CONTACT.md for the external Formspree activation and verification boundary. The owner also requested a floating scroll-to-top control, a custom animated cursor, staged scroll transitions and a contextual A+ navigation guide. The owner later replaced the WebGL A+ and Aero Shards hero with a full-screen editorial portrait and subtle mouse-following head motion. Retain the static A+ brand, accessibility controls and contextual guide. Further personal history and professional cases need confirmed source material.
+This is Sergio Hernández’s official professional-brand website. On 3 November 2026 the owner authorized expansion from the coming-soon page into a complete bilingual professional website, inspired by dataconale.com and retaining Alejandro’sTech’s own identity. The current scope includes the home, profile, technology explorer, experience and education, public project case studies, technical notes and contact. Later requests added visitor accessibility/appearance controls, cookie preferences, an introductory loader, a validated Formspree form forwarding to the public Outlook address, scroll-to-top, a custom cursor and a contextual A+ navigation guide. See docs/CONTACT.md for the external form setup and delivery verification boundary.
+
+The latest direction follows the owner's editorial reference across the whole site: charcoal surfaces, off-white serif headings, restrained coral accents, expanded desktop navigation and mobile-only collapse. The owner explicitly chose a stylized 3D bust based on his photo, accepting an approximation rather than a scan or exact reconstruction. The homepage uses an authored volumetric GLB with an independently articulated head and eyes, a shirt and open hands, plus image-assisted grayscale appearance. Do not describe it as an exact likeness, photogrammetric scan, flat photographic layer or billboard. Preserve the provenance and limits in docs/ASSETS.md. The duplicate-photo profile card is removed; the about section keeps a plain text approach column. Retain the static A+ brand, accessibility controls, cookies, verified form and contextual guide. The owner also requested a subtle site-wide Letter Glitch pixel background with a white/coral/mint/blue palette, respecting motion preferences and readability. Further personal history and professional cases need confirmed source material.
 
 Use the brand **Alejandro’sTech**, with the curly apostrophe and no space before Tech. Repository and URL slugs use `alejandros-tech`.
 
@@ -44,6 +46,7 @@ This is a maintenance workflow during requested work, not an automatic backgroun
 - `src/components/`: reusable server-side rendering functions.
 - `src/styles/`: responsive design tokens and styles.
 - `src/client/`: progressive enhancement only. Main content, language links and contacts must work without JavaScript.
+- `src/model/stylized-bust.mjs`: deterministic authoring of the local GLB; generated output belongs in `dist/assets/`.
 - `public/`: local static assets.
 - `scripts/`: build, structural checks and loopback-only preview.
 - `pnpm build`: regenerate `dist/`.
@@ -65,7 +68,7 @@ No package installation is needed for this dependency-free version. Keep future 
 
 ## Design and QA
 
-Use the CV’s navy, blue accents, typography and restrained visual treatment as the initial reference. Alejandro’sTech has its own A-plus mark, not the CV’s personal SH mark. See `docs/DESIGN.md`.
+The current design is charcoal/coral/editorial with regular serif headings and a sculptural grayscale bust, following the owner's latest reference. Dark/coral/6 px corners are the default visitor settings; honor existing saved choices and keep system/light themes, five tones and readability controls functional. Desktop navigation remains expanded above 760 px and may wrap into a second row. Scroll reveals last about 1.2 seconds with bounded stagger; reduced motion and keyboard focus must keep content immediately usable. The custom cursor uses a dot and ring, with no redirect-arrow glyph on hover. Alejandro’sTech keeps its own A-plus mark, separate from the CV's SH mark. See `docs/DESIGN.md`.
 
 Keep ES and EN equally complete. Preserve real links, semantic headings, skip navigation, keyboard focus, labels and adequate touch targets. Keep reflow at narrow widths and text zoom. Fix overflow rather than hiding it. Respect reduced motion and forced colors. Use system fonts and local assets.
 

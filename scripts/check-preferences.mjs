@@ -33,19 +33,19 @@ const stored = JSON.stringify({ expires: Date.now() + 100000, values: { theme: '
 for (const consent of ['', 'essential', 'unknown']) {
   const session = boot({ consent, stored });
   assert.equal(session.reads.length, 0, 'Optional stored preferences are not read before consent');
-  assert.equal(session.root.dataset.theme, 'light');
+  assert.equal(session.root.dataset.theme, 'dark');
 }
 const accepted = boot({ consent: 'preferences', stored });
 assert.equal(accepted.root.dataset.theme, 'dark');
 assert.equal(accepted.root.dataset.tone, 'violet');
 assert.equal(accepted.root.dataset.motion, 'true');
 assert.equal(accepted.timers.length, 0, 'Reduced motion skips the intro entirely');
-assert.equal(boot({ consent: 'preferences', stored: '{broken' }).root.dataset.theme, 'light');
-assert.equal(boot({ consent: 'preferences', blocked: true }).root.dataset.theme, 'light');
+assert.equal(boot({ consent: 'preferences', stored: '{broken' }).root.dataset.theme, 'dark');
+assert.equal(boot({ consent: 'preferences', blocked: true }).root.dataset.theme, 'dark');
 const expired = boot({ consent: 'preferences', stored: JSON.stringify({ expires: 1, values: { theme: 'dark' } }) });
-assert.equal(expired.root.dataset.theme, 'light');
+assert.equal(expired.root.dataset.theme, 'dark');
 const unsafe = accepted.state.sanitize({ text: 999, radius: -4, tone: 'url(evil)', theme: 'unexpected', motion: 'true' });
-assert.equal(unsafe.text, 125); assert.equal(unsafe.radius, 0); assert.equal(unsafe.tone, 'blue'); assert.equal(unsafe.theme, 'system'); assert.equal(unsafe.motion, false);
+assert.equal(unsafe.text, 125); assert.equal(unsafe.radius, 0); assert.equal(unsafe.tone, 'coral'); assert.equal(unsafe.theme, 'dark'); assert.equal(unsafe.motion, false);
 assert.equal(accepted.state.sanitize({ cursor: 'true', guideHidden: 'true' }).cursor, false);
 assert.equal(accepted.state.sanitize({ cursor: true, guideHidden: true }).guideHidden, true);
 const loading = boot();

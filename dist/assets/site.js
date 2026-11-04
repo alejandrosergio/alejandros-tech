@@ -29,30 +29,8 @@
     document.addEventListener('click', event => {
       if (!nav.contains(event.target) && !menu.contains(event.target)) setMenu(false);
     });
-    matchMedia('(min-width: 1001px)').addEventListener('change', () => setMenu(false));
+    matchMedia('(min-width: 761px)').addEventListener('change', () => setMenu(false));
     root.classList.add('nav-enhanced'); menu.hidden = false;
-  }
-
-  const profile = document.querySelector('[data-profile-card]');
-  if (profile) {
-    const button = profile.querySelector('[data-profile-flip]');
-    const front = profile.querySelector('[data-profile-front]');
-    const back = profile.querySelector('[data-profile-back]');
-    let hovering = false;
-    const flip = showBack => {
-      if ((button.getAttribute('aria-expanded') === 'true') === showBack) return;
-      if (showBack) back.style.minHeight = `${front.offsetHeight}px`;
-      front.hidden = showBack; back.hidden = !showBack;
-      button.setAttribute('aria-expanded', String(showBack));
-      button.querySelector('[data-flip-text]').textContent = showBack ? button.dataset.back : button.dataset.front;
-      profile.classList.toggle('is-flipped', showBack);
-    };
-    profile.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovering = true; flip(true); } });
-    profile.addEventListener('pointerleave', event => { if (event.pointerType === 'mouse') { hovering = false; if (!profile.contains(document.activeElement)) flip(false); } });
-    profile.addEventListener('focusin', event => { if (event.target.matches(':focus-visible')) flip(true); });
-    profile.addEventListener('focusout', event => { if (!profile.contains(event.relatedTarget) && !hovering) flip(false); });
-    button.addEventListener('click', () => flip(button.getAttribute('aria-expanded') !== 'true'));
-    button.hidden = false;
   }
 
   const explorer = document.querySelector('[data-skill-explorer]');
@@ -113,10 +91,10 @@
     if (!reduced.matches && root.dataset.motion !== 'true') {
       const reveal = new IntersectionObserver(entries => entries.forEach(entry => {
         if (entry.isIntersecting) { entry.target.classList.add('is-visible'); reveal.unobserve(entry.target); }
-      }), { threshold: .06, rootMargin: '0px 0px -20px 0px' });
+      }), { threshold: .01, rootMargin: '0px 0px 6% 0px' });
       document.querySelectorAll('[data-reveal]').forEach(item => {
         const siblings = [...item.parentElement.children].filter(child => child.hasAttribute('data-reveal'));
-        item.style.setProperty('--reveal-delay', `${Math.min(siblings.indexOf(item), 3) * 75}ms`);
+        item.style.setProperty('--reveal-delay', `${Math.min(siblings.indexOf(item), 3) * 110}ms`);
         reveal.observe(item);
       });
       root.classList.add('has-reveals');

@@ -5,6 +5,7 @@ import { projects, projectPath } from '../content/projects.mjs';
 import { notes, notePath } from '../content/notes.mjs';
 import { icon } from './icons.mjs';
 import { hero } from './hero.mjs';
+import { letterGlitch } from './letter-glitch.mjs';
 import { preferences, loader, contactForm } from './preferences.mjs';
 import { interfaceCopy } from '../content/interface.mjs';
 import { journey } from './journey.mjs';
@@ -23,7 +24,7 @@ function head(lang, { title, description, paths, notFound = false, home = false 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${e(title)}</title>
   <meta name="description" content="${e(description)}">
-  <meta name="theme-color" content="#f5f7fb">
+  <meta name="theme-color" content="#0e0e10">
   ${notFound ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${site.origin}${paths[lang]}">
   <link rel="alternate" hreflang="es" href="${site.origin}${paths.es}">
   <link rel="alternate" hreflang="en" href="${site.origin}${paths.en}">
@@ -40,7 +41,8 @@ function head(lang, { title, description, paths, notFound = false, home = false 
   <script src="/assets/theme-init.js"></script>
   <script src="/assets/preferences.js" defer></script>
   <script src="/assets/site.js" defer></script>
-  <script src="/assets/journey.js" defer></script>${home ? '\n  <script src="/assets/portrait.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
+  <script src="/assets/journey.js" defer></script>
+  <script src="/assets/letter-glitch.js" defer></script>${home ? '\n  <script src="/assets/portrait.js" type="module"></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
 </head>`;
 }
 
@@ -57,15 +59,16 @@ function header(lang, t, paths) {
 }
 
 function footer(t, lang) {
-  return `<footer class="site-footer wrap"><div><a class="footer-brand" href="${t.path}">${site.name}</a><p>${t.contact.footer}</p><button class="footer-privacy" type="button" data-open-privacy hidden>${interfaceCopy[lang].cookies}</button></div><small>© ${site.copyrightYear} ${site.name}<br>${t.rights}</small><a class="back-top" href="#top">${t.top}${icon('arrow')}</a></footer>`;
+  return `<footer class="site-footer wrap"><div><a class="footer-brand" href="${t.path}">${site.name}</a><p>${t.contact.footer}</p><button class="footer-privacy" type="button" data-open-privacy hidden>${interfaceCopy[lang].cookies}</button><button class="footer-privacy" type="button" data-background-motion data-pause="${interfaceCopy[lang].backgroundPause}" data-play="${interfaceCopy[lang].backgroundPlay}" aria-pressed="false" hidden>${interfaceCopy[lang].backgroundPause}</button></div><small>© ${site.copyrightYear} ${site.name}<br>${t.rights}</small><a class="back-top" href="#top">${t.top}${icon('arrow')}</a></footer>`;
 }
 
 function document(lang, content, options) {
   const t = locales[lang];
   return `<!doctype html>
-<html lang="${lang}">
+<html lang="${lang}" data-theme="dark" data-tone="coral" data-text="100">
 ${head(lang, options)}
 <body${options.home ? ' class="home-page"' : ' class="detail-page"'}>
+  ${letterGlitch()}
 ${options.home ? `  ${loader(lang)}` : ''}
   <a class="skip-link" href="#main">${t.skip}</a>
   ${header(lang, t, options.paths)}
@@ -81,11 +84,7 @@ ${options.home ? `  ${loader(lang)}` : ''}
 function about(lang, t) {
   return `<section class="section about-section wrap" id="sobre-mi" aria-labelledby="about-title">
     <div class="about-copy" data-reveal>${sectionLabel('01', t.about.label)}<h2 id="about-title">${splitTitle(t.about.title)}</h2><p class="lead">${t.about.intro}</p>${t.about.paragraphs.map(p => `<p>${e(p)}</p>`).join('')}<a class="text-link" href="${cvURL(lang)}">${t.cv}${icon('arrow')}</a></div>
-    <div class="profile-card" data-profile-card data-reveal>
-      <div class="profile-front" data-profile-front><div class="profile-card-top"><span>${t.about.profileLabel}</span><span aria-hidden="true">A+</span></div><div class="portrait-wrap"><img src="/assets/sergio-hernandez.jpeg" alt="${t.about.portrait}" width="1024" height="1536" loading="lazy" decoding="async"></div><div class="profile-name"><strong>Sergio Hernández</strong><span>${t.about.profileRole}</span></div><div class="profile-meta"><span>${t.about.location}</span><span>${t.about.experience}</span></div></div>
-      <div class="profile-back" data-profile-back hidden><span class="profile-monogram" aria-hidden="true">A+</span><h3>${t.about.cardTitle}</h3><p>${t.about.cardText}</p><ul>${t.about.cardDetails.map((s, i) => `<li><span>0${i + 1}</span>${e(s)}</li>`).join('')}</ul></div>
-      <button class="profile-flip" type="button" data-profile-flip data-front="${t.about.flip}" data-back="${t.about.flipBack}" aria-expanded="false" hidden><span data-flip-text>${t.about.flip}</span>${icon('arrowRight')}</button>
-    </div>
+    <aside class="about-approach" data-reveal><span class="small-label">${t.about.profileRole}</span><h3>${t.about.cardTitle}</h3><p>${t.about.cardText}</p><ul>${t.about.cardDetails.map(s => `<li>${e(s)}</li>`).join('')}</ul></aside>
     <dl class="profile-facts" data-reveal>${t.about.facts.map(f => `<div><dt>${e(f.value)}</dt><dd>${e(f.label)}</dd></div>`).join('')}</dl>
   </section>`;
 }

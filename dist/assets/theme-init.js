@@ -1,6 +1,6 @@
 (() => {
   const root = document.documentElement;
-  const defaults = { theme: 'system', tone: 'blue', text: 100, radius: 20, contrast: false, spacing: false, links: false, motion: false, cursor: false, guideHidden: false };
+  const defaults = { theme: 'dark', tone: 'coral', text: 100, radius: 6, contrast: false, spacing: false, links: false, motion: false, cursor: false, guideHidden: false };
   const sanitize = value => {
     const p = { ...defaults }, data = value && typeof value === 'object' ? value : {};
     if (['system', 'light', 'dark'].includes(data.theme)) p.theme = data.theme;

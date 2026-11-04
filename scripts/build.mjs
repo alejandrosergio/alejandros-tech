@@ -4,9 +4,10 @@ import { fileURLToPath } from 'node:url';
 import { renderPage, renderProject, renderNote } from '../src/components/page.mjs';
 import { site } from '../src/content/site.mjs';
 import { routeGroups } from '../src/content/routes.mjs';
+import { createBustGLB } from '../src/model/stylized-bust.mjs';
 
 export const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
-const clientFiles = ['theme-init.js', 'preferences.js', 'site.js', 'journey.js', 'portrait.js', 'contact.js', 'form-rules.js'];
+const clientFiles = ['theme-init.js', 'preferences.js', 'site.js', 'journey.js', 'letter-glitch.js', 'portrait.js', 'bust-glb.js', 'bust-view.js', 'contact.js', 'form-rules.js'];
 
 async function copyDirectory(from, to) {
   await mkdir(to, { recursive: true });
@@ -26,7 +27,9 @@ export async function build() {
   await rm(dist, { recursive: true, force: true });
   await mkdir(path.join(dist, 'en'), { recursive: true });
   await copyDirectory(path.join(root, 'public'), dist);
-  const styles = await Promise.all(['styles.css', 'preferences.css', 'journey.css', 'hero.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
+  const bust=createBustGLB();
+  await writeFile(path.join(dist,'assets/sergio-stylized-bust.glb'),bust);
+  const styles = await Promise.all(['styles.css', 'preferences.css', 'journey.css', 'hero.css', 'background.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
   await writeFile(path.join(dist, 'assets/styles.css'), styles.join('\n'));
   for (const file of clientFiles) {
     await copyFile(path.join(root, 'src/client', file), path.join(dist, 'assets', file));
@@ -41,7 +44,7 @@ export async function build() {
   await writeFile(path.join(dist, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${site.origin}/sitemap.xml\n`);
   await writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${routeGroups.flatMap(route => ['es', 'en'].map(lang => `<url><loc>${site.origin}${route.paths[lang]}</loc><xhtml:link rel="alternate" hreflang="es" href="${site.origin}${route.paths.es}"/><xhtml:link rel="alternate" hreflang="en" href="${site.origin}${route.paths.en}"/></url>`)).join('')}</urlset>\n`);
   const total = (await Promise.all(['index.html', 'assets/styles.css', ...clientFiles.map(file => `assets/${file}`), 'assets/brand-mark.svg', 'favicon.svg'].map(file => stat(path.join(dist, file))))).reduce((sum, entry) => sum + entry.size, 0);
-  return { pages: routeGroups.flatMap(route => Object.values(route.paths)), initialAssetsBytes: total };
+  return { pages: routeGroups.flatMap(route => Object.values(route.paths)), initialAssetsBytes: total, bustBytes: bust.byteLength };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

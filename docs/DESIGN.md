@@ -1,36 +1,43 @@
 # Diseño
 
-## Dirección visual
+## Dirección visual actual
 
-Una web profesional editorial: titulares amplios, mucho espacio, acentos azules y composiciones distintas según el contenido. dataconale.com sirve como referencia del recorrido personal e interactividad; la identidad, los textos, los componentes y los recursos de Alejandro’sTech son propios.
+La referencia editorial aportada por el titular guía toda la web: superficies carbón, texto blanco cálido, titulares serif regulares, círculos finos y pequeñas marcas coral. La composición usa aire y líneas discretas en lugar de tarjetas azules brillantes. El contenido, la marca A+ y los proyectos siguen siendo propios de Alejandro’sTech.
 
-La siguiente edición toma poulo.site como referencia de interacciones y marcomadonnadesign.com como referencia de personalización por tonos. El panel propio se centra en apariencia y lectura: no replica contenido, proyectos, métricas o código de esas webs. Conserva el azul predeterminado y añade violeta, coral, océano y monocromo con variantes claras/oscuras. La tuerca queda visible en móvil con nombre accesible, sin tapar el formulario. El consentimiento de preferencias permite aceptar, elegir solo necesarias y cambiar de decisión desde el pie o el panel.
+El tema oscuro usa `#0e0e10` de fondo, `#f2eee8` de tinta y `#f06a73` de acento coral. El claro usa papel cálido `#f3f0ea`, tinta `#242122` y coral `#ad3545`. Georgia, Times New Roman y las familias de sistema disponibles aportan la tipografía sin descargas. La portada utiliza además Bodoni MT/Didot cuando están instaladas.
 
-La paleta conserva la relación con el CV: azul marino, acento azul y tipografía de sistema. El tema claro usa fondo `#f5f7fb`, tinta `#11253f` y acento `#1467e6`; el oscuro usa `#090f1b`, `#edf3ff` y `#83bbff`. Los títulos combinan la familia sans del sistema con un acento editorial en Georgia, sin descargar fuentes.
+La primera visita parte de oscuro, coral y radio de 6 px. Las elecciones anteriores del visitante conservan prioridad. Siguen disponibles sistema/claro/oscuro, azul, violeta, coral, océano y monocromo, además de los controles de lectura. No se restablecen preferencias consentidas para imponer el nuevo aspecto.
 
-## Recorrido
+## Recorrido y navegación
 
-- Cabecera ligera y fija con navegación, idioma, tema y menú adaptable.
-- Inicio editorial a pantalla completa, con retrato central y nombre superpuesto.
-- Perfil con retrato y tarjeta de enfoque profesional.
-- Mapa de tecnologías por áreas con inspector de contexto.
-- Trayectoria y formación, con responsabilidades desplegables.
-- Proyectos públicos con vistas reales y páginas propias.
-- Proceso de trabajo y cuaderno técnico.
-- Contacto destacado y pie compacto.
+- Cabecera con marca, idiomas, tema y navegación expandida por encima de 760 px. En anchuras intermedias, los enlaces pueden ocupar una segunda fila. El menú se colapsa solo en móvil, hasta 760 px.
+- Inicio a pantalla completa con busto volumétrico, nombre serif superpuesto sobre el torso y firma editorial. La cara permanece despejada.
+- Perfil y enfoque profesional en dos columnas de texto, sin tarjeta giratoria ni segunda fotografía del titular.
+- Explorador de tecnologías, trayectoria, proyectos y cuaderno con las mismas superficies, líneas y jerarquía tipográfica.
+- Contacto y fichas interiores integrados en el sistema visual, con controles de formulario legibles en ambos temas.
 
-## Portada fotográfica
+El alto de cabecera se mide para que el inicio se adapte también cuando la navegación ocupa dos filas. En móvil se redistribuyen los accesos y se preservan las áreas táctiles y el desplazamiento normal.
 
-La nueva dirección toma la composición editorial de la referencia aportada por el titular: fondo carbón, retrato central, tipografía amplia y círculos finos. Conserva nombre, acentos y contenido propios. El recorte del retrato se presenta con un tratamiento casi monocromo, manteniendo el rostro despejado y situando el nombre sobre el torso. Los accesos laterales pasan a una distribución compacta en móvil.
+## Busto 3D y apariencia
 
-La cabeza responde al ratón con perspectiva y un giro suave, sobre una capa fotográfica separada del torso. Es profundidad 2,5D, no una reconstrucción facial volumétrica. No hay movimiento automático en reposo; se puede pausar y se desactiva con puntero táctil, movimiento reducido y contraste elevado. Se retiran por completo el A+ WebGL, Aero Shards y sus estilos, controles y pruebas exclusivos. La marca A+ permanece en la navegación y la guía.
+El titular eligió expresamente preparar un busto 3D estilizado basado en su foto. La geometría tiene volumen de cabeza y torso, cabello rizado, barba, camisa y manos abiertas, sin cadenas, gafas ni accesorios. La cabeza gira alrededor del cuello y cada ojo tiene su propio nodo móvil. Es una interpretación artística aproximada; no se afirma un escaneo ni una reconstrucción exacta del rostro o del cuerpo.
 
-## Accesibilidad y comportamiento
+La apariencia en gris se preparó con la herramienta integrada de imágenes, usando una vista frontal del modelo, la foto del titular y la referencia de iluminación. El visualizador proyecta esa apariencia sobre las coordenadas de las superficies en su pose de reposo y aplica iluminación en WebGL. La malla aporta profundidad, oclusión, articulación y cambios de superficie al girar. La apariencia y su imagen estática de respaldo se documentan en `ASSETS.md`.
 
-La guía A+ acompaña las ocho secciones del inicio con el nombre actual, progreso y una sugerencia contextual. Se mantiene compacta; se puede abrir con clic, teclado o al acercar el ratón en escritorio, navegar a la sección anterior/siguiente y ocultarla. En móvil su panel se abre sobre la pastilla y admite desplazamiento interno. Se oculta mientras se usa el formulario y mientras se decide sobre cookies. Es navegación local: no envía el recorrido a un servicio ni simula una conversación de IA.
+El ratón orienta la cabeza y los ojos con un recorrido acotado. El teclado permite flechas e Inicio; el arrastre táctil horizontal conserva el desplazamiento vertical y el zoom. No hay una animación continua en reposo. La pausa y el movimiento reducido mantienen una pose neutra; con mayor contraste se usa un respaldo estático atenuado y con colores forzados se simplifica la portada a contenido y navegación. Sin JavaScript, WebGL o carga del modelo permanece la imagen local.
 
-El cursor propio combina un punto preciso con una órbita que lo sigue y cambia sobre elementos interactivos. Solo sustituye el puntero con ratón y capacidades de puntero fino. Se conserva el cursor del sistema en campos de texto, diálogos, movimiento reducido y colores forzados; una opción explícita permite usarlo siempre. La órbita deja de solicitar fotogramas al alcanzar su posición. El botón flotante de subida aparece tras avanzar lo suficiente y devuelve el foco a la marca al usarlo con teclado. Las entradas de contenido tienen un ritmo escalonado y las secciones activas resaltan su marcador sin desplazar la lectura.
+## Movimiento y controles
 
-Contenido HTML real, rutas ES/EN completas, encabezados semánticos, salto con destino enfocable, foco visible y controles con etiquetas. El menú y los filtros son mejoras progresivas; las responsabilidades usan `details` nativo. El retrato tiene texto alternativo y los iconos decorativos se ocultan a tecnologías de asistencia.
+Las entradas de contenido duran 1,2 segundos, con una curva suave y un escalonado de 110 ms limitado a 330 ms. Empiezan ligeramente antes de entrar en pantalla para que el visitante perciba la transición mientras avanza. Los elementos enfocados por teclado aparecen inmediatamente. Movimiento reducido, colores forzados y ausencia de JavaScript conservan todo el contenido visible.
 
-Las revelaciones respetan movimiento reducido. El retrato permanece quieto cuando se solicita; el seguimiento se puede pausar. La portada no intercepta gestos táctiles ni el zoom. En colores forzados se simplifica el arte y se conservan límites y selección visibles. Se corrige el desbordamiento, sin ocultarlo globalmente.
+El cursor combina un punto preciso y una órbita que crece discretamente sobre enlaces o botones. No muestra una flecha de redirección. Solo sustituye el cursor del sistema con ratón y puntero fino; los campos, diálogos, dispositivos táctiles, movimiento reducido y colores forzados conservan el puntero normal. La órbita deja de solicitar fotogramas al alcanzar su posición.
+
+La guía A+ mantiene contexto, progreso y sugerencias para las ocho secciones del inicio. Se puede abrir, cerrar y ocultar; se retira durante el formulario y antes de resolver las cookies. El botón de subida aparece después de avanzar y devuelve el foco a la marca cuando se usa con teclado. Estas funciones son navegación local y no envían el recorrido a un servicio.
+
+## Accesibilidad
+
+Las rutas ES/EN, los encabezados, el salto de navegación, el foco visible, las etiquetas y los enlaces reales forman la base del sitio. La decoración no es necesaria para comprender o navegar. Se verifica reflujo en pantallas estrechas y con texto ampliado, corrigiendo la causa del desbordamiento. No se afirma una certificación universal de accesibilidad.
+
+## Fondo global
+
+Letter Glitch toma el preset Pixel y la paleta blanca/coral/menta/azul solicitados. Queda fijo detrás de las superficies, con velo de lectura central; solo se percibe suavemente en márgenes y zonas despejadas. No intercepta acciones ni añade letras a la lectura asistida. El pie permite pausarlo en cualquier ruta y la pausa de la escena lo detiene también. Movimiento reducido produce una textura estática; mayor contraste y colores forzados lo ocultan.

@@ -1,38 +1,39 @@
 # Arquitectura
 
-## Base
+## Base, contenido y rutas
 
-Generación estática con Node ESM y HTML/CSS/JavaScript de navegador. Sin dependencias externas, framework, servidor de aplicación o base de datos. La salida sigue siendo portable entre alojamientos estáticos.
+Generación estática con Node ESM y HTML/CSS/JavaScript de navegador. Sin framework, servidor de aplicación, base de datos ni bibliotecas externas de ejecución. La salida es portable entre alojamientos estáticos.
 
-## Contenido y rutas
+Los modelos de contenido viven en `src/content/`: `site.mjs` centraliza identidad y contactos; `locales.mjs` mantiene ES/EN; `profile.mjs`, `projects.mjs`, `notes.mjs` y `routes.mjs` contienen hechos profesionales, casos, notas y pares de rutas. No se añade una página sin contenido completo. Cada ficha mantiene su equivalente al cambiar de idioma.
 
-- `site.mjs`: identidad, origen y contactos públicos.
-- `locales.mjs`: etiquetas y contenido ES/EN del inicio.
-- `profile.mjs`: experiencia y tecnologías verificadas.
-- `projects.mjs`: proyectos públicos y casos completos.
-- `notes.mjs`: notas técnicas originales y lecturas de referencia.
-- `routes.mjs`: pares de rutas locales por idioma.
+`src/components/page.mjs` comparte documento, metadatos, navegación y pie. `hero.mjs` renderiza la portada del busto y su alternativa estática. El perfil usa texto y una columna `.about-approach`; no conserva tarjeta fotográfica ni lógica de volteo. `scripts/build.mjs` genera doce rutas ES/EN, 404, robots, sitemap y recursos en `dist/`.
 
-Los modelos viven en `src/content/`. No se añade una página sin contenido real. Cada ficha conserva su destino equivalente al cambiar de idioma.
+## Modelo y visualizador
 
-## Renderizado
+`src/model/stylized-bust.mjs` esculpe determinísticamente un busto volumétrico original y devuelve un GLB 2.0. El build escribe `/assets/sergio-stylized-bust.glb`. La revisión documentada contiene 1.771.700 bytes, 51.300 vértices y 87.924 triángulos. Incluye materiales base, cuerpo vestido y manos abiertas, cabeza con pivote en el cuello y dos ojos articulados que reutilizan su propia malla. La geometría es una aproximación estilizada aprobada por el titular, no un escaneo ni una reconstrucción exacta.
 
-`src/components/page.mjs` comparte documento, metadatos, navegación y pie entre el inicio y las fichas. `hero.mjs` concentra la portada fotográfica. `scripts/build.mjs` genera doce rutas ES/EN, 404, robots, sitemap y recursos. El resultado es determinista y se guarda en `dist/`.
+`bust-glb.js` interpreta únicamente el subconjunto GLB del modelo propio: valida estructura, límites de buffers y geometría, índices, normales y jerarquía. No resuelve URLs, extensiones ni código contenido en metadatos.
 
-## Mejora progresiva
+`bust-view.js` dibuja la malla con WebGL nativo, normales, profundidad, materiales e iluminación. La imagen local `sergio-bust-appearance.webp` aporta la apariencia en gris mediante proyección calculada desde coordenadas de superficie y matrices de reposo. El GLB mantiene la geometría y los materiales base; la apariencia asistida por imagen y su proyección pertenecen al visualizador del sitio. La resolución se limita a aproximadamente 1,2 millones de píxeles y DPR 1,5.
 
-`site.js` controla tema, menú móvil, tarjeta, filtros de tecnologías, copiado de correo, navegación activa, progreso y revelaciones. Sin JavaScript el contenido, los enlaces, la experiencia desplegable y la lista de tecnologías siguen disponibles.
+`portrait.js` carga el GLB local, mide la cabecera y controla orientación por ratón, teclado y arrastre táctil horizontal. Cabeza y ojos se articulan con transformaciones propias; el torso mantiene su pose. El bucle se detiene al asentarse, pausar, salir de pantalla, ocultarse la pestaña o aplicar restricciones de movimiento/contraste. Trata fallos de carga, análisis y contexto gráfico y conserva una alternativa local. Sin JavaScript o WebGL se muestra la imagen; pausa y movimiento reducido conservan una pose 3D neutra. Mayor contraste muestra el respaldo atenuado; colores forzados simplifican la escena. Los detalles de procedencia y apariencia están en `ASSETS.md`.
 
-`interface.mjs` mantiene la equivalencia ES/EN de los controles del visitante y del formulario; `preferences.mjs` los renderiza. `theme-init.js` aplica valores acotados antes del primer render y un loader con límite. `preferences.js` controla los diálogos y la persistencia consentida. `contact.js` importa las reglas puras de `form-rules.js` y usa el endpoint público de Formspree al enviar. No hay claves ni servidor propio. Ver `CONTACT.md` para activación, datos y límites de verificación.
+## Otras mejoras progresivas
 
-`journey.mjs` contiene las ocho sugerencias localizadas del recorrido y su componente renderiza guía, control de subida y cursor. `journey.js` calcula contexto y progreso con un único fotograma por evento de scroll; las animaciones del cursor se detienen en reposo. No hay peticiones de red para estas funciones. `cursor` y `guideHidden` son preferencias opcionales sujetas al mismo consentimiento que el resto de ajustes. Sin JavaScript esos controles permanecen ocultos y el enlace normal del pie permite volver al principio.
+`site.js` controla tema, menú móvil, filtros, copiado de correo, enlaces activos, progreso y revelaciones. La navegación queda expandida por encima de 760 px y se puede redistribuir en filas; el menú colapsado es móvil. Las revelaciones usan 1,2 segundos y escalonado acotado, con foco y preferencias de movimiento prioritarios. Sin JavaScript se conserva contenido, enlaces, responsabilidades desplegables y lista de tecnologías.
 
-`portrait.js` aplica una transformación 2,5D a una capa de cabeza y mantiene el torso estable. Solo sigue un ratón con puntero fino y se detiene al llegar a su objetivo, pausar, salir de pantalla, ocultar la pestaña o solicitar movimiento reducido. Sin JavaScript, en móvil o con mayor contraste, se presenta la foto estática completa. No hay modelo volumétrico, WebGL ni dependencias. El retrato recortado conserva su original de estudio; ver `ASSETS.md`.
+`interface.mjs` mantiene las etiquetas ES/EN de controles y formulario; `preferences.mjs` los renderiza. `theme-init.js` aplica preferencias acotadas antes del primer render; los nuevos valores iniciales son oscuro/coral/6 px y se respetan los valores guardados. `preferences.js` controla diálogos y almacenamiento consentido. El loader tiene límite de tiempo y salida directa.
 
-Los estilos fuente se separan en base y contenido (`styles.css`), controles del visitante (`preferences.css`), navegación contextual (`journey.css`) e inicio (`hero.css`). El generador los concatena en un único recurso CSS.
+`contact.js` importa las reglas puras de `form-rules.js` y usa el endpoint público de Formspree. No hay claves ni servidor propio. El proveedor solo recibe una petición al enviar el formulario. Ver `CONTACT.md`.
 
-## Comprobación
+El componente de recorrido y `journey.js` gestionan guía contextual, progreso, subida y cursor. El cursor usa punto y órbita sin glifo de redirección y se detiene en reposo. No hay peticiones para estas funciones; las preferencias de cursor y guía siguen el consentimiento común.
 
-`scripts/check.mjs` valida estructura de traducciones, todas las rutas y anclas internas, referencias ARIA, metadatos, IDs, contenido, alternativas estáticas y sitemap. Incluye `check-portrait.mjs`, que comprueba entrada de ratón, reposo, pausa, preferencias, visibilidad y alternativa estática. La apariencia y el movimiento se revisan también en navegador. GitHub Actions comprueba sintaxis, generación y correspondencia del `dist/` guardado.
+## Estilos y comprobaciones
 
-La publicación usa el helper oficial de Sites y su commit/archivo exactos. GitHub tiene un historial independiente y se compara por contenido, conservando cambios concurrentes.
+Los estilos fuente se separan en base/contenido (`styles.css`), controles (`preferences.css`), recorrido (`journey.css`), inicio (`hero.css`) y fondo (`background.css`). El build los concatena en un único CSS.
+
+`scripts/check.mjs` valida identidad, traducciones, rutas, anclas, referencias ARIA, metadatos, contenido, alternativas y sitemap. `check-bust.mjs` verifica generación determinista, volumen, articulación, presupuestos y rechazo de GLB malformado. `check-portrait.mjs` comprueba entrada, pausa, reposo, preferencias, visibilidad, errores y recuperación del controlador con superficies simuladas. La apariencia y la compilación real de shaders se revisan en navegador. GitHub Actions comprueba sintaxis, generación y correspondencia del `dist/` guardado.
+
+La publicación usa el helper oficial de Sites y su commit/archivo exactos. GitHub tiene un historial independiente y se compara por contenido, conservando cambios concurrentes. El estado local de sincronización se actualiza solo tras verificar ambos destinos.
+
+`letter-glitch.js` mejora el fondo de todas las rutas mediante glifos locales de píxeles y cambios esporádicos. La pausa del pie y el evento de la escena `alejandro:background-motion` lo controlan; las preferencias de movimiento tienen prioridad. La capa queda detrás del contenido y se suspende cuando no es visible. Ver `THIRD_PARTY.md`.

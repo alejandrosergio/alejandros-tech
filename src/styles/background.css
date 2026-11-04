@@ -1,0 +1,17 @@
+/* The fixed glyph surface stays behind every foreground stacking context. */
+body { isolation: isolate; }
+.letter-backdrop { --letter-opacity: .38; position: fixed; inset: 0; z-index: -1; overflow: clip; contain: strict; pointer-events: none; opacity: var(--letter-opacity); }
+.letter-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+.letter-backdrop::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, color-mix(in srgb, var(--accent) 28%, transparent) .65px, transparent .8px); background-size: 24px 24px; }
+.letter-backdrop[data-enhanced="true"]::before { display: none; }
+.letter-backdrop::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--page) 85%, transparent) 18%, color-mix(in srgb, var(--page) 97%, transparent) 35%, color-mix(in srgb, var(--page) 97%, transparent) 65%, color-mix(in srgb, var(--page) 85%, transparent) 82%, transparent); }
+.letter-backdrop[data-motion="static"] { --letter-opacity: .12; }
+:root[data-theme="light"] .letter-backdrop { --letter-opacity: .18; }
+:root[data-contrast="true"] .letter-backdrop { display: none; }
+[data-background-motion] { min-height: 44px; border: 0; padding: .5rem 0; background: transparent; color: var(--muted); font: inherit; font-size: .6875rem; }
+[data-background-motion]:hover { text-decoration: underline; text-underline-offset: .25em; }
+[data-background-motion]:disabled { opacity: .55; }
+@media (max-width: 760px) { .letter-backdrop { --letter-opacity: .18; } }
+@media (prefers-reduced-motion: reduce) { .letter-backdrop { --letter-opacity: .1; } }
+@media (forced-colors: active) { .letter-backdrop { display: none !important; } }
+@media print { .letter-backdrop, [data-background-motion] { display: none !important; } }

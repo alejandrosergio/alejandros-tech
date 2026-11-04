@@ -42,12 +42,13 @@ async function readHTML(file) {
 
 for (const route of routeGroups) for (const lang of ['es', 'en']) {
   const pathname = route.paths[lang], html = await readHTML(fileFor(pathname));
-  assert.ok(html.includes(`<html lang="${lang}">`), pathname);
+  assert.ok(html.includes(`<html lang="${lang}"`), pathname);
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1, `One page heading: ${pathname}`);
   assert.ok(html.includes('href="#main"') && html.includes('id="main" tabindex="-1"'), `Keyboard skip target: ${pathname}`);
   assert.ok(html.includes(`<link rel="canonical" href="${site.origin}${pathname}">`));
   for (const alternate of ['es', 'en']) assert.ok(html.includes(`<link rel="alternate" hreflang="${alternate}" href="${site.origin}${route.paths[alternate]}">`));
   assert.equal(new Set(ids(html)).size, ids(html).length, `Unique IDs: ${pathname}`);
+  assert.ok(html.includes('data-letter-glitch') && html.includes('data-background-motion'), 'Decorative background and pause control on every route');
   assert.ok(html.includes('data-settings') && html.includes('data-privacy') && html.includes('data-cookie-banner'), 'Visitor controls on every route');
   assert.ok(html.includes('data-scroll-top') && html.includes('data-cursor-dot'), 'Progressive navigation controls on every route');
   assert.ok(!/TODO|lorem ipsum|undefined|href=""|href="#"|codex-preview|@gmail\.com/.test(html), `Finished and private-contact-free content: ${pathname}`);
@@ -59,9 +60,13 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   }
   for (const match of html.matchAll(/(?:aria-controls|aria-describedby|aria-labelledby)="([^"]+)"/g)) for (const id of match[1].split(/\s+/)) assert.ok(ids(html).includes(id), `ARIA reference: ${pathname} → ${id}`);
   if (route.type === 'home') {
-    assert.ok(html.includes('data-portrait-hero') && html.includes('sergio-portrait-cutout.webp') && html.includes('data-portrait-head'), 'Photographic hero works without motion');
+    assert.ok(html.includes('data-portrait-hero') && html.includes('sergio-bust-appearance.webp') && html.includes('data-bust-stage') && html.includes('data-bust-canvas'), 'Volumetric hero retains a static alternative');
     assert.ok(!/brand-3d|aero-shards|data-brand-art/.test(html), 'Retired renderers are absent');
     assert.ok(html.includes('data-journey-guide'));
+    assert.equal((html.match(/class="bust-fallback"/g)??[]).length,1,'One portrait alternative');
+    assert.ok(!/data-profile-card|data-profile-flip/.test(html),'Duplicate portrait card removed');
+    assert.ok(!html.includes('<span>↗</span></div>'),'No redirect arrow in cursor');
+    await access(path.join(dist,'assets/sergio-stylized-bust.glb'));
     for (const entry of journeyCopy[lang].entries) assert.ok(ids(html).includes(entry.id), `Guide section: ${entry.id}`);
     assert.ok(html.includes(`action="${site.formEndpoint}" method="POST"`) && html.includes('name="consent"') && html.includes('data-intro-loader'));
     assert.ok(html.includes('name="_gotcha"') && html.includes(`name="_language" value="${lang}"`));
@@ -69,7 +74,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
     for (const id of ['sobre-mi', 'tecnologias', 'trayectoria', 'proyectos', 'conocimiento', 'contacto']) assert.ok(ids(html).includes(id));
     assert.ok(html.includes(`mailto:${site.email}`) && html.includes(site.linkedin) && html.includes(site.github));
     assert.ok(html.includes(`${site.cv}${lang === 'en' ? 'en/' : ''}`));
-    assert.ok(html.includes('class="portrait-body"') && html.includes('data-skills-static'), 'HTML portrait and skill explorer alternatives');
+    assert.ok(html.includes('class="bust-fallback"') && html.includes('data-skills-static'), 'HTML portrait and skill explorer alternatives');
     assert.ok(!/Próximamente|Coming soon|Estamos construyendo|We’re building/.test(html), 'Replace the old coming-soon homepage');
   }
 }
@@ -84,6 +89,9 @@ const css = await readFile(path.join(dist, 'assets/styles.css'), 'utf8');
 for (const feature of ['prefers-reduced-motion', 'forced-colors', ':focus-visible', '@media print']) assert.ok(css.includes(feature));
 assert.ok(!/overflow-x\s*:\s*hidden/.test(css), 'Fix overflow instead of hiding it');
 for (const entry of await readdir(root)) assert.ok(!/^\.env(?:\.|$)/.test(entry), 'Do not package credentials');
+await import('./check-letter-glitch.mjs');
+await import('./check-navigation.mjs');
+await import('./check-bust.mjs');
 await import('./check-portrait.mjs');
 await import('./check-preferences.mjs');
 console.log(JSON.stringify({ checked: true, languages: ['es', 'en'], pages: routeGroups.length * 2, checks: ['Site identity', 'deep translation parity', 'content completeness', 'all local links and anchors', 'ARIA references', 'unique headings and IDs', 'canonical and alternate routes', 'CV language', 'static fallbacks', 'sitemap'] }));
