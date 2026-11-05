@@ -52,7 +52,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   assert.ok(html.includes('data-settings') && html.includes('data-privacy') && html.includes('data-cookie-banner'), 'Visitor controls on every route');
   assert.ok(html.includes('data-intro-loader') && html.includes('data-loader-rays data-preset="underwater"') && html.includes('/assets/loader-rays.js'), 'Bounded optional loader on every route');
   assert.ok(html.includes('data-scroll-top') && html.includes('data-cursor-dot'), 'Progressive navigation controls on every route');
-  assert.ok(html.includes('data-soundtrack') && html.includes('/assets/soundtrack.js'), 'User-initiated audio control on every route');
+  assert.ok(html.includes('data-soundtrack') && html.includes('data-soundtrack-volume') && html.includes('/assets/soundtrack.js'), 'User-initiated audio and volume controls on every route');
   assert.ok(!/TODO|lorem ipsum|undefined|href=""|href="#"|codex-preview|@gmail\.com/.test(html), `Finished and private-contact-free content: ${pathname}`);
   for (const match of html.matchAll(/(?:href|src)="([^"\s]+)"/g)) {
     const target = new URL(match[1].replaceAll('&amp;', '&'), site.origin + pathname);

@@ -64,7 +64,8 @@ dialog[open]::backdrop { cursor: default; }
 }
 /* Reserve the two explicit media/settings controls without hiding the guide. */
 @media (max-width: 760px) {
-  body:has([data-soundtrack]) .journey-guide:not(:has(.guide-toggle[aria-expanded="true"])) { width: min(214px, calc(100% - 168px)); }
+  body:has([data-soundtrack-player]) .journey-guide:not(:has(.guide-toggle[aria-expanded="true"])) { width: min(214px, calc(100% - 216px)); }
+  body:has([data-soundtrack-player]) .guide-title small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 }
 @media (forced-colors: active) {
   .journey-guide, .guide-avatar, .guide-actions a, .scroll-top { background: Canvas; color: CanvasText; border: 1px solid ButtonText; box-shadow: none; }

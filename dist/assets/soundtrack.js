@@ -7,8 +7,10 @@
   const button = document.querySelector('[data-soundtrack]');
   if (!button) return;
   const label = button.querySelector('[data-soundtrack-label]'), status = document.querySelector('[data-soundtrack-status]');
+  const player = document.querySelector('[data-soundtrack-player]'), volumeInput = document.querySelector('[data-soundtrack-volume]');
+  const volumeOutput = document.querySelector('[data-soundtrack-volume-value]'), volumePanel = document.querySelector('[data-soundtrack-volume-panel]');
   const Audio = window.AudioContext || window.webkitAudioContext;
-  const BPM = 112, BEAT = 60 / BPM, STEP = BEAT / 4, MAX_VOICES = 64;
+  const BPM = 112, BEAT = 60 / BPM, STEP = BEAT / 4, MAX_VOICES = 64, MAX_GAIN = .6;
   const harmony = [
     { bass: 33, notes: [57, 60, 64, 67, 71] },
     { bass: 29, notes: [53, 57, 60, 64, 67] },
@@ -21,6 +23,18 @@
   ];
   const frequency = note => 440 * Math.pow(2, (note - 69) / 12);
   let context = null, engine = null, pending = false, generation = 0;
+  let volume = 65;
+
+  // This visit's level never creates/resumes audio or writes optional storage.
+  function updateVolume() {
+    const requested = Number(volumeInput?.value ?? volume);
+    if (Number.isFinite(requested)) volume = Math.max(0, Math.min(100, requested));
+    if (volumeInput) { volumeInput.value = String(volume); volumeInput.setAttribute('aria-valuetext', `${volume}%`); }
+    if (volumeOutput) volumeOutput.textContent = `${volume}%`;
+    button.dataset.volume = String(volume);
+    engine?.setVolume(volume / 100);
+  }
+  function closeVolume() { if (volumePanel) volumePanel.open = false; }
 
   function announce(text) { if (status) status.textContent = text || ''; }
   function display(state) {
@@ -49,7 +63,7 @@
   function createEngine(audio) {
     const voices = new Set(), graph = [], keep = node => { graph.push(node); return node; };
     let timer = 0, active = false, nextTime = 0, position = 0, scheduled = 0;
-    let mix, compressor, master, delay, noise;
+    let mix, compressor, level, master, delay, noise;
     const disconnect = node => { try { node.disconnect(); } catch { /* Already detached. */ } };
     const voiceCount = () => { button.dataset.voices = String(voices.size); };
     function release(voice, stopSources = false) {
@@ -140,9 +154,10 @@
       graph.forEach(disconnect);
     }
     try {
-      mix = keep(audio.createGain()); compressor = keep(audio.createDynamicsCompressor()); master = keep(audio.createGain());
+      mix = keep(audio.createGain()); compressor = keep(audio.createDynamicsCompressor()); level = keep(audio.createGain()); master = keep(audio.createGain());
       compressor.threshold.value = -15; compressor.knee.value = 20; compressor.ratio.value = 4; compressor.attack.value = .003; compressor.release.value = .25;
-      master.gain.value = 0; mix.connect(compressor); compressor.connect(master); master.connect(audio.destination);
+      level.gain.value = volume / 100; master.gain.value = 0;
+      mix.connect(compressor); compressor.connect(level); level.connect(master); master.connect(audio.destination);
       // A short, quiet filtered echo gives the pluck space without a reverb sample.
       delay = keep(audio.createDelay(1)); delay.delayTime.value = BEAT * .75;
       const shade = keep(audio.createBiquadFilter()), feedback = keep(audio.createGain()), wet = keep(audio.createGain());
@@ -155,8 +170,15 @@
     return {
       start() {
         active = true; nextTime = audio.currentTime + .06; position = scheduled = 0;
-        master.gain.setValueAtTime(0, audio.currentTime); master.gain.linearRampToValueAtTime(.15, audio.currentTime + .55);
+        master.gain.setValueAtTime(0, audio.currentTime); master.gain.linearRampToValueAtTime(MAX_GAIN, audio.currentTime + .55);
         queue(); timer = setTimeout(pump, 25);
+      },
+      setVolume(value) {
+        // Separate from the entrance fade: rapid adjustments stay smooth and
+        // cannot cancel its envelope, restart the phrase or allocate voices.
+        const now = audio.currentTime, held = level.gain.value;
+        level.gain.cancelScheduledValues(now); level.gain.setValueAtTime(held, now);
+        level.gain.setTargetAtTime(value, now, .025);
       },
       dispose
     };
@@ -180,8 +202,13 @@
       if (ticket === generation) stop(true);
     }
   }
+  if (player) player.hidden = false;
   button.hidden = false; button.dataset.tempo = String(BPM); button.dataset.voices = '0'; button.dataset.context = 'closed'; display(Audio ? 'paused' : 'unavailable');
+  updateVolume(); volumeInput?.addEventListener('input', updateVolume);
+  player?.addEventListener('keydown', event => { if (event.key === 'Escape' && volumePanel?.open) { event.preventDefault(); closeVolume(); volumePanel.querySelector('summary').focus(); } });
+  document.addEventListener('pointerdown', event => { if (volumePanel?.open && !player?.contains(event.target)) closeVolume(); });
+  document.addEventListener('focusin', event => { if (volumePanel?.open && !player?.contains(event.target)) closeVolume(); });
   button.addEventListener('click', () => { if (engine || pending) stop(); else start(); });
-  document.addEventListener('visibilitychange', () => { if (document.hidden && (engine || pending)) stop(); });
-  window.addEventListener('pagehide', () => { if (engine || pending) stop(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { closeVolume(); if (engine || pending) stop(); } });
+  window.addEventListener('pagehide', () => { closeVolume(); if (engine || pending) stop(); });
 })();

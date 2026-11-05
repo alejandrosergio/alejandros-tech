@@ -16,8 +16,14 @@ No se incorporan grabaciones, pistas o samples externos, ni se consulta un servi
 
 El botón fijo vive junto al control de accesibilidad y aparece en todas las rutas. Su indicador visual respeta movimiento reducido y colores forzados; la elección de escuchar es independiente de las animaciones decorativas. Sin JavaScript el botón permanece oculto y no se reproduce audio.
 
+## Volumen
+
+El icono de altavoz junto a Play abre un regulador de 0 a 100%, con etiqueta y porcentaje en ES/EN. Empieza al 65% en cada documento. El máximo de salida subió de 0,15 a 0,6; el nivel inicial combinado es 0,39. El compresor y la entrada gradual se conservan. Son ganancias de la web: el volumen del dispositivo también influye en lo que se escucha.
+
+El regulador actúa sobre una ganancia independiente de la entrada gradual y suaviza cada cambio durante unos milisegundos, sin reiniciar la frase ni crear voces. 0% silencia la salida. Ajustarlo con la música pausada prepara el siguiente Play sin iniciar audio. El nivel se conserva al pausar dentro del documento y vuelve al valor inicial al navegar; no añade almacenamiento opcional. El panel admite teclado y se cierra con Escape, al enfocar o pulsar fuera, o al ocultar/salir de la pestaña.
+
 ## Mantenimiento y comprobación
 
 `src/components/soundtrack.mjs` genera el control localizado; `src/styles/soundtrack.css` adapta su presentación. El motor limita las voces simultáneas y programa un intervalo corto usando el reloj de audio; elimina voces y nodos al terminar. No descarga medios ni utiliza un bucle visual para llevar el tempo.
 
-`scripts/check-soundtrack.mjs` ejercita el controlador con una superficie de audio simulada: inicio explícito, pausa, visibilidad, errores, programación y liberación de recursos. La escucha real y la revisión del control en móvil/escritorio son comprobaciones de navegador separadas; la simulación no acredita la calidad sonora.
+`scripts/check-soundtrack.mjs` ejercita el controlador con una superficie de audio simulada: inicio explícito, pausa, visibilidad, errores, programación, volumen, cierre del panel y liberación de recursos. La escucha real y la revisión del control en móvil/escritorio son comprobaciones de navegador separadas; la simulación no acredita la calidad sonora.

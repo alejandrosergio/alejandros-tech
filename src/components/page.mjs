@@ -61,7 +61,7 @@ function header(lang, t, paths) {
 }
 
 function footer(t, lang) {
-  return `<footer class="site-footer wrap"><div><a class="footer-brand" href="${t.path}">${site.name}</a><p>${t.contact.footer}</p><button class="footer-privacy" type="button" data-open-privacy hidden>${interfaceCopy[lang].cookies}</button><button class="footer-privacy" type="button" data-background-motion data-pause="${interfaceCopy[lang].backgroundPause}" data-play="${interfaceCopy[lang].backgroundPlay}" aria-pressed="false" hidden>${interfaceCopy[lang].backgroundPause}</button></div><small>© ${site.copyrightYear} ${site.name}<br>${t.rights}</small><a class="back-top" href="#top">${t.top}${icon('arrow')}</a></footer>`;
+  return `<footer class="site-footer wrap"><div><a class="footer-brand" href="${t.path}">${site.name}</a><p>${t.contact.footer}</p><button class="footer-privacy" type="button" data-open-privacy hidden>${interfaceCopy[lang].cookies}</button><button class="footer-privacy" type="button" data-background-motion data-pause="${interfaceCopy[lang].backgroundPause}" data-play="${interfaceCopy[lang].backgroundPlay}" aria-pressed="false" hidden>${interfaceCopy[lang].backgroundPause}</button></div><small>© ${site.copyrightYear} ${site.name}<br>${t.rights}</small></footer>`;
 }
 
 function document(lang, content, options) {

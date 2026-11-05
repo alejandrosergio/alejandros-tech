@@ -200,7 +200,6 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
 .footer-brand { color: var(--ink); font-weight: 650; font-size: .875rem; text-decoration: none; letter-spacing: -.04em; }
 .site-footer p { margin: .25rem 0 0; font-size: .625rem; }
 .site-footer small { font-size: .625rem; }
-.back-top { display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; font-size: .6875rem; text-decoration: none; }
 
 /* Case studies and original notes have their own real, localised pages. */
 .detail-heading { padding-block: 72px 54px; max-width: 980px; }
@@ -336,7 +335,6 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
   .contact-links { gap: .3rem 1.4rem; }
   .site-footer { padding-block: 2rem; gap: 1rem; }
   .site-footer small { margin-left: auto; }
-  .site-footer .back-top { flex-basis: 100%; }
   .detail-heading { padding-block: 44px 36px; }
   .detail-heading h1 { font-size: clamp(2rem, 6.8vw, 3.1rem); }
   .detail-lead { font-size: 1rem; }

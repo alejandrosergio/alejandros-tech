@@ -16,7 +16,7 @@ La fotografía se redujo al 140% de su superficie de encuadre en escritorio y al
 
 El raíl izquierdo tiene cuatro disciplinas: desarrollo de software, automatización, IA aplicada e integraciones. La cuarta apunta a Proyectos y describe APIs y sistemas, sin añadir hechos profesionales. Las barras permanecen verticales en reposo y se ensanchan al pasar o enfocar, mostrando la descripción. En móvil el contenido equivalente se dispone en 2×2 y pasa a una columna en pantallas muy estrechas. Cali, Colombia y el stack tienen mayor tamaño y pueden envolver.
 
-CV y Contacto destacan en la franja inferior, sin línea transversal. En móvil esta franja deja separación de los controles fijos de música y accesibilidad. Los accesos directos al CV abren una pestaña nueva con noopener noreferrer y conservan la ruta del idioma. Las redes del inicio son LinkedIn y GitHub; el correo se encuentra en Contacto. El indicador de bajar utiliza el acento elegido.
+CV y Contacto destacan en la franja inferior, sin línea transversal. En móvil esta franja deja separación de los controles fijos de música y accesibilidad. Los accesos directos al CV abren una pestaña nueva con noopener noreferrer y conservan la ruta del idioma. Las redes del inicio son LinkedIn y GitHub; el correo se encuentra en Contacto. La portada no incluye el antiguo bloque «Descubre mi mundo».
 
 El perfil usa texto, sin una segunda tarjeta de retrato. Tecnologías conserva su explorador; trayectoria y enfoque usan desplegables nativos; proyectos, notas y formulario mantienen sus interacciones de contenido y su alternativa HTML.
 
@@ -26,7 +26,7 @@ La cabecera se superpone transparente a la portada y adquiere fondo al salir de 
 
 Los ocho puntos laterales se renderizan bajo body, fuera de la capa aislada del hero, con nivel43 por encima de los módulos. Se ocultan con diálogos abiertos. La barra del navegador se oculta únicamente cuando la navegación mejorada está disponible; rueda, teclado, gestos, anclas y barras de los diálogos siguen siendo nativos. Colores forzados y ausencia de mejora conservan la barra.
 
-La guía calcula el avance del módulo actual y lo reinicia al cambiar; los puntos muestran el recorrido global. El visitante puede ocultar la guía. El botón de subida aparece después de avanzar.
+La guía calcula el avance del módulo actual y lo reinicia al cambiar; los puntos muestran el recorrido global. El visitante puede ocultar la guía. El botón flotante de subida aparece después de avanzar y es el único acceso dedicado para volver arriba; el pie no duplica este enlace.
 
 El cursor decorativo usa punto y retículo sin flecha de redirección; se detiene en reposo. Campos, diálogos, dispositivos táctiles y movimiento reducido conservan el cursor nativo. Los tooltips son breves, acentuados y se retiran al pulsar o desplazar. El tema anuncia su acción disponible según el estado; menú, pausa y switches exponen también su estado real.
 
@@ -44,7 +44,7 @@ Los efectos se suspenden con visibilidad y preferencias. Contraste alto y colore
 
 ## Audio opcional
 
-Un control Play/Pausa junto a accesibilidad inicia una composición original local de 112 BPM mediante Web Audio. La carga de la página nunca reproduce sonido; ocultar la pestaña o salir del documento detiene la interpretación, que requiere otro Play para comenzar de nuevo. El indicador visual respeta movimiento reducido. No se descargan pistas ni samples externos. La implementación y el alcance de esa procedencia se describen en [AUDIO.md](AUDIO.md).
+Un control Play/Pausa junto a accesibilidad inicia una composición original local de 112 BPM mediante Web Audio. El icono de altavoz abre un panel compacto con volumen de 0 a 100%, inicialmente al 65%, con porcentaje visible, teclado y cierre con Escape. La guía deja espacio para ambos controles en móvil. La carga de la página nunca reproduce sonido; ocultar la pestaña o salir del documento detiene la interpretación, que requiere otro Play para comenzar de nuevo. El indicador visual respeta movimiento reducido. No se descargan pistas ni samples externos. La implementación y el alcance de esa procedencia se describen en [AUDIO.md](AUDIO.md).
 
 ## Contenido y accesibilidad base
 

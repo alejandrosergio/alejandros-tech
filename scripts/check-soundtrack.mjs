@@ -14,7 +14,11 @@ function fixture({ absent = false, unsupported = false, constructorFails = false
   const button = { ...events('button'), hidden: true, dataset: { play: 'Play', pause: 'Pausa', playLabel: 'Reproducir música original', pauseLabel: 'Pausar música', playing: 'Música activada', stopped: 'Música pausada', unavailable: 'Audio no disponible' }, attributes: {},
     querySelector: () => label, setAttribute(name, value) { this.attributes[name] = value; }
   };
-  const document = { ...events('document'), hidden: false, querySelector: selector => selector === '[data-soundtrack]' ? absent ? null : button : status };
+  const volumeInput = { ...events('volume'), value: '65', attributes: {}, setAttribute(name, value) { this.attributes[name] = value; } }, volumeOutput = { textContent: '65%' };
+  const summary = { focused: false, focus() { this.focused = true; } }, volumePanel = { open: false, querySelector: () => summary };
+  const player = { ...events('player'), hidden: true, contains: target => [button, volumeInput, summary].includes(target) };
+  const elements = { '[data-soundtrack]': absent ? null : button, '[data-soundtrack-status]': status, '[data-soundtrack-player]': player, '[data-soundtrack-volume]': volumeInput, '[data-soundtrack-volume-value]': volumeOutput, '[data-soundtrack-volume-panel]': volumePanel };
+  const document = { ...events('document'), hidden: false, querySelector: selector => elements[selector] || null };
   class Param {
     constructor(value = 0) { this.value = value; this.events = []; }
     record(type, value, at) { assert.ok(Number.isFinite(value) && Number.isFinite(at) && at >= 0); if (type === 'exponential') assert.ok(value > 0); this.events.push({ type, value, at }); this.value = value; }
@@ -22,6 +26,7 @@ function fixture({ absent = false, unsupported = false, constructorFails = false
     linearRampToValueAtTime(value, at) { this.record('linear', value, at); }
     exponentialRampToValueAtTime(value, at) { this.record('exponential', value, at); }
     cancelScheduledValues(at) { this.events.push({ type: 'cancel', at }); }
+    setTargetAtTime(value, at, timeConstant) { assert.equal(timeConstant, .025); this.record('target', value, at); }
   }
   class Node {
     constructor(audio, kind) { this.audio = audio; this.kind = kind; this.outputs = new Set(); this.stopped = false; audio.nodes.add(this); }
@@ -66,8 +71,9 @@ function fixture({ absent = false, unsupported = false, constructorFails = false
     localStorage: { setItem() { throw new Error('Playback must not be persisted'); }, getItem() { throw new Error('Playback must not be restored'); } },
     requestAnimationFrame() { throw new Error('Audio timing must use the audio clock, not a perpetual visual loop'); }
   });
-  const fire = (target, type) => { const callbacks = handlers.get(target + ':' + type); assert.ok(callbacks, 'Registered ' + target + ':' + type); callbacks.forEach(callback => callback()); };
-  return { contexts, button, label, status, document, timers, fire,
+  const fire = (target, type, event = {}) => { const callbacks = handlers.get(target + ':' + type); assert.ok(callbacks, 'Registered ' + target + ':' + type); callbacks.forEach(callback => callback(event)); };
+  return { contexts, button, label, status, document, timers, fire, player, volumeInput, volumeOutput, volumePanel, summary,
+    setVolume(value) { volumeInput.value = String(value); fire('volume', 'input'); },
     async click() { fire('button', 'click'); await Promise.resolve(); await Promise.resolve(); await Promise.resolve(); },
     tick(seconds = .025) { contexts.forEach(audio => { if (audio.state === 'running') audio.advance(seconds); }); const queued = [...timers.values()]; timers.clear(); queued.forEach(callback => callback()); },
     async resolve() { contexts.at(-1).resolveResume(); await Promise.resolve(); await Promise.resolve(); await Promise.resolve(); },
@@ -83,8 +89,16 @@ const audio = normal.contexts[0];
 assert.equal(audio.state, 'running'); assert.equal(audio.resumeCalls, 1); assert.equal(normal.button.dataset.state, 'playing'); assert.equal(normal.button.attributes['aria-pressed'], 'true'); assert.equal(normal.label.textContent, 'Pausa'); assert.equal(normal.button.dataset.tooltip, 'Pausar música'); assert.equal(normal.button.attributes['aria-label'], 'Pausar música'); assert.equal(normal.status.textContent, 'Música activada'); assert.equal(normal.timers.size, 1);
 assert.equal(normal.button.dataset.tempo, '112'); assert.ok(Number(normal.button.dataset.voices) > 0);
 const master = [...audio.nodes].find(node => node.outputs.has(audio.destination));
-assert.ok(master.gain.events.some(event => event.type === 'linear' && event.value === .15 && event.at === .55), 'Master volume is modest and fades in');
+assert.ok(master.gain.events.some(event => event.type === 'linear' && event.value === .6 && event.at === .55), 'The louder master still fades in');
 const compressor = [...audio.nodes].find(node => node.kind === 'compressor'); assert.equal(compressor.ratio.value, 4);
+const level = [...compressor.outputs][0];
+assert.equal(level.gain.value, .65); assert.ok(level.gain.value * master.gain.value > .15 * 2, 'The initial output gain is more than twice the former fixed output');
+const activeNodes = audio.nodes.size, scheduledAtLevelChange = normal.button.dataset.scheduled;
+normal.setVolume(0); assert.equal(level.gain.events.at(-1).type, 'target'); assert.equal(level.gain.value, 0, 'Zero percent fades toward silence');
+normal.setVolume(100); assert.equal(level.gain.value, 1); assert.equal(normal.volumeOutput.textContent, '100%'); assert.equal(normal.volumeInput.attributes['aria-valuetext'], '100%');
+normal.setVolume(300); assert.equal(normal.volumeInput.value, '100'); normal.setVolume(-20); assert.equal(level.gain.value, 0); normal.setVolume(65);
+assert.equal(audio.nodes.size, activeNodes); assert.equal(normal.contexts.length, 1); assert.equal(normal.button.dataset.scheduled, scheduledAtLevelChange); assert.equal(normal.timers.size, 1, 'Changing volume neither restarts playback nor allocates nodes/timers');
+assert.equal(master.gain.events.at(-1).at, .55, 'Volume automation leaves the entrance envelope intact');
 const noise = audio.buffers[0].data; assert.equal(noise.length, 22050); assert.ok(noise.every(value => value >= -1 && value <= 1)); assert.ok(Math.abs(noise.reduce((sum, value) => sum + value, 0) / noise.length) < .02); assert.ok(new Set(noise.slice(0, 100)).size > 90, 'Percussion noise is generated locally rather than fetched');
 let maximum = Number(normal.button.dataset.voices);
 for (let i = 0; i < 1600; i++) { normal.tick(); maximum = Math.max(maximum, Number(normal.button.dataset.voices)); assert.equal(normal.timers.size, 1); }
@@ -107,6 +121,13 @@ for (const options of [{ unsupported: true }, { constructorFails: true }, { resu
 const pending = fixture({ deferred: true }); await pending.click(); assert.equal(pending.button.dataset.state, 'starting'); assert.equal(pending.button.attributes['aria-pressed'], 'false'); assert.equal(pending.timers.size, 0); await pending.click(); await pending.resolve(); assert.equal(pending.button.dataset.state, 'paused'); assert.equal(pending.contexts.length, 1); assert.equal(pending.contexts[0].state, 'closed'); assert.equal(pending.timers.size, 0, 'A cancelled async resume cannot restart sound');
 const hiddenPending = fixture({ deferred: true }); await hiddenPending.click(); hiddenPending.document.hidden = true; hiddenPending.fire('document', 'visibilitychange'); await hiddenPending.resolve(); assert.equal(hiddenPending.button.dataset.state, 'paused'); assert.equal(hiddenPending.timers.size, 0);
 const mono = fixture({ noPanner: true }); await mono.click(); assert.equal(mono.button.dataset.state, 'playing'); await mono.click(); assert.equal(mono.live().length, 0, 'Stereo panning is optional');
+const controls = fixture();
+controls.setVolume(20); assert.equal(controls.contexts.length, 0); assert.equal(controls.timers.size, 0, 'Setting a paused volume never starts audio');
+controls.volumePanel.open = true; controls.fire('player', 'keydown', { key: 'Escape', preventDefault() {} }); assert.equal(controls.volumePanel.open, false); assert.equal(controls.summary.focused, true);
+controls.volumePanel.open = true; controls.fire('document', 'pointerdown', { target: controls.volumeInput }); assert.equal(controls.volumePanel.open, true); controls.fire('document', 'pointerdown', { target: {} }); assert.equal(controls.volumePanel.open, false);
+controls.volumePanel.open = true; controls.fire('document', 'focusin', { target: {} }); assert.equal(controls.volumePanel.open, false);
+await controls.click(); assert.equal([...controls.contexts[0].nodes].find(node => node.kind === 'compressor').outputs.values().next().value.gain.value, .2, 'Play uses the level chosen before playback');
+controls.volumePanel.open = true; controls.document.hidden = true; controls.fire('document', 'visibilitychange'); assert.equal(controls.volumePanel.open, false); assert.equal(controls.contexts[0].state, 'closed');
 assert.ok(styles.includes('prefers-reduced-motion') && styles.includes('forced-colors') && styles.includes('data-motion'));
 assert.ok(styles.includes('min-height: 46px') && styles.includes('min-height: 44px') && styles.includes('var(--accent)'));
 assert.ok(!/fetch\(|localStorage|document\.cookie|https?:|<audio/.test(source), 'The soundtrack has no remote track, service, persistence or media autoplay');
