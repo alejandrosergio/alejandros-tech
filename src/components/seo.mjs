@@ -35,7 +35,7 @@ function structuredData(lang, options, image) {
 
 export function metadata(lang, options) {
   const { title, description, paths, notFound, project, note } = options;
-  const image = project?.image ?? portrait, imageAlt = project?.name ?? locales[lang].hero.portrait;
+  const image = project?.image[lang] ?? portrait, imageAlt = project?.[lang].imageAlt ?? locales[lang].hero.portrait;
   const canonical = notFound ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${absolute(paths[lang])}">
   ${['es', 'en'].map(language => `<link rel="alternate" hreflang="${language}" href="${absolute(paths[language])}">`).join('\n  ')}
   <link rel="alternate" hreflang="x-default" href="${absolute(paths.es)}">`;

@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-La portada usa la fotografía `public/assets/sergio-natural-appearance.webp` mediante un elemento HTML `img`. Su movimiento es un zoom CSS acotado; no hay modelo, canvas de retrato ni seguimiento de cabeza. La pausa y el movimiento reducido dejan la imagen en su pose neutra. Los lienzos de humo y rayos son decoraciones independientes, no visualizadores de la persona.
+La portada usa la fotografía `public/assets/sergio-natural-appearance.webp` mediante un elemento HTML `img`. Su movimiento es un zoom CSS acotado; no hay modelo, canvas de retrato ni seguimiento de cabeza. La pausa y el movimiento reducido dejan la imagen en su pose neutra. Los lienzos de humo y rejilla del loader son decoraciones independientes, no visualizadores de la persona.
 
 Por petición del titular se eliminaron de la fuente el generador, lector, visualizador y pruebas del antiguo busto 3D. Su historial se conserva en Git, sin archivos 3D en la implementación vigente.
 
@@ -12,9 +12,18 @@ Por petición del titular se eliminaron de la fuente el generador, lector, visua
 | --- | --- |
 | `sergio-natural-appearance.webp` | Retrato de la portada, preparado a partir de la foto original. |
 | `sergio-hernandez.jpeg` | Foto pública original de estudio y avatar en la firma de las notas técnicas. |
-| `alejandros-tech-preview.jpg` | Vista del proyecto Alejandro’sTech en su tarjeta. |
-| `alejandros-tech-first-version.jpg` | Captura de la primera versión en la ficha del proyecto. |
-| `cv-preview.jpg` | Vista del CV profesional en tarjeta y ficha de proyecto. |
+| `alejandros-tech-preview.jpg` | Portada actual en español, en tarjeta, ficha e imagen social del proyecto. |
+| `alejandros-tech-preview-en.jpg` | Portada actual en inglés, en tarjeta, ficha e imagen social del proyecto. |
+| `cv-preview.jpg` | Captura actual del CV en español, en tarjeta, ficha e imagen social. |
+| `cv-preview-en.jpg` | Captura actual del CV en inglés, en tarjeta, ficha e imagen social. |
+
+## Capturas actuales de proyectos
+
+Capturas JPEG nativas de navegador, tomadas el 6 de noviembre de 2026, sin retoque, recorte ni generación de imágenes. Se usó una ventana de prueba de 1280 × 900; la captura devuelta mide 1280 × 900 para Alejandro’sTech y 1265 × 889 para el CV. Se conservan sus bytes y dimensiones originales, que el modelo de proyecto declara en el HTML. Cada captura se reutiliza en la tarjeta y en la ficha, evitando copias duplicadas. El idioma del proyecto determina también la imagen social y el texto alternativo.
+
+Las portadas de Alejandro’sTech se capturaron desde la vista local de esta entrega, con tema oscuro/coral y texto al 100%; la publicación se verifica contra esa misma fuente. Las del CV se capturaron de sus páginas públicas `/` y `/en/`, en tema oscuro. El CV y su código no se modificaron. Las capturas no acreditan proyectos nuevos ni resultados de IA.
+
+Las vistas anteriores de `alejandros-tech-preview.jpg` y `cv-preview.jpg` se sustituyen por estas capturas actuales. El recurso sin uso `alejandros-tech-first-version.jpg` se retira de la publicación. La historia visual anterior se conserva en el [commit be6a39b](https://github.com/alejandrosergio/alejandros-tech/commit/be6a39bfc9235e0b9d4dc08d30a6ed745a240099).
 
 Las capturas representan los proyectos publicados; no son proyectos de clientes inventados. La fotografía original es también la fuente de identidad y postura de la preparación del inicio.
 

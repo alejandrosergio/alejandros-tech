@@ -2,7 +2,7 @@
 
 [Español](LEEME.md) · **English**
 
-Sergio Hernández’s professional website: .NET and React development, Power Platform, automation and AI integration. The first complete edition brings together his profile, technologies, experience, education, public projects and original technical notes.
+Sergio Hernández’s professional website, focused on applied AI integration in software and business workflows with .NET, Power Platform and React. It brings together his confirmed experience, public web projects and original technical notes. Project screenshots and social images match each page’s language.
 
 - [Spanish website](https://alejandros-tech.alejosergio3000.chatgpt.site/)
 - [English website](https://alejandros-tech.alejosergio3000.chatgpt.site/en/)

@@ -65,6 +65,7 @@ No package installation is needed for this dependency-free version. Keep future 
 - LinkedIn: `https://www.linkedin.com/in/sergio-alejandro-hernandez-patino/`.
 - GitHub profile: `https://github.com/alejandrosergio`.
 - Profile: .NET and Power Platform developer, full stack, automation and AI integration. Keep claims grounded in the owner’s confirmed experience.
+- The applied-AI editorial focus describes language-model integration through APIs in applications and automation, with technical review. Keep the confirmed analyst/developer role. The two current cases are digital-identity web projects; do not imply they are deployed AI systems. Project screenshots and their alt/social metadata match ES/EN and show the current websites; see docs/ASSETS.md.
 - Do not invent measured outcomes, employers, projects, clients, certifications or team sizes. The five-person team and payroll project in earlier conversation were examples, not confirmed facts.
 - React is a confirmed current frontend technology. Do not offer historical Java/Angular work as a current specialization or add unconfirmed Python experience.
 - Do not add a launch date, countdown, newsletter, account, form backend, client logos or commercial service promises without a request. New sections must contain complete, confirmed content. Technical notes written for the site are original explanatory content, not evidence of earlier publications or client projects. See `docs/CONTENT.md` for provenance.

@@ -2,7 +2,7 @@
 
 **Español** · [English](README.md)
 
-Web profesional de Sergio Hernández: desarrollo con .NET y React, Power Platform, automatización e integración de IA. La primera edición completa reúne perfil, tecnologías, trayectoria, formación, proyectos públicos y notas técnicas originales.
+Web profesional de Sergio Hernández, con enfoque en la integración de IA aplicada en software y procesos empresariales con .NET, Power Platform y React. Reúne experiencia confirmada, proyectos web públicos y notas técnicas originales. Las capturas e imágenes sociales de los proyectos corresponden al idioma de cada página.
 
 - [Web en español](https://alejandros-tech.alejosergio3000.chatgpt.site/)
 - [Web en inglés](https://alejandros-tech.alejosergio3000.chatgpt.site/en/)

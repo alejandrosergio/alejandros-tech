@@ -13,9 +13,11 @@ Trayectoria: CODESA (sept. 2020–mar. 2021), Intelecto (mar. 2021–jun. 2023),
 
 El retrato procede del recurso público `/images/sergio-hernandez.jpeg` del CV y se conserva localmente. No se modifican el CV, sus fuentes o sus contactos. El correo público de Alejandro’sTech sigue siendo Outlook.
 
+La primera entrega editorial hacia IA aplicada, autorizada el 6 de noviembre de 2026, refuerza la integración de modelos de lenguaje mediante APIs en aplicaciones y automatizaciones, con revisión técnica. Conserva el cargo de analista y desarrollador de software y la experiencia confirmada en .NET, Power Platform y React. No añade experiencia de entrenamiento de modelos, métricas, clientes, disponibilidad laboral ni proyectos de IA no publicados.
+
 ## Proyectos
 
-Alejandro’sTech y el CV son dos sitios públicos reales del titular. Las imágenes son capturas reales de sus páginas. La primera portada de Alejandro’sTech se identifica como una versión anterior. No se presentan casos de clientes ni resultados cuantificados sin confirmar.
+Alejandro’sTech y el CV son dos sitios públicos reales del titular y se identifican como proyectos web de identidad digital. Sus tarjetas, fichas e imágenes sociales utilizan capturas reales de la versión actual en el idioma correspondiente. La ficha comparte el mismo esquema de punto de partida, aportación, enfoque y resultado. Las capturas de versiones anteriores quedan en Git; no se presentan como la portada actual. No se presentan casos de clientes ni resultados cuantificados sin confirmar. Véase `ASSETS.md`.
 
 ## Cuaderno técnico
 

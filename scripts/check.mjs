@@ -70,6 +70,11 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   assert.ok(socialImage?.startsWith(site.origin + '/assets/'), `Local social image: ${pathname}`);
   await access(fileFor(new URL(socialImage).pathname));
   assert.ok(html.includes(`<meta name="twitter:image" content="${socialImage}">`));
+  if (route.type === 'project') {
+    assert.equal(socialImage, site.origin + route.entity.image[lang], 'Project social image matches the page language');
+    assert.ok(html.includes(`src="${route.entity.image[lang]}"`), 'Project figure uses the current localized screenshot');
+    assert.ok(!html.includes('alejandros-tech-first-version'), 'The current case does not show a retired homepage');
+  }
   assert.equal(new Set(ids(html)).size, ids(html).length, `Unique IDs: ${pathname}`);
   assert.ok(html.includes('data-letter-glitch') && html.includes('data-background-motion'), 'Decorative background and pause control on every route');
   assert.ok(html.includes('data-settings') && html.includes('data-privacy') && html.includes('data-cookie-banner'), 'Visitor controls on every route');
@@ -85,6 +90,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   }
   for (const match of html.matchAll(/(?:aria-controls|aria-describedby|aria-labelledby)="([^"]+)"/g)) for (const id of match[1].split(/\s+/)) assert.ok(ids(html).includes(id), `ARIA reference: ${pathname} → ${id}`);
   if (route.type === 'home') {
+    for (const project of projects) assert.ok(html.includes(`src="${project.image[lang]}"`), 'Home cards use the current screenshots in their own language');
     assert.equal((html.match(/data-splash-cursor/g) ?? []).length,1,'One optional smoke surface in the home');
     assert.ok(html.includes('data-intensity="0.6" data-size="0.5"') && html.includes('/assets/splash-cursor.js'),'Requested Smoke settings are home-only');
     assert.ok(html.includes('data-portrait-hero') && html.includes('sergio-natural-appearance.webp'), 'Home retains its static portrait');

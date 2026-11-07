@@ -8,6 +8,8 @@ Perfil y enfoque sin tarjeta fotográfica duplicada, tecnologías interactivas, 
 
 ## Próximas ampliaciones con material del titular
 
+La primera entrega editorial hacia IA aplicada conserva los ocho módulos y el sistema visual. Refuerza la integración de IA en el mensaje ES/EN y actualiza las capturas reales de los dos proyectos, con imágenes y metadatos por idioma. No incorpora demos ni presenta casos de IA como trabajos ya realizados.
+
 - Profundizar en su historia profesional: orígenes, motivaciones y decisiones personales.
 - Añadir casos de .NET, Power Platform e integración con material que pueda publicarse.
 - Incorporar repositorios, demostraciones y capturas de esos casos.
