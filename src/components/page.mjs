@@ -1,7 +1,9 @@
 import { site } from '../content/site.mjs';
 import { locales } from '../content/locales.mjs';
 import { experience, skills } from '../content/profile.mjs';
-import { projects, projectPath } from '../content/projects.mjs';
+import { projects, projectPath, projectName, projectDestination } from '../content/projects.mjs';
+import { assistantCopy, assistantPaths } from '../content/document-assistant.mjs';
+import { documentAssistant } from './document-assistant.mjs';
 import { notes, notePath } from '../content/notes.mjs';
 import { icon } from './icons.mjs';
 import { hero, sectionNavigation } from './hero.mjs';
@@ -31,7 +33,7 @@ function head(lang, options) {
   <script src="/assets/site.js" defer></script>
   <script src="/assets/journey.js" defer></script>
   <script src="/assets/letter-glitch.js" defer></script>${options.home ? '\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
-  <script src="/assets/soundtrack.js" defer></script>
+  <script src="/assets/soundtrack.js" defer></script>${options.assistant ? '\n  <script src="/assets/document-assistant.js" type="module"></script>' : ''}
 </head>`;
 }
 
@@ -99,7 +101,11 @@ function career(lang, t) {
 }
 
 function projectCards(lang, t) {
-  return projects.map((project, i) => `<article class="project-card" data-reveal><a class="project-image" href="${projectPath(project, lang)}" aria-label="${e(project.name)} — ${t.readCase}"><img src="${project.image[lang]}" alt="${e(project[lang].imageAlt)}" width="${project.imageSize.width}" height="${project.imageSize.height}" loading="lazy" decoding="async"><span class="project-open" aria-hidden="true">${icon('arrow')}</span><span class="project-index" aria-hidden="true">0${i + 1}</span></a><div class="project-meta"><span>${e(project[lang].type)}</span><span>2026</span></div><h3><a href="${projectPath(project, lang)}">${e(project.name)}</a></h3><p>${e(project[lang].summary)}</p>${tags(project.stack)}<a class="text-link" href="${projectPath(project, lang)}">${t.readCase}${icon('arrowRight')}</a></article>`).join('');
+  return projects.map((project, i) => {
+    const p = project[lang], featured = Boolean(project.demoPaths);
+    const description = `<div class="project-meta"><span>${e(p.type)}</span><span>2026</span></div><h3><a href="${projectPath(project, lang)}">${e(projectName(project, lang))}</a></h3><p>${e(p.summary)}</p>${tags(project.stack)}<a class="text-link" href="${projectPath(project, lang)}">${t.readCase}${icon('arrowRight')}</a>${featured ? `<a class="text-link project-demo-link" href="${projectDestination(project, lang)}">${e(p.demoLabel)}${icon('arrowRight')}</a>` : ''}`;
+    return `<article class="project-card${featured ? ' project-card--featured' : ''}" data-reveal><a class="project-image" href="${projectPath(project, lang)}" aria-label="${e(projectName(project, lang))} — ${t.readCase}"><img src="${project.image[lang]}" alt="${e(p.imageAlt)}" width="${project.imageSize.width}" height="${project.imageSize.height}" loading="lazy" decoding="async"><span class="project-open" aria-hidden="true">${icon('arrow')}</span><span class="project-index" aria-hidden="true">0${i + 1}</span></a>${featured ? `<div class="project-featured-copy">${description}</div>` : description}</article>`;
+  }).join('');
 }
 
 function projectSection(lang, t) {
@@ -132,9 +138,19 @@ export function renderPage(lang, { notFound = false } = {}) {
 
 export function renderProject(lang, project) {
   const t = locales[lang], p = project[lang], paths = { es: projectPath(project, 'es'), en: projectPath(project, 'en') };
-  const live = `${project.live}${lang === 'en' ? '/en/' : '/'}`;
-  const content = `<main id="main" tabindex="-1"><article class="case-study wrap"><header class="detail-heading"><a class="back-link" href="${t.path}#proyectos">← ${t.backProjects}</a><p class="eyebrow">${p.type} / 2026</p><h1>${e(p.title)}</h1><p class="detail-lead">${e(p.summary)}</p><div class="hero-actions"><a class="button button-primary" href="${live}"${project.id === 'cv' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${t.visit}${icon('arrow')}</a>${project.repository ? `<a class="text-link" href="${project.repository}">${t.source}${icon('github')}</a>` : ''}</div></header><figure class="case-image"><img src="${project.image[lang]}" alt="${e(p.imageAlt)}" width="${project.imageSize.width}" height="${project.imageSize.height}"><figcaption>${project.id === 'cv' ? t.projects.cvCaption : t.projects.imageCaption}</figcaption></figure><div class="case-content"><aside class="case-facts"><span class="small-label">${t.projects.overview}</span><h2>${e(project.name)}</h2><h3>${t.projects.scope}</h3><p>${e(p.contribution)}</p><h3>${t.projects.stack}</h3>${tags(project.stack)}<a class="text-link" href="${cvURL(lang)}" target="_blank" rel="noopener noreferrer">${t.cv}${icon('arrow')}</a></aside><div class="prose"><section><h2>${t.projects.problem}</h2><p>${e(p.problem)}</p></section><section><h2>${t.projects.approach}</h2><ul>${p.approach.map(item => `<li>${e(item)}</li>`).join('')}</ul></section><section><h2>${t.projects.result}</h2><p>${e(p.result)}</p></section><a class="button button-secondary" href="${t.path}#contacto">${t.contactNav}${icon('arrowRight')}</a></div></div></article><div class="detail-end wrap"><a class="text-link" href="${t.path}#proyectos">← ${t.backProjects}</a><a class="text-link" href="${t.path}#conocimiento">${t.backNotes}${icon('arrowRight')}</a></div></main>`;
-  return document(lang, content, { title: `${project.name} — ${p.title} | ${site.name}`, description: p.summary, paths, project });
+  const live = projectDestination(project, lang), name = projectName(project, lang);
+  const content = `<main id="main" tabindex="-1"><article class="case-study wrap">
+    <header class="detail-heading"><a class="back-link" href="${t.path}#proyectos">← ${t.backProjects}</a><p class="eyebrow">${p.type} / 2026</p><h1>${e(p.title)}</h1><p class="detail-lead">${e(p.summary)}</p><div class="hero-actions"><a class="button button-primary" href="${live}"${project.id === 'cv' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${e(p.demoLabel ?? t.visit)}${icon('arrow')}</a>${project.repository ? `<a class="text-link" href="${project.repository}">${t.source}${icon('github')}</a>` : ''}</div></header>
+    <figure class="case-image"><img src="${project.image[lang]}" alt="${e(p.imageAlt)}" width="${project.imageSize.width}" height="${project.imageSize.height}"><figcaption>${e(p.caption ?? (project.id === 'cv' ? t.projects.cvCaption : t.projects.imageCaption))}</figcaption></figure>
+    <div class="case-content"><aside class="case-facts"><span class="small-label">${t.projects.overview}</span><h2>${e(name)}</h2><h3>${t.projects.scope}</h3><p>${e(p.contribution)}</p><h3>${t.projects.stack}</h3>${tags(project.stack)}<a class="text-link" href="${cvURL(lang)}" target="_blank" rel="noopener noreferrer">${t.cv}${icon('arrow')}</a></aside>
+    <div class="prose"><section><h2>${t.projects.problem}</h2><p>${e(p.problem)}</p></section><section><h2>${t.projects.approach}</h2><ul>${p.approach.map(item => `<li>${e(item)}</li>`).join('')}</ul></section><section><h2>${t.projects.result}</h2><p>${e(p.result)}</p></section>${p.limitations ? `<section><h2>${e(p.limitationsTitle)}</h2><ul>${p.limitations.map(item => `<li>${e(item)}</li>`).join('')}</ul><a class="button button-primary" href="${live}">${e(p.demoLabel)}${icon('arrowRight')}</a></section>` : ''}<a class="button button-secondary" href="${t.path}#contacto">${t.contactNav}${icon('arrowRight')}</a></div></div></article>
+    <div class="detail-end wrap"><a class="text-link" href="${t.path}#proyectos">← ${t.backProjects}</a><a class="text-link" href="${t.path}#conocimiento">${t.backNotes}${icon('arrowRight')}</a></div></main>`;
+  return document(lang, content, { title: `${name} — ${p.title} | ${site.name}`, description: p.summary, paths, project });
+}
+
+export function renderAssistant(lang) {
+  const project = projects.find(item => item.id === 'document-assistant'), t = assistantCopy[lang];
+  return document(lang, documentAssistant(lang, projectPath(project, lang)), { title: `${projectName(project, lang)} — ${t.title.join(' ')} | ${site.name}`, description: t.description, paths: assistantPaths, assistant: true, image: project.image[lang], imageAlt: project[lang].imageAlt });
 }
 
 export function renderNote(lang, note) {

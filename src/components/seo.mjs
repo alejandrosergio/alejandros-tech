@@ -1,5 +1,6 @@
 import { site } from '../content/site.mjs';
 import { locales } from '../content/locales.mjs';
+import { projectName, projectDestination } from '../content/projects.mjs';
 import { escapeHTML as e, scriptJSON } from '../lib/html.mjs';
 
 const absolute = pathname => new URL(pathname, site.origin).href;
@@ -20,14 +21,14 @@ function structuredData(lang, options, image) {
     page.breadcrumb = { '@id': breadcrumbID };
     graph.push({ '@type': 'BreadcrumbList', '@id': breadcrumbID, itemListElement: [
       { '@type': 'ListItem', position: 1, name: lang === 'es' ? 'Inicio' : 'Home', item: absolute(locales[lang].path) },
-      { '@type': 'ListItem', position: 2, name: note?.[lang].title ?? project?.name ?? title, item: url }
+      { '@type': 'ListItem', position: 2, name: note?.[lang].title ?? (project ? projectName(project, lang) : title), item: url }
     ] });
     if (note) {
       page.mainEntity = { '@id': `${url}#article` };
       graph.push({ '@type': 'BlogPosting', '@id': `${url}#article`, headline: note[lang].title, description, datePublished: note.date, inLanguage: lang, author: { '@id': personID }, mainEntityOfPage: { '@id': pageID }, image: absolute(image) });
     } else if (project) {
       page.mainEntity = { '@id': `${url}#project` };
-      graph.push({ '@type': 'CreativeWork', '@id': `${url}#project`, name: project.name, description, url: project.live, creator: { '@id': personID }, mainEntityOfPage: { '@id': pageID }, image: absolute(image) });
+      graph.push({ '@type': 'CreativeWork', '@id': `${url}#project`, name: projectName(project, lang), description, url: absolute(projectDestination(project, lang)), creator: { '@id': personID }, mainEntityOfPage: { '@id': pageID }, image: absolute(image) });
     }
   }
   return `<script type="application/ld+json">${scriptJSON({ '@context': 'https://schema.org', '@graph': graph })}</script>`;
@@ -35,7 +36,7 @@ function structuredData(lang, options, image) {
 
 export function metadata(lang, options) {
   const { title, description, paths, notFound, project, note } = options;
-  const image = project?.image[lang] ?? portrait, imageAlt = project?.[lang].imageAlt ?? locales[lang].hero.portrait;
+  const image = options.image ?? project?.image[lang] ?? portrait, imageAlt = options.imageAlt ?? project?.[lang].imageAlt ?? locales[lang].hero.portrait;
   const canonical = notFound ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${absolute(paths[lang])}">
   ${['es', 'en'].map(language => `<link rel="alternate" hreflang="${language}" href="${absolute(paths[language])}">`).join('\n  ')}
   <link rel="alternate" hreflang="x-default" href="${absolute(paths.es)}">`;

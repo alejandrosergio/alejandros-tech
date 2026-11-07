@@ -1,12 +1,14 @@
 import assert from 'node:assert/strict';
 import { readFile, access, readdir } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { root } from './build.mjs';
 import { locales } from '../src/content/locales.mjs';
 import { site } from '../src/content/site.mjs';
 import { routeGroups } from '../src/content/routes.mjs';
 import { skills, experience } from '../src/content/profile.mjs';
-import { projects } from '../src/content/projects.mjs';
+import { projects, projectName } from '../src/content/projects.mjs';
+import { assistantCopy } from '../src/content/document-assistant.mjs';
 import { notes } from '../src/content/notes.mjs';
 import { interfaceCopy } from '../src/content/interface.mjs';
 import { journeyCopy } from '../src/content/journey.mjs';
@@ -16,6 +18,7 @@ const dist = path.join(root, 'dist');
 const manifest = JSON.parse(await readFile(path.join(root, '.openai/hosting.json'), 'utf8'));
 assert.equal(manifest.project_id, 'appgprj_6aea35f321688191a6452b8b65f782ee', 'Preserve this Site identity');
 assert.equal(manifest.static.directory, 'dist');
+assert.ok(!manifest.d1 && !manifest.r2, 'The local demo does not provision paid inference or storage');
 assert.equal(new URL(site.origin).hostname, 'alejandros-tech.alejosergio3000.chatgpt.site');
 
 function compareShape(es, en, key = 'locales') {
@@ -27,6 +30,7 @@ function compareShape(es, en, key = 'locales') {
 compareShape(locales.es, locales.en);
 compareShape(interfaceCopy.es, interfaceCopy.en, 'interface');
 compareShape(journeyCopy.es, journeyCopy.en, 'journey');
+compareShape(assistantCopy.es, assistantCopy.en, 'assistant');
 assert.equal(new Set(skills.map(s => s.id)).size, skills.length);
 for (const skill of skills) assert.ok(skill.es && skill.en && skill.context.es && skill.context.en);
 for (const record of experience) assert.ok(record.es.length && record.es.length === record.en.length);
@@ -64,7 +68,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   else {
     assert.equal(graph.find(node => node['@type'] === 'BreadcrumbList').itemListElement.at(-1).item, page.url);
     if (route.type === 'note') assert.equal(graph.find(node => node['@type'] === 'BlogPosting').datePublished, route.entity.date);
-    else assert.equal(graph.find(node => node['@type'] === 'CreativeWork').name, route.entity.name);
+    else if (route.type === 'project') assert.equal(graph.find(node => node['@type'] === 'CreativeWork').name, projectName(route.entity, lang));
   }
   const socialImage = html.match(/property="og:image" content="([^"]+)"/)?.[1];
   assert.ok(socialImage?.startsWith(site.origin + '/assets/'), `Local social image: ${pathname}`);
@@ -128,7 +132,11 @@ for (const route of routeGroups) for (const pathname of Object.values(route.path
 const css = await readFile(path.join(dist, 'assets/styles.css'), 'utf8');
 for (const feature of ['prefers-reduced-motion', 'forced-colors', ':focus-visible', '@media print']) assert.ok(css.includes(feature));
 assert.ok(!/overflow-x\s*:\s*hidden/.test(css), 'Fix overflow instead of hiding it');
-for (const entry of await readdir(root)) assert.ok(!/^\.env(?:\.|$)/.test(entry), 'Do not package credentials');
+const trackedEnvironment = execFileSync('git', ['ls-files', '--', '.env', '.env.*'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
+assert.ok(trackedEnvironment.every(file => file === '.env.example'), 'Real environment files must never be tracked');
+for (const entry of await readdir(root)) if (/^\.env(?:\.|$)/.test(entry) && entry !== '.env.example') {
+  assert.ok(execFileSync('git', ['check-ignore', '--', entry], { cwd: root, encoding: 'utf8' }).trim(), 'Local credentials remain ignored');
+}
 await import('./check-letter-glitch.mjs');
 await import('./check-splash.mjs');
 await import('./check-loader-grid.mjs');
@@ -138,4 +146,5 @@ await import('./check-tooltips.mjs');
 await import('./check-soundtrack.mjs');
 await import('./check-preferences.mjs');
 await import('./check-settings.mjs');
+await import('./check-document-assistant.mjs');
 console.log(JSON.stringify({ checked: true, languages: ['es', 'en'], pages: routeGroups.length * 2, checks: ['Site identity', 'deep translation parity', 'content completeness', 'all local links and anchors', 'ARIA references', 'unique headings and IDs', 'canonical and alternate routes', 'safe structured data and social images', 'CV language', 'static fallbacks', 'sitemap and robots'] }));

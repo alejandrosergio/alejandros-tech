@@ -6,7 +6,7 @@
 - Origen: `https://alejandros-tech.alejosergio3000.chatgpt.site`.
 - Repositorio: `alejandrosergio/alejandros-tech`, rama `main`.
 
-El manifiesto `.openai/hosting.json` es la referencia local del Site. Su campo `static.directory` apunta a `dist`. No sustituir el identificador por el del CV.
+El manifiesto `.openai/hosting.json` es la referencia local del Site. Conserva el ID y `static.directory: dist`. No hay vinculación de base de datos, backend de modelos ni secretos de inferencia. No sustituir el identificador por el del CV. La demo ejecuta consultas en el navegador y ofrece un modelo descargable opcional; revisar su funcionamiento real y sus alternativas antes de publicar. Ver [AI-DEMO.md](AI-DEMO.md).
 
 ## Procedimiento
 

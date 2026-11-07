@@ -11,7 +11,7 @@ Web profesional de Sergio Hernández, con enfoque en la integración de IA aplic
 
 ## Experiencia
 
-El inicio a pantalla completa incorpora un retrato fotográfico en gris, tres anillos de giro lento y un acercamiento suave de la imagen. La foto es un recorte asistido del retrato de estudio original del titular; su preparación está documentada en [recursos visuales](docs/ASSETS.md). El generador, visualizador y pruebas del antiguo 3D se han eliminado por petición del titular. El perfil usa columnas editoriales de texto sin tarjeta fotográfica duplicada, seguidas de un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos de proyectos públicos reales y tres notas técnicas originales. Cada proyecto y nota tiene una página completa en español e inglés.
+El inicio a pantalla completa incorpora un retrato fotográfico en gris, tres anillos de giro lento y un acercamiento suave de la imagen. La foto es un recorte asistido del retrato de estudio original del titular; su preparación está documentada en [recursos visuales](docs/ASSETS.md). El generador, visualizador y pruebas del antiguo 3D se han eliminado por petición del titular. El perfil usa columnas editoriales de texto sin tarjeta fotográfica duplicada, seguidas de un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos web reales, un prototipo personal de asistente documental y tres notas originales. Los casos, la demo y las notas tienen rutas completas ES/EN.
 
 El sistema visual usa carbón, blanco cálido, coral discreto y títulos serif regulares en toda la web. La navegación permanece expandida por encima de 760 px y puede ocupar varias filas; el menú se colapsa solo en móvil. Las entradas de contenido duran unos 1,1 segundos con escalonado limitado. El cursor conserva punto y anillo sin flecha de redirección.
 
@@ -23,15 +23,18 @@ El formulario bilingüe utiliza el formulario verificado de Formspree del titula
 
 ## Trabajar en local
 
-Usar Node.js 22 o posterior. Este sitio no necesita instalación de paquetes externos.
+Usar Node.js 22.13 o posterior. Instalar las herramientas de generación y el runtime del modelo opcional con versiones fijadas. La web publicada es estática.
 
 ```sh
+pnpm install --frozen-lockfile
 pnpm build
 pnpm check
 pnpm dev
 ```
 
 También se pueden ejecutar `node scripts/build.mjs`, `node scripts/check.mjs` y `node scripts/dev.mjs`. Vista local: `http://127.0.0.1:4178/`. Regenerar y actualizar el navegador después de editar. Cerrar el servidor propio al terminar la revisión.
+
+El asistente documental permite consultar cuatro documentos públicos en el dispositivo, con fragmentos literales y enlaces a sus fuentes. En equipos compatibles, el visitante puede descargar voluntariamente Qwen3.5 (unos 450 MB) para generar respuestas locales mediante WebLLM/WebGPU. Las citas se comprueban; si no pasan la validación, se muestran los fragmentos originales. No usa API de pago, claves, cuentas, envío de preguntas ni historial. La descarga puede consumir datos de la conexión del visitante. Ver [arquitectura, privacidad y comprobaciones de la demo](docs/AI-DEMO.md).
 
 ## Organización
 

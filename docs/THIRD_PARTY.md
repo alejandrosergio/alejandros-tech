@@ -1,5 +1,15 @@
 # Avisos de terceros
 
+## IA local opcional · WebLLM / Qwen3.5
+
+- [WebLLM 0.2.87](https://github.com/mlc-ai/web-llm), MLC-AI, Apache-2.0. Aviso completo en `/assets/licenses/web-llm.txt`. El SDK y su runtime se distribuyen en el bundle del worker opcional de la demo.
+- Dependencia loglevel, Tim Perry, licencia MIT, conservada en `/assets/licenses/loglevel.txt`.
+- [Runtime compilado MLC](https://github.com/mlc-ai/binary-mlc-llm-libs/tree/146ed9cd4b4062e967b017fd2291f7106b50599f), versión `v0_2_87/base`, para Qwen3.5-0.8B; fuente y hash en `ASSETS.md`.
+- [Qwen3.5-0.8B](https://huggingface.co/Qwen/Qwen3.5-0.8B), Qwen Team, Apache-2.0. Los pesos cuantizados de MLC se descargan desde Hugging Face al activar la IA; no se guardan en el repositorio ni en el archivo de publicación.
+- esbuild 0.28.2 es una herramienta de generación con licencia MIT y no forma parte del código de ejecución del navegador.
+
+El visitante activa expresamente la descarga. Las preguntas y respuestas se procesan en su dispositivo. No se conecta una API de pago ni se envía el texto a un proveedor de IA. La conexión de descarga de archivos tiene su funcionamiento normal de red. Ver `AI-DEMO.md` para límites, caché y privacidad. Estas licencias no conceden derechos sobre la marca, fotografías o contenido original del sitio.
+
 ## Letter Glitch Classic · React Bits
 
 - Referencia: https://reactbits.dev/tools/background-studio?bg=letter-glitch&preset=classic

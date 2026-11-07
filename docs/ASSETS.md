@@ -16,6 +16,8 @@ Por petición del titular se eliminaron de la fuente el generador, lector, visua
 | `alejandros-tech-preview-en.jpg` | Portada actual en inglés, en tarjeta, ficha e imagen social del proyecto. |
 | `cv-preview.jpg` | Captura actual del CV en español, en tarjeta, ficha e imagen social. |
 | `cv-preview-en.jpg` | Captura actual del CV en inglés, en tarjeta, ficha e imagen social. |
+| `document-assistant-preview.svg` | Diagrama original del flujo del asistente en español, no una captura de conversación. |
+| `document-assistant-preview-en.svg` | El mismo diagrama de biblioteca, contexto, modelo y fuentes, en inglés. |
 
 ## Capturas actuales de proyectos
 
@@ -48,3 +50,9 @@ Use case: identity-preserve / background-extraction. Asset type: photographic ap
 `sergio-bust-appearance.webp` (apariencia cuadrada de manos levantadas) y `sergio-portrait-cutout.webp` (versión fotográfica previa) ya no forman parte de la web. Su procedencia permanece en el historial de Git.
 
 La antigua integración 3D y su documentación se pueden consultar en el [commit histórico 6afb0d1](https://github.com/alejandrosergio/alejandros-tech/commit/6afb0d1dabf0e8bc2f9eba2b5dbb023a9d0ccb57). Era una aproximación estilizada aprobada por el titular, no un escaneo ni una reconstrucción exacta. Este enlace conserva el contexto sin mantener código ni recursos sin uso en la versión actual.
+
+## Runtime del modelo opcional
+
+`public/assets/models/qwen35-08b-webgpu.wasm` es el runtime compilado de MLC para Qwen3.5-0.8B, versión `v0_2_87/base`. Ocupa 7.358.915 bytes y tiene SHA-256 `39623bb05581e04616debfd762b8ea0d0f2d641b3afa8ac1df902aac0dfdb04e`. Se conserva sin modificar desde [su fuente fijada](https://raw.githubusercontent.com/mlc-ai/binary-mlc-llm-libs/146ed9cd4b4062e967b017fd2291f7106b50599f/web-llm-models/v0_2_87/base/Qwen3.5-0.8B-q4f16_1_cs1k-webgpu.wasm).
+
+La descarga y ejecución solo se inician al activar la IA en la demo. Los pesos no se distribuyen con el sitio: proceden de la revisión de Hugging Face fijada en `src/content/local-model.mjs`. Ver `AI-DEMO.md` y `THIRD_PARTY.md` para funcionamiento y licencias.

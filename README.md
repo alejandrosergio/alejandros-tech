@@ -11,7 +11,7 @@ Sergio Hernández’s professional website, focused on applied AI integration in
 
 ## Experience
 
-The full-screen home features a grayscale photographic portrait, three slowly rotating rings and a restrained photo zoom. The photo is an assisted cutout of the owner's original studio portrait; its preparation is documented in [visual assets](docs/ASSETS.md). The unused 3D generator, viewer and tests have been removed at the owner's request. The profile uses plain editorial text without a duplicate photo card, followed by an explorer of 18 confirmed technologies, expandable experience entries, two real public project case studies and three original technical notes. Project and note detail pages have equivalent Spanish and English routes.
+The full-screen home features a grayscale photographic portrait, three slowly rotating rings and a restrained photo zoom. The photo is an assisted cutout of the owner's original studio portrait; its preparation is documented in [visual assets](docs/ASSETS.md). The unused 3D generator, viewer and tests have been removed at the owner's request. The profile uses plain editorial text without a duplicate photo card, followed by an explorer of 18 confirmed technologies, expandable experience entries, two real web project cases, a personal document-assistant prototype and three original technical notes. Case, demo and note pages have equivalent Spanish and English routes.
 
 The visual system uses charcoal, warm off-white, restrained coral and regular serif headings throughout the website. Desktop navigation stays expanded above 760 px and may wrap; only the mobile menu collapses. Content reveals take about 1.1 seconds with bounded stagger. The custom cursor keeps a dot and ring without a redirect arrow.
 
@@ -23,15 +23,18 @@ The bilingual contact form uses the owner’s verified Formspree form to forward
 
 ## Run locally
 
-Use Node.js 22 or newer. No package installation is needed for this dependency-free site.
+Use Node.js 22.13 or newer. Install the pinned build tools and optional-model runtime before building. The published website is static.
 
 ```sh
+pnpm install --frozen-lockfile
 pnpm build
 pnpm check
 pnpm dev
 ```
 
 Equivalent commands: `node scripts/build.mjs`, `node scripts/check.mjs`, `node scripts/dev.mjs`. Preview serves `http://127.0.0.1:4178/`. Rebuild and refresh after edits. Stop the owned server after QA.
+
+The document assistant offers lightweight, on-device queries across four public documents, with verbatim excerpts and source links. Visitors on compatible devices may explicitly download Qwen3.5 (about 450 MB) to generate answers locally using WebLLM/WebGPU. Citation checks reject unsupported excerpts and fall back to the lightweight result. No paid API, key, account, question upload or conversation history is used. Model downloads can use the visitor’s connection allowance. See [the demo architecture, privacy and checks](docs/AI-DEMO.md).
 
 ## Source layout
 

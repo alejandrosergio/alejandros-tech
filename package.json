@@ -1,14 +1,21 @@
 {
   "name": "alejandros-tech",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "description": "Alejandro’sTech official bilingual website, published on ChatGPT Sites.",
-  "engines": { "node": ">=22" },
+  "engines": { "node": ">=22.13" },
+  "packageManager": "pnpm@11.25.0",
   "scripts": {
     "build": "node scripts/build.mjs",
     "check": "node scripts/check.mjs",
     "dev": "node scripts/dev.mjs",
     "preview": "node scripts/dev.mjs"
+  },
+  "dependencies": {
+    "@mlc-ai/web-llm": "0.2.87"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
   }
 }

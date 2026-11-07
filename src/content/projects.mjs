@@ -1,4 +1,36 @@
+import { assistantPaths } from './document-assistant.mjs';
+
 export const projects = [
+  {
+    id: 'document-assistant', slug: { es: 'asistente-documental', en: 'document-assistant' }, name: 'Asistente documental',
+    imageSize: { width: 1280, height: 800 }, image: { es: '/assets/document-assistant-preview.svg', en: '/assets/document-assistant-preview-en.svg' },
+    stack: ['BM25', 'JavaScript', 'WebGPU', 'WebLLM', 'Qwen3.5'], demoPaths: assistantPaths,
+    live: 'https://alejandros-tech.alejosergio3000.chatgpt.site/laboratorio/asistente-documental/', repository: 'https://github.com/alejandrosergio/alejandros-tech',
+    es: {
+      name: 'Asistente documental', type: 'IA aplicada · Prototipo personal', imageAlt: 'Esquema del asistente documental: pregunta, contexto, respuesta y fuentes',
+      caption: 'Flujo del prototipo · esquema de funcionamiento', title: 'Una respuesta que puedes contrastar.',
+      summary: 'Consulta una biblioteca pública con fragmentos y fuentes. Si tu dispositivo es compatible, puedes activar un modelo descargable para redactar respuestas sin enviar tus preguntas a una API.',
+      problem: 'Explorar cómo integrar un modelo de lenguaje en una aplicación sin perder la trazabilidad de la información. El objetivo es responder preguntas sobre documentos conocidos y facilitar que una persona revise de dónde procede cada afirmación.',
+      approach: ['Biblioteca cerrada ES/EN: tres notas originales de la web y una guía de la demo, con secciones y enlaces estables.', 'Consulta ligera desde el principio: recuperación léxica y extractos literales en el navegador, sin descargar un modelo.', 'IA opcional con Qwen3.5 y WebLLM: descarga voluntaria, ejecución en un hilo independiente y procesamiento en el dispositivo.', 'La aplicación vincula el párrafo generado con su fuente y el extracto utilizado; conserva el control de identificadores, enlaces y evidencia.', 'Información insuficiente cuando falta evidencia; sin búsquedas en internet, archivos privados ni ejecución de acciones.', 'Si el dispositivo no es compatible o la generación falla, la consulta ligera sigue disponible. Hay controles para detener el modelo y borrar su descarga.'],
+      result: 'Un prototipo bilingüe para probar la recuperación de contexto y revisar una respuesta junto a su evidencia. El caso muestra las decisiones de integración y los límites del sistema, sin atribuir resultados comerciales ni métricas de precisión.',
+      contribution: 'Definición del caso, biblioteca, interfaz, recuperación, contrato de respuesta, validaciones y pruebas de la integración.',
+      limitationsTitle: 'Qué comprueba. Qué sigue necesitando revisión.',
+      limitations: ['Una cita debe existir en la biblioteca y su extracto debe coincidir. Eso no demuestra por sí solo que la interpretación del modelo sea correcta.', 'La recuperación busca coincidencias de palabras y conceptos acotados. Puede perder preguntas formuladas de otra manera; no es una búsqueda semántica con embeddings.', 'La consulta ligera muestra fragmentos literales, no una respuesta generada. La IA opcional es pequeña y puede equivocarse; revisa sus fuentes.', 'El modelo requiere WebGPU, unos 450 MB de descarga y memoria gráfica disponible. Puede no funcionar en algunos móviles. No hay cargos de API; la descarga puede consumir datos de tu conexión.'],
+      demoLabel: 'Probar el asistente'
+    },
+    en: {
+      name: 'Document assistant', type: 'Applied AI · Personal prototype', imageAlt: 'Document assistant flow: question, context, answer and sources',
+      caption: 'Prototype workflow · functional diagram', title: 'An answer you can check.',
+      summary: 'Explore a public library through excerpts and sources. On a compatible device, you can activate a downloadable model to write answers without sending your questions to an API.',
+      problem: 'Explore how to integrate a language model into an application while preserving information traceability. The goal is to answer questions about known documents and help a person review where each statement comes from.',
+      approach: ['Closed ES/EN library: three original website notes and a demo guide, with stable sections and links.', 'Lightweight queries from the start: lexical retrieval and verbatim excerpts in the browser, without downloading a model.', 'Optional AI with Qwen3.5 and WebLLM: voluntary download, a separate worker and on-device processing.', 'The application links the generated paragraph to its source and the excerpt used, keeping identifiers, links and evidence under its control.', 'Insufficient information when evidence is missing; no internet search, private files or action execution.', 'If the device is incompatible or generation fails, lightweight queries remain available. Controls stop the model and clear its download.'],
+      result: 'A bilingual prototype for trying context retrieval and reviewing an answer alongside its evidence. The case explains integration decisions and system boundaries without claiming commercial outcomes or accuracy metrics.',
+      contribution: 'Case definition, library, interface, retrieval, response contract, validation and integration checks.',
+      limitationsTitle: 'What it checks. What still needs review.',
+      limitations: ['A citation must exist in the library and its excerpt must match. That alone does not demonstrate that the model’s interpretation is correct.', 'Retrieval looks for matching words and bounded concepts. It can miss differently phrased questions; this is not semantic search with embeddings.', 'Lightweight queries show verbatim excerpts, not generated answers. The optional model is small and can make mistakes; review its sources.', 'The model needs WebGPU, a download of about 450 MB and available graphics memory. It may not work on some phones. There are no API charges; downloads can use your connection’s data allowance.'],
+      demoLabel: 'Try the assistant'
+    }
+  },
   {
     id: 'alejandros-tech', slug: { es: 'alejandros-tech', en: 'alejandros-tech' }, name: 'Alejandro’sTech', imageSize: { width: 1280, height: 900 }, image: { es: '/assets/alejandros-tech-preview.jpg', en: '/assets/alejandros-tech-preview-en.jpg' },
     stack: ['HTML', 'CSS', 'JavaScript', 'Canvas', 'Node.js'], live: 'https://alejandros-tech.alejosergio3000.chatgpt.site', repository: 'https://github.com/alejandrosergio/alejandros-tech',
@@ -13,3 +45,5 @@ export const projects = [
 ];
 
 export const projectPath = (project, lang) => `${lang === 'en' ? '/en/projects/' : '/proyectos/'}${project.slug[lang]}/`;
+export const projectName = (project, lang) => project[lang].name ?? project.name;
+export const projectDestination = (project, lang) => project.demoPaths?.[lang] ?? `${project.live}${lang === 'en' ? '/en/' : '/'}`;

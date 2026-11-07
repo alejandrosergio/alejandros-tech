@@ -19,6 +19,10 @@ La primera entrega editorial hacia IA aplicada, autorizada el 6 de noviembre de 
 
 Alejandro’sTech y el CV son dos sitios públicos reales del titular y se identifican como proyectos web de identidad digital. Sus tarjetas, fichas e imágenes sociales utilizan capturas reales de la versión actual en el idioma correspondiente. La ficha comparte el mismo esquema de punto de partida, aportación, enfoque y resultado. Las capturas de versiones anteriores quedan en Git; no se presentan como la portada actual. No se presentan casos de clientes ni resultados cuantificados sin confirmar. Véase `ASSETS.md`.
 
+## Prototipo de asistente documental
+
+El caso se desarrolla como un proyecto personal nuevo, autorizado el 7 de noviembre de 2026. No es un caso de cliente ni una experiencia profesional histórica. Su biblioteca reutiliza las tres notas originales y añade una guía bilingüe de alcance, fuentes, privacidad y disponibilidad. La consulta ligera presenta fragmentos literales; el modelo opcional procesa la pregunta y el contexto en el dispositivo. No se envían preguntas a un proveedor de IA. Los diagramas son gráficos originales del flujo, no capturas de resultados del modelo. No se publican métricas de precisión ni resultados comerciales. Ver `AI-DEMO.md` para separar las comprobaciones automatizadas de las pruebas reales en navegador.
+
 ## Cuaderno técnico
 
 Las tres notas se redactaron para esta edición, el 3 de noviembre de 2026. Son explicaciones originales sobre mejora progresiva, contratos de integración y uso de IA con contexto y revisión. No se presentan como publicaciones históricas, experiencia en un cliente ni experimentos medidos.
