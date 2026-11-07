@@ -41,7 +41,7 @@ export const assistantCopy = {
   es: {
     label: 'Laboratorio · IA aplicada', title: ['Preguntar. Entender.', 'Comprobar.'],
     description: 'Un asistente documental que responde sobre una biblioteca pública y muestra la evidencia detrás de cada respuesta.',
-    case: 'Ver el caso y sus decisiones', back: 'Todos los proyectos', prototype: 'Prototipo personal',
+    case: 'Ver el caso y sus decisiones', evaluation: 'Preguntas, resultados y evaluación', back: 'Todos los proyectos', prototype: 'Prototipo personal',
     workspace: 'Prueba el asistente', library: 'La biblioteca', libraryIntro: 'Cuatro documentos públicos. Abre cualquiera para leer la fuente completa.',
     libraryCount: '4 documentos · ES / EN', question: '¿Qué quieres consultar?', placeholder: 'Por ejemplo: ¿qué debo validar antes de usar una respuesta de IA?',
     hint: 'Entre 8 y 600 caracteres. Cada pregunta empieza una consulta nueva.', send: 'Consultar con fuentes', sending: 'Consultando la biblioteca…', cancel: 'Cancelar', clear: 'Limpiar',
@@ -75,7 +75,7 @@ export const assistantCopy = {
   en: {
     label: 'Lab · Applied AI', title: ['Ask. Understand.', 'Verify.'],
     description: 'A document assistant that answers questions about a public library and shows the evidence behind each response.',
-    case: 'Explore the case and decisions', back: 'All projects', prototype: 'Personal prototype',
+    case: 'Explore the case and decisions', evaluation: 'Questions, results and evaluation', back: 'All projects', prototype: 'Personal prototype',
     workspace: 'Try the assistant', library: 'The library', libraryIntro: 'Four public documents. Open any of them to read the complete source.',
     libraryCount: '4 documents · ES / EN', question: 'What would you like to ask?', placeholder: 'For example: what should I validate before using an AI response?',
     hint: 'Between 8 and 600 characters. Each question starts a new query.', send: 'Ask with sources', sending: 'Consulting the library…', cancel: 'Cancel', clear: 'Clear',

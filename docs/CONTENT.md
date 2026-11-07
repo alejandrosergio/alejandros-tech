@@ -21,14 +21,20 @@ Alejandro’sTech y el CV son dos sitios públicos reales del titular y se ident
 
 ## Prototipo de asistente documental
 
-El caso se desarrolla como un proyecto personal nuevo, autorizado el 7 de noviembre de 2026. No es un caso de cliente ni una experiencia profesional histórica. Su biblioteca reutiliza las tres notas originales y añade una guía bilingüe de alcance, fuentes, privacidad y disponibilidad. La consulta ligera presenta fragmentos literales; el modelo opcional procesa la pregunta y el contexto en el dispositivo. No se envían preguntas a un proveedor de IA. Los diagramas son gráficos originales del flujo, no capturas de resultados del modelo. No se publican métricas de precisión ni resultados comerciales. Ver `AI-DEMO.md` para separar las comprobaciones automatizadas de las pruebas reales en navegador.
+El caso se desarrolla como un proyecto personal nuevo, autorizado el 7 de noviembre de 2026. No es un caso de cliente ni una experiencia profesional histórica. Su biblioteca reutiliza las tres notas originales y añade una guía bilingüe de alcance, fuentes, privacidad y disponibilidad. La consulta ligera presenta fragmentos literales; el modelo opcional procesa la pregunta y el contexto en el dispositivo. No se envían preguntas a un proveedor de IA. Los diagramas son gráficos originales del flujo, no capturas de resultados del modelo. La evaluación posterior publica mediciones acotadas del conjunto y sus fallos, sin convertirlas en una precisión general ni en resultados comerciales. Ver `AI-DEMO.md` para separar las comprobaciones automatizadas de las pruebas reales en navegador.
 
 ## Cuaderno técnico
 
-Las tres notas se redactaron para esta edición, el 3 de noviembre de 2026. Son explicaciones originales sobre mejora progresiva, contratos de integración y uso de IA con contexto y revisión. No se presentan como publicaciones históricas, experiencia en un cliente ni experimentos medidos.
+Las tres notas iniciales se redactaron el 3 de noviembre de 2026. Son explicaciones originales sobre mejora progresiva, contratos de integración y uso de IA con contexto y revisión. No se presentan como publicaciones históricas, experiencia en un cliente ni experimentos medidos.
 
-Las lecturas adicionales enlazan a fuentes primarias: MDN, Microsoft Learn y OWASP. Las notas no incluyen código ni afirmaciones de la web de referencia.
+Las lecturas adicionales enlazan a fuentes primarias: MDN, Microsoft Learn y OWASP. Las notas no copian textos ni afirmaciones de la web de referencia. Dos notas nuevas del 7 de noviembre explican evaluación y contratos de solicitudes, enlazando las demos y su código. Las referencias nuevas son papers de RAGAs/ALCE, RFCs y documentación oficial de Microsoft.
 
 ## Referencia de diseño
 
 https://dataconale.com/ fue una referencia pedida por el titular para la profundidad de la presentación profesional y la exploración interactiva. No se trasladan sus datos, métricas, empleadores, proyectos, textos, retratos o código.
+
+## Solicitudes y segmentos de lectura
+
+El prototipo de solicitudes, su dominio/API .NET, escenarios y guías se crearon para esta entrega. No se atribuyen a empleadores ni clientes. Power Automate es una guía de integración, no una implementación en un tenant. Los nuevos diagramas son originales y se identifican como tales.
+
+Los accesos para selección profesional, proyectos y comunidad enlazan contenido existente, sin cuentas ni tres webs paralelas. El relato del perfil amplía la secuencia confirmada CODESA → Intelecto → Auto Control Empresarial → DynamizaTIC. No inventa motivaciones personales, disponibilidad laboral ni certificaciones.

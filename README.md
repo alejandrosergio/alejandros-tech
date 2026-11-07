@@ -11,7 +11,7 @@ Sergio Hernández’s professional website, focused on applied AI integration in
 
 ## Experience
 
-The full-screen home features a grayscale photographic portrait, three slowly rotating rings and a restrained photo zoom. The photo is an assisted cutout of the owner's original studio portrait; its preparation is documented in [visual assets](docs/ASSETS.md). The unused 3D generator, viewer and tests have been removed at the owner's request. The profile uses plain editorial text without a duplicate photo card, followed by an explorer of 18 confirmed technologies, expandable experience entries, two real web project cases, a personal document-assistant prototype and three original technical notes. Case, demo and note pages have equivalent Spanish and English routes.
+The full-screen home features a grayscale photographic portrait, three slowly rotating rings and a restrained photo zoom. The photo is an assisted cutout of the owner's original studio portrait; its preparation is documented in [visual assets](docs/ASSETS.md). The unused 3D generator, viewer and tests have been removed at the owner's request. The profile uses plain editorial text without a duplicate photo card, followed by an explorer of 18 confirmed technologies, expandable experience entries, two real web project cases, two personal AI/integration labs and five original technical notes. Case, demo and note pages have equivalent Spanish and English routes.
 
 The visual system uses charcoal, warm off-white, restrained coral and regular serif headings throughout the website. Desktop navigation stays expanded above 760 px and may wrap; only the mobile menu collapses. Content reveals take about 1.1 seconds with bounded stagger. The custom cursor keeps a dot and ring without a redirect arrow.
 
@@ -44,6 +44,7 @@ The document assistant offers lightweight, on-device queries across four public 
 - `src/styles/`: shared design tokens, layouts and responsive styles.
 - `public/`: the prepared hero photograph, original portrait also used in note bylines, project previews and local attribution notices.
 - `scripts/`: deterministic build, structural checks and loopback-only preview.
+- `examples/`: runnable .NET workflow reference, shared scenarios, HTTP contract and bilingual Power Automate guides.
 - `dist/`: generated output, tracked for content comparison.
 - `docs/`: scope, design, content provenance, architecture and publishing.
 
@@ -58,3 +59,9 @@ The CV remains a separate project and Site. Its public content is a factual refe
 Copyright © 2026 Alejandro’sTech. All rights reserved. No open-source licence is granted for the website, brand or personal assets.
 
 Letter Glitch Classic uses local monospace letters, numbers and symbols in green/blue outside the home cover. Splash Cursor Smoke decorates only the cover behind the photograph. Grid Scan Deep appears in the introductory loader, which stays for two seconds after the page loads and allows immediate manual entry. These local effects keep their pause and motion safeguards; source attribution is in [THIRD_PARTY.md](docs/THIRD_PARTY.md).
+
+## Applied AI and integration labs
+
+The [open evaluation](docs/EVALUATION.md) includes 24 actual browser-run records with sources, failures and explicit AI-assisted review. Visitors can reproduce lightweight evaluation without downloading a model, or opt into the same local model. This is a bounded regression set, not a general accuracy benchmark.
+
+The [request workflow](docs/WORKFLOW.md) demonstrates validation, replay protection, state transitions and old-version conflicts. Its [.NET 10 reference](examples/workflow-api/README.md) includes shared fixtures, real HTTP checks and Power Automate guides in both languages. The Site stays static; no enterprise flow or paid service is deployed. Three compact paths in the existing profile section guide hiring, project and technical-community visitors.

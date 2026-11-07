@@ -77,6 +77,10 @@ export function extractAnswer(index, question, lang, corpusVersion) {
   };
 }
 
+export function prepareLocalContext(index, question, lang) {
+  return index.retrieve(question, lang).slice(0, 1).map(source => ({ ...source, text: index.excerpt(question, source) }));
+}
+
 // Keep answer text separate from its provenance. Identifiers, quotes and links
 // come from the actual retrieved corpus, never model URLs.
 export function validateModelAnswer(answer, sources, corpusVersion) {

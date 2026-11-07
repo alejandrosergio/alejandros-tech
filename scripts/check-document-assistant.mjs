@@ -116,8 +116,9 @@ const hanging = new AbortController(), stopped = model.generate('Una pregunta v√
 const stoppedCheck = assert.rejects(stopped, /cancelled/); hanging.abort(); await stoppedCheck;
 assert.ok(worker.terminated); assert.equal(model.state, 'idle', 'A stuck generation is terminated after bounded cancellation');
 const failedLoad = model.load(gpu); await Promise.resolve();
-const failedWorker = workers.at(-1); failedWorker.listeners.error(); await failedLoad;
+const failedWorker = workers.at(-1); failedWorker.listeners.error({ message: 'Test worker failed' }); await failedLoad;
 assert.equal(model.state, 'error'); assert.ok(failedWorker.terminated);
+assert.equal(model.lastError, 'Test worker failed', 'Worker failures retain a bounded diagnostic');
 model.stop(); assert.ok(states.includes('generating') && states.includes('ready'));
 
 const cachedURLs = [localModel.weights + 'params_shard_0.bin', 'https://local.test' + localModel.wasm, 'https://local.test/preferences', 'https://huggingface.co/another-model/file'];

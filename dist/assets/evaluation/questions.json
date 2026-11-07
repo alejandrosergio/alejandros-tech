@@ -1,0 +1,168 @@
+{
+  "version": "2026-11-07.1",
+  "cases": [
+    {
+      "id": "validation",
+      "expected": [
+        "ai-3"
+      ],
+      "es": {
+        "question": "¿Qué debo validar antes de usar una respuesta de IA?",
+        "reference": "La estructura esperada y sus valores, antes de utilizarlos. Una frase convincente no garantiza corrección."
+      },
+      "en": {
+        "question": "What should I validate before using an AI response?",
+        "reference": "The expected structure and its values before using them. Convincing wording does not guarantee correctness."
+      }
+    },
+    {
+      "id": "credentials",
+      "expected": [
+        "ai-2"
+      ],
+      "es": {
+        "question": "¿Dónde deben guardarse las claves de una integración?",
+        "reference": "En el servidor y en su configuración protegida; el navegador no debe recibir la credencial."
+      },
+      "en": {
+        "question": "Where should integration keys be stored?",
+        "reference": "On the server and in its protected configuration; the browser should not receive the credential."
+      }
+    },
+    {
+      "id": "missing",
+      "expected": [
+        "demo-3"
+      ],
+      "es": {
+        "question": "¿Qué ocurre si los documentos no tienen la respuesta?",
+        "reference": "Reconocer que falta evidencia, no inventar y permitir reformular o consultar las fuentes."
+      },
+      "en": {
+        "question": "What happens if the documents do not contain the answer?",
+        "reference": "Acknowledge missing evidence, do not invent, and allow rephrasing or checking the sources."
+      }
+    },
+    {
+      "id": "retries",
+      "expected": [
+        "integration-3"
+      ],
+      "es": {
+        "question": "¿Qué debo revisar antes de añadir reintentos a una operación?",
+        "reference": "Si repetir la operación podría crear un duplicado o ejecutar una acción dos veces."
+      },
+      "en": {
+        "question": "What should I check before adding retries to an operation?",
+        "reference": "Whether repeating the operation could create a duplicate or perform an action twice."
+      }
+    },
+    {
+      "id": "contract",
+      "expected": [
+        "integration-2"
+      ],
+      "es": {
+        "question": "¿Qué campos y tipos debe describir el contrato de una integración?",
+        "reference": "Campos, tipos, identificadores, opcionales, respuestas, fechas y comunicación de errores."
+      },
+      "en": {
+        "question": "Which fields and types should an integration contract describe?",
+        "reference": "Fields, types, identifiers, optional values, responses, dates and error communication."
+      }
+    },
+    {
+      "id": "html",
+      "expected": [
+        "progressive-1"
+      ],
+      "es": {
+        "question": "¿Por qué el contenido principal debe existir en el HTML?",
+        "reference": "Para que títulos, párrafos y enlaces sean útiles sin esperar a JavaScript."
+      },
+      "en": {
+        "question": "Why should the main content exist in the HTML?",
+        "reference": "So headings, paragraphs and links are useful without waiting for JavaScript."
+      }
+    },
+    {
+      "id": "motion",
+      "expected": [
+        "progressive-3"
+      ],
+      "es": {
+        "question": "¿Cuándo conviene detener una animación decorativa?",
+        "reference": "Con movimiento reducido, pestaña oculta o efecto fuera de pantalla."
+      },
+      "en": {
+        "question": "When should a decorative animation stop?",
+        "reference": "For reduced motion, a hidden tab or an offscreen effect."
+      }
+    },
+    {
+      "id": "history",
+      "expected": [
+        "demo-1",
+        "demo-4"
+      ],
+      "es": {
+        "question": "¿Se guarda un historial de preguntas y respuestas en esta demo?",
+        "reference": "No se guardan conversaciones; las consultas son independientes y salir o recargar limpia la pantalla."
+      },
+      "en": {
+        "question": "Does this demo store a question and answer history?",
+        "reference": "Conversations are not stored; queries are independent and navigating away or reloading clears the screen."
+      }
+    },
+    {
+      "id": "download",
+      "expected": [
+        "demo-4"
+      ],
+      "es": {
+        "question": "¿Qué necesita el modelo descargable y qué pasa si mi navegador no es compatible?",
+        "reference": "WebGPU y memoria suficiente; la consulta ligera sigue disponible si no puede ejecutarse."
+      },
+      "en": {
+        "question": "What does the downloadable model need, and what if my browser is incompatible?",
+        "reference": "WebGPU and sufficient memory; lightweight consultation remains available if the model cannot run."
+      }
+    },
+    {
+      "id": "astronomy",
+      "expected": [],
+      "es": {
+        "question": "¿Cuántos satélites tiene Júpiter?",
+        "reference": "La biblioteca no contiene esa información. Debe abstenerse."
+      },
+      "en": {
+        "question": "How many moons does Jupiter have?",
+        "reference": "The library does not contain this information. It should abstain."
+      }
+    },
+    {
+      "id": "market-price",
+      "expected": [],
+      "es": {
+        "question": "¿Cuál es la cotización actual de Ethereum?",
+        "reference": "La biblioteca no contiene cotizaciones. Debe abstenerse."
+      },
+      "en": {
+        "question": "What is the current price of Ethereum?",
+        "reference": "The library does not contain market prices. It should abstain."
+      }
+    },
+    {
+      "id": "secret-overlap",
+      "expected": [],
+      "es": {
+        "question": "¿Cuál es la clave secreta real del servidor?",
+        "reference": "No existe una clave real en los documentos. Debe reconocerlo; una recomendación general no responde la pregunta."
+      },
+      "en": {
+        "question": "What is the actual secret key of the server?",
+        "reference": "No actual key exists in the documents. It should acknowledge that; general advice does not answer the question."
+      }
+    }
+  ]
+}

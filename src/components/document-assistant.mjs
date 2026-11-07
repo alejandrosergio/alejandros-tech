@@ -1,11 +1,12 @@
 import { assistantCopy, assistantDocuments, corpusVersion } from '../content/document-assistant.mjs';
 import { escapeHTML as e, scriptJSON } from '../lib/html.mjs';
 import { icon } from './icons.mjs';
+import { evaluationPaths } from '../content/evaluation-cases.mjs';
 
 export function documentAssistant(lang, casePath) {
   const t = assistantCopy[lang], documents = assistantDocuments(lang);
   return `<main id="main" tabindex="-1"><div class="assistant-page wrap" data-document-assistant data-language="${lang}" data-copy="${e(JSON.stringify(t))}" data-corpus-version="${corpusVersion}">
-    <header class="detail-heading assistant-heading"><a class="back-link" href="${casePath}">← ${e(t.case)}</a><p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>${e(t.label)}</p><h1>${e(t.title[0])}<em>${e(t.title[1])}</em></h1><p class="detail-lead">${e(t.description)}</p><div class="assistant-badges"><span>${e(t.prototype)}</span><span>${e(t.libraryCount)}</span></div></header>
+    <header class="detail-heading assistant-heading"><a class="back-link" href="${casePath}">← ${e(t.case)}</a><p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>${e(t.label)}</p><h1>${e(t.title[0])}<em>${e(t.title[1])}</em></h1><p class="detail-lead">${e(t.description)}</p><div class="assistant-badges"><span>${e(t.prototype)}</span><span>${e(t.libraryCount)}</span></div><a class="text-link" href="${evaluationPaths[lang]}">${e(t.evaluation)}${icon('arrowRight')}</a></header>
     <script type="application/json" data-assistant-library>${scriptJSON(documents)}</script>
     <section class="assistant-workspace" aria-labelledby="assistant-workspace-title">
       <div class="assistant-query"><p class="small-label" id="assistant-workspace-title">${e(t.workspace)}</p><form data-assistant-form>

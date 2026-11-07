@@ -1,10 +1,12 @@
 {
   "name": "alejandros-tech",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "type": "module",
   "description": "Alejandro’sTech official bilingual website, published on ChatGPT Sites.",
-  "engines": { "node": ">=22.13" },
+  "engines": {
+    "node": ">=22.13"
+  },
   "packageManager": "pnpm@11.25.0",
   "scripts": {
     "build": "node scripts/build.mjs",

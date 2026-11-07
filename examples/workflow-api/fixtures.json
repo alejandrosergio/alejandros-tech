@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "name": "create-replay-and-complete",
+      "steps": [
+        {"operation":"create","key":"demo-key-001","payload":{"requestId":"REQ-1001","title":"Automatizar la recepción de solicitudes","category":"automation","priority":"normal"},"expected":{"status":201,"code":"created","state":"received","version":1,"count":1}},
+        {"operation":"create","key":"demo-key-001","payload":{"requestId":"REQ-1001","title":"Automatizar la recepción de solicitudes","category":"automation","priority":"normal"},"expected":{"status":200,"code":"replayed","state":"received","version":1,"count":1}},
+        {"operation":"create","key":"demo-key-001","payload":{"requestId":"REQ-1001","title":"Cambiar el contenido de la solicitud","category":"automation","priority":"normal"},"expected":{"status":409,"code":"idempotency_conflict","count":1}},
+        {"operation":"create","key":"demo-key-002","payload":{"requestId":"REQ-1001","title":"Automatizar la recepción de solicitudes","category":"automation","priority":"normal"},"expected":{"status":409,"code":"duplicate_request","count":1}},
+        {"operation":"transition","requestId":"REQ-1001","action":"approve","expectedVersion":1,"expected":{"status":409,"code":"invalid_transition","count":1}},
+        {"operation":"transition","requestId":"REQ-1001","action":"review","expectedVersion":1,"expected":{"status":200,"code":"updated","state":"review","version":2,"count":1}},
+        {"operation":"transition","requestId":"REQ-1001","action":"approve","expectedVersion":1,"expected":{"status":409,"code":"version_conflict","count":1}},
+        {"operation":"transition","requestId":"REQ-1001","action":"approve","expectedVersion":2,"expected":{"status":200,"code":"updated","state":"approved","version":3,"count":1}},
+        {"operation":"transition","requestId":"REQ-1001","action":"reject","expectedVersion":3,"expected":{"status":409,"code":"invalid_transition","count":1}},
+        {"operation":"transition","requestId":"REQ-1001","action":"complete","expectedVersion":3,"expected":{"status":200,"code":"updated","state":"completed","version":4,"count":1}},
+        {"operation":"get","requestId":"REQ-1001","expected":{"status":200,"code":"found","state":"completed","version":4,"count":1}}
+      ]
+    },
+    {
+      "name": "validation-and-rejection",
+      "steps": [
+        {"operation":"create","key":"short","payload":{"requestId":"REQ-1002","title":"short","category":"other","priority":"fast"},"expected":{"status":400,"code":"invalid_payload","count":0}},
+        {"operation":"create","key":"demo-key-003","payload":{"requestId":"REQ-1002","title":"Revisar acceso al entorno de pruebas","category":"access","priority":"high"},"expected":{"status":201,"code":"created","state":"received","version":1,"count":1}},
+        {"operation":"transition","requestId":"REQ-1002","action":"review","expectedVersion":1,"expected":{"status":200,"code":"updated","state":"review","version":2,"count":1}},
+        {"operation":"transition","requestId":"REQ-1002","action":"reject","expectedVersion":2,"expected":{"status":200,"code":"updated","state":"rejected","version":3,"count":1}},
+        {"operation":"transition","requestId":"REQ-1002","action":"complete","expectedVersion":3,"expected":{"status":409,"code":"invalid_transition","count":1}},
+        {"operation":"transition","requestId":"REQ-1002","action":"review","expectedVersion":0,"expected":{"status":400,"code":"invalid_transition_payload","count":1}},
+        {"operation":"get","requestId":"REQ-MISSING","expected":{"status":404,"code":"not_found","count":1}}
+      ]
+    }
+  ]
+}

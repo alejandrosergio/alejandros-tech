@@ -12,8 +12,8 @@ El 4 de noviembre el titular sustituyó el busto experimental por una fotografí
 2. Sobre mí y enfoque profesional basado en hechos confirmados, en columnas de texto y sin repetir la tarjeta fotográfica del inicio.
 3. Explorador de tecnologías con filtros, selección y alternativa HTML.
 4. Trayectoria y formación verificadas contra el CV público.
-5. Dos proyectos reales: Alejandro’sTech y el CV profesional, con fichas propias.
-6. Cuaderno técnico con tres notas originales completas y rutas propias.
+5. Dos proyectos web reales y dos prototipos propios: asistente documental y solicitudes con contrato, con fichas, demos y código.
+6. Cuaderno técnico con cinco notas originales completas, evaluación pública del asistente y rutas propias.
 7. Formulario validado de Formspree al Outlook público y alternativas de correo, LinkedIn, GitHub y CV.
 8. Accesibilidad y apariencia, consentimiento de preferencias, loader acotado en cada carga, guía contextual, indicador de ocho secciones, subida y cursor de punto/anillo sin flecha sobre enlaces.
 
@@ -25,7 +25,7 @@ Todas las rutas tienen equivalentes ES/EN. El CV sigue siendo un proyecto indepe
 
 No se inventan proyectos de clientes, métricas, certificaciones ni historias personales. Los empleadores y responsabilidades se toman del CV confirmado. Las notas son contenido explicativo escrito para el sitio. Ver `CONTENT.md`.
 
-No se incorporan cuentas, servidor propio, newsletter, reservas, rastreadores ni promesas comerciales no definidas. Se mantiene el Site público existente y la sincronización de fuentes con GitHub. La preparación visual de la fotografía no acredita hechos biográficos o profesionales nuevos.
+No se contratan cuentas, servidores, newsletter, reservas, rastreadores ni servicios comerciales. La API .NET es un ejemplo local ejecutable, separado del alojamiento estático. Se mantiene el Site público existente y la sincronización de fuentes con GitHub. La preparación visual de la fotografía no acredita hechos biográficos o profesionales nuevos.
 
 ## Aceptación
 

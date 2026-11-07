@@ -1,7 +1,7 @@
 // Lightweight supervisor: constructing it never creates a worker or starts a
 // download. A terminated worker cannot keep GPU work running after navigation.
 export function createLocalModel({ onState, onProgress, workerFactory = () => new Worker('/assets/document-model-worker.js', { type: 'module' }) }) {
-  let worker = null, state = 'idle', sequence = 0, generation = 0;
+  let worker = null, state = 'idle', sequence = 0, generation = 0, lastError = '';
   const pending = new Map();
   const update = next => { state = next; onState(next); };
   function release(reason = 'model_stopped', nextState = 'idle') {
@@ -29,9 +29,10 @@ export function createLocalModel({ onState, onProgress, workerFactory = () => ne
   }
   return {
     get state() { return state; },
+    get lastError() { return lastError; },
     async load(gpu) {
       if (worker || state === 'checking') return;
-      const attempt = ++generation; update('checking');
+      const attempt = ++generation; lastError = ''; update('checking');
       try {
         const adapter = await gpu?.requestAdapter({ powerPreference: 'low-power' });
         if (attempt !== generation) return;
@@ -45,10 +46,10 @@ export function createLocalModel({ onState, onProgress, workerFactory = () => ne
           else if (data.type === 'answer') current.signal?.aborted ? current.reject(new Error('cancelled')) : current.resolve(data.answer);
           else if (data.type === 'ready') current.resolve();
         });
-        worker.addEventListener('error', () => release('model_failed', 'error'));
+        worker.addEventListener('error', event => { lastError = String(event.message || 'model_worker_failed').slice(0, 180); release('model_failed', 'error'); });
         update('loading'); await task({ type: 'load' }, 300000);
         if (attempt === generation) update('ready');
-      } catch { if (attempt === generation) release('model_failed', 'error'); }
+      } catch (failure) { if (attempt === generation) { lastError = failure.message; release('model_failed', 'error'); } }
     },
     async generate(question, lang, sources, signal) {
       if (state !== 'ready' || !worker || signal.aborted) throw new Error(signal.aborted ? 'cancelled' : 'model_unavailable');

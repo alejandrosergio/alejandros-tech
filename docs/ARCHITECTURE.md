@@ -2,17 +2,17 @@
 
 ## Base, contenido y rutas
 
-Generación estática con Node ESM y HTML/CSS/JavaScript de navegador, sin framework. esbuild empaqueta los dos puntos de entrada de la demo: un controlador ligero y un worker de WebLLM independiente, que solo se carga por activación voluntaria. No hay API de modelos, base de datos ni servidor de inferencia. La salida permanece estática y portable.
+Generación estática con Node ESM y HTML/CSS/JavaScript de navegador, sin framework. esbuild empaqueta controladores independientes para el asistente, su evaluación y el flujo de solicitudes, además del worker de WebLLM que solo se carga por activación voluntaria. No hay API de modelos, base de datos ni servidor de inferencia. La salida permanece estática y portable.
 
 Los modelos de contenido viven en `src/content/`: `site.mjs` centraliza identidad y contactos; `locales.mjs` mantiene ES/EN; `profile.mjs`, `projects.mjs`, `notes.mjs` y `routes.mjs` contienen hechos profesionales, casos, notas y pares de rutas. No se añade una página sin contenido completo. Cada ficha mantiene su equivalente al cambiar de idioma.
 
-`src/components/page.mjs` comparte documento, metadatos, navegación y pie. `hero.mjs` renderiza la fotografía estática y un lienzo decorativo de humo situado detrás. El perfil usa texto y una columna `.about-approach`; no conserva tarjeta fotográfica ni lógica de volteo. `scripts/build.mjs` genera dieciséis rutas ES/EN, 404, robots, sitemap y recursos en `dist/`.
+`src/components/page.mjs` comparte documento, metadatos, navegación y pie. `hero.mjs` renderiza la fotografía estática y un lienzo decorativo de humo situado detrás. El perfil usa texto y una columna `.about-approach`; no conserva tarjeta fotográfica ni lógica de volteo. `scripts/build.mjs` genera 26 rutas ES/EN, 404, robots, sitemap y recursos en `dist/`.
 
 ## Asistente documental
 
 `src/content/document-assistant.mjs` define un corpus público de cuatro documentos y dieciséis secciones por idioma. `document-assistant.mjs` en componentes y su controlador de navegador mantienen la consulta, las citas, los estados y la biblioteca legible. El caso es un prototipo propio, no una atribución de experiencia de cliente.
 
-`src/client/assistant-core.js` separa el índice léxico, los extractos literales, el contrato del modelo y la comprobación de citas. `assistant-model.js` controla el ciclo del worker, compatibilidad, plazos y cancelación. `document-model-worker.js` integra WebLLM y el modelo fijado en `src/content/local-model.mjs`. No se crea un worker, descarga pesos ni solicita un adaptador GPU antes de pulsar activar. Un fallo conserva la consulta ligera y lo explica. No hay simulaciones en la publicación. Ver [contrato, privacidad y pruebas](AI-DEMO.md).
+`src/client/assistant-core.js` separa el índice léxico, los extractos literales, el contrato del modelo y la comprobación de citas. `assistant-model.js` controla el ciclo del worker, compatibilidad, plazos y cancelación. `document-model-worker.js` integra WebLLM y el modelo fijado en `src/content/local-model.mjs`. No se crea un worker, descarga pesos ni solicita un adaptador GPU antes de pulsar activar. Un fallo conserva la consulta ligera y lo explica. La generación opcional utiliza el modelo real. Ver [contrato, privacidad y pruebas](AI-DEMO.md).
 
 ## Portada fotográfica y movimiento
 
@@ -53,3 +53,9 @@ La guía calcula por separado la fracción local del módulo y la posición glob
 `src/lib/html.mjs` comparte el escape de HTML y la serialización de JSON para script; se prueban también cadenas capaces de cerrar un script. Build genera sitemap con alternativas recíprocas y robots.txt; check valida sus rutas, imágenes y metadatos junto al contenido disponible sin JavaScript. La decoración está excluida del árbol accesible y no sustituye texto indexable.
 
 Referencias de mantenimiento: [guía SEO de Google](https://developers.google.com/search/docs/fundamentals/seo-starter-guide) y [versiones localizadas](https://developers.google.com/search/docs/specialty/international/localized-versions). La indexación y la posición las decide el buscador; este proyecto no añade servicios externos ni verificaciones de cuentas automáticamente.
+
+## Evaluación y flujo de solicitudes
+
+`evaluation-cases.mjs`, `evaluation-reference.mjs` y `evaluation-core.js` separan preguntas, registro real revisado y ejecución de las comprobaciones. La página importa únicamente su controlador; WebLLM permanece optativo. Build valida huellas y check reproduce la recuperación y las citas. Ver [EVALUATION.md](EVALUATION.md).
+
+`workflow-core.js` contiene el modelo puro en memoria y `workflow.js` adapta la interfaz local. La API C# independiente vive en `examples/workflow-api/`; no forma parte del servidor estático. Ambas implementaciones recorren los escenarios compartidos. GitHub Actions añade un trabajo .NET/HTTP separado. Ver [WORKFLOW.md](WORKFLOW.md).

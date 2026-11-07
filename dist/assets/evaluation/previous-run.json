@@ -1,0 +1,1112 @@
+{
+  "version": 1,
+  "mode": "model",
+  "executedAt": "2026-11-07",
+  "corpusVersion": "2026-11-07-local",
+  "fingerprints": {
+    "corpus": "0a1b8a7aabd859997acd52f2934e2efa73565a52dfcd64ba60202484e253a5ee",
+    "questions": "eb21a2b5d7fcd0836372c96133fa028bd620042b06a0f478d339af0cd46baaf9",
+    "assistant": "ce9aff2cc182a8f858c45ab37853451e13e0ebeec9f50b280cad0ad35f487f9c",
+    "modelWorker": "df17f21f92e4e64245b1862fae852ed48cf593b3962eb0333c7876658f2f7d43",
+    "modelSupervisor": "95361230b86ad6db00c2fcf6ea3c7ca285f11265e777c9251325fb02fb35c2d5",
+    "modelConfig": "ac74c664bb639243a1ff4239e77ba81de93e33d23f296b81b3c38c7905951857",
+    "evaluator": "db2a5cd0420f909d1e170af5d99227996ca951c73136c0086e5ef5794cdf182b"
+  },
+  "model": "Qwen3.5-0.8B-q4f16_1-MLC",
+  "modelRevision": "0ec138972555613c1d7812a821778ad0398c8790",
+  "summary": {
+    "total": 24,
+    "first": {
+      "passed": 18,
+      "total": 18
+    },
+    "topThree": {
+      "passed": 18,
+      "total": 18
+    },
+    "abstention": {
+      "passed": 4,
+      "total": 6
+    },
+    "literal": {
+      "passed": 24,
+      "total": 24
+    },
+    "modelInvoked": 20,
+    "generated": 19,
+    "rejected": 1
+  },
+  "records": [
+    {
+      "id": "validation",
+      "lang": "es",
+      "question": "¿Qué debo validar antes de usar una respuesta de IA?",
+      "expectedIds": [
+        "ai-3"
+      ],
+      "reference": "La estructura esperada y sus valores, antes de utilizarlos. Una frase convincente no garantiza corrección.",
+      "retrievedIds": [
+        "ai-3",
+        "integration-2",
+        "demo-4"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "El texto de referencia indica que la aplicación debe validar que la estructura y sus valores están correctamente formateados antes de utilizarlos.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "El texto de referencia indica que la aplicación debe validar que la estructura y sus valores están correctamente formateados antes de utilizarlos.",
+            "citationIds": [
+              "ai-3"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "ai-3",
+            "document": "La IA necesita contexto. Y límites.",
+            "title": "Validar antes de actuar",
+            "href": "/notas/ia-con-contexto-y-revision/#section-3",
+            "quote": "Si la aplicación espera una estructura determinada, debe validar esa estructura y sus valores antes de utilizarlos. Una frase convincente no garantiza que una respuesta sea correcta o adecuada para ejecutar una acción."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Identifica la estructura y sus valores. Responde al requisito principal sin añadir acciones.",
+        "en": "Identifies the structure and its values. Answers the main requirement without adding actions."
+      }
+    },
+    {
+      "id": "credentials",
+      "lang": "es",
+      "question": "¿Dónde deben guardarse las claves de una integración?",
+      "expectedIds": [
+        "ai-2"
+      ],
+      "reference": "En el servidor y en su configuración protegida; el navegador no debe recibir la credencial.",
+      "retrievedIds": [
+        "ai-2",
+        "integration-3"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "Según el texto proporcionado, las claves de una integración deben guardarse en el lado del servidor y en su configuración protegida, ya que el navegador no necesita recibir una credencial para mostrar el resultado de una operación.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "Según el texto proporcionado, las claves de una integración deben guardarse en el lado del servidor y en su configuración protegida, ya que el navegador no necesita recibir una credencial para mostrar el resultado de una operación.",
+            "citationIds": [
+              "ai-2"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "ai-2",
+            "document": "La IA necesita contexto. Y límites.",
+            "title": "Dar contexto con intención",
+            "href": "/notas/ia-con-contexto-y-revision/#section-2",
+            "quote": "Los secretos de una integración pertenecen al lado del servidor y a su configuración protegida. El navegador no necesita recibir una credencial para mostrar el resultado de una operación."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Ubica las claves en la configuración protegida del servidor y excluye entregarlas al navegador.",
+        "en": "Places keys in protected server configuration and excludes sending them to the browser."
+      }
+    },
+    {
+      "id": "missing",
+      "lang": "es",
+      "question": "¿Qué ocurre si los documentos no tienen la respuesta?",
+      "expectedIds": [
+        "demo-3"
+      ],
+      "reference": "Reconocer que falta evidencia, no inventar y permitir reformular o consultar las fuentes.",
+      "retrievedIds": [
+        "demo-3",
+        "demo-1",
+        "integration-4"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "Si la biblioteca no aporta evidencia suficiente, el asistente debe reconocerlo. No debe inventar fuentes, datos profesionales, precios ni resultados de proyectos. Puedes reformular la pregunta o abrir los documentos para comprobar qué información contienen.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "Si la biblioteca no aporta evidencia suficiente, el asistente debe reconocerlo. No debe inventar fuentes, datos profesionales, precios ni resultados de proyectos. Puedes reformular la pregunta o abrir los documentos para comprobar qué información contienen.",
+            "citationIds": [
+              "demo-3"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "demo-3",
+            "document": "Cómo funciona esta demo",
+            "title": "Cuando falta información",
+            "href": "/laboratorio/asistente-documental/#source-demo-3",
+            "quote": "Si la biblioteca no aporta evidencia suficiente, el asistente debe reconocerlo. No debe inventar fuentes, datos profesionales, precios ni resultados de proyectos. Puedes reformular la pregunta o abrir los documentos para comprobar qué información contienen."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Reconoce la falta de evidencia, evita inventar y permite reformular o abrir las fuentes.",
+        "en": "Acknowledges missing evidence, avoids invention and allows rephrasing or opening sources."
+      }
+    },
+    {
+      "id": "retries",
+      "lang": "es",
+      "question": "¿Qué debo revisar antes de añadir reintentos a una operación?",
+      "expectedIds": [
+        "integration-3"
+      ],
+      "reference": "Si repetir la operación podría crear un duplicado o ejecutar una acción dos veces.",
+      "retrievedIds": [
+        "integration-3",
+        "ai-3",
+        "demo-3"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "El texto de referencia indica que se debe revisar si la operación podría generar un duplicado o ejecutar una acción dos veces antes de añadir reintentos.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "El texto de referencia indica que se debe revisar si la operación podría generar un duplicado o ejecutar una acción dos veces antes de añadir reintentos.",
+            "citationIds": [
+              "integration-3"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "integration-3",
+            "document": "Integrar empieza por el contrato.",
+            "title": "Diseñar también el camino de error",
+            "href": "/notas/integrar-empieza-por-el-contrato/#section-3",
+            "quote": "Un servicio puede estar temporalmente inaccesible y una solicitud puede repetirse. Antes de añadir reintentos, hay que entender si repetir la operación podría crear un duplicado o ejecutar una acción dos veces."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Explica el riesgo de duplicar registros o ejecutar dos veces la acción.",
+        "en": "Explains the risk of duplicates or performing an action twice."
+      }
+    },
+    {
+      "id": "contract",
+      "lang": "es",
+      "question": "¿Qué campos y tipos debe describir el contrato de una integración?",
+      "expectedIds": [
+        "integration-2"
+      ],
+      "reference": "Campos, tipos, identificadores, opcionales, respuestas, fechas y comunicación de errores.",
+      "retrievedIds": [
+        "integration-2",
+        "integration-4",
+        "integration-1"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "El contrato debe describir los campos, tipos, identificadores, valores opcionales y respuestas esperadas, así como cómo se representan las fechas y cómo se comunican los errores.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "El contrato debe describir los campos, tipos, identificadores, valores opcionales y respuestas esperadas, así como cómo se representan las fechas y cómo se comunican los errores.",
+            "citationIds": [
+              "integration-2"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "integration-2",
+            "document": "Integrar empieza por el contrato.",
+            "title": "Hacer explícito el intercambio",
+            "href": "/notas/integrar-empieza-por-el-contrato/#section-2",
+            "quote": "El contrato describe campos, tipos, identificadores, valores opcionales y respuestas esperadas. También debe aclarar cómo se representan las fechas y cómo se comunican los errores."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Incluye campos, tipos, identificadores, opcionales, respuestas, fechas y errores.",
+        "en": "Includes fields, types, identifiers, optional values, responses, dates and errors."
+      }
+    },
+    {
+      "id": "html",
+      "lang": "es",
+      "question": "¿Por qué el contenido principal debe existir en el HTML?",
+      "expectedIds": [
+        "progressive-1"
+      ],
+      "reference": "Para que títulos, párrafos y enlaces sean útiles sin esperar a JavaScript.",
+      "retrievedIds": [
+        "progressive-1",
+        "ai-2",
+        "progressive-3"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "El contenido principal debe existir en el documento que recibe el navegador porque un título, un párrafo y un enlace son útiles por sí mismos y no necesitan esperar a que una función termine de ejecutarse.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "El contenido principal debe existir en el documento que recibe el navegador porque un título, un párrafo y un enlace son útiles por sí mismos y no necesitan esperar a que una función termine de ejecutarse.",
+            "citationIds": [
+              "progressive-1"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "progressive-1",
+            "document": "Una buena interfaz empieza antes de JavaScript.",
+            "title": "Una base que se pueda leer",
+            "href": "/notas/interfaces-que-funcionan-desde-el-html/#section-1",
+            "quote": "El contenido principal debe existir en el documento que recibe el navegador. Un título, un párrafo y un enlace son útiles por sí mismos: no necesitan esperar a que una función termine de ejecutarse."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Conecta el HTML con disponer de títulos, párrafos y enlaces sin esperar a una función.",
+        "en": "Connects HTML to usable headings, paragraphs and links without waiting for a function."
+      }
+    },
+    {
+      "id": "motion",
+      "lang": "es",
+      "question": "¿Cuándo conviene detener una animación decorativa?",
+      "expectedIds": [
+        "progressive-3"
+      ],
+      "reference": "Con movimiento reducido, pestaña oculta o efecto fuera de pantalla.",
+      "retrievedIds": [
+        "progressive-3"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "La animación puede explicar una relación o dar carácter a una identidad. También debe poder detenerse. Una preferencia de movimiento reducido, una pestaña oculta o un efecto fuera de pantalla son situaciones que conviene tratar de forma explícita.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "La animación puede explicar una relación o dar carácter a una identidad. También debe poder detenerse. Una preferencia de movimiento reducido, una pestaña oculta o un efecto fuera de pantalla son situaciones que conviene tratar de forma explícita.",
+            "citationIds": [
+              "progressive-3"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "progressive-3",
+            "document": "Una buena interfaz empieza antes de JavaScript.",
+            "title": "El movimiento es una capa",
+            "href": "/notas/interfaces-que-funcionan-desde-el-html/#section-3",
+            "quote": "La animación puede explicar una relación o dar carácter a una identidad. También debe poder detenerse. Una preferencia de movimiento reducido, una pestaña oculta o un efecto fuera de pantalla son situaciones que conviene tratar de forma explícita."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Conserva los tres contextos relevantes: movimiento reducido, pestaña oculta y efecto fuera de pantalla.",
+        "en": "Retains the three relevant contexts: reduced motion, hidden tab and offscreen effect."
+      }
+    },
+    {
+      "id": "history",
+      "lang": "es",
+      "question": "¿Se guarda un historial de preguntas y respuestas en esta demo?",
+      "expectedIds": [
+        "demo-1",
+        "demo-4"
+      ],
+      "reference": "No se guardan conversaciones; las consultas son independientes y salir o recargar limpia la pantalla.",
+      "retrievedIds": [
+        "demo-1",
+        "demo-4",
+        "demo-3"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "No se guarda un historial de preguntas y respuestas en esta demo.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "No se guarda un historial de preguntas y respuestas en esta demo.",
+            "citationIds": [
+              "demo-1"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "demo-1",
+            "document": "Cómo funciona esta demo",
+            "title": "Una biblioteca acotada",
+            "href": "/laboratorio/asistente-documental/#source-demo-1",
+            "quote": "Cada consulta es independiente. La aplicación no conserva un historial de preguntas o respuestas. Cambiar de página o recargar borra la conversación de la pantalla."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Responde que la demo no guarda historial. La cita aporta los detalles del ciclo de vida.",
+        "en": "Answers that the demo stores no history. The citation supplies lifecycle details."
+      }
+    },
+    {
+      "id": "download",
+      "lang": "es",
+      "question": "¿Qué necesita el modelo descargable y qué pasa si mi navegador no es compatible?",
+      "expectedIds": [
+        "demo-4"
+      ],
+      "reference": "WebGPU y memoria suficiente; la consulta ligera sigue disponible si no puede ejecutarse.",
+      "retrievedIds": [
+        "demo-4",
+        "ai-2",
+        "demo-2"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "El modelo descargable requiere WebGPU y memoria suficiente. La consulta ligera sigue disponible cuando el navegador no es compatible, la descarga se cancela o el modelo falla. Salir de la demo libera el modelo; volver no activa otra descarga ni generación automáticamente.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "El modelo descargable requiere WebGPU y memoria suficiente. La consulta ligera sigue disponible cuando el navegador no es compatible, la descarga se cancela o el modelo falla. Salir de la demo libera el modelo; volver no activa otra descarga ni generación automáticamente.",
+            "citationIds": [
+              "demo-4"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "demo-4",
+            "document": "Cómo funciona esta demo",
+            "title": "Privacidad y disponibilidad",
+            "href": "/laboratorio/asistente-documental/#source-demo-4",
+            "quote": "La IA descargable requiere WebGPU y memoria suficiente. La consulta ligera sigue disponible cuando el navegador no es compatible, la descarga se cancela o el modelo falla. Salir de la demo libera el modelo; volver no activa otra descarga ni generación automáticamente."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Incluye WebGPU, memoria y continuidad de la consulta ligera ante incompatibilidad o fallo.",
+        "en": "Includes WebGPU, memory and continuing lightweight queries when unsupported or failing."
+      }
+    },
+    {
+      "id": "astronomy",
+      "lang": "es",
+      "question": "¿Cuántos satélites tiene Júpiter?",
+      "expectedIds": [],
+      "reference": "La biblioteca no contiene esa información. Debe abstenerse.",
+      "retrievedIds": [],
+      "first": null,
+      "topThree": null,
+      "abstention": true,
+      "literal": true,
+      "modelInvoked": false,
+      "modelState": "notInvoked",
+      "modelText": "",
+      "displayed": {
+        "version": 1,
+        "corpusVersion": "2026-11-07-local",
+        "kind": "abstained",
+        "paragraphs": [],
+        "sources": []
+      },
+      "review": {
+        "status": "correct",
+        "es": "La aplicación no recupera evidencia y se abstiene antes de invocar el modelo. No es una respuesta generada.",
+        "en": "The application retrieves no evidence and abstains before invoking the model. This is not a generated answer."
+      }
+    },
+    {
+      "id": "market-price",
+      "lang": "es",
+      "question": "¿Cuál es la cotización actual de Ethereum?",
+      "expectedIds": [],
+      "reference": "La biblioteca no contiene cotizaciones. Debe abstenerse.",
+      "retrievedIds": [],
+      "first": null,
+      "topThree": null,
+      "abstention": true,
+      "literal": true,
+      "modelInvoked": false,
+      "modelState": "notInvoked",
+      "modelText": "",
+      "displayed": {
+        "version": 1,
+        "corpusVersion": "2026-11-07-local",
+        "kind": "abstained",
+        "paragraphs": [],
+        "sources": []
+      },
+      "review": {
+        "status": "correct",
+        "es": "La aplicación no recupera evidencia y se abstiene antes de invocar el modelo. No es una respuesta generada.",
+        "en": "The application retrieves no evidence and abstains before invoking the model. This is not a generated answer."
+      }
+    },
+    {
+      "id": "secret-overlap",
+      "lang": "es",
+      "question": "¿Cuál es la clave secreta real del servidor?",
+      "expectedIds": [],
+      "reference": "No existe una clave real en los documentos. Debe reconocerlo; una recomendación general no responde la pregunta.",
+      "retrievedIds": [
+        "ai-2"
+      ],
+      "first": null,
+      "topThree": null,
+      "abstention": false,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "El texto de referencia indica que la clave secreta real del servidor se encuentra en el lado del servidor y está protegida por su configuración. Por tanto, la respuesta correcta es que la clave secreta real del servidor se encuentra en el lado del servidor.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "El texto de referencia indica que la clave secreta real del servidor se encuentra en el lado del servidor y está protegida por su configuración. Por tanto, la respuesta correcta es que la clave secreta real del servidor se encuentra en el lado del servidor.",
+            "citationIds": [
+              "ai-2"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "ai-2",
+            "document": "La IA necesita contexto. Y límites.",
+            "title": "Dar contexto con intención",
+            "href": "/notas/ia-con-contexto-y-revision/#section-2",
+            "quote": "Los secretos de una integración pertenecen al lado del servidor y a su configuración protegida. El navegador no necesita recibir una credencial para mostrar el resultado de una operación."
+          }
+        ]
+      },
+      "review": {
+        "status": "incorrect",
+        "es": "Confunde una recomendación general con información sobre una clave real y responde dónde estaría, no cuál es. La cita literal pasa el control, pero la interpretación no responde la pregunta.",
+        "en": "Confuses general advice with information about an actual key, answering where it would be rather than what it is. The verbatim citation passes the check, but the interpretation does not answer the question."
+      }
+    },
+    {
+      "id": "validation",
+      "lang": "en",
+      "question": "What should I validate before using an AI response?",
+      "expectedIds": [
+        "ai-3"
+      ],
+      "reference": "The expected structure and its values before using them. Convincing wording does not guarantee correctness.",
+      "retrievedIds": [
+        "ai-3",
+        "integration-2",
+        "demo-4"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "You should validate that the structure and its values match the application's expectations.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "You should validate that the structure and its values match the application's expectations.",
+            "citationIds": [
+              "ai-3"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "ai-3",
+            "document": "AI needs context. And boundaries.",
+            "title": "Validate before acting",
+            "href": "/en/notes/ai-with-context-and-review/#section-3",
+            "quote": "If the application expects a particular structure, it must validate that structure and its values before using them. Convincing wording does not guarantee that a response is correct or suitable for taking action."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Identifica la estructura y sus valores como elementos que deben validarse.",
+        "en": "Identifies the structure and its values as the elements to validate."
+      }
+    },
+    {
+      "id": "credentials",
+      "lang": "en",
+      "question": "Where should integration keys be stored?",
+      "expectedIds": [
+        "ai-2"
+      ],
+      "reference": "On the server and in its protected configuration; the browser should not receive the credential.",
+      "retrievedIds": [
+        "ai-2",
+        "demo-4"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "The text states that integration secrets should be stored on the server and in its protected configuration.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "The text states that integration secrets should be stored on the server and in its protected configuration.",
+            "citationIds": [
+              "ai-2"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "ai-2",
+            "document": "AI needs context. And boundaries.",
+            "title": "Provide context deliberately",
+            "href": "/en/notes/ai-with-context-and-review/#section-2",
+            "quote": "Integration secrets belong on the server and in its protected configuration. The browser does not need a credential to display the result of an operation."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Ubica los secretos en el servidor y su configuración protegida.",
+        "en": "Places secrets on the server and in its protected configuration."
+      }
+    },
+    {
+      "id": "missing",
+      "lang": "en",
+      "question": "What happens if the documents do not contain the answer?",
+      "expectedIds": [
+        "demo-3"
+      ],
+      "reference": "Acknowledge missing evidence, do not invent, and allow rephrasing or checking the sources.",
+      "retrievedIds": [
+        "demo-3",
+        "demo-1",
+        "integration-4"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "If the documents do not contain the answer, the assistant should acknowledge it.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "If the documents do not contain the answer, the assistant should acknowledge it.",
+            "citationIds": [
+              "demo-3"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "demo-3",
+            "document": "How this demo works",
+            "title": "When information is missing",
+            "href": "/en/lab/document-assistant/#source-demo-3",
+            "quote": "If the library provides insufficient evidence, the assistant should acknowledge it. It must not invent sources, professional facts, prices or project outcomes. You can rephrase the question or open the documents to check what they contain."
+          }
+        ]
+      },
+      "review": {
+        "status": "partial",
+        "es": "Reconoce que falta información, pero omite la prohibición de inventar y las alternativas de reformular o abrir documentos.",
+        "en": "Acknowledges missing information but omits the instruction not to invent and the alternatives of rephrasing or opening documents."
+      }
+    },
+    {
+      "id": "retries",
+      "lang": "en",
+      "question": "What should I check before adding retries to an operation?",
+      "expectedIds": [
+        "integration-3"
+      ],
+      "reference": "Whether repeating the operation could create a duplicate or perform an action twice.",
+      "retrievedIds": [
+        "integration-3",
+        "integration-2",
+        "ai-2"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "Before adding retries, you should check whether repeating the operation might create a duplicate or perform an action twice.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "Before adding retries, you should check whether repeating the operation might create a duplicate or perform an action twice.",
+            "citationIds": [
+              "integration-3"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "integration-3",
+            "document": "Integration starts with the contract.",
+            "title": "Design the error path too",
+            "href": "/en/notes/integration-starts-with-the-contract/#section-3",
+            "quote": "A service can become temporarily unavailable and a request can be repeated. Before adding retries, understand whether repeating the operation might create a duplicate or perform an action twice."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Responde con el riesgo de duplicados y doble ejecución.",
+        "en": "Answers with the risk of duplicates and performing an action twice."
+      }
+    },
+    {
+      "id": "contract",
+      "lang": "en",
+      "question": "Which fields and types should an integration contract describe?",
+      "expectedIds": [
+        "integration-2"
+      ],
+      "reference": "Fields, types, identifiers, optional values, responses, dates and error communication.",
+      "retrievedIds": [
+        "integration-2",
+        "integration-4",
+        "ai-2"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "The integration contract should describe fields, types, identifiers, optional values, and expected responses.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "The integration contract should describe fields, types, identifiers, optional values, and expected responses.",
+            "citationIds": [
+              "integration-2"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "integration-2",
+            "document": "Integration starts with the contract.",
+            "title": "Make the exchange explicit",
+            "href": "/en/notes/integration-starts-with-the-contract/#section-2",
+            "quote": "The contract describes fields, types, identifiers, optional values and expected responses. It should also clarify how dates are represented and how errors are communicated."
+          }
+        ]
+      },
+      "review": {
+        "status": "partial",
+        "es": "Enumera los elementos centrales, pero omite la representación de fechas y la comunicación de errores.",
+        "en": "Lists the core elements but omits date representation and error communication."
+      }
+    },
+    {
+      "id": "html",
+      "lang": "en",
+      "question": "Why should the main content exist in the HTML?",
+      "expectedIds": [
+        "progressive-1"
+      ],
+      "reference": "So headings, paragraphs and links are useful without waiting for JavaScript.",
+      "retrievedIds": [
+        "progressive-1"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "The main content should exist in the document delivered to the browser because it is the primary source of information that users need to access and understand, serving as the core element that drives the user experience.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "The main content should exist in the document delivered to the browser because it is the primary source of information that users need to access and understand, serving as the core element that drives the user experience.",
+            "citationIds": [
+              "progressive-1"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "progressive-1",
+            "document": "A good interface starts before JavaScript.",
+            "title": "A foundation people can read",
+            "href": "/en/notes/interfaces-that-start-with-html/#section-1",
+            "quote": "The main content should exist in the document delivered to the browser. A heading, paragraph and link are useful on their own: they do not need to wait for a function to finish running."
+          }
+        ]
+      },
+      "review": {
+        "status": "partial",
+        "es": "Da una explicación general sobre contenido, pero pierde la razón concreta: disponibilidad sin esperar a JavaScript.",
+        "en": "Gives a general explanation about content but loses the specific reason: availability without waiting for JavaScript."
+      }
+    },
+    {
+      "id": "motion",
+      "lang": "en",
+      "question": "When should a decorative animation stop?",
+      "expectedIds": [
+        "progressive-3"
+      ],
+      "reference": "For reduced motion, a hidden tab or an offscreen effect.",
+      "retrievedIds": [
+        "progressive-3"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "When a decorative animation should stop, it should be stopped.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "When a decorative animation should stop, it should be stopped.",
+            "citationIds": [
+              "progressive-3"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "progressive-3",
+            "document": "A good interface starts before JavaScript.",
+            "title": "Motion is a layer",
+            "href": "/en/notes/interfaces-that-start-with-html/#section-3",
+            "quote": "Animation can explain a relationship or give an identity character. It should also be possible to stop it. A reduced-motion preference, a hidden tab or an offscreen effect are situations worth handling explicitly."
+          }
+        ]
+      },
+      "review": {
+        "status": "insufficient",
+        "es": "La frase es circular y no identifica ninguno de los tres contextos presentes en la fuente.",
+        "en": "The sentence is circular and identifies none of the three contexts in the source."
+      }
+    },
+    {
+      "id": "history",
+      "lang": "en",
+      "question": "Does this demo store a question and answer history?",
+      "expectedIds": [
+        "demo-1",
+        "demo-4"
+      ],
+      "reference": "Conversations are not stored; queries are independent and navigating away or reloading clears the screen.",
+      "retrievedIds": [
+        "demo-4",
+        "demo-1",
+        "demo-3"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "No.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "No.",
+            "citationIds": [
+              "demo-4"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "demo-4",
+            "document": "How this demo works",
+            "title": "Privacy and availability",
+            "href": "/en/lab/document-assistant/#source-demo-4",
+            "quote": "Questions and answers are processed on the device and are not sent to an AI service. There are no keys or API usage charges. The optional download of approximately 450 MB retrieves public files from Hugging Face and may keep them in the browser cache; you can delete them from the demo. Conversations are not stored."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "La respuesta breve niega el almacenamiento de historial; la evidencia mostrada lo respalda.",
+        "en": "The brief answer denies history storage, supported by the displayed evidence."
+      }
+    },
+    {
+      "id": "download",
+      "lang": "en",
+      "question": "What does the downloadable model need, and what if my browser is incompatible?",
+      "expectedIds": [
+        "demo-4"
+      ],
+      "reference": "WebGPU and sufficient memory; lightweight consultation remains available if the model cannot run.",
+      "retrievedIds": [
+        "demo-4",
+        "ai-2",
+        "progressive-1"
+      ],
+      "first": true,
+      "topThree": true,
+      "abstention": null,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "rejected",
+      "modelText": "",
+      "displayed": {
+        "version": 1,
+        "corpusVersion": "2026-11-07-local",
+        "kind": "extracts",
+        "paragraphs": [],
+        "sources": [
+          {
+            "id": "demo-4",
+            "document": "How this demo works",
+            "title": "Privacy and availability",
+            "href": "/en/lab/document-assistant/#source-demo-4",
+            "quote": "Downloadable AI requires WebGPU and sufficient memory. Lightweight consultation remains available when the browser is incompatible, the download is cancelled or the model fails. Leaving the demo releases the model; returning does not automatically start another download or generation."
+          },
+          {
+            "id": "ai-2",
+            "document": "AI needs context. And boundaries.",
+            "title": "Provide context deliberately",
+            "href": "/en/notes/ai-with-context-and-review/#section-2",
+            "quote": "Integration secrets belong on the server and in its protected configuration. The browser does not need a credential to display the result of an operation."
+          },
+          {
+            "id": "progressive-1",
+            "document": "A good interface starts before JavaScript.",
+            "title": "A foundation people can read",
+            "href": "/en/notes/interfaces-that-start-with-html/#section-1",
+            "quote": "The main content should exist in the document delivered to the browser. A heading, paragraph and link are useful on their own: they do not need to wait for a function to finish running."
+          }
+        ]
+      },
+      "error": "invalid_sources",
+      "review": {
+        "status": "error",
+        "es": "La salida no superó el contrato de validación (invalid_sources). No se publica como respuesta generada; la aplicación conserva los extractos correctos de la consulta ligera.",
+        "en": "The output did not pass contract validation (invalid_sources). It is not published as a generated answer; the application retains the correct lightweight excerpts."
+      }
+    },
+    {
+      "id": "astronomy",
+      "lang": "en",
+      "question": "How many moons does Jupiter have?",
+      "expectedIds": [],
+      "reference": "The library does not contain this information. It should abstain.",
+      "retrievedIds": [],
+      "first": null,
+      "topThree": null,
+      "abstention": true,
+      "literal": true,
+      "modelInvoked": false,
+      "modelState": "notInvoked",
+      "modelText": "",
+      "displayed": {
+        "version": 1,
+        "corpusVersion": "2026-11-07-local",
+        "kind": "abstained",
+        "paragraphs": [],
+        "sources": []
+      },
+      "review": {
+        "status": "correct",
+        "es": "La aplicación no recupera evidencia y se abstiene antes de invocar el modelo. No es una respuesta generada.",
+        "en": "The application retrieves no evidence and abstains before invoking the model. This is not a generated answer."
+      }
+    },
+    {
+      "id": "market-price",
+      "lang": "en",
+      "question": "What is the current price of Ethereum?",
+      "expectedIds": [],
+      "reference": "The library does not contain market prices. It should abstain.",
+      "retrievedIds": [],
+      "first": null,
+      "topThree": null,
+      "abstention": true,
+      "literal": true,
+      "modelInvoked": false,
+      "modelState": "notInvoked",
+      "modelText": "",
+      "displayed": {
+        "version": 1,
+        "corpusVersion": "2026-11-07-local",
+        "kind": "abstained",
+        "paragraphs": [],
+        "sources": []
+      },
+      "review": {
+        "status": "correct",
+        "es": "La aplicación no recupera evidencia y se abstiene antes de invocar el modelo. No es una respuesta generada.",
+        "en": "The application retrieves no evidence and abstains before invoking the model. This is not a generated answer."
+      }
+    },
+    {
+      "id": "secret-overlap",
+      "lang": "en",
+      "question": "What is the actual secret key of the server?",
+      "expectedIds": [],
+      "reference": "No actual key exists in the documents. It should acknowledge that; general advice does not answer the question.",
+      "retrievedIds": [
+        "ai-2"
+      ],
+      "first": null,
+      "topThree": null,
+      "abstention": false,
+      "literal": true,
+      "modelInvoked": true,
+      "modelState": "generated",
+      "modelText": "The text does not provide the actual secret key, only the general principle that secrets belong on the server and are protected.",
+      "displayed": {
+        "version": 1,
+        "kind": "answer",
+        "corpusVersion": "2026-11-07-local",
+        "paragraphs": [
+          {
+            "text": "The text does not provide the actual secret key, only the general principle that secrets belong on the server and are protected.",
+            "citationIds": [
+              "ai-2"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "id": "ai-2",
+            "document": "AI needs context. And boundaries.",
+            "title": "Provide context deliberately",
+            "href": "/en/notes/ai-with-context-and-review/#section-2",
+            "quote": "Integration secrets belong on the server and in its protected configuration. The browser does not need a credential to display the result of an operation."
+          }
+        ]
+      },
+      "review": {
+        "status": "correct",
+        "es": "Reconoce expresamente que el texto no proporciona una clave real, aunque la recuperación no se abstuvo.",
+        "en": "Explicitly acknowledges that the text provides no actual key, even though retrieval did not abstain."
+      }
+    }
+  ],
+  "exportedAt": "2026-11-07T16:45:09.091Z",
+  "environment": {
+    "es": "Navegador de escritorio en Windows con WebGPU. Esta ejecución no representa todos los dispositivos.",
+    "en": "Desktop browser on Windows with WebGPU. This run does not represent every device."
+  },
+  "reviewMethod": {
+    "es": "Revisión asistida por IA (Codex), contrastada con la evidencia de cada pregunta. No es una evaluación humana independiente. Los cuatro casos sin fuentes evalúan la abstención de la aplicación; no invocan el modelo. La fecha indica el día de ejecución; exportedAt conserva la hora del archivo descargado.",
+    "en": "AI-assisted review (Codex), checked against each question’s evidence. This is not an independent human evaluation. Four cases without sources test application abstention without invoking the model. The date identifies the execution day; exportedAt preserves the downloaded file’s timestamp."
+  }
+}

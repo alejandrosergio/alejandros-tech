@@ -1,0 +1,75 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Alejandro’sTech · Request workflow reference",
+    "version": "1.0.0",
+    "description": "Local personal prototype. Process memory only, 50-request capacity, no authentication or production deployment. Canonical request values are described below; the server trims fields and uppercases requestId before validation. Not an import-ready Power Platform connector."
+  },
+  "servers": [{ "url": "http://127.0.0.1:5086", "description": "Local development only" }],
+  "paths": {
+    "/health": {
+      "get": { "operationId": "health", "responses": { "200": { "description": "Ready; scope is process-local-reference", "content": { "application/json": { "schema": { "type": "object", "properties": { "status": { "const": "ok" }, "scope": { "const": "process-local-reference" } } } } } } } }
+    },
+    "/requests": {
+      "post": {
+        "operationId": "createRequest",
+        "description": "Same key and normalised payload return the current existing record, not a cached original response. Reuse with different data or a duplicate business ID under another key returns 409. Keys survive only within this process.",
+        "parameters": [{ "in": "header", "name": "Idempotency-Key", "required": true, "schema": { "type": "string", "pattern": "^[A-Za-z0-9_-]{8,64}$" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateRequest" } } } },
+        "responses": {
+          "201": { "description": "Created", "headers": { "Location": { "schema": { "type": "string" }, "description": "Request resource path" } }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreationResponse" } } } },
+          "200": { "description": "Recognised replay; replayed is true", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreationResponse" } } } },
+          "400": { "$ref": "#/components/responses/Problem" },
+          "409": { "$ref": "#/components/responses/Problem" },
+          "413": { "$ref": "#/components/responses/Problem" },
+          "415": { "$ref": "#/components/responses/Problem" },
+          "503": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/requests/{requestId}": {
+      "parameters": [{ "$ref": "#/components/parameters/RequestId" }],
+      "get": { "operationId": "getRequest", "responses": { "200": { "description": "Current request snapshot", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RequestResponse" } } } }, "404": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/requests/{requestId}/transitions": {
+      "parameters": [{ "$ref": "#/components/parameters/RequestId" }],
+      "post": {
+        "operationId": "transitionRequest",
+        "description": "received → review → approved → completed, or review → rejected. Matching expectedVersion is required. A repeated transition with an old version returns 409; read current state before deciding to retry.",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TransitionRequest" } } } },
+        "responses": {
+          "200": { "description": "Transition accepted", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RequestResponse" } } } },
+          "400": { "$ref": "#/components/responses/Problem" }, "404": { "$ref": "#/components/responses/Problem" }, "409": { "$ref": "#/components/responses/Problem" }, "413": { "$ref": "#/components/responses/Problem" }, "415": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": { "RequestId": { "in": "path", "name": "requestId", "required": true, "schema": { "type": "string" }, "description": "Canonical uppercase request ID returned by creation" } },
+    "responses": { "Problem": { "description": "Machine-readable error; no domain mutation. All responses use Cache-Control: no-store.", "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } } },
+    "schemas": {
+      "CreateRequest": {
+        "type": "object", "additionalProperties": false, "required": ["requestId", "title", "category", "priority"],
+        "properties": {
+          "requestId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{2,31}$", "description": "Canonical input; server trims and uppercases before validation" },
+          "title": { "type": "string", "minLength": 12, "maxLength": 160, "description": "Canonical description; server trims before checking 12–160 UTF-16 code units and rejecting control characters" },
+          "category": { "type": "string", "enum": ["access", "automation", "integration"] },
+          "priority": { "type": "string", "enum": ["normal", "high"] }
+        }
+      },
+      "TransitionRequest": { "type": "object", "additionalProperties": false, "required": ["action", "expectedVersion"], "properties": { "action": { "type": "string", "enum": ["review", "approve", "reject", "complete"] }, "expectedVersion": { "type": "integer", "minimum": 1 } } },
+      "Event": { "type": "object", "required": ["status", "version", "at"], "properties": { "status": { "type": "string", "enum": ["received", "review", "approved", "rejected", "completed"] }, "version": { "type": "integer", "minimum": 1 }, "at": { "type": "string", "format": "date-time" } } },
+      "Request": {
+        "type": "object", "required": ["requestId", "title", "category", "priority", "status", "version", "events"],
+        "properties": {
+          "requestId": { "type": "string" }, "title": { "type": "string" }, "category": { "type": "string" }, "priority": { "type": "string" },
+          "status": { "type": "string", "enum": ["received", "review", "approved", "rejected", "completed"] },
+          "version": { "type": "integer", "minimum": 1 }, "events": { "type": "array", "items": { "$ref": "#/components/schemas/Event" } }
+        }
+      },
+      "RequestResponse": { "type": "object", "required": ["request"], "properties": { "request": { "$ref": "#/components/schemas/Request" } } },
+      "CreationResponse": { "type": "object", "required": ["replayed", "request"], "properties": { "replayed": { "type": "boolean" }, "request": { "$ref": "#/components/schemas/Request" } } },
+      "Problem": { "type": "object", "required": ["type", "title", "status", "code"], "properties": { "type": { "type": "string" }, "title": { "type": "string" }, "status": { "type": "integer", "minimum": 400, "maximum": 599 }, "code": { "type": "string" }, "errors": { "type": "object", "additionalProperties": { "type": "string" } } } }
+    }
+  }
+}

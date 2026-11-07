@@ -6,9 +6,9 @@ export const journeyCopy = {
       { id: 'sobre-mi', title: 'Sobre mí', text: 'Conoce mi recorrido y cómo conecto desarrollo, integración y automatización.', action: 'Explorar tecnologías', href: '#tecnologias' },
       { id: 'tecnologias', title: 'Tecnologías', text: 'Filtra por área y elige una tecnología para ver cómo la uso.', action: 'Ver proyectos', href: '#proyectos' },
       { id: 'trayectoria', title: 'Trayectoria', text: 'Abre cada etapa para explorar responsabilidades, herramientas y contexto.', action: 'Seguir con los proyectos', href: '#proyectos' },
-      { id: 'proyectos', title: 'Proyectos', text: 'Cada proyecto tiene su propia historia: el punto de partida, las decisiones y el resultado.', action: 'Dentro de Alejandro’sTech', href: '/proyectos/alejandros-tech/' },
+      { id: 'proyectos', title: 'Proyectos', text: 'Explora las fichas y prueba fuentes, decisiones y conflictos en los laboratorios.', action: 'Probar el asistente', href: '/laboratorio/asistente-documental/' },
       { id: 'proceso', title: 'Cómo trabajo', text: 'De entender la necesidad a evolucionar la solución. Sigue con las ideas detrás del código.', action: 'Abrir el cuaderno', href: '#conocimiento' },
-      { id: 'conocimiento', title: 'Cuaderno técnico', text: 'Interfaces, integraciones e IA: tres notas para explorar con calma.', action: 'Leer sobre interfaces', href: '/notas/interfaces-que-funcionan-desde-el-html/' },
+      { id: 'conocimiento', title: 'Cuaderno técnico', text: 'Cinco notas sobre IA, evaluación, integración e interfaces, con ejemplos que puedes reproducir.', action: 'Evaluar respuestas con fuentes', href: '/notas/evaluar-respuestas-con-fuentes/' },
       { id: 'contacto', title: 'Contacto', text: '¿Algo te ha interesado? Cuéntamelo en el formulario o escríbeme por correo.', action: 'Escribir un mensaje', href: '#contact-name' }
     ]
   },
@@ -19,9 +19,9 @@ export const journeyCopy = {
       { id: 'sobre-mi', title: 'About', text: 'Discover my background and how I connect development, integration and automation.', action: 'Explore technologies', href: '#tecnologias' },
       { id: 'tecnologias', title: 'Technologies', text: 'Filter by area and choose a technology to see how I use it.', action: 'See projects', href: '#proyectos' },
       { id: 'trayectoria', title: 'Experience', text: 'Open each chapter to explore responsibilities, tools and context.', action: 'Continue to projects', href: '#proyectos' },
-      { id: 'proyectos', title: 'Projects', text: 'Every project has its own story: the starting point, decisions and outcome.', action: 'Inside Alejandro’sTech', href: '/en/projects/alejandros-tech/' },
+      { id: 'proyectos', title: 'Projects', text: 'Explore the cases and try sources, decisions and conflicts in the labs.', action: 'Try the assistant', href: '/en/lab/document-assistant/' },
       { id: 'proceso', title: 'How I work', text: 'From understanding a need to evolving a solution. Next, explore the ideas behind the code.', action: 'Open the notebook', href: '#conocimiento' },
-      { id: 'conocimiento', title: 'Technical notebook', text: 'Interfaces, integrations and AI: three notes to explore at your own pace.', action: 'Read about interfaces', href: '/en/notes/interfaces-that-start-with-html/' },
+      { id: 'conocimiento', title: 'Technical notebook', text: 'Five notes on AI, evaluation, integration and interfaces, with examples you can reproduce.', action: 'Evaluate answers with sources', href: '/en/notes/evaluating-answers-with-sources/' },
       { id: 'contacto', title: 'Contact', text: 'Did something catch your interest? Tell me through the form or send me an email.', action: 'Write a message', href: '#contact-name' }
     ]
   }

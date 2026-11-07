@@ -65,3 +65,7 @@ En la revisión local de esta entrega se descargó y ejecutó realmente el model
 - [Ficha y licencia de Qwen3.5](https://huggingface.co/Qwen/Qwen3.5-0.8B).
 
 Ver `THIRD_PARTY.md` para licencias y `PUBLISHING.md` para publicación y sincronización.
+
+## Evaluación pública
+
+La entrega posterior añade [EVALUATION.md](EVALUATION.md), 24 preguntas ES/EN, ejecución real del modelo y revisión cualitativa con procedencia explícita. La recuperación y la generación se evalúan por separado. Los resultados incluyen respuestas parciales, variación entre ejecuciones y retorno a extractos cuando la salida no cumple el contrato; no deben resumirse como una precisión perfecta.

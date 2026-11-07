@@ -1,4 +1,4 @@
-import { createDocumentIndex, extractAnswer, validateQuestion, validateLocalAnswer } from './assistant-core.js';
+import { createDocumentIndex, extractAnswer, validateQuestion, validateLocalAnswer, prepareLocalContext } from './assistant-core.js';
 import { createLocalModel, clearModelDownload } from './assistant-model.js';
 import { localModel } from '../content/local-model.mjs';
 
@@ -133,7 +133,7 @@ if (app) {
         message(t.model.generating); mode.textContent = t.aiMode;
         // Keep the small optional model focused on the most relevant passage.
         // The lightweight result still exposes the wider set of source matches.
-        const sources = index.retrieve(question, lang).slice(0, 1).map(source => ({ ...source, text: index.excerpt(question, source) }));
+        const sources = prepareLocalContext(index, question, lang);
         try {
           const answer = await model.generate(question, lang, sources, activeController.signal);
           const generated = validateLocalAnswer(answer, sources, app.dataset.corpusVersion);

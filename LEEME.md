@@ -11,7 +11,7 @@ Web profesional de Sergio Hernández, con enfoque en la integración de IA aplic
 
 ## Experiencia
 
-El inicio a pantalla completa incorpora un retrato fotográfico en gris, tres anillos de giro lento y un acercamiento suave de la imagen. La foto es un recorte asistido del retrato de estudio original del titular; su preparación está documentada en [recursos visuales](docs/ASSETS.md). El generador, visualizador y pruebas del antiguo 3D se han eliminado por petición del titular. El perfil usa columnas editoriales de texto sin tarjeta fotográfica duplicada, seguidas de un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos web reales, un prototipo personal de asistente documental y tres notas originales. Los casos, la demo y las notas tienen rutas completas ES/EN.
+El inicio a pantalla completa incorpora un retrato fotográfico en gris, tres anillos de giro lento y un acercamiento suave de la imagen. La foto es un recorte asistido del retrato de estudio original del titular; su preparación está documentada en [recursos visuales](docs/ASSETS.md). El generador, visualizador y pruebas del antiguo 3D se han eliminado por petición del titular. El perfil usa columnas editoriales de texto sin tarjeta fotográfica duplicada, seguidas de un explorador de 18 tecnologías confirmadas, experiencia desplegable, dos casos web reales, dos laboratorios propios de IA/integración y cinco notas originales. Los casos, la demo y las notas tienen rutas completas ES/EN.
 
 El sistema visual usa carbón, blanco cálido, coral discreto y títulos serif regulares en toda la web. La navegación permanece expandida por encima de 760 px y puede ocupar varias filas; el menú se colapsa solo en móvil. Las entradas de contenido duran unos 1,1 segundos con escalonado limitado. El cursor conserva punto y anillo sin flecha de redirección.
 
@@ -44,6 +44,7 @@ El asistente documental permite consultar cuatro documentos públicos en el disp
 - `src/styles/`: variables visuales, composición y estilos adaptables.
 - `public/`: fotografía preparada del inicio, retrato original también usado en las firmas de notas, capturas de proyectos y avisos locales de atribución.
 - `scripts/`: generación determinista, comprobaciones y vista local.
+- `examples/`: referencia .NET ejecutable, escenarios compartidos, contrato HTTP y guías Power Automate bilingües.
 - `dist/`: salida generada y guardada para comparar contenidos.
 - `docs/`: alcance, diseño, procedencia del contenido, arquitectura y publicación.
 
@@ -58,3 +59,9 @@ El CV conserva su proyecto y Site independientes. Es una referencia factual; man
 Copyright © 2026 Alejandro’sTech. Todos los derechos reservados. No se concede una licencia de código abierto para la web, la marca o los recursos personales.
 
 Letter Glitch Classic usa letras, números y símbolos monoespaciados locales en verde/azul fuera de la portada. Splash Cursor Smoke decora solo el inicio detrás de la fotografía. Grid Scan Deep aparece en el loader introductorio, que permanece dos segundos después de cargar la página y permite entrar antes manualmente. Estos efectos locales conservan sus controles de pausa y movimiento; atribución en [THIRD_PARTY.md](docs/THIRD_PARTY.md).
+
+## Laboratorios de IA e integración
+
+La [evaluación abierta](docs/EVALUATION.md) conserva 24 registros reales de navegador con fuentes, fallos y procedencia de la revisión asistida por IA. Se puede reproducir la consulta ligera sin descargas o activar el mismo modelo local. Es un conjunto acotado, no una precisión general.
+
+El [flujo de solicitudes](docs/WORKFLOW.md) muestra validaciones, repetición sin duplicados, estados y conflictos de versión. Su [referencia .NET 10](examples/workflow-api/README.md) incluye escenarios compartidos, pruebas HTTP reales y guías Power Automate ES/EN. El Site sigue siendo estático; no se ha desplegado un flujo empresarial ni contratado un servicio. Tres accesos dentro del perfil orientan a selección, proyectos y comunidad técnica.

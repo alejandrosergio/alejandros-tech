@@ -38,7 +38,7 @@ The user authorized routine requested changes to be applied to source, published
 9. Verify deployment success, GitHub reference and file contents/hashes. Sites and GitHub may have different commit histories, so compare content rather than requiring identical commit SHAs.
 10. Update a local `.codex/sync-state.json` only after both destinations are verified. It may contain public identifiers, commit SHAs and file hashes, never credentials. Report the website URL, GitHub commit and relevant checks. State any unfinished work accurately.
 
-Managed files: `src/`, `public/`, `scripts/`, `dist/`, `docs/`, `.github/`, `.openai/hosting.json`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `.gitignore`, `.gitattributes`, `.editorconfig`, `README.md`, `LEEME.md`, `AGENTS.md`. Deliberate deletions must correspond to requested changes.
+Managed files: `src/`, `public/`, `scripts/`, `examples/`, `dist/`, `docs/`, `.github/`, `.openai/hosting.json`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `.gitignore`, `.gitattributes`, `.editorconfig`, `README.md`, `LEEME.md`, `AGENTS.md`. Deliberate deletions must correspond to requested changes.
 
 This is a maintenance workflow during requested work, not an automatic background synchronization service. Do not create recurring jobs without a separate user request.
 
@@ -59,6 +59,10 @@ This is a maintenance workflow during requested work, not an automatic backgroun
 Use Node 22.13+ and `pnpm install --frozen-lockfile` before the build. WebLLM and esbuild are pinned in the lockfile. Only the demo imports its small controller; its heavy model worker and model files load after explicit visitor activation. Add pages or content models only when needed by approved features. Keep the static output portable.
 
 The document assistant is an original personal prototype, not historical client experience. Its four public bilingual documents and sixteen sections are in `src/content/document-assistant.mjs`; see `docs/AI-DEMO.md`. The owner's latest authorization is lightweight consultation with sources and an optional downloadable model, with no API charges. Default results are verbatim excerpts and must not be presented as generated answers. Optional Qwen3.5 generation runs in the browser after explicit activation, with source and quote checks and an explicit lightweight fallback. Never add paid inference, billing, keys or automatic downloads. Preserve cancellation, unsupported-device handling, cache controls and ES/EN parity.
+
+The owner subsequently authorised completing the remaining deliveries on 7 November 2026. The site now has four cases, five original notes and 26 localized routes, within the same eight homepage modules. `docs/EVALUATION.md` explains the actual 24-query reference run, AI-assisted qualitative review and known failures. Reference outputs must stay verbatim; the build checks fingerprints and rejects stale inputs. Do not claim an independent human evaluation, general accuracy or RAGAs/ALCE execution.
+
+`examples/workflow-api/` is a personal .NET 10 local reference, not the Site's backend. The browser workflow uses tab memory with fictional data. Shared fixtures cover both implementations. Use `dotnet build examples/workflow-api/src/WorkflowApi/WorkflowApi.csproj -c Release`, `dotnet run --project examples/workflow-api/tests/WorkflowChecks/WorkflowChecks.csproj -c Release`, and `node scripts/check-workflow-http.mjs` after relevant changes. The HTTP checker may select an isolated SDK through `TASK_DOTNET`. Keep SDKs, bin/obj and local processes out of Git. Power Automate documents are bilingual integration guides, not deployed tenant flows; never claim authentication, persistence or exactly-once processing in this bounded reference.
 
 ## Content and identity
 

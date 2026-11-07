@@ -10,3 +10,5 @@ Thumbs.db
 *.tgz
 *.tar.gz
 coverage/
+**/bin/
+**/obj/

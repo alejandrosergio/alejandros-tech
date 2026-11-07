@@ -4,6 +4,11 @@ import { experience, skills } from '../content/profile.mjs';
 import { projects, projectPath, projectName, projectDestination } from '../content/projects.mjs';
 import { assistantCopy, assistantPaths } from '../content/document-assistant.mjs';
 import { documentAssistant } from './document-assistant.mjs';
+import { evaluationPage } from './evaluation.mjs';
+import { evaluationCopy, evaluationPaths } from '../content/evaluation-cases.mjs';
+import { workflowCopy, workflowPaths } from '../content/workflow.mjs';
+import { workflowPage } from './workflow.mjs';
+import { audienceCopy } from '../content/audiences.mjs';
 import { notes, notePath } from '../content/notes.mjs';
 import { icon } from './icons.mjs';
 import { hero, sectionNavigation } from './hero.mjs';
@@ -20,6 +25,12 @@ const mailURL = t => `mailto:${site.email}?subject=${encodeURIComponent(t.contac
 const splitTitle = lines => `${e(lines[0])} <em>${e(lines[1])}</em>`;
 const tags = values => `<ul class="tags">${values.map(value => `<li>${e(value)}</li>`).join('')}</ul>`;
 const sectionLabel = (number, label) => `<p class="section-label"><span>${number}</span>${e(label)}</p>`;
+const resourceLinks = items => items?.length ? `<div class="lab-downloads">${items.map(item => `<a class="text-link" href="${e(item.href)}">${e(item.title)}${icon('arrowRight')}</a>`).join('')}</div>` : '';
+
+function audienceNavigation(lang) {
+  const t = audienceCopy[lang];
+  return `<nav class="audience-paths" aria-labelledby="audience-title" data-reveal><h3 id="audience-title">${e(t.title)}</h3><div>${t.items.map((item, index) => `<a href="${item.href}"><span class="small-label" aria-hidden="true">0${index + 1}</span><strong>${e(item.title)}</strong><p>${e(item.text)}</p><span class="audience-action">${e(item.action)}${icon('arrowRight')}</span></a>`).join('')}</div></nav>`;
+}
 
 function head(lang, options) {
   return `<head>
@@ -33,7 +44,7 @@ function head(lang, options) {
   <script src="/assets/site.js" defer></script>
   <script src="/assets/journey.js" defer></script>
   <script src="/assets/letter-glitch.js" defer></script>${options.home ? '\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
-  <script src="/assets/soundtrack.js" defer></script>${options.assistant ? '\n  <script src="/assets/document-assistant.js" type="module"></script>' : ''}
+  <script src="/assets/soundtrack.js" defer></script>${options.assistant ? '\n  <script src="/assets/document-assistant.js" type="module"></script>' : ''}${options.evaluation ? '\n  <script src="/assets/document-evaluation.js" type="module"></script>' : ''}${options.workflow ? '\n  <script src="/assets/workflow.js" type="module"></script>' : ''}
 </head>`;
 }
 
@@ -78,6 +89,7 @@ function about(lang, t) {
     <div class="about-copy" data-reveal>${sectionLabel('01', t.about.label)}<h2 id="about-title">${splitTitle(t.about.title)}</h2><p class="lead">${t.about.intro}</p>${t.about.paragraphs.map(p => `<p>${e(p)}</p>`).join('')}<a class="text-link" href="${cvURL(lang)}" target="_blank" rel="noopener noreferrer">${t.cv}${icon('arrow')}</a></div>
     <aside class="about-approach" data-reveal><span class="small-label">${t.about.profileRole}</span><h3>${t.about.cardTitle}</h3><p>${t.about.cardText}</p><div class="approach-details">${t.about.cardDetails.map((s, i) => `<details${i === 0 ? ' open' : ''}><summary><span class="approach-number" aria-hidden="true">0${i+1}</span>${e(s)}<span class="disclosure-plus" aria-hidden="true">+</span></summary><p>${e(i === 0 ? `${t.process.steps[0].text} ${t.process.steps[1].text}` : t.process.steps[i+1].text)}</p></details>`).join('')}</div></aside>
     <dl class="profile-facts" data-reveal>${t.about.facts.map(f => `<div><dt>${e(f.value)}</dt><dd>${e(f.label)}</dd></div>`).join('')}</dl>
+    ${audienceNavigation(lang)}
   </section>`;
 }
 
@@ -101,10 +113,11 @@ function career(lang, t) {
 }
 
 function projectCards(lang, t) {
+  let regularIndex = 0;
   return projects.map((project, i) => {
-    const p = project[lang], featured = Boolean(project.demoPaths);
+    const p = project[lang], featured = Boolean(project.demoPaths), offset = !featured && regularIndex++ % 2 === 1;
     const description = `<div class="project-meta"><span>${e(p.type)}</span><span>2026</span></div><h3><a href="${projectPath(project, lang)}">${e(projectName(project, lang))}</a></h3><p>${e(p.summary)}</p>${tags(project.stack)}<a class="text-link" href="${projectPath(project, lang)}">${t.readCase}${icon('arrowRight')}</a>${featured ? `<a class="text-link project-demo-link" href="${projectDestination(project, lang)}">${e(p.demoLabel)}${icon('arrowRight')}</a>` : ''}`;
-    return `<article class="project-card${featured ? ' project-card--featured' : ''}" data-reveal><a class="project-image" href="${projectPath(project, lang)}" aria-label="${e(projectName(project, lang))} — ${t.readCase}"><img src="${project.image[lang]}" alt="${e(p.imageAlt)}" width="${project.imageSize.width}" height="${project.imageSize.height}" loading="lazy" decoding="async"><span class="project-open" aria-hidden="true">${icon('arrow')}</span><span class="project-index" aria-hidden="true">0${i + 1}</span></a>${featured ? `<div class="project-featured-copy">${description}</div>` : description}</article>`;
+    return `<article class="project-card${featured ? ' project-card--featured' : offset ? ' project-card--offset' : ''}" data-reveal><a class="project-image" href="${projectPath(project, lang)}" aria-label="${e(projectName(project, lang))} — ${t.readCase}"><img src="${project.image[lang]}" alt="${e(p.imageAlt)}" width="${project.imageSize.width}" height="${project.imageSize.height}" loading="lazy" decoding="async"><span class="project-open" aria-hidden="true">${icon('arrow')}</span><span class="project-index" aria-hidden="true">0${i + 1}</span></a>${featured ? `<div class="project-featured-copy">${description}</div>` : description}</article>`;
   }).join('');
 }
 
@@ -143,7 +156,7 @@ export function renderProject(lang, project) {
     <header class="detail-heading"><a class="back-link" href="${t.path}#proyectos">← ${t.backProjects}</a><p class="eyebrow">${p.type} / 2026</p><h1>${e(p.title)}</h1><p class="detail-lead">${e(p.summary)}</p><div class="hero-actions"><a class="button button-primary" href="${live}"${project.id === 'cv' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${e(p.demoLabel ?? t.visit)}${icon('arrow')}</a>${project.repository ? `<a class="text-link" href="${project.repository}">${t.source}${icon('github')}</a>` : ''}</div></header>
     <figure class="case-image"><img src="${project.image[lang]}" alt="${e(p.imageAlt)}" width="${project.imageSize.width}" height="${project.imageSize.height}"><figcaption>${e(p.caption ?? (project.id === 'cv' ? t.projects.cvCaption : t.projects.imageCaption))}</figcaption></figure>
     <div class="case-content"><aside class="case-facts"><span class="small-label">${t.projects.overview}</span><h2>${e(name)}</h2><h3>${t.projects.scope}</h3><p>${e(p.contribution)}</p><h3>${t.projects.stack}</h3>${tags(project.stack)}<a class="text-link" href="${cvURL(lang)}" target="_blank" rel="noopener noreferrer">${t.cv}${icon('arrow')}</a></aside>
-    <div class="prose"><section><h2>${t.projects.problem}</h2><p>${e(p.problem)}</p></section><section><h2>${t.projects.approach}</h2><ul>${p.approach.map(item => `<li>${e(item)}</li>`).join('')}</ul></section><section><h2>${t.projects.result}</h2><p>${e(p.result)}</p></section>${p.limitations ? `<section><h2>${e(p.limitationsTitle)}</h2><ul>${p.limitations.map(item => `<li>${e(item)}</li>`).join('')}</ul><a class="button button-primary" href="${live}">${e(p.demoLabel)}${icon('arrowRight')}</a></section>` : ''}<a class="button button-secondary" href="${t.path}#contacto">${t.contactNav}${icon('arrowRight')}</a></div></div></article>
+    <div class="prose"><section><h2>${t.projects.problem}</h2><p>${e(p.problem)}</p></section><section><h2>${t.projects.approach}</h2><ul>${p.approach.map(item => `<li>${e(item)}</li>`).join('')}</ul></section><section><h2>${t.projects.result}</h2><p>${e(p.result)}</p>${resourceLinks(p.resources)}</section>${p.limitations ? `<section><h2>${e(p.limitationsTitle)}</h2><ul>${p.limitations.map(item => `<li>${e(item)}</li>`).join('')}</ul><a class="button button-primary" href="${live}">${e(p.demoLabel)}${icon('arrowRight')}</a></section>` : ''}<a class="button button-secondary" href="${t.path}#contacto">${t.contactNav}${icon('arrowRight')}</a></div></div></article>
     <div class="detail-end wrap"><a class="text-link" href="${t.path}#proyectos">← ${t.backProjects}</a><a class="text-link" href="${t.path}#conocimiento">${t.backNotes}${icon('arrowRight')}</a></div></main>`;
   return document(lang, content, { title: `${name} — ${p.title} | ${site.name}`, description: p.summary, paths, project });
 }
@@ -153,8 +166,18 @@ export function renderAssistant(lang) {
   return document(lang, documentAssistant(lang, projectPath(project, lang)), { title: `${projectName(project, lang)} — ${t.title.join(' ')} | ${site.name}`, description: t.description, paths: assistantPaths, assistant: true, image: project.image[lang], imageAlt: project[lang].imageAlt });
 }
 
+export function renderEvaluation(lang, fingerprints) {
+  const t = evaluationCopy[lang], project = projects.find(item => item.id === 'document-assistant');
+  return document(lang, evaluationPage(lang, fingerprints), { title: `${t.title} | ${site.name}`, description: t.description, paths: evaluationPaths, evaluation: true, image: project.image[lang], imageAlt: project[lang].imageAlt });
+}
+
+export function renderWorkflow(lang) {
+  const t = workflowCopy[lang], project = projects.find(item => item.id === 'request-workflow');
+  return document(lang, workflowPage(lang, projectPath(project, lang)), { title: `${t.title} | ${site.name}`, description: t.description, paths: workflowPaths, workflow: true, image: project.image[lang], imageAlt: project[lang].imageAlt });
+}
+
 export function renderNote(lang, note) {
   const t = locales[lang], n = note[lang], paths = { es: notePath(note, 'es'), en: notePath(note, 'en') };
-  const content = `<main id="main" tabindex="-1"><article class="note-article wrap"><header class="detail-heading"><a class="back-link" href="${t.path}#conocimiento">← ${t.backNotes}</a><p class="eyebrow">${note.category[lang]} / ${t.notes.type}</p><h1>${e(n.title)}</h1><p class="detail-lead">${e(n.summary)}</p><div class="article-byline"><img src="/assets/sergio-hernandez.jpeg" alt="" width="40" height="40"><span>${t.notes.by}</span><time datetime="${note.date}">${t.notes.date}</time></div></header><div class="article-layout"><aside class="article-toc"><span class="small-label">${t.notes.contents}</span><ol>${n.sections.map((s, i) => `<li><a href="#section-${i + 1}">${e(s.title)}</a></li>`).join('')}</ol></aside><div class="prose"><p class="article-intro">${e(n.intro)}</p>${n.sections.map((s, i) => `<section id="section-${i + 1}"><h2>${e(s.title)}</h2>${s.paragraphs.map(p => `<p>${e(p)}</p>`).join('')}</section>`).join('')}<aside class="takeaway"><span class="small-label">${t.notes.takeaway}</span><p>${e(n.takeaway)}</p></aside><section class="note-references"><h2>${t.notes.references}</h2><ul>${note.references.map(ref => `<li><a href="${ref.url}">${e(ref.title)}</a></li>`).join("")}</ul></section><a class="text-link" href="${t.path}#contacto">${t.contactNav}${icon('arrow')}</a></div></div></article><section class="related-notes wrap" aria-labelledby="related-title"><p class="eyebrow">${t.notes.label}</p><h2 id="related-title">${t.related}</h2><div class="notes-grid">${noteCards(lang, t, notes.filter(item => item.id !== note.id))}</div></section></main>`;
+  const content = `<main id="main" tabindex="-1"><article class="note-article wrap"><header class="detail-heading"><a class="back-link" href="${t.path}#conocimiento">← ${t.backNotes}</a><p class="eyebrow">${note.category[lang]} / ${t.notes.type}</p><h1>${e(n.title)}</h1><p class="detail-lead">${e(n.summary)}</p><div class="article-byline"><img src="/assets/sergio-hernandez.jpeg" alt="" width="40" height="40"><span>${t.notes.by}</span><time datetime="${note.date}">${new Intl.DateTimeFormat(lang === 'es' ? 'es-CO' : 'en-GB', {day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(note.date + 'T12:00:00Z'))}</time></div></header><div class="article-layout"><aside class="article-toc"><span class="small-label">${t.notes.contents}</span><ol>${n.sections.map((s, i) => `<li><a href="#section-${i + 1}">${e(s.title)}</a></li>`).join('')}</ol></aside><div class="prose"><p class="article-intro">${e(n.intro)}</p>${n.sections.map((s, i) => `<section id="section-${i + 1}"><h2>${e(s.title)}</h2>${s.paragraphs.map(p => `<p>${e(p)}</p>`).join('')}</section>`).join('')}<aside class="takeaway"><span class="small-label">${t.notes.takeaway}</span><p>${e(n.takeaway)}</p></aside>${resourceLinks(n.links)}<section class="note-references"><h2>${t.notes.references}</h2><ul>${note.references.map(ref => `<li><a href="${ref.url}">${e(ref.title)}</a></li>`).join("")}</ul></section><a class="text-link" href="${t.path}#contacto">${t.contactNav}${icon('arrow')}</a></div></div></article><section class="related-notes wrap" aria-labelledby="related-title"><p class="eyebrow">${t.notes.label}</p><h2 id="related-title">${t.related}</h2><div class="notes-grid">${noteCards(lang, t, notes.filter(item => item.id !== note.id))}</div></section></main>`;
   return document(lang, content, { title: `${n.title} | ${site.name}`, description: n.summary, paths, note });
 }

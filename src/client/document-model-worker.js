@@ -16,7 +16,11 @@ self.addEventListener('message', async ({ data }) => {
       });
       await engine.reload(localModel.id);
       send('ready', id);
-    } catch { send('error', id, { error: 'model_failed' }); }
+    } catch (failure) {
+      const detail = String(failure.message).toLowerCase();
+      const error = /fetch|network|download/.test(detail) ? 'model_download_failed' : /gpu|buffer|device|shader|memory/.test(detail) ? 'model_gpu_failed' : 'model_failed';
+      send('error', id, { error });
+    }
     return;
   }
   if (type === 'generate') {

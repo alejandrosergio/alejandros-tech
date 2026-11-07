@@ -1,4 +1,6 @@
 import { assistantPaths } from './document-assistant.mjs';
+import { workflowPaths } from './workflow.mjs';
+import { evaluationPaths } from './evaluation-cases.mjs';
 
 export const projects = [
   {
@@ -16,7 +18,8 @@ export const projects = [
       contribution: 'Definición del caso, biblioteca, interfaz, recuperación, contrato de respuesta, validaciones y pruebas de la integración.',
       limitationsTitle: 'Qué comprueba. Qué sigue necesitando revisión.',
       limitations: ['Una cita debe existir en la biblioteca y su extracto debe coincidir. Eso no demuestra por sí solo que la interpretación del modelo sea correcta.', 'La recuperación busca coincidencias de palabras y conceptos acotados. Puede perder preguntas formuladas de otra manera; no es una búsqueda semántica con embeddings.', 'La consulta ligera muestra fragmentos literales, no una respuesta generada. La IA opcional es pequeña y puede equivocarse; revisa sus fuentes.', 'El modelo requiere WebGPU, unos 450 MB de descarga y memoria gráfica disponible. Puede no funcionar en algunos móviles. No hay cargos de API; la descarga puede consumir datos de tu conexión.'],
-      demoLabel: 'Probar el asistente'
+      demoLabel: 'Probar el asistente',
+      resources: [{ title: 'Evaluación pública: preguntas, fuentes y resultados', href: evaluationPaths.es }]
     },
     en: {
       name: 'Document assistant', type: 'Applied AI · Personal prototype', imageAlt: 'Document assistant flow: question, context, answer and sources',
@@ -28,7 +31,36 @@ export const projects = [
       contribution: 'Case definition, library, interface, retrieval, response contract, validation and integration checks.',
       limitationsTitle: 'What it checks. What still needs review.',
       limitations: ['A citation must exist in the library and its excerpt must match. That alone does not demonstrate that the model’s interpretation is correct.', 'Retrieval looks for matching words and bounded concepts. It can miss differently phrased questions; this is not semantic search with embeddings.', 'Lightweight queries show verbatim excerpts, not generated answers. The optional model is small and can make mistakes; review its sources.', 'The model needs WebGPU, a download of about 450 MB and available graphics memory. It may not work on some phones. There are no API charges; downloads can use your connection’s data allowance.'],
-      demoLabel: 'Try the assistant'
+      demoLabel: 'Try the assistant',
+      resources: [{ title: 'Public evaluation: questions, sources and results', href: evaluationPaths.en }]
+    }
+  },
+  {
+    id: 'request-workflow', slug: { es: 'solicitudes-con-contrato', en: 'requests-with-a-contract' }, name: 'Solicitudes con contrato',
+    imageSize: { width: 1280, height: 800 }, image: { es: '/assets/workflow-preview.svg', en: '/assets/workflow-preview-en.svg' },
+    stack: ['C#', '.NET 10', 'HTTP', 'JavaScript', 'Power Automate'], demoPaths: workflowPaths,
+    live: 'https://alejandros-tech.alejosergio3000.chatgpt.site/laboratorio/flujo-de-solicitudes/', repository: 'https://github.com/alejandrosergio/alejandros-tech/tree/main/examples/workflow-api',
+    es: {
+      name: 'Solicitudes con contrato', type: 'Integración · Prototipo personal', imageAlt: 'Diagrama del prototipo: entrada validada, revisión, decisión y registro de eventos', caption: 'Arquitectura del prototipo · diagrama original',
+      title: 'Automatizar también es decidir qué no debe pasar.',
+      summary: 'Una solicitud recorre validación, revisión y decisión. Prueba los duplicados y conflictos en el navegador y explora una API .NET ejecutable con el mismo contrato.',
+      problem: 'Una automatización puede repetir peticiones, recibir datos incompletos o actuar sobre un estado que ya cambió. Este caso propio explora cómo hacer explícitas esas situaciones antes de conectar una interfaz, una API y un flujo de aprobación.',
+      approach: ['Contrato con identificador de negocio, categoría, prioridad y clave de idempotencia. Las entradas inválidas no crean registros.', 'Dominio C# separado de la API ASP.NET Core 10. Almacenamiento acotado en memoria, bloqueo de concurrencia y estados con versión esperada.', 'Repetición reconocida con los mismos datos; 409 ante claves con otro contenido, identificadores duplicados o versiones antiguas.', 'Revisión y aprobación como transiciones explícitas. Cada cambio conserva un evento y no permite saltar del inicio al estado completado.', 'Demo local JavaScript y dominio .NET verificados con los mismos 18 pasos de escenarios; pruebas adicionales de concurrencia y del intercambio HTTP.', 'Guía Power Automate para conservar identificadores, esperar una aprobación y separar la recuperación de errores de los reintentos.'],
+      result: 'Un laboratorio ES/EN que permite observar tanto el camino correcto como los conflictos. El repositorio contiene la API ejecutable, su contrato OpenAPI, escenarios y pruebas. Es un trabajo nuevo de demostración, sin resultados comerciales atribuidos.',
+      contribution: 'Definición del proceso, contrato, dominio C#, API, demo de navegador, pruebas compartidas y documentación de la integración.',
+      limitationsTitle: 'Frontera del ejemplo', limitations: ['La web reproduce la lógica en esta pestaña; no llama a un servidor ni envía solicitudes reales.', 'La API se ejecuta localmente y usa memoria del proceso. Reiniciar pierde los registros. No incluye identidad, roles, base de datos ni una garantía de ejecución exactamente una vez.', 'El documento de Power Automate es una guía; no se ha desplegado en un tenant ni se han contratado conectores. La implantación requiere permisos, conectividad y licencias propias del entorno.'], demoLabel: 'Probar el flujo',
+      resources: [{ title: 'Ejecutar .NET y reproducir las pruebas', href: 'https://github.com/alejandrosergio/alejandros-tech/tree/main/examples/workflow-api' }, { title: 'Reintentos y aprobaciones: nota técnica', href: '/notas/solicitudes-reintentos-y-aprobaciones/' }]
+    },
+    en: {
+      name: 'Requests with a contract', type: 'Integration · Personal prototype', imageAlt: 'Prototype diagram: validated input, review, decision and event record', caption: 'Prototype architecture · original diagram',
+      title: 'Automation also means deciding what must not happen.',
+      summary: 'A request moves through validation, review and a decision. Try duplicates and conflicts in the browser and explore a runnable .NET API with the same contract.',
+      problem: 'Automation can repeat requests, receive incomplete data or act on state that has already changed. This personal case explores making those situations explicit before connecting an interface, API and approval workflow.',
+      approach: ['A contract with a business identifier, category, priority and idempotency key. Invalid input creates no records.', 'A C# domain separated from the ASP.NET Core 10 API. Bounded process memory, concurrency locking and states with an expected version.', 'Recognised replay with the same data; 409 for keys reused with different content, duplicate identifiers or old versions.', 'Review and approval as explicit transitions. Each change retains an event and does not allow skipping from the beginning to completed.', 'A local JavaScript demo and .NET domain verified with the same 18 scenario steps, plus concurrency and actual HTTP checks.', 'A Power Automate guide for retaining identifiers, waiting for approval and separating error recovery from retries.'],
+      result: 'An ES/EN lab for observing both the successful path and conflicts. The repository includes the runnable API, OpenAPI contract, scenarios and checks. This is newly authored demonstration work, with no claimed commercial outcomes.',
+      contribution: 'Workflow definition, contract, C# domain, API, browser demo, shared checks and integration documentation.',
+      limitationsTitle: 'Example boundaries', limitations: ['The website reproduces the logic in this tab; it does not call a server or submit real requests.', 'The API runs locally with process memory. Restarting loses records. It includes no identity, roles, database or exactly-once execution guarantee.', 'The Power Automate document is a guide, not a flow deployed in a tenant; no connectors have been purchased. Deployment requires the environment’s permissions, connectivity and licences.'], demoLabel: 'Try the workflow',
+      resources: [{ title: 'Run .NET and reproduce the checks', href: 'https://github.com/alejandrosergio/alejandros-tech/tree/main/examples/workflow-api' }, { title: 'Retries and approvals: technical note', href: '/en/notes/requests-retries-and-approvals/' }]
     }
   },
   {

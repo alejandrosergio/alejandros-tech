@@ -1,0 +1,47 @@
+export const workflowPaths = { es: '/laboratorio/flujo-de-solicitudes/', en: '/en/lab/request-workflow/' };
+export const workflowCopy = {
+  es: {
+    label: 'Laboratorio · Integraciones', title: 'Un proceso. Cada paso bajo control.',
+    description: 'Crea una solicitud ficticia, revisa sus cambios y prueba qué ocurre al repetir una operación. Un prototipo propio con contrato y referencia ejecutable en .NET.',
+    back: 'Explorar el caso', scope: 'Demo local · Datos ficticios · Sin envíos',
+    intro: 'La interfaz reproduce el contrato de la API .NET en la memoria de esta pestaña. No conecta con tu empresa, no concede accesos y no envía aprobaciones ni correos. Al recargar se borra todo.',
+    form: '01 / Define la solicitud', requestId: 'Identificador de solicitud', titleLabel: 'Qué necesita el proceso', category: 'Categoría', priority: 'Prioridad', key: 'Clave de idempotencia',
+    hint: 'Identificador: 3–32 letras, números o guiones. Descripción: 12–160 caracteres. Clave: 8–64 letras, números, guiones o guiones bajos.',
+    sample: 'Automatizar la recepción de solicitudes', categories: { access: 'Acceso de prueba', automation: 'Automatización', integration: 'Integración' }, priorities: { normal: 'Normal', high: 'Alta' },
+    create: 'Crear solicitud', reset: 'Reiniciar demo', noJS: 'Activa JavaScript para probar el flujo. El caso, el contrato y el código siguen disponibles en los enlaces de esta página.',
+    journey: '02 / Revisa el recorrido', empty: 'Crea la solicitud para empezar. Cada transición añade un evento y una versión.',
+    states: { received: 'Recibida', review: 'En revisión', approved: 'Aprobada', rejected: 'Rechazada', completed: 'Completada' },
+    actions: { review: 'Iniciar revisión', approve: 'Aprobar en la demo', reject: 'Rechazar en la demo', complete: 'Completar' },
+    stateHelp: { received: 'La entrada es válida. La revisión es un paso separado.', review: 'En un flujo real, una persona autorizada tomaría esta decisión.', approved: 'La aprobación permite completar la operación.', rejected: 'Estado final. No se ejecuta la operación.', completed: 'Estado final. El registro conserva el recorrido.' },
+    version: 'Versión', records: 'Solicitudes guardadas en esta pestaña', events: 'Registro de eventos',
+    experiments: '03 / Prueba el camino de error', experimentIntro: 'La repetición usa los datos originales. El conflicto cambia la descripción manteniendo la clave. La versión antigua intenta actualizar un estado que ya cambió.',
+    replay: 'Repetir la misma petición', conflict: 'Probar clave en conflicto', stale: 'Probar versión antigua', export: 'Descargar registro JSON',
+    response: 'Última respuesta del contrato', idle: 'La demo está lista. Usa solo datos ficticios.', invalid: 'Revisa los campos marcados antes de continuar.', cleared: 'Demo reiniciada. Se han borrado los datos de esta pestaña.',
+    messages: { created: 'Solicitud creada. Ya puedes iniciar su revisión.', replayed: 'Petición reconocida: se devuelve la solicitud existente, sin crear otra.', updated: 'Transición registrada. El estado y la versión se han actualizado.', idempotency_conflict: 'La clave ya se usó con otros datos. La petición se rechaza sin alterar el registro.', duplicate_request: 'Ese identificador ya existe. Usa otra solicitud o repite la clave original.', version_conflict: 'La versión está desactualizada. La petición se rechaza sin perder el estado actual.', invalid_transition: 'Ese cambio no está permitido desde el estado actual.', invalid_payload: 'La entrada no cumple el contrato.', invalid_transition_payload: 'La transición necesita una acción válida y una versión positiva.', not_found: 'No existe esa solicitud.', capacity_reached: 'Se alcanzó el límite local de 50 solicitudes. Reinicia la demo para continuar.' },
+    implementation: 'Del navegador a una integración', implementationText: 'El repositorio incluye una API ASP.NET Core 10, pruebas del dominio y pruebas HTTP con el mismo conjunto de escenarios de la demo. También incluye una guía para conectar un flujo de Power Automate con aprobación y manejo de errores.',
+    boundary: 'La API es una referencia local, sin autenticación ni almacenamiento duradero. Power Automate es una guía de configuración, no un flujo desplegado. Un entorno real requiere permisos, identidad, persistencia y las licencias de sus conectores.',
+    source: 'Código y ejecución .NET', contract: 'Contrato HTTP', automate: 'Guía Power Automate', fixtures: 'Escenarios compartidos'
+  },
+  en: {
+    label: 'Lab · Integrations', title: 'One workflow. Each step under control.',
+    description: 'Create a fictional request, review its changes and test what happens when an operation is repeated. A personal prototype with a contract and runnable .NET reference.',
+    back: 'Explore the case', scope: 'Local demo · Fictional data · No submissions',
+    intro: 'The interface reproduces the .NET API contract in this tab’s memory. It does not connect to your company, grant access or send approvals or emails. Reloading clears everything.',
+    form: '01 / Define the request', requestId: 'Request identifier', titleLabel: 'What the workflow needs', category: 'Category', priority: 'Priority', key: 'Idempotency key',
+    hint: 'Identifier: 3–32 letters, numbers or hyphens. Description: 12–160 characters. Key: 8–64 letters, numbers, hyphens or underscores.',
+    sample: 'Automate incoming request processing', categories: { access: 'Test access', automation: 'Automation', integration: 'Integration' }, priorities: { normal: 'Normal', high: 'High' },
+    create: 'Create request', reset: 'Reset demo', noJS: 'Enable JavaScript to try the workflow. The case, contract and code remain available through this page’s links.',
+    journey: '02 / Review the journey', empty: 'Create a request to begin. Each transition adds an event and a version.',
+    states: { received: 'Received', review: 'In review', approved: 'Approved', rejected: 'Rejected', completed: 'Completed' },
+    actions: { review: 'Start review', approve: 'Approve in the demo', reject: 'Reject in the demo', complete: 'Complete' },
+    stateHelp: { received: 'The input is valid. Review is a separate step.', review: 'In a real workflow, an authorised person would make this decision.', approved: 'Approval allows the operation to be completed.', rejected: 'Final state. The operation is not performed.', completed: 'Final state. The record preserves its journey.' },
+    version: 'Version', records: 'Requests stored in this tab', events: 'Event log',
+    experiments: '03 / Test the error path', experimentIntro: 'Replay uses the original data. The conflict changes the description while keeping the key. The old-version test attempts to update a state that has already changed.',
+    replay: 'Repeat the same request', conflict: 'Test a conflicting key', stale: 'Test an old version', export: 'Download JSON log',
+    response: 'Latest contract response', idle: 'The demo is ready. Use fictional data only.', invalid: 'Review the marked fields before continuing.', cleared: 'Demo reset. Data from this tab has been cleared.',
+    messages: { created: 'Request created. You can start its review.', replayed: 'Request recognised: the existing record is returned without creating another.', updated: 'Transition recorded. The state and version have been updated.', idempotency_conflict: 'The key was already used with different data. The request is rejected without altering the record.', duplicate_request: 'That identifier already exists. Use a different request or replay the original key.', version_conflict: 'The version is out of date. The request is rejected without losing the current state.', invalid_transition: 'That change is not allowed from the current state.', invalid_payload: 'The input does not meet the contract.', invalid_transition_payload: 'The transition needs a valid action and a positive version.', not_found: 'That request does not exist.', capacity_reached: 'The local limit of 50 requests was reached. Reset the demo to continue.' },
+    implementation: 'From browser to integration', implementationText: 'The repository includes an ASP.NET Core 10 API, domain checks and HTTP checks using the same scenarios as the demo. It also includes a guide to connect a Power Automate flow with approval and error handling.',
+    boundary: 'The API is a local reference without authentication or durable storage. Power Automate is a configuration guide, not a deployed flow. A real environment requires permissions, identity, persistence and the licences needed by its connectors.',
+    source: '.NET source and execution', contract: 'HTTP contract', automate: 'Power Automate guide', fixtures: 'Shared scenarios'
+  }
+};

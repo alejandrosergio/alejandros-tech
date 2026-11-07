@@ -1,7 +1,12 @@
 import { mkdir, readdir, writeFile, readFile, copyFile, stat, lstat, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderPage, renderProject, renderNote, renderAssistant } from '../src/components/page.mjs';
+import { renderPage, renderProject, renderNote, renderAssistant, renderEvaluation, renderWorkflow } from '../src/components/page.mjs';
+import { createHash } from 'node:crypto';
+import { assistantDocuments } from '../src/content/document-assistant.mjs';
+import { evaluationCases, evaluationVersion } from '../src/content/evaluation-cases.mjs';
+import { evaluationReference } from '../src/content/evaluation-reference.mjs';
+import { evaluationHistory } from '../src/content/evaluation-history.mjs';
 import { site } from '../src/content/site.mjs';
 import { routeGroups } from '../src/content/routes.mjs';
 import { build as bundle } from 'esbuild';
@@ -27,18 +32,28 @@ export async function build() {
   await rm(dist, { recursive: true, force: true });
   await mkdir(path.join(dist, 'en'), { recursive: true });
   await copyDirectory(path.join(root, 'public'), dist);
-  const styles = await Promise.all(['styles.css', 'preferences.css', 'loader.css', 'journey.css', 'hero.css', 'background.css', 'splash.css', 'soundtrack.css', 'interactions.css', 'reveals.css', 'modules.css', 'document-assistant.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
+  const styles = await Promise.all(['styles.css', 'preferences.css', 'loader.css', 'journey.css', 'hero.css', 'background.css', 'splash.css', 'soundtrack.css', 'interactions.css', 'reveals.css', 'modules.css', 'document-assistant.css', 'lab.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
   await writeFile(path.join(dist, 'assets/styles.css'), styles.join('\n'));
   for (const file of clientFiles.filter(file => file !== 'document-assistant.js')) {
     await copyFile(path.join(root, 'src/client', file), path.join(dist, 'assets', file));
   }
   // The lightweight controller and the large optional model worker have separate
   // entrypoints. No homepage or ordinary query imports the WebLLM runtime.
-  await bundle({ entryPoints: ['src/client/document-assistant.js', 'src/client/document-model-worker.js'], outdir: path.join(dist, 'assets'), absWorkingDir: root, bundle: true, format: 'esm', platform: 'browser', target: 'es2022', minify: true, legalComments: 'linked', logLevel: 'warning' });
+  await bundle({ entryPoints: ['src/client/document-assistant.js', 'src/client/document-model-worker.js', 'src/client/document-evaluation.js', 'src/client/workflow.js'], outdir: path.join(dist, 'assets'), absWorkingDir: root, bundle: true, format: 'esm', platform: 'browser', target: 'es2022', minify: true, legalComments: 'linked', logLevel: 'warning' });
+  const digest = bytes => createHash('sha256').update(bytes).digest('hex');
+  const fingerprints = { corpus: digest(JSON.stringify({ es: assistantDocuments('es'), en: assistantDocuments('en') })), questions: digest(JSON.stringify(evaluationCases)) };
+  for (const [key, filename] of Object.entries({ assistant: 'src/client/assistant-core.js', modelWorker: 'src/client/document-model-worker.js', modelSupervisor: 'src/client/assistant-model.js', modelConfig: 'src/content/local-model.mjs', evaluator: 'src/client/evaluation-core.js' })) fingerprints[key] = digest((await readFile(path.join(root, filename), 'utf8')).replace(/\r\n/g, '\n'));
+  if (evaluationReference && JSON.stringify(evaluationReference.fingerprints) !== JSON.stringify(fingerprints)) throw new Error('Evaluation reference is stale: repeat the run or restore its exact inputs');
+  await mkdir(path.join(dist, 'assets/evaluation'), { recursive: true });
+  await writeFile(path.join(dist, 'assets/evaluation/questions.json'), JSON.stringify({ version: evaluationVersion, cases: evaluationCases }, null, 2) + '\n');
+  if (evaluationReference) await writeFile(path.join(dist, 'assets/evaluation/reference-run.json'), JSON.stringify(evaluationReference, null, 2) + '\n');
+  await writeFile(path.join(dist, 'assets/evaluation/previous-run.json'), JSON.stringify(evaluationHistory, null, 2) + '\n');
+  const renderers = { home: renderPage, project: renderProject, note: renderNote, assistant: renderAssistant, evaluation: lang => renderEvaluation(lang, fingerprints), workflow: renderWorkflow };
   for (const route of routeGroups) for (const lang of ['es', 'en']) {
     const directory = path.join(dist, route.paths[lang].slice(1));
     await mkdir(directory, { recursive: true });
-    const html = route.type === 'home' ? renderPage(lang) : route.type === 'project' ? renderProject(lang, route.entity) : route.type === 'assistant' ? renderAssistant(lang) : renderNote(lang, route.entity);
+    if (!renderers[route.type]) throw new Error(`Unknown route type: ${route.type}`);
+    const html = renderers[route.type](lang, route.entity);
     await writeFile(path.join(directory, 'index.html'), html);
   }
   await writeFile(path.join(dist, '404.html'), renderPage('es', { notFound: true }));

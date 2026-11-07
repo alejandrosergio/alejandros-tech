@@ -34,3 +34,7 @@ Verificar el resultado de publicación y el contenido remoto. Guardar la referen
 - Las credenciales de Sites son temporales y no viven en el repositorio.
 - La continuidad del alojamiento depende del servicio y sus condiciones, no se promete gratuidad o disponibilidad perpetua.
 - No hay automatizaciones recurrentes ni sincronización permanente.
+
+## Ejemplos y evaluación
+
+Los archivos administrados incluyen `examples/`. La API .NET es código de referencia y sus bin/obj se ignoran: el archivo de despliegue solo aloja el sitio estático. La referencia de evaluación debe corresponder a sus huellas; `pnpm check` exige resultados completos y revisados. GitHub Actions ejecuta los trabajos de web y .NET/HTTP antes de cerrar una entrega.

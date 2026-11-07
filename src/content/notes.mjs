@@ -1,6 +1,9 @@
 // Original technical notes written for this edition of Alejandro’sTech.
 // These are explanations, not claims of client projects or measured outcomes.
+import { labNotes } from './lab-notes.mjs';
+
 export const notes = [
+  ...labNotes,
   {
     id: 'progressive', slug: { es: 'interfaces-que-funcionan-desde-el-html', en: 'interfaces-that-start-with-html' }, category: { es: 'Interfaces', en: 'Interfaces' }, symbol: '</>', date: '2026-11-03', references: [{ title: 'MDN · Progressive enhancement', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement' }],
     es: {
