@@ -1,9 +1,9 @@
 import { interfaceCopy } from '../content/interface.mjs';
 import { icon } from './icons.mjs';
+import { escapeHTML as e } from '../lib/html.mjs';
 
 // Server-render the labels and native form/dialog semantics. Data attributes are
 // contracts with the optional preferences, loader and contact client modules.
-const e = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export function preferences(lang) {
   const t = interfaceCopy[lang];
   return `<button class="settings-launcher" type="button" data-open-settings data-tooltip aria-label="${t.settings}" aria-haspopup="dialog" aria-controls="experience-settings" hidden>${icon('settings')}</button>

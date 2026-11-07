@@ -5,11 +5,11 @@
 .hero-edition { position: absolute; z-index: 2; top: calc(var(--site-header-height, 89px) + 1.2rem); left: max(40px, calc((100% - 1376px) / 2)); display: flex; align-items: center; gap: .7rem; font-size: .5625rem; color: #c9c4c0; letter-spacing: .13em; text-transform: uppercase; }
 .hero-rings { position: absolute; inset: 0; z-index: -3; pointer-events: none; }
 .hero-rings svg { position: absolute; left: 50%; top: 50%; width: min(55vw, 740px); aspect-ratio: 1; overflow: visible; transform: translate(-50%, -50%); animation: hero-orbit 60s linear infinite paused; }
-.hero-rings circle { fill: none; stroke: #f7f4f080; stroke-width: 1.1; vector-effect: non-scaling-stroke; stroke-dasharray: 1800 80 180 80 800 189; }
+.hero-rings circle { fill: none; stroke: #f7f4f080; stroke-width: 1.1; vector-effect: non-scaling-stroke; stroke-dasharray: 26 6 31 8 22 7; }
 .hero-rings svg:nth-child(2) { width: min(77vw, 1030px); animation-duration: 90s; animation-direction: reverse; }
-.hero-rings svg:nth-child(2) circle { stroke: #f7f4f066; stroke-dasharray: 2350 200 280 299; }
+.hero-rings svg:nth-child(2) circle { stroke: #f7f4f066; stroke-dasharray: 19 10 30 7 25 9; }
 .hero-rings svg:nth-child(3) { width: min(101vw, 1340px); animation-duration: 120s; }
-.hero-rings svg:nth-child(3) circle { stroke: #f7f4f052; stroke-dasharray: 1520 120 1100 389; }
+.hero-rings svg:nth-child(3) circle { stroke: #f7f4f052; stroke-dasharray: 34 8 18 12 22 6; }
 .portrait-hero[data-scene-motion="active"] .hero-rings svg { animation-play-state: running; }
 @keyframes hero-orbit { to { transform: translate(-50%, -50%) rotate(360deg); } }
 .portrait-stage { position: absolute; z-index: -2; left: 50%; bottom: 0; height: calc(100% - var(--site-header-height, 89px)); width: min(900px, 94vw); margin: 0; transform: translateX(-50%); pointer-events: none; }
@@ -77,7 +77,7 @@ body:has(dialog[open]) .hero-section-dots { visibility: hidden; }
   .portrait-stage { width: min(720px, 150vw); height: calc(98% - var(--site-header-height, 75px)); bottom: 2%; }
   .portrait-photo { top: 1%; height: 112%; }
   .portrait-hero[data-scene-motion="active"] .portrait-photo { animation-name: portrait-float-mobile; }
-  .hero-rings svg { width: 101vw; top: 46%; } .hero-rings svg:nth-child(2) { width: 137vw; } .hero-rings svg:nth-child(3) { width: 175vw; }
+  .hero-rings svg { width: min(84vw, 420px); top: 46%; } .hero-rings svg:nth-child(2) { width: min(108vw, 540px); } .hero-rings svg:nth-child(3) { width: min(132vw, 660px); }
   .hero-name { top: 48%; left: 5%; right: 5%; }
   .hero-name h1 { font-size: clamp(1.76rem, 7.52vw, 3.4rem); line-height: 1.08; } .hero-name h1 > span { display: block; }
   .hero-kicker { font-size: .5625rem; gap: .5rem; margin-bottom: .45rem; }

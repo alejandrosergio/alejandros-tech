@@ -54,4 +54,4 @@ El CV conserva su proyecto y Site independientes. Es una referencia factual; man
 
 Copyright © 2026 Alejandro’sTech. Todos los derechos reservados. No se concede una licencia de código abierto para la web, la marca o los recursos personales.
 
-Pixel Letter Glitch usa letras locales A–Z en blanco/coral fuera de la portada. Splash Cursor Smoke decora solo el inicio detrás de la fotografía. Light Rays Underwater aparece en el loader introductorio acotado. Estos efectos locales conservan sus controles de pausa y movimiento; atribución en [THIRD_PARTY.md](docs/THIRD_PARTY.md).
+Letter Glitch Classic usa letras, números y símbolos monoespaciados locales en verde/azul fuera de la portada. Splash Cursor Smoke decora solo el inicio detrás de la fotografía. Light Rays Underwater aparece en el loader introductorio acotado. Estos efectos locales conservan sus controles de pausa y movimiento; atribución en [THIRD_PARTY.md](docs/THIRD_PARTY.md).

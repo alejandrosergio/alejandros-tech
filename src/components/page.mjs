@@ -10,40 +10,27 @@ import { preferences, loader, contactForm } from './preferences.mjs';
 import { interfaceCopy } from '../content/interface.mjs';
 import { journey } from './journey.mjs';
 import { soundtrack } from './soundtrack.mjs';
+import { metadata } from './seo.mjs';
+import { escapeHTML as e } from '../lib/html.mjs';
 
-const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const e = escapeHTML;
 const cvURL = lang => site.cv + (lang === 'en' ? 'en/' : '');
 const mailURL = t => `mailto:${site.email}?subject=${encodeURIComponent(t.contact.subject)}`;
 const splitTitle = lines => `${e(lines[0])} <em>${e(lines[1])}</em>`;
 const tags = values => `<ul class="tags">${values.map(value => `<li>${e(value)}</li>`).join('')}</ul>`;
 const sectionLabel = (number, label) => `<p class="section-label"><span>${number}</span>${e(label)}</p>`;
 
-function head(lang, { title, description, paths, notFound = false, home = false }) {
+function head(lang, options) {
   return `<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${e(title)}</title>
-  <meta name="description" content="${e(description)}">
-  <meta name="theme-color" content="#0e0e10">
-  ${notFound ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${site.origin}${paths[lang]}">
-  <link rel="alternate" hreflang="es" href="${site.origin}${paths.es}">
-  <link rel="alternate" hreflang="en" href="${site.origin}${paths.en}">
-  <link rel="alternate" hreflang="x-default" href="${site.origin}${paths.es}">`}
-  <meta property="og:type" content="${home ? 'website' : 'article'}">
-  <meta property="og:site_name" content="${site.name}">
-  <meta property="og:title" content="${e(title)}">
-  <meta property="og:description" content="${e(description)}">
-  <meta property="og:url" content="${site.origin}${paths[lang]}">
-  <meta property="og:locale" content="${lang === 'es' ? 'es_CO' : 'en_US'}">
-  <meta name="twitter:card" content="summary">
+  ${metadata(lang, options)}
   <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/theme-init.js"></script>
   <script src="/assets/preferences.js" defer></script>
   <script src="/assets/loader-rays.js" defer></script>
   <script src="/assets/site.js" defer></script>
   <script src="/assets/journey.js" defer></script>
-  <script src="/assets/letter-glitch.js" defer></script>${home ? '\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
+  <script src="/assets/letter-glitch.js" defer></script>${options.home ? '\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
   <script src="/assets/soundtrack.js" defer></script>
 </head>`;
 }
@@ -147,11 +134,11 @@ export function renderProject(lang, project) {
   const t = locales[lang], p = project[lang], paths = { es: projectPath(project, 'es'), en: projectPath(project, 'en') };
   const live = `${project.live}${lang === 'en' ? '/en/' : '/'}`;
   const content = `<main id="main" tabindex="-1"><article class="case-study wrap"><header class="detail-heading"><a class="back-link" href="${t.path}#proyectos">← ${t.backProjects}</a><p class="eyebrow">${p.type} / 2026</p><h1>${e(p.title)}</h1><p class="detail-lead">${e(p.summary)}</p><div class="hero-actions"><a class="button button-primary" href="${live}"${project.id === 'cv' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${t.visit}${icon('arrow')}</a>${project.repository ? `<a class="text-link" href="${project.repository}">${t.source}${icon('github')}</a>` : ''}</div></header><figure class="case-image"><img src="${project.caseImage ?? project.image}" alt="${e(project.name)}" width="1280" height="900"><figcaption>${project.id === 'cv' ? t.projects.cvCaption : t.projects.imageCaption}</figcaption></figure><div class="case-content"><aside class="case-facts"><span class="small-label">${t.projects.overview}</span><h2>${e(project.name)}</h2><h3>${t.projects.scope}</h3><p>${e(p.contribution)}</p><h3>${t.projects.stack}</h3>${tags(project.stack)}<a class="text-link" href="${cvURL(lang)}" target="_blank" rel="noopener noreferrer">${t.cv}${icon('arrow')}</a></aside><div class="prose"><section><h2>${t.projects.problem}</h2><p>${e(p.problem)}</p></section><section><h2>${t.projects.approach}</h2><ul>${p.approach.map(item => `<li>${e(item)}</li>`).join('')}</ul></section><section><h2>${t.projects.result}</h2><p>${e(p.result)}</p></section><a class="button button-secondary" href="${t.path}#contacto">${t.contactNav}${icon('arrowRight')}</a></div></div></article><div class="detail-end wrap"><a class="text-link" href="${t.path}#proyectos">← ${t.backProjects}</a><a class="text-link" href="${t.path}#conocimiento">${t.backNotes}${icon('arrowRight')}</a></div></main>`;
-  return document(lang, content, { title: `${project.name} — ${p.title} | ${site.name}`, description: p.summary, paths });
+  return document(lang, content, { title: `${project.name} — ${p.title} | ${site.name}`, description: p.summary, paths, project });
 }
 
 export function renderNote(lang, note) {
   const t = locales[lang], n = note[lang], paths = { es: notePath(note, 'es'), en: notePath(note, 'en') };
   const content = `<main id="main" tabindex="-1"><article class="note-article wrap"><header class="detail-heading"><a class="back-link" href="${t.path}#conocimiento">← ${t.backNotes}</a><p class="eyebrow">${note.category[lang]} / ${t.notes.type}</p><h1>${e(n.title)}</h1><p class="detail-lead">${e(n.summary)}</p><div class="article-byline"><img src="/assets/sergio-hernandez.jpeg" alt="" width="40" height="40"><span>${t.notes.by}</span><time datetime="${note.date}">${t.notes.date}</time></div></header><div class="article-layout"><aside class="article-toc"><span class="small-label">${t.notes.contents}</span><ol>${n.sections.map((s, i) => `<li><a href="#section-${i + 1}">${e(s.title)}</a></li>`).join('')}</ol></aside><div class="prose"><p class="article-intro">${e(n.intro)}</p>${n.sections.map((s, i) => `<section id="section-${i + 1}"><h2>${e(s.title)}</h2>${s.paragraphs.map(p => `<p>${e(p)}</p>`).join('')}</section>`).join('')}<aside class="takeaway"><span class="small-label">${t.notes.takeaway}</span><p>${e(n.takeaway)}</p></aside><section class="note-references"><h2>${t.notes.references}</h2><ul>${note.references.map(ref => `<li><a href="${ref.url}">${e(ref.title)}</a></li>`).join("")}</ul></section><a class="text-link" href="${t.path}#contacto">${t.contactNav}${icon('arrow')}</a></div></div></article><section class="related-notes wrap" aria-labelledby="related-title"><p class="eyebrow">${t.notes.label}</p><h2 id="related-title">${t.related}</h2><div class="notes-grid">${noteCards(lang, t, notes.filter(item => item.id !== note.id))}</div></section></main>`;
-  return document(lang, content, { title: `${n.title} | ${site.name}`, description: n.summary, paths });
+  return document(lang, content, { title: `${n.title} | ${site.name}`, description: n.summary, paths, note });
 }

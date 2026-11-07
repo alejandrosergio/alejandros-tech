@@ -12,7 +12,7 @@ La fotografía normal aparece una vez en la portada. El código del antiguo mode
 
 El bloque de nombre y profesión se sitúa al 54% en escritorio; «Software que conecta» se centra verticalmente alrededor del 50%, conservando su columna derecha. El título profesional es «Analista y desarrollador de software» / «Software analyst and developer». La firma «Conectar ideas…» queda centrada bajo el nombre con un desplazamiento de 1,25 rem a la derecha; en móvil se centra sin desplazamiento. La composición móvil reserva al menos 880 px y aumenta su altura con texto ampliado para separar nombre, redes, invitación y acciones.
 
-La fotografía se redujo al 140% de su superficie de encuadre en escritorio y al 112% en móvil, preservando su proporción 2:3. Se acerca y aleja durante 9,6 s, con escala 0,97–1,035 y flotación máxima de 6 px en escritorio; en móvil usa 0,98–1,025 y 4 px. Tres anillos ampliados, con trazos blancos más visibles, giran en 60/90/120 s, alternando el sentido. Estos movimientos solo corren con la portada activa; pausa y movimiento reducido dejan la foto neutra.
+La fotografía se redujo al 140% de su superficie de encuadre en escritorio y al 112% en móvil, preservando su proporción 2:3. Se acerca y aleja durante 9,6 s, con escala 0,97–1,035 y flotación máxima de 6 px en escritorio; en móvil usa 0,98–1,025 y 4 px. Tres anillos con trazos blancos giran en 60/90/120 s, alternando el sentido. Conservan sus tamaños de escritorio y se reducen en móvil a84/108/132vw con límites de420/540/660px. Cada círculo tiene tres aperturas asimétricas normalizadas a un recorrido de100, para que el giro se perciba sin cambiar su grosor. Estos movimientos solo corren con la portada activa; pausa y movimiento reducido dejan la foto neutra.
 
 El raíl izquierdo tiene cuatro disciplinas: desarrollo de software, automatización, IA aplicada e integraciones. La cuarta apunta a Proyectos y describe APIs y sistemas, sin añadir hechos profesionales. Las barras permanecen verticales en reposo y se ensanchan al pasar o enfocar, mostrando la descripción. En móvil el contenido equivalente se dispone en 2×2 y pasa a una columna en pantallas muy estrechas. Cali, Colombia y el stack tienen mayor tamaño y pueden envolver.
 
@@ -34,7 +34,7 @@ Accesibilidad es una tuerca de46px/44px, con nombre accesible completo y tooltip
 
 ## Fondos y loader
 
-Letter Glitch Pixel usa letras localesA–Z y blanco/coral, con cambios pequeños cada120ms. La portada recorta sus letras y no las muestra detrás del retrato. Los módulos tienen una base99% opaca, incluidos los márgenes; solo sus transiciones de hasta72px revelan el color intenso. Las páginas interiores añaden un velo de lectura bajo los artículos.
+Letter Glitch Classic usa tipografía monoespaciada local de14px, letras, números y símbolos. Conserva la base verde oscura y los destellos verdes/azules del preset, con su variante clara al cambiar de tema. Cambia grupos pequeños de caracteres cada100ms y suaviza los tintes con un máximo de25fps. La portada recorta sus letras y no las muestra detrás del retrato. Los módulos tienen una base99% opaca, incluidos los márgenes; solo sus transiciones de hasta72px revelan el color intenso. Las páginas interiores añaden un velo de lectura bajo los artículos.
 
 Splash Cursor Smoke aparece únicamente en la portada, detrás de la foto: gris, intensidad0,6 y tamaño0,5. Una entrada única responde después al puntero. La cola de animación es finita y no hay trabajo de render en reposo o fuera de vista.
 

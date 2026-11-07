@@ -7,7 +7,7 @@ export function hero(t) {
   const lang = t.path === '/en/' ? 'en' : 'es';
   return `<section class="portrait-hero" id="inicio" aria-labelledby="hero-title" data-portrait-hero>
     <canvas class="hero-smoke" data-splash-cursor data-preset="smoke" data-intensity="0.6" data-size="0.5" aria-hidden="true" hidden></canvas>
-    <div class="hero-rings" aria-hidden="true"><svg viewBox="0 0 1000 1000"><circle cx="500" cy="500" r="498"/></svg><svg viewBox="0 0 1000 1000"><circle cx="500" cy="500" r="498"/></svg><svg viewBox="0 0 1000 1000"><circle cx="500" cy="500" r="498"/></svg></div>
+    <div class="hero-rings" aria-hidden="true">${[0, 1, 2].map(() => '<svg viewBox="0 0 1000 1000"><circle cx="500" cy="500" r="498" pathLength="100"/></svg>').join('')}</div>
     <div class="hero-edition"><span class="status-dot" aria-hidden="true"></span>${h.eyebrow}</div>
     <figure class="portrait-stage">
       <img class="portrait-photo" src="/assets/sergio-natural-appearance.webp" alt="${h.portrait}" width="1024" height="1536" fetchpriority="high" decoding="async" draggable="false">

@@ -10,6 +10,7 @@ import { projects } from '../src/content/projects.mjs';
 import { notes } from '../src/content/notes.mjs';
 import { interfaceCopy } from '../src/content/interface.mjs';
 import { journeyCopy } from '../src/content/journey.mjs';
+import { scriptJSON } from '../src/lib/html.mjs';
 
 const dist = path.join(root, 'dist');
 const manifest = JSON.parse(await readFile(path.join(root, '.openai/hosting.json'), 'utf8'));
@@ -34,6 +35,7 @@ for (const note of notes) compareShape(note.es, note.en, `note.${note.id}`);
 
 const ids = html => [...html.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]);
 const htmlCache = new Map();
+const titles = new Set();
 const fileFor = pathname => path.join(dist, pathname.endsWith('/') ? `${pathname}index.html` : pathname);
 async function readHTML(file) {
   if (!htmlCache.has(file)) htmlCache.set(file, await readFile(file, 'utf8'));
@@ -42,11 +44,32 @@ async function readHTML(file) {
 
 for (const route of routeGroups) for (const lang of ['es', 'en']) {
   const pathname = route.paths[lang], html = await readHTML(fileFor(pathname));
+  const title = html.match(/<title>(.*?)<\/title>/)?.[1];
+  assert.ok(title && !titles.has(title), `Unique descriptive page title: ${pathname}`); titles.add(title);
   assert.ok(html.includes(`<html lang="${lang}"`), pathname);
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1, `One page heading: ${pathname}`);
   assert.ok(html.includes('href="#main"') && html.includes('id="main" tabindex="-1"'), `Keyboard skip target: ${pathname}`);
   assert.ok(html.includes(`<link rel="canonical" href="${site.origin}${pathname}">`));
   for (const alternate of ['es', 'en']) assert.ok(html.includes(`<link rel="alternate" hreflang="${alternate}" href="${site.origin}${route.paths[alternate]}">`));
+  assert.ok(html.includes(`<link rel="alternate" hreflang="x-default" href="${site.origin}${route.paths.es}">`));
+  const structured = [...html.matchAll(/<script type="application\/ld\+json">([^]*?)<\/script>/g)];
+  assert.equal(structured.length, 1, `One structured graph: ${pathname}`);
+  const schema = JSON.parse(structured[0][1]);
+  assert.equal(schema['@context'], 'https://schema.org');
+  const graph = schema['@graph'], page = graph.find(node => ['ProfilePage', 'WebPage'].includes(node['@type']));
+  assert.equal(page.url, site.origin + pathname); assert.equal(page.inLanguage, lang);
+  const person = graph.find(node => node['@type'] === 'Person');
+  assert.equal(person.name, 'Sergio Alejandro Hernández Patiño'); assert.ok(person.sameAs.includes(site.linkedin) && person.sameAs.includes(site.github));
+  if (route.type === 'home') { assert.equal(page['@type'], 'ProfilePage'); assert.equal(page.mainEntity['@id'], person['@id']); }
+  else {
+    assert.equal(graph.find(node => node['@type'] === 'BreadcrumbList').itemListElement.at(-1).item, page.url);
+    if (route.type === 'note') assert.equal(graph.find(node => node['@type'] === 'BlogPosting').datePublished, route.entity.date);
+    else assert.equal(graph.find(node => node['@type'] === 'CreativeWork').name, route.entity.name);
+  }
+  const socialImage = html.match(/property="og:image" content="([^"]+)"/)?.[1];
+  assert.ok(socialImage?.startsWith(site.origin + '/assets/'), `Local social image: ${pathname}`);
+  await access(fileFor(new URL(socialImage).pathname));
+  assert.ok(html.includes(`<meta name="twitter:image" content="${socialImage}">`));
   assert.equal(new Set(ids(html)).size, ids(html).length, `Unique IDs: ${pathname}`);
   assert.ok(html.includes('data-letter-glitch') && html.includes('data-background-motion'), 'Decorative background and pause control on every route');
   assert.ok(html.includes('data-settings') && html.includes('data-privacy') && html.includes('data-cookie-banner'), 'Visitor controls on every route');
@@ -84,6 +107,12 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   } else assert.ok(!html.includes('data-splash-cursor') && !html.includes('/assets/splash-cursor.js'),'Interior pages do not load the hero smoke');
 }
 const sitemap = await readFile(path.join(dist, 'sitemap.xml'), 'utf8');
+const robots = await readFile(path.join(dist, 'robots.txt'), 'utf8');
+assert.ok(robots.includes('Allow: /') && robots.includes(`Sitemap: ${site.origin}/sitemap.xml`) && !robots.includes('Disallow: /'));
+const notFound = await readFile(path.join(dist, '404.html'), 'utf8');
+assert.ok(notFound.includes('<meta name="robots" content="noindex">') && !notFound.includes('application/ld+json'), 'Error pages never identify themselves as indexable profile content');
+const hostileText = '</script><img src=x> & \u2028';
+assert.ok(!scriptJSON({ text: hostileText }).includes('<')); assert.equal(JSON.parse(scriptJSON({ text: hostileText })).text, hostileText);
 for (const lang of ['es', 'en']) for (const entry of journeyCopy[lang].entries) {
   const target = new URL(entry.href, site.origin + locales[lang].path);
   const file = fileFor(target.pathname); await access(file);
@@ -103,4 +132,4 @@ await import('./check-tooltips.mjs');
 await import('./check-soundtrack.mjs');
 await import('./check-preferences.mjs');
 await import('./check-settings.mjs');
-console.log(JSON.stringify({ checked: true, languages: ['es', 'en'], pages: routeGroups.length * 2, checks: ['Site identity', 'deep translation parity', 'content completeness', 'all local links and anchors', 'ARIA references', 'unique headings and IDs', 'canonical and alternate routes', 'CV language', 'static fallbacks', 'sitemap'] }));
+console.log(JSON.stringify({ checked: true, languages: ['es', 'en'], pages: routeGroups.length * 2, checks: ['Site identity', 'deep translation parity', 'content completeness', 'all local links and anchors', 'ARIA references', 'unique headings and IDs', 'canonical and alternate routes', 'safe structured data and social images', 'CV language', 'static fallbacks', 'sitemap and robots'] }));

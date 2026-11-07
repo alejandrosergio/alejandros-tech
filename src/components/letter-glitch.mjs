@@ -1,6 +1,7 @@
-// The decorative Canvas enhancement is optional; the CSS texture needs no script.
-// Keep the whole layer out of the accessibility tree and the canvas hidden until
-// its client renderer is ready. The preset metadata records the chosen appearance.
+import { letterGlitchLook } from '../content/background.mjs';
+import { escapeHTML } from '../lib/html.mjs';
+
+// The optional surface is decorative; all content works without this canvas.
 export function letterGlitch() {
-  return '<div class="letter-backdrop" data-letter-glitch data-preset="pixel" data-characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ" data-palette="#ffffff,#ff6b6b" aria-hidden="true"><canvas class="letter-canvas" data-letter-canvas hidden></canvas></div>';
+  return `<div class="letter-backdrop" data-letter-glitch data-preset="classic" data-look="${escapeHTML(JSON.stringify(letterGlitchLook))}" aria-hidden="true"><canvas class="letter-canvas" data-letter-canvas hidden></canvas></div>`;
 }

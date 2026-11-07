@@ -3,21 +3,22 @@ import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { letterGlitch } from '../src/components/letter-glitch.mjs';
+import { letterGlitchLook } from '../src/content/background.mjs';
 const source = await readFile(new URL('../src/client/letter-glitch.js', import.meta.url), 'utf8');
 
 function fixture({ width = 1440, height = 900, dpr = 2, reduced = false, forced = false, contrast = false, noCanvas = false, throws = false, homeBottom = null, loading = false } = {}) {
-  const handlers = new Map(), timers = new Map(), animationFrames = new Map(), media = new Map(), colors = new Set(), patterns = new Set(), drawings = new Map(); let id = 0, intersection, mutation, mutationFilter = [], glyph = [], cellX = 0, cellY = 0;
-  const stats = { fills: 0, clears: 0, alphaMin: Infinity, alphaMax: 0, transform: [] };
+  const handlers = new Map(), timers = new Map(), animationFrames = new Map(), media = new Map(), colors = new Set(), patterns = new Set(), drawings = new Map(); let id = 0, now = 0, intersection, mutation, mutationFilter = [], cellKey = '';
+  const stats = { fills: 0, clears: 0, alphaMin: Infinity, alphaMax: 0, transform: [], font: '' };
   const events = name => ({ addEventListener(event, callback) { handlers.set(name + ':' + event, callback); } });
-  const context2d = { clearRect(x, y) { stats.clears++; if (glyph.length) patterns.add(glyph.join('|')); glyph = []; drawings.set(`${x},${y}`, glyph); cellX = x; cellY = y; }, fillRect(x, y, width, height) { stats.fills++; stats.alphaMin = Math.min(stats.alphaMin, this.globalAlpha); stats.alphaMax = Math.max(stats.alphaMax, this.globalAlpha); colors.add(this.fillStyle); glyph.push([x - cellX, y - cellY, width, height].map(value => value.toFixed(3)).join(',')); }, setTransform(...values) { stats.transform = values; } };
+  const context2d = { clearRect(x, y) { stats.clears++; cellKey = `${x},${y}`; drawings.set(cellKey, ''); }, fillText(character) { stats.fills++; stats.alphaMin = Math.min(stats.alphaMin, this.globalAlpha); stats.alphaMax = Math.max(stats.alphaMax, this.globalAlpha); colors.add(this.fillStyle); patterns.add(character); drawings.set(cellKey, character); }, measureText() { return { width: 8.4 }; }, set font(value) { stats.font = value; }, setTransform(...values) { stats.transform = values; } };
   const canvas = { width: 0, height: 0, hidden: true, getContext() { if (throws) throw new Error('Unavailable'); return noCanvas ? null : context2d; } };
-  const layer = { hidden: false, dataset: {}, style: { setProperty(key, value) { this[key] = value; } }, querySelector: () => canvas, getBoundingClientRect: () => ({ width, height }) };
+  const layer = { hidden: false, dataset: { look: JSON.stringify(letterGlitchLook) }, style: { setProperty(key, value) { this[key] = value; } }, querySelector: () => canvas, getBoundingClientRect: () => ({ width, height }) };
   const home = homeBottom === null ? null : { getBoundingClientRect: () => ({ bottom: homeBottom }) };
   const control = { hidden: true, disabled: false, dataset: { pause: 'Pause background', play: 'Animate background' }, textContent: '', attrs: {}, ...events('control'), setAttribute(name, value) { this.attrs[name] = value; } };
-  const root = { dataset: { contrast: String(contrast), loading: String(loading) } };
+  const root = { dataset: { contrast: String(contrast), loading: String(loading), theme: 'dark' } };
   const document = { documentElement: root, hidden: false, querySelector: selector => selector === '[data-letter-glitch]' ? layer : selector === '[data-portrait-hero]' ? home : null, querySelectorAll: () => [control], ...events('document') };
   const window = { ...events('window'), innerHeight: height, ResizeObserver: true, IntersectionObserver: true };
-  const context = { document, window, devicePixelRatio: dpr,
+  const context = { document, window, devicePixelRatio: dpr, performance: { now: () => now },
     setTimeout(callback, delay) { timers.set(++id, { callback, delay }); return id; }, clearTimeout(key) { timers.delete(key); },
     requestAnimationFrame(callback) { animationFrames.set(++id, callback); return id; }, cancelAnimationFrame(key) { animationFrames.delete(key); },
     fetch() { throw new Error('The decorative background must not make network requests'); },
@@ -30,8 +31,8 @@ function fixture({ width = 1440, height = 900, dpr = 2, reduced = false, forced 
   const fire = (target, event, detail) => { const callback = handlers.get(target + ':' + event); assert.ok(callback, 'Registered ' + target + ':' + event); callback({ detail }); };
   const flushFrames = () => { let count = 0; while (animationFrames.size) { assert.ok(++count < 4, 'The geometric mask does not create an idle animation loop'); const pending = [...animationFrames.values()]; animationFrames.clear(); for (const callback of pending) callback(); } };
   return { layer, canvas, control, root, document, timers, animationFrames, stats, colors, patterns, handlers, fire, flushFrames,
-    snapshot() { return new Map([...drawings].map(([key, pixels]) => [key, pixels.join('|')])); },
-    tick() { assert.equal(timers.size, 1, 'Only one bounded timer is pending'); const [key, timer] = [...timers][0]; timers.delete(key); timer.callback(); return timer.delay; },
+    snapshot() { return new Map(drawings); },
+    tick(elapsed) { assert.equal(timers.size, 1, 'Only one bounded timer is pending'); const [key, timer] = [...timers][0]; timers.delete(key); now += elapsed ?? timer.delay; timer.callback(); return timer.delay; },
     visible(value) { intersection([{ isIntersecting: value }]); },
     resize(w, h) { width = w; height = h; window.innerHeight = h; fire('window', 'resize'); },
     homeAt(bottom, flush = true) { assert.ok(home, 'The fixture has a hero'); homeBottom = bottom; fire('window', 'scroll'); if (flush) flushFrames(); },
@@ -46,23 +47,27 @@ const normal = fixture();
 assert.equal(normal.layer.dataset.enhanced, 'true'); assert.equal(normal.control.hidden, false); assert.equal(normal.canvas.hidden, false);
 assert.equal(normal.animationFrames.size, 0, 'The background has no continuous animation frame loop');
 assert.ok(!normal.handlers.has('window:scroll'), 'Internal pages need no hero geometry listener');
-assert.ok(normal.canvas.width * normal.canvas.height <= 720000); assert.ok(Number(normal.layer.dataset.cells) <= 3600);
-assert.deepEqual([...normal.colors].sort(), ['#ffffff', '#ff6b6b'].sort(), 'The Pixel preset default palette is retained exactly');
-assert.equal(normal.layer.dataset.characters, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-assert.equal(normal.patterns.size, 26, 'The rendered field contains the complete A–Z pixel alphabet');
-assert.ok(normal.stats.alphaMin >= .7 && normal.stats.alphaMax <= .95, 'Transition letters use strong ink without fully opaque flashes');
+assert.ok(normal.canvas.width * normal.canvas.height <= 720000); assert.ok(Number(normal.layer.dataset.cells) <= 9000);
+assert.ok(normal.colors.has('rgb(43,69,57)'), 'Classic retains its dark green base');
+assert.equal(normal.layer.dataset.characters, letterGlitchLook.characters);
+assert.deepEqual([...normal.patterns].sort(), [...letterGlitchLook.characters].sort(), 'The rendered field includes letters, numbers and symbols');
+assert.match(normal.stats.font, /^14px ui-monospace/);
+assert.ok(normal.stats.alphaMin >= .55 && normal.stats.alphaMax <= 1);
 assert.equal(normal.layer.dataset.frames, '0');
-const before = normal.stats.clears, beforeFills = normal.stats.fills, previousPixels = normal.snapshot(), delay = normal.tick(), changed = normal.stats.clears - before;
-assert.ok(delay >= 100 && delay <= 150, 'The visible glitch cadence stays within 100–150ms');
-assert.ok(changed > Number(normal.layer.dataset.cells) * .01 && changed <= Number(normal.layer.dataset.cells) * .02, 'A perceptible 1–2% of cells change without an area-wide flash');
-assert.ok(normal.stats.fills - beforeFills <= changed * 35, 'Each change repaints only its tiny glyph');
-assert.equal([...normal.snapshot()].filter(([key, pixels]) => previousPixels.get(key) !== pixels).length, changed, 'Every updated cell is visible, distinct and changes its actual letter pixels');
-assert.equal(normal.layer.dataset.frames, '1');
+const before = normal.stats.clears, beforeFills = normal.stats.fills, previousPixels = normal.snapshot();
+normal.tick(); normal.tick(); const delay = normal.tick(), changed = normal.stats.clears - before;
+assert.equal(delay, 40, 'Smooth tint transitions are capped at 25fps');
+assert.ok(changed > Number(normal.layer.dataset.cells) * .01 && changed <= Number(normal.layer.dataset.cells) * .02, 'Rest mutations change at most2% of the grid per batch');
+assert.equal(normal.stats.fills - beforeFills, changed, 'Only changed glyphs are repainted');
+assert.equal([...normal.snapshot()].filter(([key, character]) => previousPixels.get(key) !== character).length, changed, 'Each rest mutation selects a distinct visible glyph');
+assert.ok(normal.colors.has('rgb(97,220,163)') && normal.colors.has('rgb(97,179,220)'), 'Classic green/blue highlights use the exact preset colors');
+assert.equal(normal.layer.dataset.frames, '3');
 assert.equal(Number(normal.layer.dataset.changedCells), changed, 'QA metadata reports actual repainted cells');
 assert.equal(normal.timers.size, 1);
-normal.tick(); assert.equal(normal.layer.dataset.frames, '2', 'The animation continues after the first mutation');
+for (let i = 0; i < 100; i++) { const fills = normal.stats.fills; normal.tick(); assert.ok(Number(normal.layer.dataset.hotCells) <= 600); assert.ok(normal.stats.fills - fills <= 600 + Number(normal.layer.dataset.cells) * .02); }
+const pausedAt = normal.layer.dataset.frames;
 normal.fire('control', 'click'); assert.equal(normal.timers.size, 0); assert.equal(normal.control.attrs['aria-pressed'], 'true'); assert.equal(normal.control.textContent, 'Animate background');
-assert.equal(normal.layer.dataset.frames, '2', 'Pausing does not advance animation metadata');
+assert.equal(normal.layer.dataset.frames, pausedAt, 'Pausing does not advance animation metadata');
 normal.fire('control', 'click'); assert.equal(normal.timers.size, 1); assert.equal(normal.control.attrs['aria-pressed'], 'false');
 normal.fire('document', 'alejandro:background-motion', { paused: true }); assert.equal(normal.timers.size, 0); assert.equal(normal.control.textContent, 'Animate background');
 normal.fire('document', 'alejandro:background-motion', { paused: false }); assert.equal(normal.timers.size, 1);
@@ -84,12 +89,15 @@ const quiet = fixture({ reduced: true }); assert.equal(quiet.timers.size, 0); as
 quiet.resize(1200, 800); assert.equal(quiet.tick(), 120); assert.equal(quiet.timers.size, 0, 'Reduced motion permits one resized static image without resuming animation');
 const forced = fixture({ forced: true }); assert.equal(forced.layer.hidden, true); assert.equal(forced.stats.fills, 0); assert.equal(forced.timers.size, 0);
 const contrast = fixture({ contrast: true }); assert.equal(contrast.layer.hidden, true); assert.equal(contrast.timers.size, 0);
-const mobile = fixture({ width: 390, height: 844, dpr: 3 }), desktop = fixture(), large = fixture({ width: 7680, height: 4320, dpr: 3 });
-assert.ok(mobile.canvas.width * mobile.canvas.height <= 360000); assert.ok(Number(mobile.layer.dataset.cells) <= 1400);
-assert.ok(mobile.stats.fills / Number(mobile.layer.dataset.cells) < desktop.stats.fills / Number(desktop.layer.dataset.cells) * .85, 'The mobile glyph field is less dense');
+const mobile = fixture({ width: 390, height: 844, dpr: 3 }), large = fixture({ width: 7680, height: 4320, dpr: 3 });
+assert.ok(mobile.canvas.width * mobile.canvas.height <= 360000); assert.ok(Number(mobile.layer.dataset.cells) <= 3000);
+assert.equal(mobile.stats.fills, Number(mobile.layer.dataset.cells), 'Classic remains a full-density field on mobile');
 const mobileBefore = mobile.stats.clears; mobile.tick();
 assert.ok(mobile.stats.clears - mobileBefore <= Number(mobile.layer.dataset.cells) * .02, 'Mobile animation retains the same small repaint budget');
-assert.ok(large.canvas.width * large.canvas.height <= 720000); assert.ok(Number(large.layer.dataset.cells) <= 3600, 'Large screens do not create unbounded cell arrays');
+assert.ok(large.canvas.width * large.canvas.height <= 720000); assert.ok(Number(large.layer.dataset.cells) <= 9000, 'Large screens do not create unbounded cell arrays');
+for (let i = 0; i < 100; i++) { mobile.tick(); assert.ok(Number(mobile.layer.dataset.hotCells) <= 240); }
+const light = fixture(); light.preference('theme', 'light'); light.tick(); light.tick(); light.tick();
+assert.ok(light.colors.has('rgb(163,194,178)') && light.colors.has('rgb(4,120,87)') && light.colors.has('rgb(3,105,161)'), 'The official Classic light palette follows the selected theme');
 assert.ok(!normal.handlers.has('window:pointermove') && !normal.handlers.has('document:click'), 'The decorative field does not intercept pointer navigation');
 const homepage = fixture({ homeBottom: 900 });
 assert.equal(homepage.layer.style['--letter-home-cut'], '900px');
@@ -142,10 +150,10 @@ loadedCover.preference('loading', 'false'); assert.equal(loadedCover.timers.size
 const quietLoader = fixture({ loading: true, reduced: true });
 assert.equal(quietLoader.stats.fills, 0); quietLoader.preference('loading', 'false');
 assert.ok(quietLoader.stats.fills > 0); assert.equal(quietLoader.timers.size, 0, 'Reduced motion stays static after the loader closes');
-assert.ok(letterGlitch().includes('aria-hidden="true"') && letterGlitch().includes('data-letter-canvas hidden') && letterGlitch().includes('data-preset="pixel"') && letterGlitch().includes('data-characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"') && letterGlitch().includes('data-palette="#ffffff,#ff6b6b"'), 'The optional Pixel canvas is decorative and absent without enhancement');
+assert.ok(letterGlitch().includes('aria-hidden="true"') && letterGlitch().includes('data-letter-canvas hidden') && letterGlitch().includes('data-preset="classic"') && letterGlitch().includes('&amp;') && letterGlitch().includes('&lt;'), 'Classic settings are safely embedded and the optional canvas stays decorative');
 const css = await readFile(new URL('../src/styles/background.css', import.meta.url), 'utf8');
 assert.match(css, /\.home-page \.letter-backdrop\s*\{[^}]*clip-path:\s*inset\(var\(--letter-home-cut,\s*100%\)/, 'The homepage defaults to fully clipped decoration before JavaScript or without it');
 assert.match(css, /mask-image:\s*linear-gradient\([^}]*--letter-home-cut[^}]*36px/, 'A short gradient softly reveals only the region beyond the cover');
 const license = await readFile(new URL('../public/assets/licenses/react-bits.txt', import.meta.url));
 assert.equal(createHash('sha1').update('blob ' + license.length + '\0').update(license).digest('hex'), '4069ce9d0ef1a712c93d6ce48ade5d5667e0f5ee', 'The full upstream license is retained verbatim');
-console.log(JSON.stringify({ letterGlitchChecks: ['Pixel default palette and actual A–Z pixels', 'bounded pixels/cells/mobile density', 'perceptible 120ms glyph mutations', 'cover-region clipping and idle pause', 'global loader suspension', 'footer and scene pause', 'reduced static mode', 'hidden/offscreen suspension', 'contrast/forced exclusion', 'no remote runtime resources', 'upstream license'] }));
+console.log(JSON.stringify({ letterGlitchChecks: ['Classic glyphs, green/blue highlights and light palette', 'bounded grid/hot cells and25fps tint transitions', 'distinct100ms rest mutations', 'cover-region clipping and idle pause', 'global loader suspension', 'footer and scene pause', 'reduced static mode', 'hidden/offscreen suspension', 'contrast/forced exclusion', 'no remote runtime resources', 'upstream license'] }));

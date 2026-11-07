@@ -17,7 +17,7 @@ El 4 de noviembre el titular sustituyó el busto experimental por una fotografí
 7. Formulario validado de Formspree al Outlook público y alternativas de correo, LinkedIn, GitHub y CV.
 8. Accesibilidad y apariencia, consentimiento de preferencias, loader acotado en cada carga, guía contextual, indicador de ocho secciones, subida y cursor de punto/anillo sin flecha sobre enlaces.
 
-La navegación permanece expandida en escritorio, con posibilidad de segunda fila; se colapsa solo hasta 760 px. Las entradas de contenido duran unos 1,1 segundos con escalonado limitado, respetando movimiento reducido y foco. El fondo Pixel usa letras A–Z blancas/coral fuera del hero, visibles principalmente en las transiciones de módulos.
+La navegación permanece expandida en escritorio, con posibilidad de segunda fila; se colapsa solo hasta 760 px. Las entradas de contenido duran unos 1,1 segundos con escalonado limitado, respetando movimiento reducido y foco. El fondo Letter Glitch Classic usa letras, números y símbolos monoespaciados en verde/azul fuera del hero, visibles principalmente en las transiciones de módulos.
 
 Todas las rutas tienen equivalentes ES/EN. El CV sigue siendo un proyecto independiente.
 

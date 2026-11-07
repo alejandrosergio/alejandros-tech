@@ -39,7 +39,7 @@ export async function build() {
   }
   await writeFile(path.join(dist, '404.html'), renderPage('es', { notFound: true }));
   await writeFile(path.join(dist, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${site.origin}/sitemap.xml\n`);
-  await writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${routeGroups.flatMap(route => ['es', 'en'].map(lang => `<url><loc>${site.origin}${route.paths[lang]}</loc><xhtml:link rel="alternate" hreflang="es" href="${site.origin}${route.paths.es}"/><xhtml:link rel="alternate" hreflang="en" href="${site.origin}${route.paths.en}"/></url>`)).join('')}</urlset>\n`);
+  await writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${routeGroups.flatMap(route => ['es', 'en'].map(lang => `<url><loc>${site.origin}${route.paths[lang]}</loc><xhtml:link rel="alternate" hreflang="es" href="${site.origin}${route.paths.es}"/><xhtml:link rel="alternate" hreflang="en" href="${site.origin}${route.paths.en}"/><xhtml:link rel="alternate" hreflang="x-default" href="${site.origin}${route.paths.es}"/></url>`)).join('')}</urlset>\n`);
   const total = (await Promise.all(['index.html', 'assets/styles.css', ...clientFiles.map(file => `assets/${file}`)].map(file => stat(path.join(dist, file))))).reduce((sum, entry) => sum + entry.size, 0);
   return { pages: routeGroups.flatMap(route => Object.values(route.paths)), initialAssetsBytes: total };
 }
