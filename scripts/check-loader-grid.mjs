@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 
-const source = await readFile(new URL('../src/client/loader-rays.js', import.meta.url), 'utf8');
+const source = await readFile(new URL('../src/client/loader-grid.js', import.meta.url), 'utf8');
 const styles = await readFile(new URL('../src/styles/loader.css', import.meta.url), 'utf8');
 
 // Native browser QA verifies the actual shader/pixels; this stateful stand-in
@@ -42,7 +42,7 @@ function fixture({ width = 1440, height = 900, dpr = 2, accent = '#f06a73', them
     matchMedia(query) { const value = { matches: query.includes('reduced') ? reduced : query.includes('forced') ? forced : coarse, addEventListener(_type, callback) { this.change = callback; } }; media.set(query, value); return value; },
     MutationObserver: class { constructor(callback) { this.callback = callback; } observe(target, options) { observers.push({ target, options, callback: this.callback }); } },
     ResizeObserver: class { constructor(callback) { resize = callback; } observe() {} },
-    fetch() { throw new Error('Loader rays must not use the network'); }
+    fetch() { throw new Error('Loader grid must not use the network'); }
   });
   const mutate = () => { for (const observer of observers) if (observer.target === root) observer.callback(); };
   const fire = (target, type, event = {}) => { const listeners = handlers.get(target + ':' + type); assert.ok(listeners, 'Registered ' + target + ':' + type); for (const { callback } of listeners) callback(event); };
@@ -61,43 +61,45 @@ for (const options of [{ absent: true }, { noHost: true }, { loading: false }, {
   const quiet = fixture(options); assert.equal(quiet.contextRequests, 0); assert.equal(quiet.frames.size, 0); assert.equal(quiet.canvas.hidden, true);
 }
 for (const options of [{ noGL: true }, { throws: true }, { badShader: true }, { badShader: 'fragment' }, { badLink: true }, { badProgram: true }, { badVAO: true }]) {
-  const fallback = fixture(options); assert.equal(fallback.canvas.dataset.state, 'fallback'); assert.equal(fallback.frames.size, 0); assert.equal(fallback.canvas.hidden, true); assert.equal(fallback.host.dataset.raysEnhanced, undefined);
+  const fallback = fixture(options); assert.equal(fallback.canvas.dataset.state, 'fallback'); assert.equal(fallback.frames.size, 0); assert.equal(fallback.canvas.hidden, true); assert.equal(fallback.host.dataset.gridEnhanced, undefined);
   for (const pool of [fallback.programs, fallback.shaders, fallback.vaos]) assert.equal(pool.size, 0, 'Partial initialization releases every allocated GPU object');
 }
 
 const normal = fixture();
-assert.equal(normal.canvas.dataset.state, 'running'); assert.equal(normal.canvas.dataset.enhanced, 'true'); assert.equal(normal.host.dataset.raysEnhanced, 'true');
+assert.equal(normal.canvas.dataset.state, 'running'); assert.equal(normal.canvas.dataset.enhanced, 'true'); assert.equal(normal.host.dataset.gridEnhanced, 'true');
 assert.equal(normal.programs.size, 1); assert.equal(normal.vaos.size, 1); assert.equal(normal.shaders.size, 0, 'Linked shaders are deleted immediately'); assert.equal(normal.frames.size, 1);
 normal.tick(); assert.equal(normal.draws, 1); assert.equal(normal.canvas.dataset.frames, '1'); assert.equal(normal.canvas.dataset.quality, 'desktop'); assert.ok(normal.canvas.width * normal.canvas.height <= 900000);
 const actual = name => normal.uniforms.findLast(row => row[0] === name)?.slice(1);
-for (const [name, expected] of Object.entries({ uSpread: 1, uLength: 3, uFade: 1, uSaturation: 1, uPulsating: 0, uNoise: 0, uDistortion: .12, uDensity: 1.6, uSharpness: .5, uGlow: .75, uHaze: .5, uAtmosphere: .7, uIntensity: 1.2, uOpacity: 1 })) assert.deepEqual(actual(name), [expected], 'Underwater-derived loader ' + name);
-assert.ok(actual('uSource')[0] > 720 && actual('uSource')[0] <= 741.6); assert.equal(actual('uSource')[1], -180); assert.ok(actual('uAim')[0] > 0); assert.ok(Math.abs(Math.hypot(...actual('uAim')) - 1) < 1e-12); assert.deepEqual(actual('uColor'), [240 / 255, 106 / 255, 115 / 255]); assert.deepEqual(actual('uLight'), [0]);
-assert.deepEqual(actual('uShadow'), [720, 450, 0, 16]); assert.ok(actual('uPulses[0]').every(value => value === 0), 'The decorative loader has no click pulses');
-assert.ok(Math.abs(actual('uTime')[0] - .0221) < 1e-12, 'The short-loader adaptation advances at the calmer speed .65');
-const reveal = fixture();
-for (let index = 0; index < 3; index++) reveal.tick();
-const visibleIntro = reveal.uniforms.findLast(row => row[0] === 'uIntro');
-assert.ok(visibleIntro[1] > 2 && visibleIntro[2] > .85, 'The rays are substantially revealed by 102ms rather than spending the short loader almost invisible');
-for (let index = 0; index < 5; index++) reveal.tick();
-assert.deepEqual(reveal.uniforms.findLast(row => row[0] === 'uIntro').slice(1), [2.6, 1], 'The local opening completes within 300ms');
-const earlyAim = reveal.uniforms.findLast(row => row[0] === 'uAim');
-for (let index = 0; index < 18; index++) reveal.tick();
-const aimDrift = Math.abs(reveal.uniforms.findLast(row => row[0] === 'uAim')[1] - earlyAim[1]);
-assert.ok(aimDrift > .005 && aimDrift < .04, 'The short loader keeps a subtle drift without the previous wide sweep');
-reveal.set('loading', false);
-const slow = fixture();
-slow.tick(400);
-assert.deepEqual(slow.uniforms.findLast(row => row[0] === 'uIntro').slice(1), [2.6, 1], 'A slow first frame still shows the opening completed on its intended wall-clock timeline');
-assert.ok(Math.abs(slow.uniforms.findLast(row => row[0] === 'uTime')[1] - .26) < 1e-12, 'Low frame rates preserve the intended calmer flow speed');
-slow.tick(400);
-assert.ok(Math.abs(slow.uniforms.findLast(row => row[0] === 'uTime')[1] - .52) < 1e-12); assert.equal(slow.draws, 2, 'Elapsed-time correction adds no GPU catch-up passes');
-slow.document.hidden = true; slow.fire('document', 'visibilitychange'); slow.tick(10000); slow.document.hidden = false; slow.fire('document', 'visibilitychange'); slow.tick(34);
-assert.ok(Math.abs(slow.uniforms.findLast(row => row[0] === 'uTime')[1] - .5421) < 1e-12, 'Hidden time is excluded instead of causing a large resume jump');
-slow.set('loading', false);
+for (const [name, expected] of Object.entries({ uDepth: 8, uFade: .6, uScanDir: 1, uScanWidth: .006, uTrail: .81, uPoints: 1, uReflect: .35, uHaze: .05, uShade: .7, uGlow: .6, uLight: 0 })) assert.ok(Math.abs(actual(name)[0] - expected) < 1e-12, 'Deep preset ' + name);
+assert.deepEqual(actual('uCell'), [.1, .1, .1]);
+assert.deepEqual(actual('uScanColor'), [240 / 255, 106 / 255, 115 / 255]);
+assert.deepEqual(actual('uLineColor'), [77 / 255, 71 / 255, 87 / 255]);
+assert.ok(actual('uCoreColor').every((value, i) => value >= actual('uScanColor')[i] && value <= 1));
+assert.ok(Math.abs(actual('uTime')[0] - .034) < 1e-12);
+assert.equal(actual('uEye')[2], -1.25);
+const sweep = fixture(); sweep.tick(400);
+const earlyZ = sweep.uniforms.findLast(row => row[0] === 'uScanZ')[1];
+sweep.tick(400);
+assert.ok(sweep.uniforms.findLast(row => row[0] === 'uScanZ')[1] > earlyZ, 'The scan travels deeper into the room');
+assert.ok(Math.abs(sweep.uniforms.findLast(row => row[0] === 'uTime')[1] - .8) < 1e-12, 'Slow frames preserve elapsed scan time');
+assert.equal(sweep.draws, 2, 'Elapsed time adds no catch-up draws');
+sweep.tick(1500);
+assert.equal(sweep.uniforms.findLast(row => row[0] === 'uReveal')[1], 9, 'The entire room is revealed after the 2.2s opening');
+assert.equal(sweep.uniforms.findLast(row => row[0] === 'uScanAlpha')[1], 0, 'Deep respects its delay between scans');
+sweep.tick(2000);
+assert.ok(sweep.uniforms.findLast(row => row[0] === 'uScanAlpha')[1] > 0, 'A later automatic sweep begins');
+assert.ok(sweep.uniforms.findLast(row => row[0] === 'uScanZ')[1] < 2, 'The 4s sweep starts near the viewer');
+sweep.tick(2000);
+assert.ok(sweep.uniforms.findLast(row => row[0] === 'uScanZ')[1] > 4, 'The same sweep advances through the full room depth');
+const beforeHidden = sweep.uniforms.findLast(row => row[0] === 'uTime')[1];
+sweep.document.hidden = true; sweep.fire('document', 'visibilitychange'); sweep.tick(10000);
+sweep.document.hidden = false; sweep.fire('document', 'visibilitychange'); sweep.tick(34);
+assert.ok(Math.abs(sweep.uniforms.findLast(row => row[0] === 'uTime')[1] - beforeHidden - .034) < 1e-12, 'Hidden time is excluded from the next frame');
+sweep.set('loading', false);
 normal.tick(5); assert.equal(normal.draws, 1, 'Rendering is capped at 30fps'); normal.tick(); assert.equal(normal.draws, 2);
-normal.color('#c4a4ff'); normal.tick(); assert.deepEqual(actual('uColor'), [196 / 255, 164 / 255, 1]); assert.equal(normal.canvas.dataset.color, '#c4a4ff');
-normal.set('theme', 'light'); normal.color('rgb(105, 53, 184)'); normal.tick(); assert.deepEqual(actual('uColor'), [105 / 255, 53 / 255, 184 / 255]); assert.deepEqual(actual('uLight'), [1]);
-normal.color('#0cf'); normal.tick(); assert.deepEqual(actual('uColor'), [0, 204 / 255, 1]);
+normal.color('#c4a4ff'); normal.tick(); assert.deepEqual(actual('uScanColor'), [196 / 255, 164 / 255, 1]); assert.equal(normal.canvas.dataset.color, '#c4a4ff');
+normal.set('theme', 'light'); normal.color('rgb(105, 53, 184)'); normal.tick(); assert.deepEqual(actual('uScanColor'), [105 / 255, 53 / 255, 184 / 255]); assert.deepEqual(actual('uLight'), [1]);
+normal.color('#0cf'); normal.tick(); assert.deepEqual(actual('uScanColor'), [0, 204 / 255, 1]);
 normal.document.hidden = true; normal.fire('document', 'visibilitychange'); assert.equal(normal.frames.size, 0); assert.equal(normal.programs.size, 0); assert.equal(normal.vaos.size, 0); assert.equal(normal.canvas.hidden, true);
 normal.document.hidden = false; normal.fire('document', 'visibilitychange'); assert.equal(normal.frames.size, 1); normal.tick();
 for (const name of ['motion', 'contrast']) { normal.set(name, true); assert.equal(normal.frames.size, 0); assert.equal(normal.programs.size, 0); normal.set(name, false); assert.equal(normal.frames.size, 1); normal.tick(); }
@@ -105,7 +107,7 @@ for (const name of ['reduced', 'forced']) { normal.media(name, true); assert.equ
 normal.lost(true); assert.equal(normal.canvas.dataset.state, 'lost'); assert.equal(normal.frames.size, 0); normal.lost(false); assert.equal(normal.frames.size, 1); normal.tick();
 normal.fire('window', 'pagehide'); assert.equal(normal.frames.size, 0); assert.equal(normal.programs.size, 0); normal.fire('window', 'pageshow'); normal.tick();
 const beforeFinish = normal.canvas.dataset.frames; normal.set('loading', false);
-assert.equal(normal.canvas.dataset.state, 'finished'); assert.equal(normal.frames.size, 0); assert.equal(normal.canvas.hidden, true); assert.equal(normal.canvas.dataset.enhanced, undefined); assert.equal(normal.host.dataset.raysEnhanced, undefined);
+assert.equal(normal.canvas.dataset.state, 'finished'); assert.equal(normal.frames.size, 0); assert.equal(normal.canvas.hidden, true); assert.equal(normal.canvas.dataset.enhanced, undefined); assert.equal(normal.host.dataset.gridEnhanced, undefined);
 assert.equal(normal.programs.size, 0); assert.equal(normal.shaders.size, 0); assert.equal(normal.vaos.size, 0); assert.equal(normal.canvas.width * normal.canvas.height, 1, 'Drawing surface memory shrinks after the loader');
 const contextsAtFinish = normal.contextRequests; normal.fire('document', 'alejandro:preferences'); normal.color('#f00'); normal.resize(700, 1000); normal.tick(1000);
 assert.equal(normal.canvas.dataset.frames, beforeFinish); assert.equal(normal.contextRequests, contextsAtFinish); assert.equal(normal.frames.size, 0, 'A finished loader never wakes or reacquires GPU resources');
@@ -120,4 +122,4 @@ assert.ok(styles.includes('pointer-events: none') && styles.includes('var(--acce
 assert.ok(styles.includes('prefers-reduced-motion') && styles.includes('forced-colors') && styles.includes('overflow-wrap: anywhere'));
 assert.ok(styles.includes('.intro-loader .loader-content') && styles.includes('flex-direction: column') && styles.includes('align-items: center'), 'The loader content wrapper lays out the progress track as a flex item with a real area');
 assert.ok(!source.includes('fetch(') && !source.includes('requestIdleCallback') && !source.includes('setInterval'));
-console.log('Loader rays: Underwater uniforms, accent/theme updates, capped single-pass rendering, quiet/fallback states and complete GPU/RAF teardown verified.');
+console.log('Loader Grid Scan Deep: perspective room, moving sweeps, accent/theme updates, bounded rendering, fallback and complete GPU/RAF teardown verified.');

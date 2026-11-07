@@ -31,28 +31,31 @@
   };
   window.AlejandroPreferences = { defaults, sanitize, apply, get values() { return { ...values }; }, set values(v) { values = sanitize(v); }, get consent() { return consent; }, set consent(v) { consent = v; } };
   systemDark.addEventListener('change', apply); apply();
-  // Each new document gets a perceptible intro, independent of later effects.
-  // The hard deadline and immediate keyboard exit keep navigation fail-open.
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !values.motion) {
+  // Keep the intro for two seconds after window.load, even on a slow download.
+  // A separate load watchdog and immediate manual exit keep navigation usable.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !matchMedia('(forced-colors: active)').matches && !values.motion && !values.contrast) {
     root.dataset.loading = 'true';
-    let finished = false, ready = document.readyState !== 'loading', minimumElapsed = false, minimumTimer = 0, deadlineTimer = 0;
+    let finished = false, holdTimer = 0, loadTimer = 0;
     const finish = () => {
       if (finished) return;
       finished = true; delete root.dataset.loading;
-      clearTimeout(minimumTimer); clearTimeout(deadlineTimer);
-      document.removeEventListener('DOMContentLoaded', onReady);
+      clearTimeout(holdTimer); clearTimeout(loadTimer);
+      window.removeEventListener('load', onLoad);
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('click', onClick);
       window.removeEventListener('pageshow', onPageShow);
     };
-    const finishWhenReady = () => { if (ready && minimumElapsed) finish(); };
-    const onReady = () => { ready = true; finishWhenReady(); };
+    const onLoad = () => {
+      if (finished || holdTimer) return;
+      clearTimeout(loadTimer);
+      holdTimer = setTimeout(finish, 2000);
+    };
     const onKey = () => finish();
     const onClick = event => { if (event.target.closest('[data-enter-site]')) finish(); };
     const onPageShow = event => { if (event.persisted) finish(); };
-    minimumTimer = setTimeout(() => { minimumElapsed = true; finishWhenReady(); }, 1200);
-    deadlineTimer = setTimeout(finish, 2400);
-    if (!ready) document.addEventListener('DOMContentLoaded', onReady, { once: true });
+    loadTimer = setTimeout(finish, 10000);
+    if (document.readyState === 'complete') onLoad();
+    else window.addEventListener('load', onLoad, { once: true });
     document.addEventListener('keydown', onKey, { once: true });
     document.addEventListener('click', onClick);
     window.addEventListener('pageshow', onPageShow);

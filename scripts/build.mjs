@@ -6,7 +6,7 @@ import { site } from '../src/content/site.mjs';
 import { routeGroups } from '../src/content/routes.mjs';
 
 export const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
-const clientFiles = ['theme-init.js', 'preferences.js', 'loader-rays.js', 'site.js', 'journey.js', 'letter-glitch.js', 'splash-cursor.js', 'soundtrack.js', 'contact.js', 'form-rules.js'];
+const clientFiles = ['theme-init.js', 'preferences.js', 'loader-grid.js', 'site.js', 'journey.js', 'letter-glitch.js', 'splash-cursor.js', 'soundtrack.js', 'contact.js', 'form-rules.js'];
 
 async function copyDirectory(from, to) {
   await mkdir(to, { recursive: true });

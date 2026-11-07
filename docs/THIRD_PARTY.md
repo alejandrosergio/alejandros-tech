@@ -31,17 +31,18 @@ Una introducción única de1,1s se inicia tras el loader; la estela tiene una co
 
 La pausa común y las preferencias de accesibilidad prevalecen. La decoración no es necesaria para comprender o navegar la web, y el diseño estático permanece cuando el contexto gráfico no está disponible. No se distribuye un paquete o biblioteca del efecto.
 
-## Light Rays · loader Underwater
+## Grid Scan · loader Deep
 
-- Referencia solicitada: https://reactbits.dev/tools/background-studio?bg=light-rays&preset=underwater
-- Fuente: `src/content/Backgrounds/LightRays/LightRays.jsx`, blob `8133de5fefcc6856c6e3d43a363191e30a918049`, commit `4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4` de https://github.com/DavidHDev/react-bits.
-- Presets: `src/demo/Backgrounds/presets/LightRays.js`, blob `f33e4854d9cf5861a013c9ca9ed6b2a2609c5f64`.
-- Preset Underwater original: origen superior central, velocidad 0,5, apertura 1, longitud 3, densidad 1,6, inclinación 0, nitidez 0,5, brillo 0,6, neblina 0,5, atmósfera 0,7, intensidad 1, atenuación 1, saturación 1, ruido 0, distorsión 0,12, opacidad 1 y sin pulsación.
-- Ajuste local solicitado para el loader: velocidad 0,65, brillo 0,75 e intensidad 1,2. Los demás parámetros indicados se conservan; estos tres valores no se atribuyen al preset original.
-- El cian de referencia se sustituye por `--accent`, el tono elegido en accesibilidad; se utiliza la variante clara del shader cuando corresponde al tema.
-- Autor y licencia: David Haz2026, MIT + Commons Clause, aviso íntegro conservado en `/assets/licenses/react-bits.txt`.
+- Referencia solicitada: https://reactbits.dev/tools/background-studio?bg=grid-scan&preset=deep
+- Fuente: `src/content/Backgrounds/GridScan/GridScan.jsx`, blob `1dcda3a7c39864e5ff5105041cd92fea5e378f3d`, commit `4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4` de https://github.com/DavidHDev/react-bits.
+- Presets: `src/demo/Backgrounds/presets/GridScan.js`, blob `6639f8318bb325a664ecf04eede31f95db1b510b`.
+- Deep: diez celdas, profundidad 8, atenuación 0,6, sombreado 0,7, reflexión 0,35, puntos, líneas continuas, barrido hacia delante de 4s con pausa de 1,6s, ancho 1, estela 0,7 y brillo 0,6. La introducción conserva el barrido inicial de 2,2s del componente.
+- La base de líneas conserva #4d4757. El cian de referencia se sustituye por `--accent`; el núcleo y la neblina responden también al tema claro/oscuro.
+- Autor y licencia: David Haz 2026, MIT + Commons Clause, aviso íntegro conservado en `/assets/licenses/react-bits.txt`.
 
-La adaptación usa el shader local con un único pase WebGL2, sin React, OGL, texturas o red. La apertura visual se adapta a 260 ms para que se aprecie durante el loader breve; no se añaden pulsos ni oscilaciones de brillo. El mínimo normal de 1200 ms, límite independiente de 2400 ms y salida directa son lógica del sitio, no del preset. El lienzo está limitado a 900.000 píxeles en escritorio y 360.000 en móvil, con render máximo 30 fps. Al finalizar se cancelan los fotogramas, se eliminan programa/VAO y la superficie vuelve a 1×1. Sin WebGL se muestra un abanico de luz CSS estático en el mismo tono. Movimiento reducido, mayor contraste y colores forzados conservan la entrada directa al contenido.
+La integración adapta la geometría de sala, trazado, barrido, reflejos y puntos a un pase WebGL2 con brillo local. Se retiran React, webcam, modelos remotos, texturas de bloom, estilos de línea no utilizados, pulsos y controles de puntero. El efecto no descarga recursos ni captura gestos. Su límite es de 900.000 píxeles en escritorio y 360.000 en móvil, con hasta 30fps. El tiempo visible dirige el barrido sin añadir pases de recuperación; las pestañas ocultas no avanzan la animación. Al terminar se cancelan fotogramas, se eliminan programa/VAO y el lienzo vuelve a 1×1. El antiguo efecto de rayos se elimina del código y la salida generada.
+
+La permanencia de 2000ms después de window.load pertenece al sitio. Un vigilante de 10000ms cubre solo la espera del evento y se cancela al recibirlo, por lo que no acorta los dos segundos en una carga lenta. Botón y teclado conservan salida inmediata. Movimiento reducido, alto contraste y colores forzados permiten entrada directa. Sin WebGL aparece una rejilla CSS estática en el tono elegido.
 
 ## Composición musical local
 

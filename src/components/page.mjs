@@ -27,7 +27,7 @@ function head(lang, options) {
   <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/theme-init.js"></script>
   <script src="/assets/preferences.js" defer></script>
-  <script src="/assets/loader-rays.js" defer></script>
+  <script src="/assets/loader-grid.js" defer></script>
   <script src="/assets/site.js" defer></script>
   <script src="/assets/journey.js" defer></script>
   <script src="/assets/letter-glitch.js" defer></script>${options.home ? '\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}

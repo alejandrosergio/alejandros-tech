@@ -24,7 +24,7 @@ export function loader(lang) {
   // theme-init owns the bounded loading interval; the decorative renderer only
   // observes it, so a missing WebGL context cannot delay access to the page.
   const t = interfaceCopy[lang];
-  return `<div class="intro-loader" data-intro-loader role="region" aria-label="${t.loader}"><canvas data-loader-rays data-preset="underwater" aria-hidden="true" hidden></canvas><div class="loader-content"><div class="loader-wordmark" aria-hidden="true">Alejandro’s<span class="wordmark-accent">Tech</span></div><p role="status">${t.loader}</p><span class="loader-track" aria-hidden="true"></span><button type="button" data-enter-site>${t.enter} →</button></div></div>`;
+  return `<div class="intro-loader" data-intro-loader role="region" aria-label="${t.loader}"><canvas data-loader-grid data-preset="deep" aria-hidden="true" hidden></canvas><div class="loader-content"><div class="loader-wordmark" aria-hidden="true">Alejandro’s<span class="wordmark-accent">Tech</span></div><p role="status">${t.loader}</p><span class="loader-track" aria-hidden="true"></span><button type="button" data-enter-site>${t.enter} →</button></div></div>`;
 }
 
 export function contactForm(lang, endpoint) {

@@ -1,4 +1,4 @@
-/* An immediate static light field also covers unsupported/disabled WebGL. */
+/* A static perspective grid also covers unsupported or disabled WebGL. */
 :root[data-loading="true"] .intro-loader {
   isolation: isolate;
   overflow: clip;
@@ -15,10 +15,13 @@
   pointer-events: none;
 }
 .intro-loader::before {
-  background: radial-gradient(ellipse at 50% -18%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 72%), conic-gradient(from 155deg at 50% -20%, transparent 0deg 7deg, color-mix(in srgb, var(--accent) 12%, transparent) 10deg 12deg, transparent 15deg 21deg, color-mix(in srgb, var(--accent) 16%, transparent) 24deg 26deg, transparent 29deg 36deg, color-mix(in srgb, var(--accent) 12%, transparent) 39deg 41deg, transparent 44deg);
-  opacity: .75;
+  background-image: linear-gradient(color-mix(in srgb, var(--accent) 30%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--accent) 30%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  transform: perspective(55vh) rotateX(58deg) scale(1.8);
+  transform-origin: center 65%;
+  opacity: .4;
 }
-.intro-loader[data-rays-enhanced="true"]::before { opacity: .06; }
+.intro-loader[data-grid-enhanced="true"]::before { opacity: 0; }
 .intro-loader .loader-content {
   position: relative;
   z-index: 1;
@@ -29,9 +32,9 @@
   width: min(100%, 60rem);
 }
 .intro-loader::after {
-  background: radial-gradient(ellipse at 50% 58%, color-mix(in srgb, var(--page) 88%, transparent) 0%, color-mix(in srgb, var(--page) 28%, transparent) 17%, transparent 48%);
+  background: radial-gradient(ellipse at 50% 50%, color-mix(in srgb, var(--page) 94%, transparent) 0%, color-mix(in srgb, var(--page) 65%, transparent) 24%, transparent 58%);
 }
-[data-loader-rays] {
+[data-loader-grid] {
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -41,7 +44,7 @@
   pointer-events: none;
   user-select: none;
 }
-[data-loader-rays][hidden] { display: none; }
+[data-loader-grid][hidden] { display: none; }
 .intro-loader .loader-wordmark { max-width: 100%; font-size: clamp(1.9rem, 7.5vw, 4.8rem); white-space: normal; overflow-wrap: anywhere; text-wrap: balance; letter-spacing: -.055em; line-height: 1.15; }
 .intro-loader p { max-width: 28rem; padding-inline: .5rem; color: var(--muted); line-height: 1.7; }
 .intro-loader .loader-track { width: min(180px, 42vw); height: 1px; margin-top: .35rem; background: color-mix(in srgb, var(--accent) 25%, var(--line)); }

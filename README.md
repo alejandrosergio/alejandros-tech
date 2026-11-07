@@ -54,4 +54,4 @@ The CV remains a separate project and Site. Its public content is a factual refe
 
 Copyright © 2026 Alejandro’sTech. All rights reserved. No open-source licence is granted for the website, brand or personal assets.
 
-Letter Glitch Classic uses local monospace letters, numbers and symbols in green/blue outside the home cover. Splash Cursor Smoke decorates only the cover behind the photograph. Light Rays Underwater appears in the bounded introductory loader. These local effects keep their pause and motion safeguards; source attribution is in [THIRD_PARTY.md](docs/THIRD_PARTY.md).
+Letter Glitch Classic uses local monospace letters, numbers and symbols in green/blue outside the home cover. Splash Cursor Smoke decorates only the cover behind the photograph. Grid Scan Deep appears in the introductory loader, which stays for two seconds after the page loads and allows immediate manual entry. These local effects keep their pause and motion safeguards; source attribution is in [THIRD_PARTY.md](docs/THIRD_PARTY.md).

@@ -73,7 +73,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   assert.equal(new Set(ids(html)).size, ids(html).length, `Unique IDs: ${pathname}`);
   assert.ok(html.includes('data-letter-glitch') && html.includes('data-background-motion'), 'Decorative background and pause control on every route');
   assert.ok(html.includes('data-settings') && html.includes('data-privacy') && html.includes('data-cookie-banner'), 'Visitor controls on every route');
-  assert.ok(html.includes('data-intro-loader') && html.includes('data-loader-rays data-preset="underwater"') && html.includes('/assets/loader-rays.js'), 'Bounded optional loader on every route');
+  assert.ok(html.includes('data-intro-loader') && html.includes('data-loader-grid data-preset="deep"') && html.includes('/assets/loader-grid.js') && !html.includes('loader-rays'), 'Grid Scan Deep loader replaces the old effect on every route');
   assert.ok(html.includes('data-scroll-top') && html.includes('data-cursor-dot'), 'Progressive navigation controls on every route');
   assert.ok(html.includes('data-soundtrack') && html.includes('data-soundtrack-volume') && html.includes('/assets/soundtrack.js'), 'User-initiated audio and volume controls on every route');
   assert.ok(!/TODO|lorem ipsum|undefined|href=""|href="#"|codex-preview|@gmail\.com/.test(html), `Finished and private-contact-free content: ${pathname}`);
@@ -125,7 +125,7 @@ assert.ok(!/overflow-x\s*:\s*hidden/.test(css), 'Fix overflow instead of hiding 
 for (const entry of await readdir(root)) assert.ok(!/^\.env(?:\.|$)/.test(entry), 'Do not package credentials');
 await import('./check-letter-glitch.mjs');
 await import('./check-splash.mjs');
-await import('./check-loader-rays.mjs');
+await import('./check-loader-grid.mjs');
 await import('./check-navigation.mjs');
 await import('./check-journey.mjs');
 await import('./check-tooltips.mjs');

@@ -19,7 +19,7 @@ assert.equal(submissionState(false, { errors: [{ code: 'INACTIVE' }] }), 'activa
 assert.deepEqual(providerFieldErrors({ errors: [{ field: 'email' }, { field: 'email' }, { field: '__proto__' }] }), ['email']);
 
 const init = await readFile(new URL('../src/client/theme-init.js', import.meta.url), 'utf8');
-function boot({ consent = '', stored = null, blocked = false, reduced = false, readyState = 'loading', pathname = '/', hash = '' } = {}) {
+function boot({ consent = '', stored = null, blocked = false, reduced = false, forced = false, readyState = 'loading', pathname = '/', hash = '' } = {}) {
   const root = { dataset: {}, style: { setProperty() {} } }, timers = new Map(), reads = [], removals = [];
   const listeners = { document: new Map(), window: new Map() };
   let now = Date.now(), nextTimer = 0;
@@ -43,7 +43,7 @@ function boot({ consent = '', stored = null, blocked = false, reduced = false, r
       removeItem(key) { if (blocked) throw new Error('Blocked'); removals.push(key); }
     },
     sessionStorage: { getItem() { throw new Error('Intro visibility must not depend on a previous visit'); }, setItem() { throw new Error('Intro visibility must not persist across reloads'); } },
-    matchMedia: q => ({ matches: q.includes('reduced') ? reduced : false, addEventListener() {} })
+    matchMedia: q => ({ matches: q.includes('reduced') ? reduced : q.includes('forced') ? forced : false, addEventListener() {} })
   });
   const fire = (name, type, event = {}) => {
     const target = name === 'document' ? document : window;
@@ -64,7 +64,8 @@ function boot({ consent = '', stored = null, blocked = false, reduced = false, r
   };
   return {
     root, document, window, location, timers, reads, removals, listeners, fire, advance, state: window.AlejandroPreferences,
-    ready() { document.readyState = 'interactive'; fire('document', 'DOMContentLoaded'); }
+    ready() { document.readyState = 'interactive'; fire('document', 'DOMContentLoaded'); },
+    loaded() { document.readyState = 'complete'; fire('window', 'load'); }
   };
 }
 const stored = JSON.stringify({ expires: Date.now() + 100000, values: { theme: 'dark', tone: 'violet', text: 125, motion: true } });
@@ -88,26 +89,35 @@ assert.equal(accepted.state.sanitize({ cursor: 'true', guideHidden: 'true' }).cu
 assert.equal(accepted.state.sanitize({ cursor: true, guideHidden: true }).guideHidden, true);
 const loading = boot();
 assert.equal(loading.root.dataset.loading, 'true');
-loading.advance(30); loading.ready(); loading.advance(1169);
-assert.equal(loading.root.dataset.loading, 'true', 'A fast document does not dismiss the intro before its perceptible minimum');
+loading.advance(30); loading.ready(); loading.advance(100);
+assert.equal(loading.root.dataset.loading, 'true', 'Parsing alone never starts the post-load countdown');
+loading.loaded(); loading.advance(1999);
+assert.equal(loading.root.dataset.loading, 'true', 'The intro remains for at least 2s after window.load');
 loading.advance(1);
-assert.equal(loading.root.dataset.loading, undefined, 'A ready document exits at the 1200ms minimum');
+assert.equal(loading.root.dataset.loading, undefined, 'A fully loaded document exits after its own 2000ms hold');
 assert.equal(loading.timers.size, 0, 'Completing the intro clears its independent deadline');
-for (const type of ['DOMContentLoaded', 'keydown', 'click']) assert.equal(loading.listeners.document.get(type)?.length ?? 0, 0, `Finishing removes the ${type} listener`);
-assert.equal(loading.listeners.window.get('pageshow')?.length, 0);
-loading.advance(5000); loading.ready();
+for (const type of ['keydown', 'click']) assert.equal(loading.listeners.document.get(type)?.length ?? 0, 0, `Finishing removes the ${type} listener`);
+for (const type of ['load', 'pageshow']) assert.equal(loading.listeners.window.get(type)?.length ?? 0, 0, `Finishing removes the ${type} listener`);
+loading.advance(5000); loading.loaded();
 assert.equal(loading.root.dataset.loading, undefined, 'Later events and old deadlines cannot reopen the intro');
 
-const slow = boot(); slow.advance(1600);
-assert.equal(slow.root.dataset.loading, 'true', 'The minimum alone does not hide an unfinished document');
-slow.ready(); assert.equal(slow.root.dataset.loading, undefined, 'A slower document exits immediately once ready after the minimum');
-const stalled = boot(); stalled.advance(2399);
+const slow = boot(); slow.ready(); slow.advance(9999);
+assert.equal(slow.root.dataset.loading, 'true', 'A slow image download does not consume the post-load hold');
+slow.loaded(); slow.advance(1999);
+assert.equal(slow.root.dataset.loading, 'true', 'A late load clears the old watchdog and still receives a full 2s');
+slow.advance(1); assert.equal(slow.root.dataset.loading, undefined);
+const stalled = boot(); stalled.advance(9999);
 assert.equal(stalled.root.dataset.loading, 'true');
-stalled.advance(1); assert.equal(stalled.root.dataset.loading, undefined, 'The 2400ms hard limit fails open even without DOMContentLoaded or later scripts');
+stalled.advance(1); assert.equal(stalled.root.dataset.loading, undefined, 'A missing window.load event fails open after the 10s watchdog');
 assert.equal(stalled.timers.size, 0);
-stalled.ready(); assert.equal(stalled.root.dataset.loading, undefined);
-const alreadyReady = boot({ readyState: 'complete' }); alreadyReady.advance(1200);
-assert.equal(alreadyReady.root.dataset.loading, undefined, 'An already parsed document does not need another readiness event');
+stalled.loaded(); stalled.advance(2000); assert.equal(stalled.root.dataset.loading, undefined, 'A late event cannot reopen an expired loader');
+const alreadyReady = boot({ readyState: 'complete' }); alreadyReady.advance(1999);
+assert.equal(alreadyReady.root.dataset.loading, 'true'); alreadyReady.advance(1);
+assert.equal(alreadyReady.root.dataset.loading, undefined, 'An already loaded document receives one 2s hold');
+const parsed = boot({ readyState: 'interactive' }); parsed.advance(3000);
+assert.equal(parsed.root.dataset.loading, 'true', 'An interactive document still waits for its assets');
+parsed.loaded(); parsed.fire('window', 'load'); parsed.advance(2000);
+assert.equal(parsed.root.dataset.loading, undefined, 'Duplicate load events cannot restart the hold');
 
 for (const key of ['Escape', 'Enter', 'Tab']) {
   const keyboard = boot(); let prevented = false;
@@ -132,7 +142,7 @@ for (const pathname of ['/', '/en/', '/proyectos/cv-web/', '/en/notes/automation
   for (let reload = 0; reload < 2; reload++) {
     const fresh = boot({ pathname, hash: '#main' });
     assert.equal(fresh.root.dataset.loading, 'true', 'Each document and reload starts its own intro, including detail routes and deep links');
-    fresh.ready(); fresh.advance(1200);
+    fresh.ready(); fresh.loaded(); fresh.advance(2000);
     assert.equal(fresh.root.dataset.loading, undefined);
     assert.equal(fresh.location.hash, '#main', 'The intro preserves the native deep-link destination');
   }
@@ -140,4 +150,6 @@ for (const pathname of ['/', '/en/', '/proyectos/cv-web/', '/en/notes/automation
 const quiet = boot({ reduced: true });
 assert.equal(quiet.root.dataset.loading, undefined); assert.equal(quiet.timers.size, 0, 'System reduced motion never delays navigation');
 assert.equal(accepted.root.dataset.loading, undefined, 'The stored visitor motion preference never delays navigation');
-console.log(JSON.stringify({ visitorChecks: ['contact limits and consent', 'provider errors never reported as success', 'storage requires consent', 'expired/blocked/corrupt storage', 'per-document intro minimum and hard limit', 'keyboard/button exit and cleanup', 'deep links/reload/BFCache', 'reduced motion'] }));
+assert.equal(boot({ forced: true }).root.dataset.loading, undefined, 'Forced colors skips the decorative hold');
+assert.equal(boot({ consent: 'preferences', stored: JSON.stringify({ expires: Date.now() + 100000, values: { contrast: true } }) }).root.dataset.loading, undefined, 'High contrast skips the decorative hold');
+console.log(JSON.stringify({ visitorChecks: ['contact limits and consent', 'provider errors never reported as success', 'storage requires consent', 'expired/blocked/corrupt storage', '2s after load including slow assets', 'missing-load watchdog', 'keyboard/button exit and cleanup', 'deep links/reload/BFCache', 'reduced motion and contrast'] }));
