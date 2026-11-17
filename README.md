@@ -11,7 +11,9 @@ Sergio Hernández’s professional website, focused on applied AI integration in
 
 ## Experience
 
-The full-screen home features a grayscale photographic portrait, three slowly rotating rings and a restrained photo zoom. The photo is an assisted cutout of the owner's original studio portrait; its preparation is documented in [visual assets](docs/ASSETS.md). The unused 3D generator, viewer and tests have been removed at the owner's request. The profile uses plain editorial text without a duplicate photo card, followed by an explorer of 18 confirmed technologies, expandable experience entries, two real web project cases, two personal AI/integration labs and five original technical notes. Case, demo and note pages have equivalent Spanish and English routes.
+The full-screen home features a grayscale photographic portrait, three slowly rotating rings and a restrained photo zoom. The photo is an assisted cutout of the owner's original studio portrait; its preparation is documented in [visual assets](docs/ASSETS.md). The unused 3D generator, viewer and tests have been removed at the owner's request. The profile uses plain editorial text without a duplicate photo card, followed by an explorer of 24 confirmed technologies, expandable career entries and three professional project summaries, two real web project cases, two personal AI/integration labs and five original technical notes. Case, demo and note pages have equivalent Spanish and English routes.
+
+The profile and contact details reflect the owner's complete CV and public profiles checked on 17 November 2026: seniority, immediate availability, remote work, technical English and public phone/WhatsApp links. See [content provenance](docs/CONTENT.md). The professional summaries are separate from the personal demos.
 
 The visual system uses charcoal, warm off-white, restrained coral and regular serif headings throughout the website. Desktop navigation stays expanded above 760 px and may wrap; only the mobile menu collapses. Content reveals take about 1.1 seconds with bounded stagger. The custom cursor keeps a dot and ring without a redirect arrow.
 

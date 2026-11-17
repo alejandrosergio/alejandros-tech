@@ -7,6 +7,7 @@ import { locales } from '../src/content/locales.mjs';
 import { site } from '../src/content/site.mjs';
 import { routeGroups } from '../src/content/routes.mjs';
 import { skills, experience } from '../src/content/profile.mjs';
+import { professionalWork } from '../src/content/professional-work.mjs';
 import { projects, projectName } from '../src/content/projects.mjs';
 import { assistantCopy } from '../src/content/document-assistant.mjs';
 import { workflowCopy } from '../src/content/workflow.mjs';
@@ -40,6 +41,7 @@ compareShape(audienceCopy.es, audienceCopy.en, 'audiences');
 assert.equal(new Set(skills.map(s => s.id)).size, skills.length);
 for (const skill of skills) assert.ok(skill.es && skill.en && skill.context.es && skill.context.en);
 for (const record of experience) assert.ok(record.es.length && record.es.length === record.en.length);
+for (const project of professionalWork) compareShape(project.es, project.en, `professional.${project.id}`);
 for (const project of projects) compareShape(project.es, project.en, `project.${project.id}`);
 for (const note of notes) compareShape(note.es, note.en, `note.${note.id}`);
 
@@ -94,7 +96,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   assert.ok(!/TODO|lorem ipsum|undefined|href=""|href="#"|codex-preview|@gmail\.com/.test(html), `Finished and private-contact-free content: ${pathname}`);
   for (const match of html.matchAll(/(?:href|src)="([^"\s]+)"/g)) {
     const target = new URL(match[1].replaceAll('&amp;', '&'), site.origin + pathname);
-    if (target.origin !== site.origin) { assert.ok(['https:', 'mailto:'].includes(target.protocol)); continue; }
+    if (target.origin !== site.origin) { assert.ok(['https:', 'mailto:', 'tel:'].includes(target.protocol)); continue; }
     const file = fileFor(target.pathname); await access(file);
     if (target.hash && file.endsWith('.html')) assert.ok(ids(await readHTML(file)).includes(decodeURIComponent(target.hash.slice(1))), `Existing anchor: ${pathname} → ${target.href}`);
   }

@@ -21,9 +21,9 @@ Por petición del titular se eliminaron de la fuente el generador, lector, visua
 
 ## Capturas actuales de proyectos
 
-Capturas JPEG nativas de navegador, tomadas el 6 de noviembre de 2026, sin retoque, recorte ni generación de imágenes. Se usó una ventana de prueba de 1280 × 900; la captura devuelta mide 1280 × 900 para Alejandro’sTech y 1265 × 889 para el CV. Se conservan sus bytes y dimensiones originales, que el modelo de proyecto declara en el HTML. Cada captura se reutiliza en la tarjeta y en la ficha, evitando copias duplicadas. El idioma del proyecto determina también la imagen social y el texto alternativo.
+Capturas JPEG nativas de navegador, renovadas el 17 de noviembre de 2026, sin retoque, recorte ni generación de imágenes. Se conserva la ventana de escritorio normal de 1280 × 720; la captura devuelta mide 1280 × 720 para Alejandro’sTech y 1265 × 712 para el CV. Se conservan sus bytes y dimensiones originales, que el modelo de proyecto declara en el HTML. Cada captura se reutiliza en la tarjeta y en la ficha, evitando copias duplicadas. El idioma del proyecto determina también la imagen social y el texto alternativo.
 
-Las portadas de Alejandro’sTech se capturaron desde la vista local de esta entrega, con tema oscuro/coral y texto al 100%; la publicación se verifica contra esa misma fuente. Las del CV se capturaron de sus páginas públicas `/` y `/en/`, en tema oscuro. El CV y su código no se modificaron. Las capturas no acreditan proyectos nuevos ni resultados de IA.
+Las portadas de Alejandro’sTech se capturaron desde la vista local de la actualización de perfil, con tema oscuro/coral y texto al 100%; la publicación se verifica contra esa misma fuente. Las del CV se capturaron de sus páginas públicas `/` y `/en/`, en tema oscuro. El CV y su código no se modificaron. Los tres resúmenes profesionales nuevos son tipográficos y proceden del CV maestro del titular; no se les atribuyen capturas ni demos. Las capturas no acreditan resultados de IA.
 
 Las vistas anteriores de `alejandros-tech-preview.jpg` y `cv-preview.jpg` se sustituyen por estas capturas actuales. El recurso sin uso `alejandros-tech-first-version.jpg` se retira de la publicación. La historia visual anterior se conserva en el [commit be6a39b](https://github.com/alejandrosergio/alejandros-tech/commit/be6a39bfc9235e0b9d4dc08d30a6ed745a240099).
 

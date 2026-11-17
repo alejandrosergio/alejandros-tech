@@ -1,5 +1,77 @@
 # Alejandro’sTech
 
+## Acuerdo compartido con ChatGPT
+
+Este bloque reproduce las instrucciones personalizadas del proyecto de ChatGPT «alejandros-tech». Los detalles técnicos que siguen lo complementan. La alineación es manual y solo se actualiza cuando el usuario lo solicita; no crea sincronizaciones ni autoriza acciones por sí misma.
+
+Este proyecto está dedicado exclusivamente al desarrollo y mantenimiento de Alejandro’sTech, la web profesional de Sergio Alejandro Hernández Patiño. Responde en español claro, cercano y conciso. Explica los resultados sin jerga innecesaria.
+
+CONTEXTO DEL PROYECTO
+
+La carpeta local es C:/Users/Sergi/Documents/Codex/alejandros-tech. Antes de modificar la web, lee AGENTS.md y la documentación pertinente de docs/. Allí están las decisiones vigentes, los datos confirmados y el procedimiento de mantenimiento. Las peticiones posteriores del usuario prevalecen sobre decisiones anteriores.
+
+Usa .codex/sync-state.json como referencia del último estado verificado, sin asumir que los destinos siguen sincronizados. Estas instrucciones no son una orden para iniciar cambios o publicaciones por iniciativa propia.
+
+Destinos:
+- Web: https://alejandros-tech.alejosergio3000.chatgpt.site/
+- Inglés: https://alejandros-tech.alejosergio3000.chatgpt.site/en/
+- GitHub: alejandrosergio/alejandros-tech, rama main.
+- Site existente: appgprj_6aea35f321688191a6452b8b65f782ee.
+
+Conserva el vínculo de .openai/hosting.json. No crees otro Site o repositorio para cambios rutinarios. El CV, LinkedIn, perfil de GitHub, correo y otros proyectos son destinos independientes; trabajar aquí no autoriza modificarlos.
+
+FORMA DE TRABAJAR
+
+Completa las acciones solicitadas de principio a fin. Resuelve decisiones rutinarias dentro del alcance autorizado y evita pedir confirmaciones repetidas. Pregunta cuando falte información imprescindible, haya una ambigüedad importante o una herramienta exija aprobación.
+
+Si el usuario pide investigar, planificar o revisar sin modificar, respeta ese límite: no edites, publiques ni envíes formularios de prueba. No añadas funciones, secciones o rediseños no solicitados. Mantén las restricciones aunque el usuario haga preguntas o pida avances durante el trabajo.
+
+DISEÑO, IDIOMAS Y CONTENIDO
+
+Conserva la identidad editorial carbón/coral, los títulos serif, la fotografía en escala de grises y la marca Alejandro’sTech solo en texto. No recuperes el logo A+, el modelo 3D retirado ni efectos descartados sin una nueva petición.
+
+Preserva los ajustes guardados de apariencia y accesibilidad, cookies, loader, navegación, guía contextual, cursor, animaciones y música opcional. Consulta AGENTS.md y docs/DESIGN.md para sus requisitos precisos. Las animaciones deben respetar movimiento reducido, pausa, contraste y visibilidad, sin perjudicar la lectura.
+
+Mantén español e inglés equivalentes en contenido, navegación, mensajes, etiquetas, fuentes, demostraciones y metadatos. Comprueba móvil y escritorio, teclado, ampliación de texto y ausencia de desbordamientos. Los contenidos y enlaces principales deben seguir disponibles sin JavaScript. Conserva un SEO coherente, sin prometer posiciones o puntuaciones.
+
+El perfil confirmado es analista y desarrollador de software, con .NET, Power Platform, React, automatización e IA aplicada. No inventes experiencia, empleadores, clientes, certificaciones, cifras o resultados. Distingue proyectos personales, experiencia profesional, guías y notas originales.
+
+El contacto público es alejandro.dev.sergio@outlook.com. Mantén privados otros correos y datos de cuenta. Los enlaces al CV deben abrir otra pestaña y respetar el idioma.
+
+DEMOS, IA Y COSTES
+
+La consulta documental ligera devuelve fragmentos literales con fuentes; no la presentes como una respuesta generada. El modelo descargable es opcional, se ejecuta en el dispositivo y requiere activación explícita del visitante. Conserva cancelación, gestión de caché y alternativa ligera para dispositivos incompatibles.
+
+No añadas inferencia de pago, claves de API, facturación, compras ni descargas automáticas sin nueva autorización. No presupongas que una suscripción incluye créditos o servicios: compruébalo antes de proponerlos.
+
+La demo de procesos usa datos ficticios y memoria de la pestaña. El ejemplo .NET local y las guías de Power Automate no son un backend publicado ni flujos desplegados. No atribuyas autenticación, persistencia o garantías de producción inexistentes.
+
+Conserva las salidas originales de evaluación, sus huellas y los fallos documentados. No alteres resultados para mejorar métricas. Identifica correctamente la revisión asistida por IA y los límites de la muestra.
+
+IMPLEMENTACIÓN Y ENTREGA
+
+Para cambios solicitados en la web, aplica el acuerdo de AGENTS.md y el procedimiento del skill de Sites instalado: revisar el origen actual, preservar cambios ajenos, implementar, generar dist/, comprobar, publicar en el Site existente y guardar los mismos archivos gestionados en GitHub.
+
+No edites dist/ a mano. Mantén código legible, componentes reutilizables y dependencias justificadas. Elimina código muerto del área modificada sin ampliar innecesariamente el trabajo.
+
+Ejecuta pnpm build y pnpm check, además de las comprobaciones específicas de lo modificado. Si cambia el ejemplo .NET, aplica las verificaciones documentadas de compilación, escenarios y HTTP. Revisa las vistas e interacciones afectadas en ambos idiomas. Reutiliza pruebas válidas cuando sus entradas no hayan cambiado.
+
+Antes de escribir en GitHub, comprueba el estado remoto. Reconcilia diferencias sin sobrescribir trabajo concurrente, sin force-push y sin cambiar la configuración global de Git. Sites y GitHub pueden tener historiales distintos: verifica contenido y huellas, no exijas commits idénticos.
+
+Verifica el despliegue, el contenido de GitHub, la finalización correcta de GitHub Actions y que no queden cambios propios pendientes. Actualiza el estado local de sincronización solo después de verificar ambos destinos.
+
+SEGURIDAD Y COMUNICACIÓN
+
+Mantén las credenciales en memoria y utiliza los mecanismos protegidos del procedimiento oficial. Nunca las imprimas ni guardes en argumentos, archivos o logs. No publiques secretos, perfiles de navegador, .env, .codex/, .sites-runtime/, node_modules/, archivos temporales, SDKs o bin/obj.
+
+No crees sincronizaciones recurrentes ni envíes mensajes a terceros sin una petición específica. Respeta las aprobaciones de las herramientas y las reglas de delegación vigentes.
+
+Durante trabajos largos, comunica avances o límites relevantes. Al terminar, indica qué se completó, cómo se comprobó y cualquier limitación real. Para cambios publicados, incluye la URL y el commit de GitHub. Para revisiones sin cambios, dilo expresamente. No declares una entrega completa si falta una publicación, sincronización o prueba necesaria.
+
+## Detalles técnicos del proyecto local
+
+Las secciones siguientes conservan las decisiones y los procedimientos propios de esta carpeta.
+
 ## Purpose and current scope
 
 This is Sergio Hernández’s official professional-brand website. On 3 November 2026 the owner authorized expansion from the coming-soon page into a complete bilingual professional website, inspired by dataconale.com and retaining Alejandro’sTech’s own identity. The current scope includes the home, profile, technology explorer, experience and education, public project case studies, technical notes and contact. Later requests added visitor accessibility/appearance controls, cookie preferences, an introductory loader, a validated Formspree form forwarding to the public Outlook address, scroll-to-top, a custom cursor and a contextual navigation guide. See docs/CONTACT.md for the external form setup and delivery verification boundary.
@@ -26,6 +98,8 @@ The CV is a separate project and repository. It is a visual and factual referenc
 ## Maintenance agreement
 
 The user authorized routine requested changes to be applied to source, published to this existing Site, and saved to GitHub. Finish and verify both destinations in each maintenance request, without another conversational confirmation. Respect native tool approvals and any later explicit restriction.
+
+This agreement applies to requested changes to the website. Instruction/configuration-only work, research, planning and explicitly read-only reviews do not authorize website implementation, commits, pushes, deployments, test contact submissions or sync-state updates. Honor the current request's exact scope.
 
 1. Read this file, the installed Sites skill and relevant project documentation.
 2. Get the existing Site and open its source through the official Sites source helper using a fresh short-lived credential. Retain the full opening result. Refresh ownership and audience as needed.
@@ -60,7 +134,7 @@ Use Node 22.13+ and `pnpm install --frozen-lockfile` before the build. WebLLM an
 
 The document assistant is an original personal prototype, not historical client experience. Its four public bilingual documents and sixteen sections are in `src/content/document-assistant.mjs`; see `docs/AI-DEMO.md`. The owner's latest authorization is lightweight consultation with sources and an optional downloadable model, with no API charges. Default results are verbatim excerpts and must not be presented as generated answers. Optional Qwen3.5 generation runs in the browser after explicit activation, with source and quote checks and an explicit lightweight fallback. Never add paid inference, billing, keys or automatic downloads. Preserve cancellation, unsupported-device handling, cache controls and ES/EN parity.
 
-The owner subsequently authorised completing the remaining deliveries on 7 November 2026. The site now has four cases, five original notes and 26 localized routes, within the same eight homepage modules. `docs/EVALUATION.md` explains the actual 24-query reference run, AI-assisted qualitative review and known failures. Reference outputs must stay verbatim; the build checks fingerprints and rejects stale inputs. Do not claim an independent human evaluation, general accuracy or RAGAs/ALCE execution.
+The owner subsequently authorised completing the remaining deliveries on 7 November 2026. The site has four public personal case studies, five original notes and 26 localized routes, within the same eight homepage modules. The profile refresh on 17 November adds three expandable professional project summaries from the owner's master CV, separate from the runnable personal prototypes. `docs/EVALUATION.md` explains the actual 24-query reference run, AI-assisted qualitative review and known failures. Reference outputs must stay verbatim; the build checks fingerprints and rejects stale inputs. Do not claim an independent human evaluation, general accuracy or RAGAs/ALCE execution.
 
 `examples/workflow-api/` is a personal .NET 10 local reference, not the Site's backend. The browser workflow uses tab memory with fictional data. Shared fixtures cover both implementations. Use `dotnet build examples/workflow-api/src/WorkflowApi/WorkflowApi.csproj -c Release`, `dotnet run --project examples/workflow-api/tests/WorkflowChecks/WorkflowChecks.csproj -c Release`, and `node scripts/check-workflow-http.mjs` after relevant changes. The HTTP checker may select an isolated SDK through `TASK_DOTNET`. Keep SDKs, bin/obj and local processes out of Git. Power Automate documents are bilingual integration guides, not deployed tenant flows; never claim authentication, persistence or exactly-once processing in this bounded reference.
 
@@ -73,7 +147,8 @@ The owner subsequently authorised completing the remaining deliveries on 7 Novem
 - Profile: .NET and Power Platform developer, full stack, automation and AI integration. Keep claims grounded in the owner’s confirmed experience.
 - The applied-AI editorial focus describes language-model integration through APIs in applications and automation, with technical review. Keep the confirmed analyst/developer role. Two cases are digital-identity web projects; the new document assistant is a personal applied-AI prototype. Project screenshots and their alt/social metadata match ES/EN; the assistant uses an original functional diagram, not a fabricated screenshot. See docs/ASSETS.md.
 - Do not invent measured outcomes, employers, projects, clients, certifications or team sizes. The five-person team and payroll project in earlier conversation were examples, not confirmed facts.
-- React is a confirmed current frontend technology. Do not offer historical Java/Angular work as a current specialization or add unconfirmed Python experience.
+- React is a confirmed current frontend technology. The master CV and public profile checked on 17 November confirm complementary Node.js/Python experience; keep it complementary. Java/Angular remain part of the earlier career, rather than the main current specialisation.
+- The 17 November master CV confirms seniority, over six years of experience, four years of fully remote work and immediate availability for employment or hourly/project work. English is technical reading/use (B1 reference), without conversation; professional communication and interviews are in Spanish. The public CV confirms the phone and WhatsApp number in `site.mjs`. See `docs/CONTENT.md` for sources and the boundaries of the three professional summaries.
 - Do not add a launch date, countdown, newsletter, account, form backend, client logos or commercial service promises without a request. New sections must contain complete, confirmed content. Technical notes written for the site are original explanatory content, not evidence of earlier publications or client projects. See `docs/CONTENT.md` for provenance.
 
 ## Design and QA

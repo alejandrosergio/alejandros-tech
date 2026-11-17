@@ -1,5 +1,21 @@
 # Procedencia del contenido
 
+## Actualización del perfil · 17 de noviembre de 2026
+
+Fuentes: CV maestro completo aportado por el titular (`CV_Sergio_Hernandez_Maestro_Completo.pdf`, tres páginas; SHA-256 `6870c1a73b8ecc0df1ece79b8dfd5f176e49d7ad123131b2c83b3e9b7a2d3ee6`), CV público ES/EN, encabezado público de LinkedIn y README público de `alejandrosergio/alejandrosergio`, consultados en esta entrega. No se modifican esos destinos.
+
+Se confirma el perfil senior, más de seis años de experiencia, cuatro años de trabajo totalmente remoto, disponibilidad inmediata y apertura a contratación laboral o servicios por horas/proyecto. La base pública sigue siendo Cali, Colombia. El CV permite considerar traslado nacional y trabajo o viajes a México según las condiciones del proyecto; no se afirma residencia, permiso de trabajo ni disponibilidad para otros países.
+
+Los idiomas se precisan como español nativo e inglés de lectura y uso técnico, referencia B1, sin conversación. La comunicación profesional y las entrevistas son en español; tener una web en inglés no implica fluidez oral.
+
+Las capacidades actualizadas incluyen Copilot Studio, agentes y asistentes, RAG, AI Builder, SAP/ERP, SharePoint y ALM con Pipelines. Node.js y Python se presentan como experiencia complementaria; Java/Angular siguen contextualizados en la trayectoria anterior. No se trasladan a la web todos los años por tecnología del CV ni se inventan certificaciones.
+
+Tres resúmenes profesionales ampliables recogen recepción de mercancía con SAP, mantenimiento predictivo de flotas y MSF Public Sector Flight Deck (Dell / Solumn). Sus aportaciones proceden del PDF del titular; no se inventan empresas empleadoras, fechas, capturas, repositorios públicos o demos de esos trabajos. Se priorizan aportación y alcance sin trasladar porcentajes de resultado. Permanecen separados de las cuatro fichas de proyectos personales públicos y de sus laboratorios. La API local de ejemplo sigue sin ser el backend del sitio.
+
+Outlook, LinkedIn, GitHub, teléfono `+57 312 856 0843` y el enlace a WhatsApp coinciden con los contactos del CV público. Los enlaces de WhatsApp solo preparan un mensaje en el servicio externo; la web no lo envía. No se publica Gmail ni información de la configuración privada de LinkedIn. El formulario Formspree y su destinatario no cambian.
+
+Las capturas del CV se renuevan desde sus páginas publicadas en ambos idiomas. El caso del CV ahora enlaza también su repositorio público. Se actualizan las capturas de Alejandro’sTech desde la vista local verificada de la misma entrega. Véase `ASSETS.md`.
+
 ## Identidad y hechos profesionales
 
 Fuente: CV público de Sergio Hernández, consultado el 3 de noviembre de 2026:

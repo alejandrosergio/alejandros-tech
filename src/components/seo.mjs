@@ -11,7 +11,7 @@ const portrait = '/assets/sergio-natural-appearance.webp';
 function structuredData(lang, options, image) {
   const { title, description, paths, home, project, note } = options;
   const url = absolute(paths[lang]), pageID = `${url}#webpage`;
-  const person = { '@type': 'Person', '@id': personID, name: 'Sergio Alejandro Hernández Patiño', url: absolute('/'), image: absolute(portrait), jobTitle: locales[lang].hero.kicker, description: locales[lang].about.intro, sameAs: [site.linkedin, site.github, site.cv] };
+  const person = { '@type': 'Person', '@id': personID, name: 'Sergio Alejandro Hernández Patiño', url: absolute('/'), image: absolute(portrait), jobTitle: lang === 'es' ? 'Desarrollador senior de software' : 'Senior Software Developer', description: locales[lang].about.intro, email: site.email, telephone: site.phone, address: { '@type': 'PostalAddress', addressLocality: 'Cali', addressCountry: 'CO' }, knowsAbout: ['.NET', 'Microsoft Power Platform', 'React', 'Copilot Studio', 'RAG', 'AI Builder', 'REST APIs'], sameAs: [site.linkedin, site.github, site.cv] };
   const website = { '@type': 'WebSite', '@id': websiteID, name: site.name, url: absolute('/'), inLanguage: ['es', 'en'], publisher: { '@id': personID } };
   const page = { '@type': home ? 'ProfilePage' : 'WebPage', '@id': pageID, url, name: title, description, inLanguage: lang, isPartOf: { '@id': websiteID }, primaryImageOfPage: { '@type': 'ImageObject', url: absolute(image) } };
   const graph = [person, website, page];

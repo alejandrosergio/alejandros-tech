@@ -1,6 +1,7 @@
 import { site } from '../content/site.mjs';
 import { locales } from '../content/locales.mjs';
 import { experience, skills } from '../content/profile.mjs';
+import { professionalWork } from '../content/professional-work.mjs';
 import { projects, projectPath, projectName, projectDestination } from '../content/projects.mjs';
 import { assistantCopy, assistantPaths } from '../content/document-assistant.mjs';
 import { documentAssistant } from './document-assistant.mjs';
@@ -103,6 +104,7 @@ function skillExplorer(lang, t) {
       <div class="skill-explorer-body"><div class="skill-grid">${skills.map((s, i) => `<button type="button" class="skill-tile" data-skill="${s.id}" data-group="${s.group}" data-name="${e(s.name)}" data-symbol="${e(s.symbol)}" data-description="${e(s[lang])}" data-context="${e(s.context[lang])}" data-category="${e(t.skills.groups[s.group])}" aria-pressed="${i === 0}" aria-controls="skill-inspector"><span class="skill-number" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><span class="skill-symbol" aria-hidden="true">${e(s.symbol)}</span><span class="skill-name">${e(s.name)}</span><span class="skill-tile-arrow" aria-hidden="true">↗</span></button>`).join('')}</div>
       <aside class="skill-inspector" id="skill-inspector" aria-live="polite" aria-atomic="true"><span class="small-label">${t.skills.selected}</span><span class="inspector-symbol" data-inspector-symbol aria-hidden="true">${e(first.symbol)}</span><p class="inspector-category" data-inspector-category>${t.skills.groups[first.group]}</p><h3 data-inspector-name>${e(first.name)}</h3><p data-inspector-description>${e(first[lang])}</p><div class="inspector-context"><span class="small-label">${t.skills.related}</span><p data-inspector-context>${e(first.context[lang])}</p></div></aside></div>
     </div>
+    <details class="skills-background" data-reveal><summary>${e(t.skills.additionalLabel)}<span class="disclosure-plus" aria-hidden="true">+</span></summary><ul>${t.skills.additional.map(item => `<li>${e(item)}</li>`).join('')}</ul></details>
   </div></section>`;
 }
 
@@ -122,7 +124,13 @@ function projectCards(lang, t) {
 }
 
 function projectSection(lang, t) {
-  return `<section class="section projects-section wrap" id="proyectos" aria-labelledby="projects-title"><div class="section-heading" data-reveal><div>${sectionLabel('04', t.projects.label)}<h2 id="projects-title">${splitTitle(t.projects.title)}</h2></div><p>${t.projects.intro}</p></div><div class="project-grid">${projectCards(lang, t)}</div></section>`;
+  const selectedWork = professionalWork.map(item => {
+    const p = item[lang];
+    return `<article class="professional-case" data-reveal><p class="small-label">${e(p.category)}</p><h4>${e(p.title)}</h4><p>${e(p.summary)}</p><details><summary>${e(t.projects.contributionLabel)}<span class="disclosure-plus" aria-hidden="true">+</span></summary><ul>${p.details.map(text => `<li>${e(text)}</li>`).join('')}</ul>${tags(item.stack)}</details></article>`;
+  }).join('');
+  return `<section class="section projects-section wrap" id="proyectos" aria-labelledby="projects-title"><div class="section-heading" data-reveal><div>${sectionLabel('04', t.projects.label)}<h2 id="projects-title">${splitTitle(t.projects.title)}</h2></div><p>${t.projects.intro}</p></div>
+    <div class="professional-work" aria-labelledby="professional-work-title"><div class="work-heading" data-reveal><span class="small-label">${e(t.projects.professionalLabel)}</span><h3 id="professional-work-title">${e(t.projects.professionalTitle)}</h3><p>${e(t.projects.professionalIntro)}</p></div><div class="professional-work-grid">${selectedWork}</div></div>
+    <div class="work-heading public-work-heading" data-reveal><h3>${e(t.projects.publicTitle)}</h3><p>${e(t.projects.publicIntro)}</p></div><div class="project-grid">${projectCards(lang, t)}</div></section>`;
 }
 
 function processSection(t) {
@@ -138,7 +146,9 @@ function noteSection(lang, t) {
 }
 
 function contact(t, lang) {
-  return `<section class="contact-section" id="contacto" aria-labelledby="contact-title"><div class="wrap"><div class="contact-heading" data-reveal>${sectionLabel('06', t.contact.label)}<h2 id="contact-title">${splitTitle(t.contact.title)}</h2><p>${t.contact.intro}</p></div>${contactForm(lang, site.formEndpoint)}<div class="contact-bottom"><div class="contact-email"><a href="${e(mailURL(t))}" class="contact-address">${site.email}${icon('arrow')}</a><button class="copy-email" type="button" data-copy-email="${site.email}" aria-label="${t.contact.copy}" data-success="${t.contact.copied}" data-failure="${t.contact.copyFail}" hidden>${icon('copy')}<span>${t.contact.copy}</span></button><span class="sr-only" role="status" data-copy-status></span></div><div class="contact-links"><a href="${site.linkedin}" rel="me">LinkedIn${icon('arrow')}</a><a href="${site.github}" rel="me">GitHub${icon('arrow')}</a><a target="_blank" rel="noopener noreferrer" href="${site.cv}${t.path === '/en/' ? 'en/' : ''}">${t.cv}${icon('arrow')}</a></div></div></div></section>`;
+  const whatsappURL = `${site.whatsapp}?text=${encodeURIComponent(t.contact.whatsappMessage)}`;
+  const availability = `<aside class="contact-availability" aria-labelledby="availability-title" data-reveal><div><span class="small-label">${e(t.contact.directLabel)}</span><h3 id="availability-title">${e(t.contact.availabilityTitle)}</h3><p>${e(t.contact.availabilityText)}</p><p class="contact-communication">${e(t.contact.communication)}</p></div><nav class="direct-contact-actions" aria-label="${e(t.contact.directLabel)}"><a class="button button-primary" href="${e(whatsappURL)}" target="_blank" rel="noopener noreferrer">${icon('chat')}${e(t.contact.whatsappLabel)}</a><a class="button button-secondary" href="tel:${site.phone}" aria-label="${e(t.contact.phoneLabel)} ${site.phoneLabel}">${icon('phone')}${site.phoneLabel}</a></nav></aside>`;
+  return `<section class="contact-section" id="contacto" aria-labelledby="contact-title"><div class="wrap"><div class="contact-heading" data-reveal>${sectionLabel('06', t.contact.label)}<h2 id="contact-title">${splitTitle(t.contact.title)}</h2><p>${t.contact.intro}</p></div>${availability}${contactForm(lang, site.formEndpoint)}<div class="contact-bottom"><div class="contact-email"><a href="${e(mailURL(t))}" class="contact-address">${site.email}${icon('arrow')}</a><button class="copy-email" type="button" data-copy-email="${site.email}" aria-label="${t.contact.copy}" data-success="${t.contact.copied}" data-failure="${t.contact.copyFail}" hidden>${icon('copy')}<span>${t.contact.copy}</span></button><span class="sr-only" role="status" data-copy-status></span></div><div class="contact-links"><a href="${site.linkedin}" rel="me">LinkedIn${icon('arrow')}</a><a href="${site.github}" rel="me">GitHub${icon('arrow')}</a><a target="_blank" rel="noopener noreferrer" href="${site.cv}${t.path === '/en/' ? 'en/' : ''}">${t.cv}${icon('arrow')}</a></div></div></div></section>`;
 }
 
 export function renderPage(lang, { notFound = false } = {}) {
