@@ -45,10 +45,11 @@
   if (explorer) {
     const tiles = [...explorer.querySelectorAll('[data-skill]')];
     const filters = [...explorer.querySelectorAll('[data-skill-filter]')];
-    const fields = ['symbol', 'category', 'name', 'description', 'context'];
+    const fields = ['category', 'name', 'description', 'context'];
     const select = tile => {
       tiles.forEach(item => item.setAttribute('aria-pressed', String(item === tile)));
       fields.forEach(field => { explorer.querySelector(`[data-inspector-${field}]`).textContent = tile.dataset[field]; });
+      explorer.querySelector('[data-inspector-symbol]').replaceChildren(tile.querySelector('.technology-mark').cloneNode(true));
     };
     tiles.forEach(tile => tile.addEventListener('click', () => select(tile)));
     filters.forEach(filter => filter.addEventListener('click', () => {

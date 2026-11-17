@@ -60,3 +60,9 @@ La descarga y ejecución solo se inician al activar la IA en la demo. Los pesos 
 ## Diagrama de solicitudes
 
 `workflow-preview.svg` y `workflow-preview-en.svg` son diagramas originales creados para el nuevo prototipo, con textos ES/EN equivalentes. Representan entrada, revisión y decisión; no se presentan como capturas de una integración empresarial. Se utilizan en tarjeta, ficha y metadatos del caso.
+
+## Logos del explorador de tecnologías
+
+Los 22 SVG locales en `public/assets/technologies/` ilustran las tecnologías descritas; no son marcas propias ni certificaciones. `src/components/technology-icon.mjs` comparte la representación entre tarjetas, detalle y alternativa HTML. HTML/CSS y Git/GitHub muestran ambos logos. PCF, APIs REST, IA y RAG usan iconos de línea originales porque son conceptos o frameworks sin un logo de producto independiente. Los archivos se cargan de forma diferida, conservan proporciones y se muestran sobre una pequeña superficie clara para distinguirlos en ambos temas.
+
+La procedencia fijada y SHA-256 de cada SVG están en [technology-logos.json](technology-logos.json). Las licencias y condiciones se describen en [THIRD_PARTY.md](THIRD_PARTY.md). No se añade una biblioteca de iconos en ejecución ni peticiones externas.

@@ -124,7 +124,6 @@ export const skills = [
   {
     "id": "net",
     "name": ".NET",
-    "symbol": ".N",
     "group": "backend",
     "es": "Servicios backend y APIs REST con ASP.NET Core. Una base para conectar aplicaciones, procesos y datos.",
     "en": "Backend services and REST APIs with ASP.NET Core. A foundation for connecting applications, processes and data.",
@@ -136,7 +135,6 @@ export const skills = [
   {
     "id": "csharp",
     "name": "C#",
-    "symbol": "C#",
     "group": "backend",
     "es": "Lógica de aplicación, servicios e integraciones dentro del ecosistema .NET.",
     "en": "Application logic, services and integrations within the .NET ecosystem.",
@@ -148,7 +146,6 @@ export const skills = [
   {
     "id": "react",
     "name": "React",
-    "symbol": "Re",
     "group": "frontend",
     "es": "Interfaces web basadas en componentes, conectadas con servicios y APIs.",
     "en": "Component-based web interfaces connected to services and APIs.",
@@ -160,7 +157,6 @@ export const skills = [
   {
     "id": "typescript",
     "name": "TypeScript",
-    "symbol": "Ts",
     "group": "frontend",
     "es": "Desarrollo frontend con tipos explícitos para describir datos y contratos entre componentes.",
     "en": "Frontend development with explicit types to describe data and contracts between components.",
@@ -172,7 +168,6 @@ export const skills = [
   {
     "id": "web",
     "name": "HTML & CSS",
-    "symbol": "</>",
     "group": "frontend",
     "es": "Estructura semántica, diseño adaptable e interfaces útiles con mejora progresiva.",
     "en": "Semantic structure, responsive design and useful interfaces with progressive enhancement.",
@@ -184,7 +179,6 @@ export const skills = [
   {
     "id": "powerapps",
     "name": "Power Apps",
-    "symbol": "Pa",
     "group": "power",
     "es": "Aplicaciones canvas y model-driven para atender necesidades y procesos de negocio.",
     "en": "Canvas and model-driven apps that address business needs and processes.",
@@ -196,7 +190,6 @@ export const skills = [
   {
     "id": "dataverse",
     "name": "Dataverse",
-    "symbol": "Dv",
     "group": "power",
     "es": "Datos de negocio, modelos y extensiones mediante plugins para soluciones de Power Platform.",
     "en": "Business data, models and plug-in extensions for Power Platform solutions.",
@@ -208,7 +201,6 @@ export const skills = [
   {
     "id": "automate",
     "name": "Power Automate",
-    "symbol": "Fl",
     "group": "power",
     "es": "Flujos para conectar sistemas y automatizar tareas. Automatización de escritorio y RPA cuando el proceso lo requiere.",
     "en": "Flows that connect systems and automate tasks, including desktop automation and RPA when required.",
@@ -220,7 +212,6 @@ export const skills = [
   {
     "id": "powerbi",
     "name": "Power BI",
-    "symbol": "Bi",
     "group": "power",
     "es": "Dashboards e informes para facilitar la consulta y el análisis de información empresarial.",
     "en": "Dashboards and reports that make business information easier to explore and analyse.",
@@ -232,7 +223,6 @@ export const skills = [
   {
     "id": "pcf",
     "name": "PCF",
-    "symbol": "Pc",
     "group": "power",
     "es": "Componentes de código para ampliar las posibilidades de una interfaz de Power Apps.",
     "en": "Code components that extend the capabilities of a Power Apps interface.",
@@ -244,7 +234,6 @@ export const skills = [
   {
     "id": "sql",
     "name": "SQL Server",
-    "symbol": "SQL",
     "group": "backend",
     "es": "Consulta de datos, procedimientos almacenados y persistencia para aplicaciones empresariales.",
     "en": "Data queries, stored procedures and persistence for business applications.",
@@ -256,7 +245,6 @@ export const skills = [
   {
     "id": "ef",
     "name": "Entity Framework",
-    "symbol": "Ef",
     "group": "backend",
     "es": "Acceso a datos con Entity Framework Core y consultas con LINQ en aplicaciones .NET.",
     "en": "Data access with Entity Framework Core and LINQ queries in .NET applications.",
@@ -268,7 +256,6 @@ export const skills = [
   {
     "id": "azure",
     "name": "Azure",
-    "symbol": "Az",
     "group": "integration",
     "es": "Integración de servicios de Azure, con App Service, Functions y Storage dentro de soluciones de software.",
     "en": "Azure service integration, including App Service, Functions and Storage within software solutions.",
@@ -280,7 +267,6 @@ export const skills = [
   {
     "id": "api",
     "name": "REST APIs",
-    "symbol": "API",
     "group": "integration",
     "es": "Contratos de intercambio de información entre aplicaciones y sistemas, con datos JSON y autenticación.",
     "en": "Contracts for exchanging information between applications and systems, using JSON data and authentication.",
@@ -292,7 +278,6 @@ export const skills = [
   {
     "id": "ai",
     "name": "IA / AI",
-    "symbol": "Ai",
     "group": "ai",
     "es": "Integración de modelos de lenguaje y APIs de IA en aplicaciones y automatizaciones, con revisión técnica de los resultados.",
     "en": "Language-model and AI API integration in applications and automation, with technical review of the results.",
@@ -304,7 +289,6 @@ export const skills = [
   {
     "id": "oauth",
     "name": "OAuth 2.0",
-    "symbol": "Au",
     "group": "integration",
     "es": "Autorización de acceso para conectar servicios y trabajar con APIs.",
     "en": "Access authorisation for connecting services and working with APIs.",
@@ -316,7 +300,6 @@ export const skills = [
   {
     "id": "git",
     "name": "Git & GitHub",
-    "symbol": "Git",
     "group": "tools",
     "es": "Control de versiones, revisión de cambios y seguimiento de las fuentes de los proyectos.",
     "en": "Version control, change review and project source tracking.",
@@ -328,7 +311,6 @@ export const skills = [
   {
     "id": "node",
     "name": "Node.js",
-    "symbol": "Nd",
     "group": "tools",
     "es": "Herramientas de desarrollo y generación estática de Alejandro’sTech a partir de módulos JavaScript.",
     "en": "Development tooling and static generation of Alejandro’sTech from JavaScript modules.",
@@ -340,7 +322,6 @@ export const skills = [
   {
     "id": "copilot",
     "name": "Copilot Studio",
-    "symbol": "Cs",
     "group": "ai",
     "es": "Agentes y asistentes conectados al contexto y a los procesos de negocio.",
     "en": "Agents and assistants connected to business context and workflows.",
@@ -352,7 +333,6 @@ export const skills = [
   {
     "id": "rag",
     "name": "RAG",
-    "symbol": "Rg",
     "group": "ai",
     "es": "Recuperación de conocimiento para aportar contexto y fuentes a un asistente documental. Revisión de las respuestas y sus límites.",
     "en": "Knowledge retrieval to provide context and sources for a document assistant. Reviewing responses and their limits.",
@@ -364,7 +344,6 @@ export const skills = [
   {
     "id": "ai-builder",
     "name": "AI Builder",
-    "symbol": "Ab",
     "group": "ai",
     "es": "Procesamiento de documentos y diagnóstico visual dentro de aplicaciones y automatizaciones de Power Platform.",
     "en": "Document processing and visual diagnostics within Power Platform applications and automation.",
@@ -376,7 +355,6 @@ export const skills = [
   {
     "id": "sap",
     "name": "SAP & ERP",
-    "symbol": "ERP",
     "group": "integration",
     "es": "Integración de aplicaciones con SAP y otros ERP mediante APIs REST, conectores personalizados y OAuth 2.0.",
     "en": "Integrating applications with SAP and other ERP systems through REST APIs, custom connectors and OAuth 2.0.",
@@ -388,7 +366,6 @@ export const skills = [
   {
     "id": "sharepoint",
     "name": "SharePoint",
-    "symbol": "Sp",
     "group": "power",
     "es": "Listas y bibliotecas conectadas con Power Apps y Power Automate; configuración de permisos y colaboración en Microsoft 365.",
     "en": "Lists and libraries connected to Power Apps and Power Automate; permissions and collaboration in Microsoft 365.",
@@ -400,7 +377,6 @@ export const skills = [
   {
     "id": "alm",
     "name": "ALM & Pipelines",
-    "symbol": "Al",
     "group": "tools",
     "es": "Soluciones administradas, variables de entorno y referencias de conexión. Entrega entre Dev, Test/QA y Prod con Power Platform Pipelines.",
     "en": "Managed solutions, environment variables and connection references. Delivery across Dev, Test/QA and Prod with Power Platform Pipelines.",

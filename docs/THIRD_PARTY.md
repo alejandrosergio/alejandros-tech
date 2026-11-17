@@ -57,3 +57,13 @@ La permanencia de 2000ms después de window.load pertenece al sitio. Un vigilant
 ## Composición musical local
 
 La composición de 112 BPM de `src/client/soundtrack.js` se escribió para Alejandro’sTech y usa síntesis Web Audio, sin grabaciones, pistas, samples ni servicios externos. No procede de React Bits. Los avisos anteriores no conceden una licencia sobre esa composición. Ver [AUDIO.md](AUDIO.md) para comportamiento y procedencia; no se presenta como «sin copyright».
+
+## Logos de tecnologías
+
+- [Devicon](https://github.com/devicons/devicon/tree/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6), MIT, copyright konpa y colaboradores. Trece SVG originales de C#, React, TypeScript, HTML, CSS, SQL Server, Entity Framework Core, Azure, Git, GitHub, Node.js, Azure DevOps y OAuth. Licencia completa en `/assets/licenses/devicon.txt`.
+- [.NET Brand](https://github.com/dotnet/brand), Microsoft, logo actual sin modificar; blob `d204a0904247bd811d0d2b986c786b413659c465`. Condiciones conservadas en `/assets/licenses/dotnet-brand.txt`.
+- [Simple Icons](https://github.com/simple-icons/simple-icons/tree/17cd4ee07612198a1d8777a060d4100423762a8b), SAP, CC0-1.0; texto íntegro en `/assets/licenses/simple-icons.txt`. Los derechos de marca corresponden a sus titulares.
+- [Iconos de Power Platform de Microsoft](https://learn.microsoft.com/en-us/power-platform/guidance/icons), ZIP oficial revisado el 17 de noviembre de 2026: Power Apps, Power Automate, Dataverse, AI Builder y Copilot Studio. SharePoint procede del recurso de marca publicado por Microsoft en `static2.sharepointonline.com`. Se conservan los SVG sin modificar y se usan junto al nombre para documentar la experiencia y relación de estas tecnologías, sin indicar respaldo de Microsoft. Las condiciones de Microsoft permiten ilustrar documentación, material formativo y diagramas, y mantienen los demás derechos; véanse también las [condiciones de los iconos Microsoft 365](https://learn.microsoft.com/en-us/previous-versions/microsoft-365/solutions/architecture-icons-templates).
+- [Power BI Icons](https://github.com/microsoft/PowerBI-Icons), Microsoft, archivo original `SVG/Power-BI.svg`, blob `f5c066b134d5898553caa47656ec8fce9c3833a7`. Licencia del contenido conservada íntegramente en `/assets/licenses/powerbi-icons.txt`.
+
+La lista de fuentes y huellas está en [technology-logos.json](technology-logos.json). Los nombres de tecnología aportan la etiqueta accesible; sus imágenes son decorativas y no alteran la navegación. Los iconos de conceptos son dibujos originales.

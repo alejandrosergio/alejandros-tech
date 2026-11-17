@@ -49,3 +49,5 @@ Un control Play/Pausa junto a accesibilidad inicia una composición original loc
 ## Contenido y accesibilidad base
 
 ES y EN comparten estructura y contenido confirmado. Se preservan headings, salto al contenido, enlaces reales, referencias ARIA, etiquetas, foco, reflujo y zoom de texto. Las entradas de texto duran unos 1,1 s con escalonado acotado; enfocar por teclado y reducir movimiento hace el contenido inmediatamente visible. Las cookies solo guardan preferencias con consentimiento; el formulario valida y anuncia el resultado sin ocultar fallos.
+
+El explorador muestra logos locales en las tarjetas, el detalle seleccionado y la alternativa sin JavaScript. Los conceptos sin marca (IA, RAG, REST y PCF) usan iconos originales de línea. Se mantienen los nombres visibles, el teclado y los filtros. «Hablemos» y el sol/luna de la cabecera usan el acento elegido, tanto sobre la portada como al desplazarse y en el menú móvil; colores forzados conserva los colores del sistema.

@@ -1,0 +1,115 @@
+{
+  "checkedOn": "2026-11-17",
+  "assets": [
+    {
+      "file": "public/assets/technologies/ai-builder.svg",
+      "source": "https://download.microsoft.com/download/498606aa-6d27-4f13-aa5c-1401078c153b/Power-Platform-icons-scalable.zip#Power Platform/AIBuilder_scalable.svg",
+      "sha256": "09354060aae6bfd903f3ff8246e90fce8514f4c56c603e676931fd99d338cfa8"
+    },
+    {
+      "file": "public/assets/technologies/azure.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/azure/azure-original.svg",
+      "sha256": "7923db83e3f9755bd412241a683fa996fb7a9d0259b5084de449e6be92f7ca20"
+    },
+    {
+      "file": "public/assets/technologies/azuredevops.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/azuredevops/azuredevops-original.svg",
+      "sha256": "49122a38457209cda2d22a1e3af1b4ff159b67714d4e7b43899544555ee2823c"
+    },
+    {
+      "file": "public/assets/technologies/copilot-studio.svg",
+      "source": "https://download.microsoft.com/download/498606aa-6d27-4f13-aa5c-1401078c153b/Power-Platform-icons-scalable.zip#CopilotStudio_scalable.svg",
+      "sha256": "c614fa6b9b7d33048c6c4efcdd508e5b7818d296cbd1cd7d8848bb2dd1be4fd0"
+    },
+    {
+      "file": "public/assets/technologies/csharp.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/csharp/csharp-original.svg",
+      "sha256": "7093478d0888e22a224b6fa832da6c9ffd14c433de8bd14aab0c1cb50925f3ee"
+    },
+    {
+      "file": "public/assets/technologies/css3.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/css3/css3-original.svg",
+      "sha256": "36b7d94b657d571d3f94042acbf6a4c86a5301a222f83f4b4583ad2acf6e297d"
+    },
+    {
+      "file": "public/assets/technologies/dataverse.svg",
+      "source": "https://download.microsoft.com/download/498606aa-6d27-4f13-aa5c-1401078c153b/Power-Platform-icons-scalable.zip#Power Platform/Dataverse_scalable.svg",
+      "sha256": "df71c0111148d116515a02c5cb07483caad2bcb779664fa16fd837a4709504ab"
+    },
+    {
+      "file": "public/assets/technologies/dot-net.svg",
+      "source": "https://api.github.com/repos/dotnet/brand/git/blobs/d204a0904247bd811d0d2b986c786b413659c465",
+      "sha256": "f222062c4f59b7864163bd54d24fafc40f1e2f2513672e50bc08e5025d73e4e5"
+    },
+    {
+      "file": "public/assets/technologies/entityframeworkcore.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/entityframeworkcore/entityframeworkcore-original.svg",
+      "sha256": "b3877f0b5ee88d14d2c9c5c55a4b5568c1fbd0ee12a0973aad1f6c1ca2f22ec0"
+    },
+    {
+      "file": "public/assets/technologies/git.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/git/git-original.svg",
+      "sha256": "717a57ea97bf7e86de721dab3e68afac66332a10676d5c9abce4ae6a5a9c9983"
+    },
+    {
+      "file": "public/assets/technologies/github.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/github/github-original.svg",
+      "sha256": "45262793de6292206a895ed63593cdb1eaed82074173f7f4b5bdb3e427ca805a"
+    },
+    {
+      "file": "public/assets/technologies/html5.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/html5/html5-original.svg",
+      "sha256": "34826e5b3315daadf4fa15f723a3c1d5ba4a89277bfd94e22ac4d7d3d54338c5"
+    },
+    {
+      "file": "public/assets/technologies/microsoftsqlserver.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/microsoftsqlserver/microsoftsqlserver-original.svg",
+      "sha256": "f52b63cb5ff8c17efc079ae93eb7e2f1a04ca34eb736310c3576b19c0b9db21d"
+    },
+    {
+      "file": "public/assets/technologies/nodejs.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/nodejs/nodejs-original.svg",
+      "sha256": "3218687c5ea24a4d4c0a33dc5c287da38c33a72dcfe9382469d7ce4e0bf661fb"
+    },
+    {
+      "file": "public/assets/technologies/oauth.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/oauth/oauth-original.svg",
+      "sha256": "a4040dba46f380d2637b1fef8f2393c3cf960108287f2e8339461249ae9e32ae"
+    },
+    {
+      "file": "public/assets/technologies/powerapps.svg",
+      "source": "https://download.microsoft.com/download/498606aa-6d27-4f13-aa5c-1401078c153b/Power-Platform-icons-scalable.zip#Power Platform/PowerApps_scalable.svg",
+      "sha256": "c357907ad0a2d24a6d8c82b23fe4d2aaa4a4524076991f74770fc043a4cc455a"
+    },
+    {
+      "file": "public/assets/technologies/powerautomate.svg",
+      "source": "https://download.microsoft.com/download/498606aa-6d27-4f13-aa5c-1401078c153b/Power-Platform-icons-scalable.zip#Power Platform/PowerAutomate_scalable.svg",
+      "sha256": "2025db7bb3feec49d75681934b8561fb958cf11bdf0e2acf6e2b28db5c755e8d"
+    },
+    {
+      "file": "public/assets/technologies/powerbi.svg",
+      "source": "https://api.github.com/repos/microsoft/PowerBI-Icons/git/blobs/f5c066b134d5898553caa47656ec8fce9c3833a7",
+      "sha256": "55daee85ccbe0d410909cd3b2b2d974d9a450ca3c6208992eec99fa9fa7b0b8d"
+    },
+    {
+      "file": "public/assets/technologies/react.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/react/react-original.svg",
+      "sha256": "5825b649c8c04dec13ecf01d0182401bd0ec71789d2fa06224866d882cd1515f"
+    },
+    {
+      "file": "public/assets/technologies/sap.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/17cd4ee07612198a1d8777a060d4100423762a8b/icons/sap.svg",
+      "sha256": "79127bd0cdb41e5940ddbe895da58c4fe1fb6a912a7178f4bb4e108fb39c8758"
+    },
+    {
+      "file": "public/assets/technologies/sharepoint.svg",
+      "source": "https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/sharepoint_48x1.svg",
+      "sha256": "7f260c54c77342eb16ce20ab132729c7e640e7ead6a4bb9e7d1b4a94bd0e8eda"
+    },
+    {
+      "file": "public/assets/technologies/typescript.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/typescript/typescript-original.svg",
+      "sha256": "c9191199f4049920c2fc19035b8a6664f37f4689fcd9e8434e786097e78863f0"
+    }
+  ]
+}
