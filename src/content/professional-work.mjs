@@ -3,7 +3,6 @@
 export const professionalWork = [
   {
     id: 'sap-receiving',
-    stack: ['Power Apps', 'Dataverse', 'SAP', 'Power Automate'],
     es: {
       category: 'Operación e integración',
       title: 'Recepción de mercancía conectada con SAP',
@@ -27,7 +26,6 @@ export const professionalWork = [
   },
   {
     id: 'fleet-maintenance',
-    stack: ['Power Apps', 'AI Builder', 'Dataverse', 'IoT / APIs'],
     es: {
       category: 'IA aplicada y trabajo de campo',
       title: 'Gestión y mantenimiento predictivo de flotas',
@@ -51,7 +49,6 @@ export const professionalWork = [
   },
   {
     id: 'msf-flight-deck',
-    stack: ['Power Apps', 'SharePoint', 'Power Automate', 'Microsoft 365'],
     es: {
       category: 'Proyecto Dell / Solumn',
       title: 'MSF Public Sector Flight Deck',

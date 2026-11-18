@@ -10,6 +10,7 @@ import { evaluationHistory } from '../src/content/evaluation-history.mjs';
 import { site } from '../src/content/site.mjs';
 import { routeGroups } from '../src/content/routes.mjs';
 import { build as bundle } from 'esbuild';
+import { projectCodeReports } from './project-code.mjs';
 
 export const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const clientFiles = ['theme-init.js', 'preferences.js', 'loader-grid.js', 'site.js', 'journey.js', 'letter-glitch.js', 'splash-cursor.js', 'soundtrack.js', 'contact.js', 'booking.js', 'booking-embed.js', 'form-rules.js', 'document-assistant.js'];
@@ -32,7 +33,7 @@ export async function build() {
   await rm(dist, { recursive: true, force: true });
   await mkdir(path.join(dist, 'en'), { recursive: true });
   await copyDirectory(path.join(root, 'public'), dist);
-  const styles = await Promise.all(['styles.css', 'preferences.css', 'loader.css', 'journey.css', 'hero.css', 'background.css', 'splash.css', 'soundtrack.css', 'interactions.css', 'reveals.css', 'modules.css', 'document-assistant.css', 'lab.css', 'booking.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
+  const styles = await Promise.all(['styles.css', 'preferences.css', 'loader.css', 'journey.css', 'hero.css', 'background.css', 'splash.css', 'soundtrack.css', 'interactions.css', 'reveals.css', 'modules.css', 'document-assistant.css', 'lab.css', 'booking.css', 'project-technologies.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
   await writeFile(path.join(dist, 'assets/styles.css'), styles.join('\n'));
   for (const file of clientFiles.filter(file => file !== 'document-assistant.js')) {
     await copyFile(path.join(root, 'src/client', file), path.join(dist, 'assets', file));
@@ -48,7 +49,9 @@ export async function build() {
   await writeFile(path.join(dist, 'assets/evaluation/questions.json'), JSON.stringify({ version: evaluationVersion, cases: evaluationCases }, null, 2) + '\n');
   if (evaluationReference) await writeFile(path.join(dist, 'assets/evaluation/reference-run.json'), JSON.stringify(evaluationReference, null, 2) + '\n');
   await writeFile(path.join(dist, 'assets/evaluation/previous-run.json'), JSON.stringify(evaluationHistory, null, 2) + '\n');
-  const renderers = { home: renderPage, project: renderProject, note: renderNote, assistant: renderAssistant, evaluation: lang => renderEvaluation(lang, fingerprints), workflow: renderWorkflow };
+  const projectReports = await projectCodeReports(root);
+  await writeFile(path.join(dist, 'assets/project-code.json'), JSON.stringify(projectReports, null, 2) + '\n');
+  const renderers = { home: lang => renderPage(lang, { projectReports }), project: (lang, project) => renderProject(lang, project, projectReports), note: renderNote, assistant: renderAssistant, evaluation: lang => renderEvaluation(lang, fingerprints), workflow: renderWorkflow };
   for (const route of routeGroups) for (const lang of ['es', 'en']) {
     const directory = path.join(dist, route.paths[lang].slice(1));
     await mkdir(directory, { recursive: true });

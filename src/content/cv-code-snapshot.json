@@ -1,0 +1,33 @@
+{
+  "repository": "alejandrosergio/sergio-hernandez-cv",
+  "commit": "b3bcdbc7cfc9d5d84f6e5d8fdd6224a268202284",
+  "tree": "3ce8ca9c9a2b0ffd2107bf3ca2ea28a9ebf310e4",
+  "checkedOn": "2026-11-17",
+  "files": [
+    {
+      "path": "src/cursor.js",
+      "bytes": 2537,
+      "blobSha": "b9240745afede0b36c9e5c595d1b5959963e836c"
+    },
+    {
+      "path": "src/index.html",
+      "bytes": 26448,
+      "blobSha": "48c61d1f73416961da2665fd8842fe4bb082718b"
+    },
+    {
+      "path": "src/script.js",
+      "bytes": 16359,
+      "blobSha": "29092998b28242d8ce640c9da189a8e7c154b4c6"
+    },
+    {
+      "path": "src/styles.css",
+      "bytes": 35689,
+      "blobSha": "1047816951628d4f2fce26128b656af81d225dd7"
+    },
+    {
+      "path": "src/tooltips.js",
+      "bytes": 4513,
+      "blobSha": "4f1e396267db8e233f18b4667e349b3c2f6b3e93"
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # Diseño de Alejandro’sTech
 
+Las fichas de proyectos incluyen una barra compacta de lenguajes, una leyenda con porcentajes aproximados y un desplegable de tecnologías. Cada caso amplía el inventario con funciones y el método del cálculo. Se conservan la tipografía, los acentos y los logotipos locales. La distribución se basa en fuentes propias; las contribuciones profesionales no presentan porcentajes sin fuentes. Véase [PROJECT-TECHNOLOGIES.md](PROJECT-TECHNOLOGIES.md).
+
 El contacto incorpora «Agendar una llamada» / «Book a call». El enlace abre una agenda real de Cal.com; con JavaScript se presenta en un diálogo nativo que conserva carbón/coral, serif, acento elegido, cierre visible, privacidad y alternativa en otra pestaña. El marco solo se crea al abrirlo y se retira al cerrarlo. El horario muestra ambos tramos, el almuerzo y la exclusión de festivos de Colombia. Véase [BOOKING.md](BOOKING.md).
 
 ## Dirección visual

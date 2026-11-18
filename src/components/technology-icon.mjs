@@ -2,7 +2,7 @@
 // own line icons, so the explorer never suggests a vendor or certification.
 const logos = {
   net: ['dot-net'], csharp: ['csharp'], react: ['react'],
-  typescript: ['typescript'], web: ['html5', 'css3'],
+  typescript: ['typescript'], web: ['html5', 'css3'], html: ['html5'], css: ['css3'],
   powerapps: ['powerapps'], dataverse: ['dataverse'],
   automate: ['powerautomate'], powerbi: ['powerbi'],
   sql: ['microsoftsqlserver'], ef: ['entityframeworkcore'], azure: ['azure'],

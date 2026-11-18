@@ -4,6 +4,8 @@ import { experience, skills } from '../content/profile.mjs';
 import { technologyIcon } from './technology-icon.mjs';
 import { bookingLink, bookingDialog } from './booking.mjs';
 import { professionalWork } from '../content/professional-work.mjs';
+import { technologyList, projectCode, projectTechnologySummary } from './project-technologies.mjs';
+import { projectTechnologyCopy } from '../content/project-technologies.mjs';
 import { projects, projectPath, projectName, projectDestination } from '../content/projects.mjs';
 import { assistantCopy, assistantPaths } from '../content/document-assistant.mjs';
 import { documentAssistant } from './document-assistant.mjs';
@@ -116,23 +118,23 @@ function career(lang, t) {
   </section>`;
 }
 
-function projectCards(lang, t) {
+function projectCards(lang, t, projectReports) {
   let regularIndex = 0;
   return projects.map((project, i) => {
     const p = project[lang], featured = Boolean(project.demoPaths), offset = !featured && regularIndex++ % 2 === 1;
-    const description = `<div class="project-meta"><span>${e(p.type)}</span><span>2026</span></div><h3><a href="${projectPath(project, lang)}">${e(projectName(project, lang))}</a></h3><p>${e(p.summary)}</p>${tags(project.stack)}<a class="text-link" href="${projectPath(project, lang)}">${t.readCase}${icon('arrowRight')}</a>${featured ? `<a class="text-link project-demo-link" href="${projectDestination(project, lang)}">${e(p.demoLabel)}${icon('arrowRight')}</a>` : ''}`;
+    const description = `<div class="project-meta"><span>${e(p.type)}</span><span>2026</span></div><h3><a href="${projectPath(project, lang)}">${e(projectName(project, lang))}</a></h3><p>${e(p.summary)}</p>${projectTechnologySummary(project.id, lang, projectReports[project.id], project.repository)}<a class="text-link" href="${projectPath(project, lang)}">${t.readCase}${icon('arrowRight')}</a>${featured ? `<a class="text-link project-demo-link" href="${projectDestination(project, lang)}">${e(p.demoLabel)}${icon('arrowRight')}</a>` : ''}`;
     return `<article class="project-card${featured ? ' project-card--featured' : offset ? ' project-card--offset' : ''}" data-reveal><a class="project-image" href="${projectPath(project, lang)}" aria-label="${e(projectName(project, lang))} — ${t.readCase}"><img src="${project.image[lang]}" alt="${e(p.imageAlt)}" width="${project.imageSize.width}" height="${project.imageSize.height}" loading="lazy" decoding="async"><span class="project-open" aria-hidden="true">${icon('arrow')}</span><span class="project-index" aria-hidden="true">0${i + 1}</span></a>${featured ? `<div class="project-featured-copy">${description}</div>` : description}</article>`;
   }).join('');
 }
 
-function projectSection(lang, t) {
+function projectSection(lang, t, projectReports) {
   const selectedWork = professionalWork.map(item => {
     const p = item[lang];
-    return `<article class="professional-case" data-reveal><p class="small-label">${e(p.category)}</p><h4>${e(p.title)}</h4><p>${e(p.summary)}</p><details><summary>${e(t.projects.contributionLabel)}<span class="disclosure-plus" aria-hidden="true">+</span></summary><ul>${p.details.map(text => `<li>${e(text)}</li>`).join('')}</ul>${tags(item.stack)}</details></article>`;
+    return `<article class="professional-case" data-reveal><p class="small-label">${e(p.category)}</p><h4>${e(p.title)}</h4><p>${e(p.summary)}</p><details><summary>${e(t.projects.contributionLabel)}<span class="disclosure-plus" aria-hidden="true">+</span></summary><ul>${p.details.map(text => `<li>${e(text)}</li>`).join('')}</ul><p class="small-label">${e(projectTechnologyCopy[lang].title)}</p>${technologyList(item.id, lang)}${projectCode(item.id, lang)}</details></article>`;
   }).join('');
   return `<section class="section projects-section wrap" id="proyectos" aria-labelledby="projects-title"><div class="section-heading" data-reveal><div>${sectionLabel('04', t.projects.label)}<h2 id="projects-title">${splitTitle(t.projects.title)}</h2></div><p>${t.projects.intro}</p></div>
     <div class="professional-work" aria-labelledby="professional-work-title"><div class="work-heading" data-reveal><span class="small-label">${e(t.projects.professionalLabel)}</span><h3 id="professional-work-title">${e(t.projects.professionalTitle)}</h3><p>${e(t.projects.professionalIntro)}</p></div><div class="professional-work-grid">${selectedWork}</div></div>
-    <div class="work-heading public-work-heading" data-reveal><h3>${e(t.projects.publicTitle)}</h3><p>${e(t.projects.publicIntro)}</p></div><div class="project-grid">${projectCards(lang, t)}</div></section>`;
+    <div class="work-heading public-work-heading" data-reveal><h3>${e(t.projects.publicTitle)}</h3><p>${e(t.projects.publicIntro)}</p></div><div class="project-grid">${projectCards(lang, t, projectReports)}</div></section>`;
 }
 
 function processSection(t) {
@@ -153,22 +155,22 @@ function contact(t, lang) {
   return `<section class="contact-section" id="contacto" aria-labelledby="contact-title"><div class="wrap"><div class="contact-heading" data-reveal>${sectionLabel('06', t.contact.label)}<h2 id="contact-title">${splitTitle(t.contact.title)}</h2><p>${t.contact.intro}</p></div>${availability}${contactForm(lang, site.formEndpoint)}<div class="contact-bottom"><div class="contact-email"><a href="${e(mailURL(t))}" class="contact-address">${site.email}${icon('arrow')}</a><button class="copy-email" type="button" data-copy-email="${site.email}" aria-label="${t.contact.copy}" data-success="${t.contact.copied}" data-failure="${t.contact.copyFail}" hidden>${icon('copy')}<span>${t.contact.copy}</span></button><span class="sr-only" role="status" data-copy-status></span></div><div class="contact-links"><a href="${site.linkedin}" rel="me">LinkedIn${icon('arrow')}</a><a href="${site.github}" rel="me">GitHub${icon('arrow')}</a><a target="_blank" rel="noopener noreferrer" href="${site.cv}${t.path === '/en/' ? 'en/' : ''}">${t.cv}${icon('arrow')}</a></div></div></div></section>`;
 }
 
-export function renderPage(lang, { notFound = false } = {}) {
+export function renderPage(lang, { notFound = false, projectReports = {} } = {}) {
   const t = locales[lang];
   if (!t) throw new Error(`Unsupported language: ${lang}`);
   const paths = { es: '/', en: '/en/' };
   if (notFound) return document(lang, `<main class="not-found wrap" id="main" tabindex="-1"><p class="eyebrow">404</p><h1>${t.notFoundHeading}</h1><p>${t.notFoundText}</p><a class="button button-primary" href="${t.path}">${t.backHome}${icon('arrowRight')}</a></main>`, { title: `${t.notFoundHeading} | ${site.name}`, description: t.description, paths: { ...paths, [lang]: '/404.html' }, notFound: true });
-  return document(lang, `<main id="main" tabindex="-1">${hero(t)}${about(lang, t)}${skillExplorer(lang, t)}${career(lang, t)}${projectSection(lang, t)}${processSection(t)}${noteSection(lang, t)}${contact(t, lang)}</main>`, { title: t.title, description: t.description, paths, home: true });
+  return document(lang, `<main id="main" tabindex="-1">${hero(t)}${about(lang, t)}${skillExplorer(lang, t)}${career(lang, t)}${projectSection(lang, t, projectReports)}${processSection(t)}${noteSection(lang, t)}${contact(t, lang)}</main>`, { title: t.title, description: t.description, paths, home: true });
 }
 
-export function renderProject(lang, project) {
+export function renderProject(lang, project, projectReports = {}) {
   const t = locales[lang], p = project[lang], paths = { es: projectPath(project, 'es'), en: projectPath(project, 'en') };
   const live = projectDestination(project, lang), name = projectName(project, lang);
   const content = `<main id="main" tabindex="-1"><article class="case-study wrap">
     <header class="detail-heading"><a class="back-link" href="${t.path}#proyectos">← ${t.backProjects}</a><p class="eyebrow">${p.type} / 2026</p><h1>${e(p.title)}</h1><p class="detail-lead">${e(p.summary)}</p><div class="hero-actions"><a class="button button-primary" href="${live}"${project.id === 'cv' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${e(p.demoLabel ?? t.visit)}${icon('arrow')}</a>${project.repository ? `<a class="text-link" href="${project.repository}">${t.source}${icon('github')}</a>` : ''}</div></header>
     <figure class="case-image"><img src="${project.image[lang]}" alt="${e(p.imageAlt)}" width="${project.imageSize.width}" height="${project.imageSize.height}"><figcaption>${e(p.caption ?? (project.id === 'cv' ? t.projects.cvCaption : t.projects.imageCaption))}</figcaption></figure>
-    <div class="case-content"><aside class="case-facts"><span class="small-label">${t.projects.overview}</span><h2>${e(name)}</h2><h3>${t.projects.scope}</h3><p>${e(p.contribution)}</p><h3>${t.projects.stack}</h3>${tags(project.stack)}<a class="text-link" href="${cvURL(lang)}" target="_blank" rel="noopener noreferrer">${t.cv}${icon('arrow')}</a></aside>
-    <div class="prose"><section><h2>${t.projects.problem}</h2><p>${e(p.problem)}</p></section><section><h2>${t.projects.approach}</h2><ul>${p.approach.map(item => `<li>${e(item)}</li>`).join('')}</ul></section><section><h2>${t.projects.result}</h2><p>${e(p.result)}</p>${resourceLinks(p.resources)}</section>${p.limitations ? `<section><h2>${e(p.limitationsTitle)}</h2><ul>${p.limitations.map(item => `<li>${e(item)}</li>`).join('')}</ul><a class="button button-primary" href="${live}">${e(p.demoLabel)}${icon('arrowRight')}</a></section>` : ''}<a class="button button-secondary" href="${t.path}#contacto">${t.contactNav}${icon('arrowRight')}</a></div></div></article>
+    <div class="case-content"><aside class="case-facts"><span class="small-label">${t.projects.overview}</span><h2>${e(name)}</h2><h3>${t.projects.scope}</h3><p>${e(p.contribution)}</p>${projectCode(project.id, lang, projectReports[project.id], project.repository)}<a class="text-link" href="${cvURL(lang)}" target="_blank" rel="noopener noreferrer">${t.cv}${icon('arrow')}</a></aside>
+    <div class="prose"><section id="project-technologies"><h2>${e(projectTechnologyCopy[lang].title)}</h2>${technologyList(project.id, lang)}</section><section><h2>${t.projects.problem}</h2><p>${e(p.problem)}</p></section><section><h2>${t.projects.approach}</h2><ul>${p.approach.map(item => `<li>${e(item)}</li>`).join('')}</ul></section><section><h2>${t.projects.result}</h2><p>${e(p.result)}</p>${resourceLinks(p.resources)}</section>${p.limitations ? `<section><h2>${e(p.limitationsTitle)}</h2><ul>${p.limitations.map(item => `<li>${e(item)}</li>`).join('')}</ul><a class="button button-primary" href="${live}">${e(p.demoLabel)}${icon('arrowRight')}</a></section>` : ''}<a class="button button-secondary" href="${t.path}#contacto">${t.contactNav}${icon('arrowRight')}</a></div></div></article>
     <div class="detail-end wrap"><a class="text-link" href="${t.path}#proyectos">← ${t.backProjects}</a><a class="text-link" href="${t.path}#conocimiento">${t.backNotes}${icon('arrowRight')}</a></div></main>`;
   return document(lang, content, { title: `${name} — ${p.title} | ${site.name}`, description: p.summary, paths, project });
 }

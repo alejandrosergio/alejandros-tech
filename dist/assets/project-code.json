@@ -1,0 +1,74 @@
+{
+  "document-assistant": {
+    "totalBytes": 63495,
+    "fileCount": 8,
+    "languages": [
+      {
+        "name": "JavaScript",
+        "bytes": 51549,
+        "percentage": 81.2
+      },
+      {
+        "name": "CSS",
+        "bytes": 11946,
+        "percentage": 18.8
+      }
+    ]
+  },
+  "request-workflow": {
+    "totalBytes": 41332,
+    "fileCount": 9,
+    "languages": [
+      {
+        "name": "JavaScript",
+        "bytes": 30164,
+        "percentage": 73
+      },
+      {
+        "name": "C#",
+        "bytes": 11168,
+        "percentage": 27
+      }
+    ]
+  },
+  "alejandros-tech": {
+    "totalBytes": 537837,
+    "fileCount": 67,
+    "languages": [
+      {
+        "name": "JavaScript",
+        "bytes": 429426,
+        "percentage": 79.8
+      },
+      {
+        "name": "CSS",
+        "bytes": 108411,
+        "percentage": 20.2
+      }
+    ]
+  },
+  "cv": {
+    "totalBytes": 85546,
+    "fileCount": 5,
+    "languages": [
+      {
+        "name": "CSS",
+        "bytes": 35689,
+        "percentage": 41.7
+      },
+      {
+        "name": "HTML",
+        "bytes": 26448,
+        "percentage": 30.9
+      },
+      {
+        "name": "JavaScript",
+        "bytes": 23409,
+        "percentage": 27.4
+      }
+    ],
+    "revision": "b3bcdbc7cfc9d5d84f6e5d8fdd6224a268202284",
+    "sourceURL": "https://github.com/alejandrosergio/sergio-hernandez-cv/tree/b3bcdbc7cfc9d5d84f6e5d8fdd6224a268202284/src",
+    "checkedOn": "2026-11-17"
+  }
+}
