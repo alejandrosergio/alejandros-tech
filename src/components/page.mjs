@@ -2,6 +2,7 @@ import { site } from '../content/site.mjs';
 import { locales } from '../content/locales.mjs';
 import { experience, skills } from '../content/profile.mjs';
 import { technologyIcon } from './technology-icon.mjs';
+import { bookingLink, bookingDialog } from './booking.mjs';
 import { professionalWork } from '../content/professional-work.mjs';
 import { projects, projectPath, projectName, projectDestination } from '../content/projects.mjs';
 import { assistantCopy, assistantPaths } from '../content/document-assistant.mjs';
@@ -45,7 +46,7 @@ function head(lang, options) {
   <script src="/assets/loader-grid.js" defer></script>
   <script src="/assets/site.js" defer></script>
   <script src="/assets/journey.js" defer></script>
-  <script src="/assets/letter-glitch.js" defer></script>${options.home ? '\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>' : ''}
+  <script src="/assets/letter-glitch.js" defer></script>${options.home ? '\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>\n  <script src="/assets/booking.js" defer></script>' : ''}
   <script src="/assets/soundtrack.js" defer></script>${options.assistant ? '\n  <script src="/assets/document-assistant.js" type="module"></script>' : ''}${options.evaluation ? '\n  <script src="/assets/document-evaluation.js" type="module"></script>' : ''}${options.workflow ? '\n  <script src="/assets/workflow.js" type="module"></script>' : ''}
 </head>`;
 }
@@ -79,7 +80,7 @@ ${head(lang, options)}
   ${content}
   ${footer(t, lang)}${options.home ? `\n  ${sectionNavigation(t)}` : ''}
   ${soundtrack(lang)}
-  ${preferences(lang)}
+  ${preferences(lang)}${options.home ? `\n  ${bookingDialog(lang)}` : ''}
   ${journey(lang, options.home)}
 </body>
 </html>
@@ -148,7 +149,7 @@ function noteSection(lang, t) {
 
 function contact(t, lang) {
   const whatsappURL = `${site.whatsapp}?text=${encodeURIComponent(t.contact.whatsappMessage)}`;
-  const availability = `<aside class="contact-availability" aria-labelledby="availability-title" data-reveal><div><span class="small-label">${e(t.contact.directLabel)}</span><h3 id="availability-title">${e(t.contact.availabilityTitle)}</h3><p>${e(t.contact.availabilityText)}</p><p class="contact-communication">${e(t.contact.communication)}</p></div><nav class="direct-contact-actions" aria-label="${e(t.contact.directLabel)}"><a class="button button-primary" href="${e(whatsappURL)}" target="_blank" rel="noopener noreferrer">${icon('chat')}${e(t.contact.whatsappLabel)}</a><a class="button button-secondary" href="tel:${site.phone}" aria-label="${e(t.contact.phoneLabel)} ${site.phoneLabel}">${icon('phone')}${site.phoneLabel}</a></nav></aside>`;
+  const availability = `<aside class="contact-availability" aria-labelledby="availability-title" data-reveal><div><span class="small-label">${e(t.contact.directLabel)}</span><h3 id="availability-title">${e(t.contact.availabilityTitle)}</h3><p>${e(t.contact.availabilityText)}</p><p class="contact-communication">${e(t.contact.communication)}</p></div><nav class="direct-contact-actions" aria-label="${e(t.contact.directLabel)}">${bookingLink(lang)}<a class="button button-secondary" href="${e(whatsappURL)}" target="_blank" rel="noopener noreferrer">${icon('chat')}${e(t.contact.whatsappLabel)}</a><a class="button button-secondary" href="tel:${site.phone}" aria-label="${e(t.contact.phoneLabel)} ${site.phoneLabel}">${icon('phone')}${site.phoneLabel}</a></nav></aside>`;
   return `<section class="contact-section" id="contacto" aria-labelledby="contact-title"><div class="wrap"><div class="contact-heading" data-reveal>${sectionLabel('06', t.contact.label)}<h2 id="contact-title">${splitTitle(t.contact.title)}</h2><p>${t.contact.intro}</p></div>${availability}${contactForm(lang, site.formEndpoint)}<div class="contact-bottom"><div class="contact-email"><a href="${e(mailURL(t))}" class="contact-address">${site.email}${icon('arrow')}</a><button class="copy-email" type="button" data-copy-email="${site.email}" aria-label="${t.contact.copy}" data-success="${t.contact.copied}" data-failure="${t.contact.copyFail}" hidden>${icon('copy')}<span>${t.contact.copy}</span></button><span class="sr-only" role="status" data-copy-status></span></div><div class="contact-links"><a href="${site.linkedin}" rel="me">LinkedIn${icon('arrow')}</a><a href="${site.github}" rel="me">GitHub${icon('arrow')}</a><a target="_blank" rel="noopener noreferrer" href="${site.cv}${t.path === '/en/' ? 'en/' : ''}">${t.cv}${icon('arrow')}</a></div></div></div></section>`;
 }
 

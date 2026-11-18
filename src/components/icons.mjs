@@ -1,6 +1,7 @@
 // Local line icons inherit currentColor. Their enclosing controls provide names;
 // the SVGs stay decorative and need neither a font nor a browser dependency.
 const paths = {
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18m-13 4h2m4 0h2m-8 3h2"/>',
   phone: '<path d="m5 3 4 1 1 5-3 2a16 16 0 0 0 6 6l2-3 5 1 1 4a2 2 0 0 1-2 2C10 21 3 14 3 5a2 2 0 0 1 2-2Z"/>',
   chat: '<path d="M21 11.5a9 9 0 0 1-9.5 9 9 9 0 0 1-4-1L3 21l1.5-4.5a9 9 0 1 1 16.5-5Z"/><path d="M8 10h8M8 14h5"/>',
   arrowUp: '<path d="M12 19V5m-6 6 6-6 6 6"/>',

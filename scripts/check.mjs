@@ -8,6 +8,7 @@ import { site } from '../src/content/site.mjs';
 import { routeGroups } from '../src/content/routes.mjs';
 import { skills, experience } from '../src/content/profile.mjs';
 import { professionalWork } from '../src/content/professional-work.mjs';
+import { bookingCopy } from '../src/content/booking.mjs';
 import { projects, projectName } from '../src/content/projects.mjs';
 import { assistantCopy } from '../src/content/document-assistant.mjs';
 import { workflowCopy } from '../src/content/workflow.mjs';
@@ -32,6 +33,7 @@ function compareShape(es, en, key = 'locales') {
   for (const field of Object.keys(es)) compareShape(es[field], en[field], `${key}.${field}`);
 }
 compareShape(locales.es, locales.en);
+compareShape(bookingCopy.es, bookingCopy.en, 'booking');
 compareShape(interfaceCopy.es, interfaceCopy.en, 'interface');
 compareShape(journeyCopy.es, journeyCopy.en, 'journey');
 compareShape(assistantCopy.es, assistantCopy.en, 'assistant');
@@ -153,6 +155,7 @@ await import('./check-journey.mjs');
 await import('./check-tooltips.mjs');
 await import('./check-soundtrack.mjs');
 await import('./check-preferences.mjs');
+await import('./check-booking.mjs');
 await import('./check-settings.mjs');
 await import('./check-document-assistant.mjs');
 await import('./check-workflow.mjs');

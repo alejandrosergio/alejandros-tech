@@ -1,5 +1,7 @@
 # Contacto, preferencias y privacidad
 
+La agenda de llamadas solicitada por el titular utiliza Cal.com y su Outlook público, con enlaces ES/EN, 30 minutos, horario de Colombia, descanso de almuerzo y bloqueo de festivos. Se carga solo al abrirla y mantiene su propia política de privacidad. Configuración, límites y procedimiento de verificación en [BOOKING.md](BOOKING.md).
+
 La demo documental añade una descarga voluntaria de modelo en el navegador. Sus archivos pueden conservarse en Cache Storage y borrarse desde la demo, independientemente del permiso para recordar preferencias. No se almacenan ni envían preguntas a un proveedor de IA. Ver `AI-DEMO.md`; el formulario de contacto mantiene su flujo independiente con Formspree.
 
 ## Formulario autorizado

@@ -1,5 +1,7 @@
 # Diseño de Alejandro’sTech
 
+El contacto incorpora «Agendar una llamada» / «Book a call». El enlace abre una agenda real de Cal.com; con JavaScript se presenta en un diálogo nativo que conserva carbón/coral, serif, acento elegido, cierre visible, privacidad y alternativa en otra pestaña. El marco solo se crea al abrirlo y se retira al cerrarlo. El horario muestra ambos tramos, el almuerzo y la exclusión de festivos de Colombia. Véase [BOOKING.md](BOOKING.md).
+
 ## Dirección visual
 
 La web sigue la referencia editorial del titular: carbón, blanco cálido, serif regulares y acentos elegidos por el visitante. La marca es tipográfica, sin logo A+. El fondo oscuro usa #0e0e10 y el contenido casi negro #080809; el claro conserva el papel cálido. Las fuentes son locales y de sistema, sin descargas.

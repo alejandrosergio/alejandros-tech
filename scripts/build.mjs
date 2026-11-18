@@ -12,7 +12,7 @@ import { routeGroups } from '../src/content/routes.mjs';
 import { build as bundle } from 'esbuild';
 
 export const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
-const clientFiles = ['theme-init.js', 'preferences.js', 'loader-grid.js', 'site.js', 'journey.js', 'letter-glitch.js', 'splash-cursor.js', 'soundtrack.js', 'contact.js', 'form-rules.js', 'document-assistant.js'];
+const clientFiles = ['theme-init.js', 'preferences.js', 'loader-grid.js', 'site.js', 'journey.js', 'letter-glitch.js', 'splash-cursor.js', 'soundtrack.js', 'contact.js', 'booking.js', 'booking-embed.js', 'form-rules.js', 'document-assistant.js'];
 
 async function copyDirectory(from, to) {
   await mkdir(to, { recursive: true });
@@ -32,7 +32,7 @@ export async function build() {
   await rm(dist, { recursive: true, force: true });
   await mkdir(path.join(dist, 'en'), { recursive: true });
   await copyDirectory(path.join(root, 'public'), dist);
-  const styles = await Promise.all(['styles.css', 'preferences.css', 'loader.css', 'journey.css', 'hero.css', 'background.css', 'splash.css', 'soundtrack.css', 'interactions.css', 'reveals.css', 'modules.css', 'document-assistant.css', 'lab.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
+  const styles = await Promise.all(['styles.css', 'preferences.css', 'loader.css', 'journey.css', 'hero.css', 'background.css', 'splash.css', 'soundtrack.css', 'interactions.css', 'reveals.css', 'modules.css', 'document-assistant.css', 'lab.css', 'booking.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
   await writeFile(path.join(dist, 'assets/styles.css'), styles.join('\n'));
   for (const file of clientFiles.filter(file => file !== 'document-assistant.js')) {
     await copyFile(path.join(root, 'src/client', file), path.join(dist, 'assets', file));

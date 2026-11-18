@@ -1,4 +1,5 @@
 import { interfaceCopy } from '../content/interface.mjs';
+import { bookingCopy } from '../content/booking.mjs';
 import { icon } from './icons.mjs';
 import { escapeHTML as e } from '../lib/html.mjs';
 
@@ -17,7 +18,7 @@ export function preferences(lang) {
     <div class="dialog-footer"><button type="button" class="text-link" data-open-privacy>${t.cookies}${icon('arrowRight')}</button><span class="sr-only" role="status" data-preference-status data-reset-message="${t.defaults}"></span></div>
   </dialog>
   <aside class="cookie-banner" data-cookie-banner aria-labelledby="cookie-title" hidden><span class="small-label">${t.cookies}</span><h2 id="cookie-title">${t.cookieTitle}</h2><p>${t.cookieIntro}</p><div class="cookie-actions"><button class="button button-primary" type="button" data-consent="preferences">${t.accept}</button><button class="button button-secondary" type="button" data-consent="essential">${t.essential}</button><button class="text-link" type="button" data-open-privacy>${t.configure}</button></div></aside>
-  <dialog class="settings-dialog privacy-dialog" id="privacy-settings" aria-labelledby="privacy-title" data-privacy><div class="dialog-header"><div><p class="eyebrow">${t.cookies}</p><h2 id="privacy-title">${t.cookieDetails}</h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="${t.close}">×</button></div><p>${t.cookieText}</p><p>${t.contactPrivacy}</p><a href="https://formspree.io/legal/privacy-policy/" class="text-link">${t.provider}${icon('arrow')}</a><div class="cookie-actions"><button class="button button-primary" type="button" data-consent="preferences">${t.accept}</button><button class="button button-secondary" type="button" data-consent="essential">${t.essential}</button></div><p role="status" data-consent-status data-message="${t.cookieSaved}"></p></dialog>`;
+  <dialog class="settings-dialog privacy-dialog" id="privacy-settings" aria-labelledby="privacy-title" data-privacy><div class="dialog-header"><div><p class="eyebrow">${t.cookies}</p><h2 id="privacy-title">${t.cookieDetails}</h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="${t.close}">×</button></div><p>${t.cookieText}</p><p>${t.contactPrivacy}</p><a href="https://formspree.io/legal/privacy-policy/" class="text-link">${t.provider}${icon('arrow')}</a><a href="https://cal.com/privacy" class="text-link">${bookingCopy[lang].privacyLink}${icon('arrow')}</a><div class="cookie-actions"><button class="button button-primary" type="button" data-consent="preferences">${t.accept}</button><button class="button button-secondary" type="button" data-consent="essential">${t.essential}</button></div><p role="status" data-consent-status data-message="${t.cookieSaved}"></p></dialog>`;
 }
 
 export function loader(lang) {
