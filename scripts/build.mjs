@@ -33,7 +33,7 @@ export async function build() {
   await rm(dist, { recursive: true, force: true });
   await mkdir(path.join(dist, 'en'), { recursive: true });
   await copyDirectory(path.join(root, 'public'), dist);
-  const styles = await Promise.all(['styles.css', 'preferences.css', 'loader.css', 'journey.css', 'hero.css', 'background.css', 'splash.css', 'soundtrack.css', 'interactions.css', 'reveals.css', 'modules.css', 'document-assistant.css', 'lab.css', 'booking.css', 'project-technologies.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
+  const styles = await Promise.all(['styles.css', 'preferences.css', 'loader.css', 'journey.css', 'hero.css', 'background.css', 'splash.css', 'soundtrack.css', 'interactions.css', 'reveals.css', 'modules.css', 'document-assistant.css', 'lab.css', 'booking.css', 'project-technologies.css', 'footer.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
   await writeFile(path.join(dist, 'assets/styles.css'), styles.join('\n'));
   for (const file of clientFiles.filter(file => file !== 'document-assistant.js')) {
     await copyFile(path.join(root, 'src/client', file), path.join(dist, 'assets', file));

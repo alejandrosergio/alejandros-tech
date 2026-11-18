@@ -10,5 +10,6 @@ export const site = Object.freeze({
   cv: 'https://sergio-hernandez-cv.alejosergio3000.chatgpt.site/',
   linkedin: 'https://www.linkedin.com/in/sergio-alejandro-hernandez-patino/',
   github: 'https://github.com/alejandrosergio',
+  source: 'https://github.com/alejandrosergio/alejandros-tech',
   copyrightYear: 2026
 });

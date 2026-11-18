@@ -1,5 +1,7 @@
 # Diseño de Alejandro’sTech
 
+El footer es un cierre editorial a ancho completo: invitación serif, CTA de contacto, CV en otra pestaña y columnas de navegación, laboratorio y contacto. Incluye redes, agenda externa real, WhatsApp, correo y teléfono públicos; la franja inferior separa copyright, cookies/privacidad, pausa del fondo e idiomas con destinos equivalentes a la página actual. No duplica el botón de subir ni inventa páginas legales. Los enlaces mantienen separación y objetivos táctiles, con reflujo móvil. Las entradas reutilizan el sistema de revelado existente y una línea que se despliega una sola vez; los hovers son breves y se desactivan con movimiento reducido. No se añaden bucles, dependencias ni llamadas externas al cargar.
+
 Las fichas de proyectos incluyen una barra compacta de lenguajes, una leyenda con porcentajes aproximados y un desplegable de tecnologías. Cada caso amplía el inventario con funciones y el método del cálculo. Se conservan la tipografía, los acentos y los logotipos locales. La distribución se basa en fuentes propias; las contribuciones profesionales no presentan porcentajes sin fuentes. Véase [PROJECT-TECHNOLOGIES.md](PROJECT-TECHNOLOGIES.md).
 
 El contacto incorpora «Agendar una llamada» / «Book a call». El enlace abre una agenda real de Cal.com; con JavaScript se presenta en un diálogo nativo que conserva carbón/coral, serif, acento elegido, cierre visible, privacidad y alternativa en otra pestaña. El marco solo se crea al abrirlo y se retira al cerrarlo. El horario muestra ambos tramos, el almuerzo y la exclusión de festivos de Colombia. Véase [BOOKING.md](BOOKING.md).
@@ -11,6 +13,8 @@ La web sigue la referencia editorial del titular: carbón, blanco cálido, serif
 La primera visita parte de oscuro, coral y radio de 6 px. Las preferencias consentidas tienen prioridad: sistema/claro/oscuro, cinco tonos, texto 100–125%, radios y ajustes de lectura. Los tokens de acento y texto de contraste se aplican a botones, tooltips y controles.
 
 ## Portada y recorrido
+
+«Disponibilidad inmediata» conserva su altura y queda centrado bajo la marca de la cabecera. Usa el centro real de `.wordmark`, medido por el ciclo acotado ya existente en `journey.js`; se actualiza al redimensionar y cambiar el tamaño del texto, también en inglés. No introduce un bucle ni mueve la marca. El HTML y un respaldo CSS conservan la etiqueta sin JavaScript; colores forzados mantienen el flujo estático.
 
 La fotografía normal aparece una vez en la portada. El código del antiguo modelo3D y sus pruebas se retiraron por petición del titular; su historia y la procedencia de la imagen están en ASSETS.md y Git. Ninguna parte del contenido depende de WebGL.
 

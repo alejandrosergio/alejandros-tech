@@ -6,6 +6,7 @@
   const quiet = () => reduced.matches || root.dataset.motion === 'true';
   const up = document.querySelector('[data-scroll-top]');
   const header = document.querySelector('.site-header'), home = document.querySelector('[data-portrait-hero]');
+  const wordmark = home ? document.querySelector('.wordmark') : null;
   const sceneNav = document.querySelector('.hero-section-dots');
   const sceneLinks = sceneNav ? [...sceneNav.querySelectorAll('[data-scene-section]')] : [];
   const guide = document.querySelector('[data-journey-guide]');
@@ -16,6 +17,7 @@
   const wide = matchMedia('(min-width: 900px)');
   let open = false, userToggled = false, current = -1, tick = 0;
   let measuredHeader = '';
+  let measuredBrandCenter = '';
   const surfaceFocus = new WeakMap();
   const setOpen = value => { open = value; if (panel) { panel.hidden = !value; toggle.setAttribute('aria-expanded', String(value)); } };
   if (guide) {
@@ -49,6 +51,13 @@
     if (headerBox) {
       const size = `${headerBox.height}px`;
       if (size !== measuredHeader) { root.style.setProperty('--site-header-height', size); measuredHeader = size; }
+    }
+    // Share the actual brand centre with the availability label, using the same
+    // bounded measurements as resize, text preferences and navigation.
+    if (wordmark) {
+      const brand = wordmark.getBoundingClientRect();
+      const center = `${(brand.left + brand.width / 2).toFixed(2)}px`;
+      if (center !== measuredBrandCenter) { root.style.setProperty('--hero-brand-center', center); measuredBrandCenter = center; }
     }
     const bounds = sections.map(section => section?.getBoundingClientRect());
     const staticSurfaces = quiet() || forced.matches || root.dataset.contrast === 'true' || background?.dataset.paused === 'true';

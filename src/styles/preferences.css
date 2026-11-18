@@ -58,8 +58,6 @@
 .cookie-actions .text-link { border: 0; background: none; padding: 0 .3rem; font-size: .75rem; }
 .privacy-dialog { width: min(660px, calc(100% - 32px)); }
 .privacy-dialog > p { color: var(--muted); font-size: .875rem; }
-.footer-privacy { background: none; border: 0; padding: .5rem 0; text-decoration: underline; color: var(--muted); font-size: .75rem; min-height: 44px; }
-.site-footer { padding-bottom: 6rem; }
 
 /* Contact: native constraints work before JavaScript; errors are also linked and announced. */
 .contact-form-wrap { display: grid; grid-template-columns: .7fr 1.3fr; gap: 4rem; padding-top: 3rem; margin-top: 3rem; border-top: 1px solid var(--line); }
@@ -115,7 +113,7 @@ button:disabled { cursor: default; opacity: .65; }
   .field-error, .form-status, .form-privacy, .form-fine, .form-intro p { color: CanvasText; }
   .settings-dialog::backdrop { background: Canvas; opacity: .8; }
 }
-@media print { .settings-launcher, .settings-dialog, .cookie-banner, .intro-loader, .contact-form-wrap, .footer-privacy { display: none !important; } }
+@media print { .settings-launcher, .settings-dialog, .cookie-banner, .intro-loader, .contact-form-wrap { display: none !important; } }
 .setting-switch { width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--line); text-align: left; }
 .setting-switch i { display: block; width: 34px; height: 20px; border: 1px solid var(--muted); border-radius: 99px; position: relative; flex-shrink: 0; }
 .setting-switch i::after { content: ''; position: absolute; top: 3px; left: 3px; width: 12px; height: 12px; border-radius: 50%; background: var(--muted); }

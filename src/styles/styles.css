@@ -207,10 +207,6 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
 .contact-links a { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; text-decoration: none; font-size: .75rem; }
 .contact-links .icon { width: 15px; height: 15px; }
 .contact-section :focus-visible { outline-color: var(--accent); }
-.site-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem 3rem; padding-block: 2.6rem; color: var(--muted); }
-.footer-brand { color: var(--ink); font-weight: 650; font-size: .875rem; text-decoration: none; letter-spacing: -.04em; }
-.site-footer p { margin: .25rem 0 0; font-size: .625rem; }
-.site-footer small { font-size: .625rem; }
 
 /* Case studies and original notes have their own real, localised pages. */
 .detail-heading { padding-block: 72px 54px; max-width: 980px; }
@@ -345,8 +341,6 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
   .contact-bottom { margin-top: 2rem; padding-top: 1.7rem; gap: 1.3rem; }
   .contact-address { font-size: 1.2rem; gap: .6rem; }
   .contact-links { gap: .3rem 1.4rem; }
-  .site-footer { padding-block: 2rem; gap: 1rem; }
-  .site-footer small { margin-left: auto; }
   .detail-heading { padding-block: 44px 36px; }
   .detail-heading h1 { font-size: clamp(2rem, 6.8vw, 3.1rem); }
   .detail-lead { font-size: 1rem; }
@@ -393,7 +387,6 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
   .contact-address .icon { width: 16px; }
   .contact-links { gap: .2rem 1rem; }
   .contact-links a { font-size: .6875rem; }
-  .site-footer small { margin-left: 0; }
   .detail-heading h1 { font-size: 2rem; }
   .article-byline time { padding-left: 0; border: 0; }
 }

@@ -50,6 +50,7 @@ function boot({ headerPresent = true, height = 900, headerHeight = 89 } = {}) {
     ...element('header'), getBoundingClientRect: () => ({ top: 0, bottom: headerHeight, height: headerHeight })
   } : null;
   const panel = element('panel'), toggle = element('toggle');
+  const wordmark = { box: { left: 48, width: 190 }, getBoundingClientRect() { return this.box; } };
   const action = { ...element('action'), firstChild: { textContent: '' } };
   const fields = Object.fromEntries(['dismiss', 'previous', 'next', 'location', 'description', 'position', 'percent'].map(name => [name, element(name)]));
   const guide = {
@@ -69,6 +70,7 @@ function boot({ headerPresent = true, height = 900, headerHeight = 89 } = {}) {
   const modal = element('modal');
   const targets = {
     '.site-header': header, '[data-portrait-hero]': sections[0],
+    '.wordmark': wordmark,
     '[data-journey-guide]': guide, '.hero-section-dots': scene,
     '[data-cursor-dot]': dot, '[data-cursor-orbit]': orbit,
     '[data-letter-glitch]': background, '[data-cookie-banner]': cookie
@@ -111,7 +113,7 @@ function boot({ headerPresent = true, height = 900, headerHeight = 89 } = {}) {
     }
   });
   return {
-    root, document, window, sections, guide, scene, links, fields, background, dot, orbit, marker, frames, fire, flush, setMedia,
+    root, document, window, sections, guide, scene, links, fields, background, dot, orbit, marker, frames, fire, flush, setMedia, wordmark,
     scroll(y) { window.scrollY = y; fire('window', 'scroll'); flush(); },
     pointer(x = 100, y = 200, target = body) {
       fire('document', 'pointermove', { pointerType: 'mouse', clientX: x, clientY: y, target }); flush();
@@ -124,6 +126,10 @@ function boot({ headerPresent = true, height = 900, headerHeight = 89 } = {}) {
 
 const close = (value, expected, message) => assert.ok(Math.abs(Number(value) - expected) < 1e-8, `${message}: ${value} ≈ ${expected}`);
 const journey = boot();
+assert.equal(journey.root.style['--hero-brand-center'], '143.00px');
+journey.wordmark.box = { left: 20, width: 132 };
+journey.fire('window', 'resize'); journey.flush();
+assert.equal(journey.root.style['--hero-brand-center'], '86.00px', 'Availability follows the actual wordmark centre on responsive resize');
 const local = () => journey.guide.style['--journey-progress'];
 const global = () => journey.scene.style['--section-progress'];
 close(local(), 0, 'The first section begins at zero');

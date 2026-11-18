@@ -3,6 +3,7 @@ import { locales } from '../content/locales.mjs';
 import { experience, skills } from '../content/profile.mjs';
 import { technologyIcon } from './technology-icon.mjs';
 import { bookingLink, bookingDialog } from './booking.mjs';
+import { footer } from './footer.mjs';
 import { professionalWork } from '../content/professional-work.mjs';
 import { technologyList, projectCode, projectTechnologySummary } from './project-technologies.mjs';
 import { projectTechnologyCopy } from '../content/project-technologies.mjs';
@@ -19,7 +20,6 @@ import { icon } from './icons.mjs';
 import { hero, sectionNavigation } from './hero.mjs';
 import { letterGlitch } from './letter-glitch.mjs';
 import { preferences, loader, contactForm } from './preferences.mjs';
-import { interfaceCopy } from '../content/interface.mjs';
 import { journey } from './journey.mjs';
 import { soundtrack } from './soundtrack.mjs';
 import { metadata } from './seo.mjs';
@@ -65,10 +65,6 @@ function header(lang, t, paths) {
   </header>`;
 }
 
-function footer(t, lang) {
-  return `<footer class="site-footer wrap"><div><a class="footer-brand" href="${t.path}">${site.name}</a><p>${t.contact.footer}</p><button class="footer-privacy" type="button" data-open-privacy hidden>${interfaceCopy[lang].cookies}</button><button class="footer-privacy" type="button" data-background-motion data-pause="${interfaceCopy[lang].backgroundPause}" data-play="${interfaceCopy[lang].backgroundPlay}" aria-pressed="false" hidden>${interfaceCopy[lang].backgroundPause}</button></div><small>© ${site.copyrightYear} ${site.name}<br>${t.rights}</small></footer>`;
-}
-
 function document(lang, content, options) {
   const t = locales[lang];
   return `<!doctype html>
@@ -80,7 +76,7 @@ ${head(lang, options)}
   <a class="skip-link" href="#main">${t.skip}</a>
   ${header(lang, t, options.paths)}
   ${content}
-  ${footer(t, lang)}${options.home ? `\n  ${sectionNavigation(t)}` : ''}
+  ${footer(lang, options.paths)}${options.home ? `\n  ${sectionNavigation(t)}` : ''}
   ${soundtrack(lang)}
   ${preferences(lang)}${options.home ? `\n  ${bookingDialog(lang)}` : ''}
   ${journey(lang, options.home)}

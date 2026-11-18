@@ -10,6 +10,7 @@ import { skills, experience } from '../src/content/profile.mjs';
 import { professionalWork } from '../src/content/professional-work.mjs';
 import { bookingCopy } from '../src/content/booking.mjs';
 import { projectTechnologyCopy } from '../src/content/project-technologies.mjs';
+import { footerCopy } from '../src/content/footer.mjs';
 import { projects, projectName } from '../src/content/projects.mjs';
 import { assistantCopy } from '../src/content/document-assistant.mjs';
 import { workflowCopy } from '../src/content/workflow.mjs';
@@ -36,6 +37,7 @@ function compareShape(es, en, key = 'locales') {
 compareShape(locales.es, locales.en);
 compareShape(bookingCopy.es, bookingCopy.en, 'booking');
 compareShape(projectTechnologyCopy.es, projectTechnologyCopy.en, 'projectTechnologies');
+compareShape(footerCopy.es, footerCopy.en, 'footer');
 compareShape(interfaceCopy.es, interfaceCopy.en, 'interface');
 compareShape(journeyCopy.es, journeyCopy.en, 'journey');
 compareShape(assistantCopy.es, assistantCopy.en, 'assistant');
@@ -64,6 +66,12 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   assert.ok(title && !titles.has(title), `Unique descriptive page title: ${pathname}`); titles.add(title);
   assert.ok(html.includes(`<html lang="${lang}"`), pathname);
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1, `One page heading: ${pathname}`);
+  const footer = html.match(/<footer\b[^]*?<\/footer>/)?.[0];
+  assert.ok(footer?.includes('id="site-footer"') && footer.includes('id="footer-title"'), `Complete footer: ${pathname}`);
+  assert.equal((footer.match(/class="footer-group/g) || []).length, 3);
+  assert.ok(footer.includes('data-open-privacy') && footer.includes('data-background-motion'), 'Preserve footer preference controls');
+  assert.ok(footer.includes(`href="${site.source}"`) && footer.includes(`href="${site.linkedin}"`) && footer.includes(`href="${site.whatsapp}"`), 'Public footer destinations');
+  assert.ok(footer.includes(`href="${route.paths.es}" lang="es"`) && footer.includes(`href="${route.paths.en}" lang="en"`), 'Footer preserves current-page language destinations');
   assert.ok(html.includes('href="#main"') && html.includes('id="main" tabindex="-1"'), `Keyboard skip target: ${pathname}`);
   assert.ok(html.includes(`<link rel="canonical" href="${site.origin}${pathname}">`));
   for (const alternate of ['es', 'en']) assert.ok(html.includes(`<link rel="alternate" hreflang="${alternate}" href="${site.origin}${route.paths[alternate]}">`));
