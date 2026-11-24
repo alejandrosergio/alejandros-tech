@@ -30,6 +30,9 @@ for (const lang of ['es', 'en']) {
   assert.ok(!video.interactionStatistic && !video.embedUrl, 'No invented views or video hosting service');
   const captions = await readFile(new URL(`../dist/assets/power-platform-${lang}.vtt`, import.meta.url), 'utf8');
   assert.equal(captions, videoCaptions(lang));
+  const payload = captions.split('\n').filter(line => line && line !== 'WEBVTT' && !line.includes(' --> '));
+  assert.ok(payload.every(line => line.length <= 44), 'Explicit caption lines fit the player without truncating long sentences');
+  assert.equal(payload.join(' '), videoTranscript.filter(segment => !segment.visual).flatMap(segment => segment[lang]).join(' '), 'Wrapping retains every spoken word');
   const cues = [...captions.matchAll(/(\d\d:\d\d:\d\d\.\d\d\d) --> (\d\d:\d\d:\d\d\.\d\d\d)/g)];
   const seconds = time => time.split(':').reduce((sum, value) => sum * 60 + Number(value), 0);
   let previous = 0;

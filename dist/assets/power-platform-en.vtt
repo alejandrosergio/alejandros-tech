@@ -1,76 +1,107 @@
 WEBVTT
 
 00:00:00.000 --> 00:00:05.000 line:75%
-This is how I turn a business need into a Power Platform solution:
+This is how I turn a business need into a
+Power Platform solution:
 
 00:00:05.000 --> 00:00:10.000 line:75%
-from requirements to an application that can be tested, installed and maintained.
+from requirements to an application that can
+be tested, installed and maintained.
 
 00:00:10.000 --> 00:00:16.500 line:75%
-I start by cross-checking the documents, content and design supplied.
+I start by cross-checking the documents,
+content and design supplied.
 
 00:00:16.500 --> 00:00:23.000 line:75%
-I turn each request into a clear scope, acceptance criteria and an assessment of its impact.
+I turn each request into a clear scope,
+acceptance criteria and an assessment of its
+impact.
 
 00:00:23.000 --> 00:00:29.000 line:75%
-Next, I connect the user’s decisions in a guided journey.
+Next, I connect the user’s decisions in a
+guided journey.
 
 00:00:29.000 --> 00:00:35.000 line:75%
-Each choice feeds the next screen and final result, with coherent, responsive navigation.
+Each choice feeds the next screen and final
+result, with coherent, responsive
+navigation.
 
 00:00:36.000 --> 00:00:43.000 line:75%
-I organise the content in SharePoint: catalogues, relationships, recommendations and images.
+I organise the content in SharePoint:
+catalogues, relationships, recommendations
+and images.
 
 00:00:43.000 --> 00:00:50.000 line:75%
-The data model and dictionary explain what each field stores and how it is used.
+The data model and dictionary explain what
+each field stores and how it is used.
 
 00:00:50.000 --> 00:00:56.500 line:75%
-With Power Automate, I prepare the structure and initial Excel data load.
+With Power Automate, I prepare the structure
+and initial Excel data load.
 
 00:00:56.500 --> 00:01:03.000 line:75%
-Connections and environment variables make the destination configurable, independent of a development site.
+Connections and environment variables make
+the destination configurable, independent of
+a development site.
 
 00:01:03.000 --> 00:01:09.000 line:75%
-In Power Apps, I implement reusable components, formulas and loading states.
+In Power Apps, I implement reusable
+components, formulas and loading states.
 
 00:01:09.000 --> 00:01:15.000 line:75%
-I review spacing, buttons, windows and behaviour on desktop, tablet and mobile.
+I review spacing, buttons, windows and
+behaviour on desktop, tablet and mobile.
 
 00:01:33.000 --> 00:01:40.000 line:75%
-The next iteration adds prompts that use the selected context.
+The next iteration adds prompts that use the
+selected context.
 
 00:01:40.000 --> 00:01:47.000 line:75%
-The user chooses a mission, reviews the text, copies it or emails it to themselves.
+The user chooses a mission, reviews the
+text, copies it or emails it to themselves.
 
 00:01:47.000 --> 00:01:54.500 line:75%
-I validate what the user receives: correct context, complete text, copying and email.
+I validate what the user receives: correct
+context, complete text, copying and email.
 
 00:01:54.500 --> 00:02:02.000 line:75%
-I also check regressions and presentation with evidence from the test environment.
+I also check regressions and presentation
+with evidence from the test environment.
 
 00:02:02.000 --> 00:02:07.000 line:75%
-The handover includes six documents: installation, data model, dictionary,
+The handover includes six documents:
+installation, data model, dictionary,
 
 00:02:07.000 --> 00:02:12.000 line:75%
-user manual, administration and version record.
+user manual, administration and version
+record.
 
 00:02:12.000 --> 00:02:17.000 line:75%
-I use screenshots and instructions to support knowledge transfer.
+I use screenshots and instructions to
+support knowledge transfer.
 
 00:02:17.000 --> 00:02:24.500 line:75%
-I prepare a package with the solution, content and documentation aligned.
+I prepare a package with the solution,
+content and documentation aligned.
 
 00:02:24.500 --> 00:02:32.000 line:75%
-I check versions, files and configuration so another team can follow the installation process.
+I check versions, files and configuration so
+another team can follow the installation
+process.
 
 00:02:33.000 --> 00:02:38.000 line:75%
-When a change is needed, I assess its impact, fix, test and update the affected documents.
+When a change is needed, I assess its
+impact, fix, test and update the affected
+documents.
 
 00:02:38.000 --> 00:02:43.000 line:75%
-Then I integrate the change in Git and prepare the next handover.
+Then I integrate the change in Git and
+prepare the next handover.
 
 00:02:47.000 --> 00:02:51.000 line:75%
-My approach connects analysis, data, development, testing and documentation.
+My approach connects analysis, data,
+development, testing and documentation.
 
 00:02:51.000 --> 00:02:55.000 line:75%
-The result is a traceable, maintainable solution that is ready to evolve.
+The result is a traceable, maintainable
+solution that is ready to evolve.

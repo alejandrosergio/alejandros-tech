@@ -1,76 +1,110 @@
 WEBVTT
 
 00:00:00.000 --> 00:00:05.000 line:75%
-Así convierto una necesidad de negocio en una solución de Power Platform:
+Así convierto una necesidad de negocio en
+una solución de Power Platform:
 
 00:00:05.000 --> 00:00:10.000 line:75%
-desde los requisitos hasta una aplicación que se puede probar, instalar y mantener.
+desde los requisitos hasta una aplicación
+que se puede probar, instalar y mantener.
 
 00:00:10.000 --> 00:00:16.500 line:75%
-Empiezo contrastando los documentos, el contenido y el diseño recibido.
+Empiezo contrastando los documentos, el
+contenido y el diseño recibido.
 
 00:00:16.500 --> 00:00:23.000 line:75%
-Convierto cada solicitud en un alcance claro, criterios de aceptación y una revisión de sus impactos.
+Convierto cada solicitud en un alcance
+claro, criterios de aceptación y una
+revisión de sus impactos.
 
 00:00:23.000 --> 00:00:29.000 line:75%
-Después conecto las decisiones del usuario en un recorrido guiado.
+Después conecto las decisiones del usuario
+en un recorrido guiado.
 
 00:00:29.000 --> 00:00:35.000 line:75%
-Cada elección alimenta la siguiente pantalla y el resultado final, con una navegación coherente y adaptable.
+Cada elección alimenta la siguiente pantalla
+y el resultado final, con una navegación
+coherente y adaptable.
 
 00:00:36.000 --> 00:00:43.000 line:75%
-Organizo el contenido en SharePoint: catálogos, relaciones, recomendaciones e imágenes.
+Organizo el contenido en SharePoint:
+catálogos, relaciones, recomendaciones e
+imágenes.
 
 00:00:43.000 --> 00:00:50.000 line:75%
-El modelo y el diccionario de datos permiten entender qué guarda cada campo y cómo se utiliza.
+El modelo y el diccionario de datos permiten
+entender qué guarda cada campo y cómo se
+utiliza.
 
 00:00:50.000 --> 00:00:56.500 line:75%
-Con Power Automate preparo la estructura y la carga inicial desde Excel.
+Con Power Automate preparo la estructura y
+la carga inicial desde Excel.
 
 00:00:56.500 --> 00:01:03.000 line:75%
-Las conexiones y variables de entorno hacen configurable el destino, sin depender de un sitio de desarrollo.
+Las conexiones y variables de entorno hacen
+configurable el destino, sin depender de un
+sitio de desarrollo.
 
 00:01:03.000 --> 00:01:09.000 line:75%
-En Power Apps implemento componentes reutilizables, fórmulas y estados de carga.
+En Power Apps implemento componentes
+reutilizables, fórmulas y estados de carga.
 
 00:01:09.000 --> 00:01:15.000 line:75%
-Reviso espacios, botones, ventanas y comportamientos en escritorio, tablet y móvil.
+Reviso espacios, botones, ventanas y
+comportamientos en escritorio, tablet y
+móvil.
 
 00:01:33.000 --> 00:01:40.000 line:75%
-La evolución añade prompts que utilizan el contexto seleccionado.
+La evolución añade prompts que utilizan el
+contexto seleccionado.
 
 00:01:40.000 --> 00:01:47.000 line:75%
-El usuario elige una misión, consulta los textos, los copia o se los envía a su propio correo.
+El usuario elige una misión, consulta los
+textos, los copia o se los envía a su propio
+correo.
 
 00:01:47.000 --> 00:01:54.500 line:75%
-Valido lo que el usuario recibe: contexto correcto, texto completo, copia y correo.
+Valido lo que el usuario recibe: contexto
+correcto, texto completo, copia y correo.
 
 00:01:54.500 --> 00:02:02.000 line:75%
-También compruebo regresiones y presentación con evidencia del entorno de pruebas.
+También compruebo regresiones y presentación
+con evidencia del entorno de pruebas.
 
 00:02:02.000 --> 00:02:07.000 line:75%
-La entrega incluye seis documentos: instalación, modelo de datos, diccionario,
+La entrega incluye seis documentos:
+instalación, modelo de datos, diccionario,
 
 00:02:07.000 --> 00:02:12.000 line:75%
-manual de usuario, administración y ficha de versión.
+manual de usuario, administración y ficha de
+versión.
 
 00:02:12.000 --> 00:02:17.000 line:75%
-Uso capturas e instrucciones para facilitar la transferencia.
+Uso capturas e instrucciones para facilitar
+la transferencia.
 
 00:02:17.000 --> 00:02:24.500 line:75%
-Preparo un paquete con la solución, los contenidos y la documentación alineados.
+Preparo un paquete con la solución, los
+contenidos y la documentación alineados.
 
 00:02:24.500 --> 00:02:32.000 line:75%
-Compruebo versiones, archivos y configuración para que otro equipo pueda seguir el proceso de instalación.
+Compruebo versiones, archivos y
+configuración para que otro equipo pueda
+seguir el proceso de instalación.
 
 00:02:33.000 --> 00:02:38.000 line:75%
-Cuando aparece un ajuste, reviso dónde repercute, corrijo, pruebo y actualizo los documentos afectados.
+Cuando aparece un ajuste, reviso dónde
+repercute, corrijo, pruebo y actualizo los
+documentos afectados.
 
 00:02:38.000 --> 00:02:43.000 line:75%
-Después integro el cambio en Git y preparo la nueva entrega.
+Después integro el cambio en Git y preparo
+la nueva entrega.
 
 00:02:47.000 --> 00:02:51.000 line:75%
-Mi enfoque conecta análisis, datos, desarrollo, pruebas y documentación.
+Mi enfoque conecta análisis, datos,
+desarrollo, pruebas y documentación.
 
 00:02:51.000 --> 00:02:55.000 line:75%
-El resultado es una solución trazable, mantenible y preparada para evolucionar.
+El resultado es una solución trazable,
+mantenible y preparada para evolucionar.

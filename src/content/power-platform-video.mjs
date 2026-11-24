@@ -109,13 +109,19 @@ export const videoTranscript = [
 ];
 
 const timestamp = seconds => new Date(Math.round(seconds * 1000)).toISOString().slice(11, 23);
+const captionLines = text => text.split(' ').reduce((lines, word) => {
+  const last = lines.length - 1;
+  if (lines[last] && lines[last].length + word.length + 1 > 44) lines.push(word);
+  else lines[last] += (lines[last] ? ' ' : '') + word;
+  return lines;
+}, ['']).join('\n');
 export function videoCaptions(lang) {
   return 'WEBVTT\n\n' + videoTranscript.filter(segment => !segment.visual).flatMap(segment => {
     const phrases = segment[lang];
     return phrases.map((text, index) => {
       const start = segment.start + (segment.end - segment.start) * index / phrases.length;
       const end = segment.start + (segment.end - segment.start) * (index + 1) / phrases.length;
-      return `${timestamp(start)} --> ${timestamp(end)} line:75%\n${text}\n`;
+      return `${timestamp(start)} --> ${timestamp(end)} line:75%\n${captionLines(text)}\n`;
     });
   }).join('\n');
 }
