@@ -96,7 +96,7 @@ for (const route of routeGroups) for (const lang of ['es', 'en']) {
   assert.ok(html.includes(`<meta name="twitter:image" content="${socialImage}">`));
   if (route.type === 'project') {
     assert.equal(socialImage, site.origin + route.entity.image[lang], 'Project social image matches the page language');
-    assert.ok(html.includes(`src="${route.entity.image[lang]}"`), 'Project figure uses the current localized screenshot');
+    assert.ok(html.includes(`${route.entity.video ? 'poster' : 'src'}="${route.entity.image[lang]}"`), 'Project figure uses the current localized screenshot');
     assert.ok(!html.includes('alejandros-tech-first-version'), 'The current case does not show a retired homepage');
   }
   assert.equal(new Set(ids(html)).size, ids(html).length, `Unique IDs: ${pathname}`);
@@ -167,6 +167,7 @@ await import('./check-soundtrack.mjs');
 await import('./check-preferences.mjs');
 await import('./check-booking.mjs');
 await import('./check-project-technologies.mjs');
+await import('./check-project-video.mjs');
 await import('./check-settings.mjs');
 await import('./check-document-assistant.mjs');
 await import('./check-workflow.mjs');

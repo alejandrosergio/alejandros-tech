@@ -209,6 +209,7 @@
   document.addEventListener('pointerdown', event => { if (volumePanel?.open && !player?.contains(event.target)) closeVolume(); });
   document.addEventListener('focusin', event => { if (volumePanel?.open && !player?.contains(event.target)) closeVolume(); });
   button.addEventListener('click', () => { if (engine || pending) stop(); else start(); });
+  document.addEventListener('play', event => { if (event.target?.matches?.('video') && (engine || pending)) stop(); }, true);
   document.addEventListener('visibilitychange', () => { if (document.hidden) { closeVolume(); if (engine || pending) stop(); } });
   window.addEventListener('pagehide', () => { closeVolume(); if (engine || pending) stop(); });
 })();

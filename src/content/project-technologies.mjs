@@ -45,6 +45,11 @@ const definitions = [
   ['erp', 'ERP', 'ERP', 'Sincronización del inventario', 'Inventory synchronisation'],
   ['alm', 'ALM', 'ALM', 'Gestión de entregas Dev/Test/Prod', 'Dev/Test/Prod release management'],
   ['sharepoint', 'SharePoint', 'sharepoint', 'Datos de la solución adaptada', 'Adapted solution data'],
+  ['powerfx', 'Power Fx', 'Fx', 'Fórmulas y comportamiento de la aplicación', 'Application formulas and behaviour'],
+  ['sharepoint-catalog', 'SharePoint', 'sharepoint', 'Catálogos editables, relaciones e imágenes', 'Editable catalogues, relationships and images'],
+  ['automate-setup', 'Power Automate', 'automate', 'Creación de estructura y carga inicial de contenido', 'Structure creation and initial content loading'],
+  ['excel', 'Excel', 'XLS', 'Libro de carga de los catálogos', 'Catalogue loading workbook'],
+  ['git-version', 'Git', 'git-only', 'Control de cambios y preparación de versiones', 'Change tracking and release preparation'],
   ['m365', 'Microsoft 365', 'M365', 'Tenant, usuarios, licencias y permisos', 'Tenant, users, licences and permissions'],
 ];
 export const technologyCatalog = Object.fromEntries(definitions.map(([id, name, mark, es, en]) => [id, { name, mark, es, en }]));
@@ -52,6 +57,7 @@ export const technologyCatalog = Object.fromEntries(definitions.map(([id, name, 
 const web = ['html', 'css', 'javascript'];
 const tooling = ['node', 'esbuild', 'pnpm', 'git', 'sites'];
 export const projectTechnologies = {
+  'power-platform-delivery': ['powerapps', 'powerfx', 'sharepoint-catalog', 'automate-setup', 'excel', 'git-version'],
   'document-assistant': [...web, 'bm25', 'webllm', 'qwen', 'webgpu', 'wasm', 'workers', 'cache', ...tooling, 'actions'],
   'request-workflow': [...web, 'csharp', 'net', 'aspnet', 'http', 'json', 'openapi', 'automate-guide', ...tooling, 'actions'],
   'alejandros-tech': [...web, 'canvas', 'webgl', 'audio', 'formspree', 'cal', ...tooling, 'actions'],

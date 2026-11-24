@@ -1,6 +1,6 @@
 # Tecnologías y distribución del código
 
-Las cuatro fichas públicas y sus casos ES/EN muestran una barra de lenguajes y el inventario completo del alcance presentado. Las tres contribuciones profesionales muestran las tecnologías documentadas en el CV maestro, sin atribuir porcentajes que no pueden comprobarse sin sus fuentes. Los inventarios sustituyen las anteriores listas abreviadas.
+Las cuatro fichas personales y sus casos ES/EN muestran una barra de lenguajes y el inventario completo del alcance presentado. El quinto caso, un recorrido profesional en video por Power Platform, enumera sus seis tecnologías sin porcentajes porque no se han aportado las fuentes de la aplicación. Las tres contribuciones profesionales muestran las tecnologías documentadas en el CV maestro, con el mismo límite. Los inventarios sustituyen las anteriores listas abreviadas.
 
 ## Dos medidas distintas
 
@@ -25,6 +25,6 @@ La revisión del CV confirmó sus dependencias de construcción `esbuild`, `ffla
 
 El componente `src/components/project-technologies.mjs` genera HTML estático: barras con descripción accesible, leyenda textual con porcentajes, inventarios y explicación desplegable. Las fichas mantienen el inventario dentro de un desplegable nativo; los casos muestran las tecnologías y sus funciones. Nada requiere una descarga de modelos, una llamada a GitHub desde el navegador ni JavaScript nuevo para ver los datos.
 
-`pnpm build` pasa las distribuciones a las páginas y genera `dist/assets/project-code.json`. No se escribe ese archivo a mano. `pnpm check` verifica el redondeo, las exclusiones, la vigencia del resultado, los inventarios, las cuatro barras y los tres avisos profesionales en ambos idiomas. La revisión visual comprueba móvil, escritorio, temas, ampliación y teclado.
+`pnpm build` pasa las distribuciones a las páginas y genera `dist/assets/project-code.json`. No se escribe ese archivo a mano. `pnpm check` verifica el redondeo, las exclusiones, la vigencia del resultado, los inventarios, las cuatro barras y los cuatro avisos profesionales en ambos idiomas. La revisión visual comprueba móvil, escritorio, temas, ampliación y teclado.
 
 Para actualizar el CV: leer su revisión actual y árbol mediante GitHub, comprobar los archivos y las dependencias, actualizar únicamente la captura de metadatos en este repositorio y reconstruir. No ajustar porcentajes a mano ni copiar el código de terceros en la web. No atribuir al titular tecnologías de un trabajo profesional que sus fuentes confirmadas no mencionen.

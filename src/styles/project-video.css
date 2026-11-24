@@ -1,0 +1,23 @@
+/* The recorded case shares the editorial palette and native media controls. */
+.project-card--video .project-image { aspect-ratio: 16 / 9; }
+.project-card--video .project-image img { object-fit: contain; }
+.project-card--video .project-open { background: var(--accent); color: var(--button-text); }
+.project-video { scroll-margin-top: 8rem; min-width: 0; }
+.project-video-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.project-video-heading h2 { margin: 0; font-size: clamp(1.35rem, 2.5vw, 1.8rem); }
+.project-video-heading > span { flex-shrink: 0; color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
+.project-video-media { margin: 0; }
+.project-video-media video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #080a12; border: 1px solid var(--line); border-radius: var(--card-radius); }
+.project-video-media video:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+.project-video-media figcaption { color: var(--muted); font-size: .75rem; line-height: 1.8; }
+.project-video-media figcaption { margin-top: 1rem; }
+.project-video-transcript { margin-top: 1.4rem; border-block: 1px solid var(--line); }
+.project-video-transcript summary { min-height: 48px; padding-block: .9rem; color: var(--ink); font-size: .8125rem; }
+.project-video-transcript > div { max-width: 54rem; padding: .5rem 0 1rem; }
+.project-video-transcript p { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: .75rem; color: var(--muted); font-size: .8125rem; line-height: 1.9; }
+.transcript-time { color: var(--accent); font-variant-numeric: tabular-nums; }
+.project-video-media figcaption a { color: var(--ink); text-underline-offset: .2em; }
+.case-delivery-steps { display: grid; gap: 1rem; }
+.case-delivery-steps li { padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+@media (max-width: 480px) { .project-video-transcript p { grid-template-columns: 2.5rem minmax(0, 1fr); gap: .45rem; } }
+@media (forced-colors: active) { .project-video-media video { border-color: CanvasText; } }

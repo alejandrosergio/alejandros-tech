@@ -172,7 +172,7 @@ export const locales = {
       "professionalIntro": "Proyectos recogidos en mi CV completo. Abre cada uno para conocer mi aportación y las tecnologías utilizadas.",
       "contributionLabel": "Explorar mi aportación",
       "publicTitle": "Proyectos que puedes explorar",
-      "publicIntro": "Dos laboratorios personales de IA e integración y dos proyectos web públicos, con su funcionamiento, código o ficha de desarrollo."
+      "publicIntro": "Laboratorios personales de IA e integración, proyectos web públicos y un recorrido en video por una entrega profesional con Power Platform."
     },
     "notes": {
       "label": "Cuaderno técnico",
@@ -404,7 +404,7 @@ export const locales = {
       "professionalIntro": "Projects described in my complete résumé. Open each one to explore my contribution and the technologies used.",
       "contributionLabel": "Explore my contribution",
       "publicTitle": "Projects you can explore",
-      "publicIntro": "Two personal AI and integration labs and two public web projects, with working demos, code or development case studies."
+      "publicIntro": "Personal AI and integration labs, public web projects and a video walkthrough of a professional Power Platform delivery."
     },
     "notes": {
       "label": "Technical notebook",

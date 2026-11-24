@@ -121,6 +121,12 @@ for (const options of [{ unsupported: true }, { constructorFails: true }, { resu
 const pending = fixture({ deferred: true }); await pending.click(); assert.equal(pending.button.dataset.state, 'starting'); assert.equal(pending.button.attributes['aria-pressed'], 'false'); assert.equal(pending.timers.size, 0); await pending.click(); await pending.resolve(); assert.equal(pending.button.dataset.state, 'paused'); assert.equal(pending.contexts.length, 1); assert.equal(pending.contexts[0].state, 'closed'); assert.equal(pending.timers.size, 0, 'A cancelled async resume cannot restart sound');
 const hiddenPending = fixture({ deferred: true }); await hiddenPending.click(); hiddenPending.document.hidden = true; hiddenPending.fire('document', 'visibilitychange'); await hiddenPending.resolve(); assert.equal(hiddenPending.button.dataset.state, 'paused'); assert.equal(hiddenPending.timers.size, 0);
 const mono = fixture({ noPanner: true }); await mono.click(); assert.equal(mono.button.dataset.state, 'playing'); await mono.click(); assert.equal(mono.live().length, 0, 'Stereo panning is optional');
+const videoPlayback = fixture(); await videoPlayback.click();
+videoPlayback.fire('document', 'play', { target: { matches: selector => selector === 'video' } });
+assert.equal(videoPlayback.button.dataset.state, 'paused'); assert.equal(videoPlayback.timers.size, 0); assert.equal(videoPlayback.contexts[0].state, 'closed', 'Native video playback releases the music graph');
+const pendingVideo = fixture({ deferred: true }); await pendingVideo.click();
+pendingVideo.fire('document', 'play', { target: { matches: () => true } }); await pendingVideo.resolve();
+assert.equal(pendingVideo.button.dataset.state, 'paused'); assert.equal(pendingVideo.timers.size, 0, 'Video cancels an in-flight music start');
 const controls = fixture();
 controls.setVolume(20); assert.equal(controls.contexts.length, 0); assert.equal(controls.timers.size, 0, 'Setting a paused volume never starts audio');
 controls.volumePanel.open = true; controls.fire('player', 'keydown', { key: 'Escape', preventDefault() {} }); assert.equal(controls.volumePanel.open, false); assert.equal(controls.summary.focused, true);

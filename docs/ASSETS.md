@@ -57,6 +57,10 @@ La antigua integración 3D y su documentación se pueden consultar en el [commit
 
 La descarga y ejecución solo se inician al activar la IA en la demo. Los pesos no se distribuyen con el sitio: proceden de la revisión de Hugging Face fijada en `src/content/local-model.mjs`. Ver `AI-DEMO.md` y `THIRD_PARTY.md` para funcionamiento y licencias.
 
+## Video de Power Platform
+
+El nuevo caso utiliza la grabación aportada por el titular, optimizada para la web, y un fotograma real como póster. La procedencia, huellas, subtítulos ES/EN y límites de lo mostrado se documentan en [POWER-PLATFORM-VIDEO.md](POWER-PLATFORM-VIDEO.md). No incorpora recursos generados para simular la aplicación ni una segunda copia del original.
+
 ## Diagrama de solicitudes
 
 `workflow-preview.svg` y `workflow-preview-en.svg` son diagramas originales creados para el nuevo prototipo, con textos ES/EN equivalentes. Representan entrada, revisión y decisión; no se presentan como capturas de una integración empresarial. Se utilizan en tarjeta, ficha y metadatos del caso.

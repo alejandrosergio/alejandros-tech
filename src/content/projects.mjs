@@ -1,6 +1,7 @@
 import { assistantPaths } from './document-assistant.mjs';
 import { workflowPaths } from './workflow.mjs';
 import { evaluationPaths } from './evaluation-cases.mjs';
+import { powerPlatformProject } from './power-platform-video.mjs';
 
 export const projects = [
   {
@@ -61,6 +62,7 @@ export const projects = [
       resources: [{ title: 'Run .NET and reproduce the checks', href: 'https://github.com/alejandrosergio/alejandros-tech/tree/main/examples/workflow-api' }, { title: 'Retries and approvals: technical note', href: '/en/notes/requests-retries-and-approvals/' }]
     }
   },
+  powerPlatformProject,
   {
     id: 'alejandros-tech', slug: { es: 'alejandros-tech', en: 'alejandros-tech' }, name: 'Alejandro’sTech', imageSize: { width: 1280, height: 720 }, image: { es: '/assets/alejandros-tech-preview.jpg', en: '/assets/alejandros-tech-preview-en.jpg' }, live: 'https://alejandros-tech.alejosergio3000.chatgpt.site', repository: 'https://github.com/alejandrosergio/alejandros-tech',
     es: { type: 'Identidad digital · Experiencia interactiva', imageAlt: 'Portada actual de Alejandro’sTech en español, con retrato y presentación de IA aplicada', title: 'Un espacio propio para lo que construyo.', summary: 'Mi universo profesional en una web bilingüe, con un retrato fotográfico a pantalla completa y contenido que funciona desde el primer HTML.', problem: 'Reunir mi perfil, trayectoria y trabajo en un sitio propio, vinculado al CV y a mis perfiles profesionales. La primera portada de próxima apertura dio paso a esta experiencia más completa.', approach: ['Contenido y componentes separados para mantener las versiones en español e inglés.', 'HTML generado de forma estática, con enlaces y contenido disponibles sin JavaScript.', 'Portada fotográfica editorial y efectos decorativos independientes, con controles de movimiento.', 'Diseño adaptable, temas claro y oscuro y atención a las preferencias de movimiento.', 'Comprobaciones de código y contenido, publicación en Sites y fuentes sincronizadas en GitHub.'], result: 'Una web pública bilingüe que presenta mi experiencia en software, automatización e integración de IA. Reúne proyectos web reales y notas técnicas, con acceso al CV y contacto.', contribution: 'Concepto, contenido, diseño y desarrollo de la experiencia web.' },
@@ -75,4 +77,4 @@ export const projects = [
 
 export const projectPath = (project, lang) => `${lang === 'en' ? '/en/projects/' : '/proyectos/'}${project.slug[lang]}/`;
 export const projectName = (project, lang) => project[lang].name ?? project.name;
-export const projectDestination = (project, lang) => project.demoPaths?.[lang] ?? `${project.live}${lang === 'en' ? '/en/' : '/'}`;
+export const projectDestination = (project, lang) => project.video ? `${projectPath(project, lang)}#project-video` : project.demoPaths?.[lang] ?? `${project.live}${lang === 'en' ? '/en/' : '/'}`;

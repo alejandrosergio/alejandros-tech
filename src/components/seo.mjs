@@ -29,6 +29,10 @@ function structuredData(lang, options, image) {
     } else if (project) {
       page.mainEntity = { '@id': `${url}#project` };
       graph.push({ '@type': 'CreativeWork', '@id': `${url}#project`, name: projectName(project, lang), description, url: absolute(projectDestination(project, lang)), creator: { '@id': personID }, mainEntityOfPage: { '@id': pageID }, image: absolute(image) });
+      if (project.video) {
+        page.video = { '@id': `${url}#video` };
+        graph.push({ '@type': 'VideoObject', '@id': `${url}#video`, name: projectName(project, lang), description, thumbnailUrl: absolute(image), contentUrl: absolute(project.video.src), uploadDate: project.video.uploaded, duration: `PT${Math.floor(project.video.duration / 60)}M${project.video.duration % 60}S`, inLanguage: 'es', creator: { '@id': personID }, isPartOf: { '@id': `${url}#project` } });
+      }
     }
   }
   return `<script type="application/ld+json">${scriptJSON({ '@context': 'https://schema.org', '@graph': graph })}</script>`;

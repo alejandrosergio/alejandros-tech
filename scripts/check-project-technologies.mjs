@@ -25,12 +25,18 @@ for (const project of [...projects, ...professionalWork]) {
 for (const lang of ['es', 'en']) {
   const home = await readFile(new URL(`../dist/${lang === 'en' ? 'en/' : ''}index.html`, import.meta.url), 'utf8');
   assert.equal((home.match(/class="project-code-bar"/g) || []).length, 4);
-  assert.equal((home.match(/class="project-code-unavailable"/g) || []).length, 3);
+  assert.equal((home.match(/class="project-code-unavailable"/g) || []).length, 4);
   for (const project of projects) {
     const html = await readFile(new URL(`../dist${projectPath(project, lang)}index.html`, import.meta.url), 'utf8');
-    assert.ok(html.includes('id="project-technologies"') && html.includes(projectTechnologyCopy[lang].explanation));
-    assert.ok(html.includes('role="img" aria-label='));
+    assert.ok(html.includes('id="project-technologies"'));
+    if (reports[project.id]) {
+      assert.ok(html.includes(projectTechnologyCopy[lang].explanation));
+      assert.ok(html.includes('role="img" aria-label='));
+    } else {
+      assert.ok(html.includes(projectTechnologyCopy[lang].unavailable));
+      assert.ok(!html.includes('class="project-code-bar"'), 'No invented distribution without project sources');
+    }
     for (const id of projectTechnologies[project.id]) assert.ok(html.includes(technologyCatalog[id][lang]));
   }
 }
-console.log(JSON.stringify({ projectTechnologies: true, publicCases: 4, professionalInventories: 3, sourceBasedPercentages: true }));
+console.log(JSON.stringify({ projectTechnologies: true, publicCases: projects.length, professionalInventories: 3, sourceBasedPercentages: true }));

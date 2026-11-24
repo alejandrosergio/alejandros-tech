@@ -6,7 +6,7 @@ const logos = {
   powerapps: ['powerapps'], dataverse: ['dataverse'],
   automate: ['powerautomate'], powerbi: ['powerbi'],
   sql: ['microsoftsqlserver'], ef: ['entityframeworkcore'], azure: ['azure'],
-  oauth: ['oauth'], git: ['git', 'github'], node: ['nodejs'],
+  oauth: ['oauth'], git: ['git', 'github'], 'git-only': ['git'], node: ['nodejs'],
   copilot: ['copilot-studio'], 'ai-builder': ['ai-builder'],
   sap: ['sap'], sharepoint: ['sharepoint'], alm: ['azuredevops'],
 };

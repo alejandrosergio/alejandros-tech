@@ -2,7 +2,7 @@ import { technologyCatalog, projectTechnologies, projectTechnologyCopy } from '.
 import { technologyIcon } from './technology-icon.mjs';
 import { escapeHTML as e } from '../lib/html.mjs';
 
-const brandMarks = new Set(['html', 'css', 'node', 'rag', 'ai', 'csharp', 'net', 'api', 'automate', 'git', 'powerapps', 'dataverse', 'sap', 'oauth', 'ai-builder', 'sharepoint']);
+const brandMarks = new Set(['html', 'css', 'node', 'rag', 'ai', 'csharp', 'net', 'api', 'automate', 'git', 'git-only', 'powerapps', 'dataverse', 'sap', 'oauth', 'ai-builder', 'sharepoint']);
 const colors = { JavaScript: 'js', CSS: 'css', HTML: 'html', 'C#': 'csharp' };
 const percentage = (value, lang) => new Intl.NumberFormat(lang === 'es' ? 'es-CO' : 'en-GB', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value) + '%';
 
