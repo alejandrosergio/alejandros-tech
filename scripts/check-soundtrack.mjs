@@ -87,9 +87,9 @@ assert.equal(normal.contexts.length, 0, 'Loading a page never creates an audio c
 await normal.click();
 const audio = normal.contexts[0];
 assert.equal(audio.state, 'running'); assert.equal(audio.resumeCalls, 1); assert.equal(normal.button.dataset.state, 'playing'); assert.equal(normal.button.attributes['aria-pressed'], 'true'); assert.equal(normal.label.textContent, 'Pausa'); assert.equal(normal.button.dataset.tooltip, 'Pausar música'); assert.equal(normal.button.attributes['aria-label'], 'Pausar música'); assert.equal(normal.status.textContent, 'Música activada'); assert.equal(normal.timers.size, 1);
-assert.equal(normal.button.dataset.tempo, '112'); assert.ok(Number(normal.button.dataset.voices) > 0);
+assert.equal(normal.button.dataset.tempo, '118'); assert.equal(normal.button.dataset.composition, 'orbita-digital'); assert.equal(normal.button.dataset.cycleBars, '32'); assert.ok(Number(normal.button.dataset.voices) > 0);
 const master = [...audio.nodes].find(node => node.outputs.has(audio.destination));
-assert.ok(master.gain.events.some(event => event.type === 'linear' && event.value === .6 && event.at === .55), 'The louder master still fades in');
+assert.ok(master.gain.events.some(event => event.type === 'linear' && event.value === 1.4 && event.at === .55), 'The compensated mix still fades in');
 const compressor = [...audio.nodes].find(node => node.kind === 'compressor'); assert.equal(compressor.ratio.value, 4);
 const level = [...compressor.outputs][0];
 assert.equal(level.gain.value, .65); assert.ok(level.gain.value * master.gain.value > .15 * 2, 'The initial output gain is more than twice the former fixed output');
@@ -101,9 +101,9 @@ assert.equal(audio.nodes.size, activeNodes); assert.equal(normal.contexts.length
 assert.equal(master.gain.events.at(-1).at, .55, 'Volume automation leaves the entrance envelope intact');
 const noise = audio.buffers[0].data; assert.equal(noise.length, 22050); assert.ok(noise.every(value => value >= -1 && value <= 1)); assert.ok(Math.abs(noise.reduce((sum, value) => sum + value, 0) / noise.length) < .02); assert.ok(new Set(noise.slice(0, 100)).size > 90, 'Percussion noise is generated locally rather than fetched');
 let maximum = Number(normal.button.dataset.voices);
-for (let i = 0; i < 1600; i++) { normal.tick(); maximum = Math.max(maximum, Number(normal.button.dataset.voices)); assert.equal(normal.timers.size, 1); }
+for (let i = 0; i < 3200; i++) { normal.tick(); maximum = Math.max(maximum, Number(normal.button.dataset.voices)); assert.equal(normal.timers.size, 1); }
 assert.ok(maximum <= 32, 'Normal polyphony stays well below the hard 64-voice limit');
-assert.ok(Number(normal.button.dataset.scheduled) > 250, 'The eight-bar groove schedules continuously');
+assert.ok(Number(normal.button.dataset.scheduled) > 500, 'The 32-bar arrangement wraps and schedules continuously');
 const sources = [...audio.nodes].filter(node => node.startAt !== undefined);
 assert.ok(sources.every(node => node.stopAt - node.startAt < 3), 'Every source has a short scheduled lifetime');
 assert.ok(sources.filter(node => node.kind === 'oscillator').some(node => node.frequency.events.some(event => Math.abs(event.value - 440 * 2 ** ((76 - 69) / 12)) < .001)), 'The composed melody is scheduled as pitched oscillators');
@@ -137,4 +137,4 @@ controls.volumePanel.open = true; controls.document.hidden = true; controls.fire
 assert.ok(styles.includes('prefers-reduced-motion') && styles.includes('forced-colors') && styles.includes('data-motion'));
 assert.ok(styles.includes('min-height: 46px') && styles.includes('min-height: 44px') && styles.includes('var(--accent)'));
 assert.ok(!/fetch\(|localStorage|document\.cookie|https?:|<audio/.test(source), 'The soundtrack has no remote track, service, persistence or media autoplay');
-console.log('Soundtrack: opt-in transport, original 112-BPM synthesis, bounded polyphony/lookahead, error/race handling, native context state and complete pause/navigation teardown verified.');
+console.log('Soundtrack: opt-in ambient-techno synthesis at 118 BPM, bounded FM voices/lookahead, error/race handling, native context state and complete pause/navigation teardown verified.');

@@ -56,7 +56,7 @@ La permanencia de 2000ms después de window.load pertenece al sitio. Un vigilant
 
 ## Composición musical local
 
-La composición de 112 BPM de `src/client/soundtrack.js` se escribió para Alejandro’sTech y usa síntesis Web Audio, sin grabaciones, pistas, samples ni servicios externos. No procede de React Bits. Los avisos anteriores no conceden una licencia sobre esa composición. Ver [AUDIO.md](AUDIO.md) para comportamiento y procedencia; no se presenta como «sin copyright».
+«Órbita digital», la composición de techno ambiental de 118 BPM en `src/client/soundtrack.js`, se escribió para Alejandro’sTech y usa síntesis Web Audio, sin grabaciones, pistas, samples ni servicios externos. No procede de React Bits ni reproduce una melodía de un artista de referencia. Los avisos anteriores no conceden una licencia sobre esa composición. Ver [AUDIO.md](AUDIO.md) para comportamiento y procedencia; no se presenta como «sin copyright».
 
 ## Logos de tecnologías
 

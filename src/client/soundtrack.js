@@ -1,6 +1,6 @@
 /* Original Alejandro’sTech composition, synthesized locally with Web Audio.
- * 112 BPM, eight-bar minor/major ninth harmony, a soft house groove and a
- * newly written melody. No recording, external sample, service or runtime fetch.
+ * “Órbita digital”: 118 BPM, a 32-bar ambient-techno arrangement, soft FM
+ * arpeggios and breathing pads. No recording, sample, service or runtime fetch.
  * Transport starts only from this button; navigation/hidden tabs stop it.
  */
 (() => {
@@ -10,16 +10,20 @@
   const player = document.querySelector('[data-soundtrack-player]'), volumeInput = document.querySelector('[data-soundtrack-volume]');
   const volumeOutput = document.querySelector('[data-soundtrack-volume-value]'), volumePanel = document.querySelector('[data-soundtrack-volume-panel]');
   const Audio = window.AudioContext || window.webkitAudioContext;
-  const BPM = 112, BEAT = 60 / BPM, STEP = BEAT / 4, MAX_VOICES = 64, MAX_GAIN = .6;
+  const BPM = 118, BEAT = 60 / BPM, STEP = BEAT / 4, MAX_VOICES = 64, MAX_GAIN = 1.4;
   const harmony = [
-    { bass: 33, notes: [57, 60, 64, 67, 71] },
-    { bass: 29, notes: [53, 57, 60, 64, 67] },
-    { bass: 36, notes: [55, 59, 62, 64, 67] },
-    { bass: 31, notes: [55, 59, 62, 64, 69] }
+    { bass: 38, notes: [53, 57, 60, 64, 69] },
+    { bass: 34, notes: [53, 57, 60, 62, 65] },
+    { bass: 41, notes: [57, 60, 64, 67, 72] },
+    { bass: 36, notes: [55, 60, 62, 64, 67] },
+    { bass: 43, notes: [53, 57, 58, 62, 65] },
+    { bass: 34, notes: [53, 57, 60, 62, 69] },
+    { bass: 33, notes: [55, 57, 62, 64, 67] },
+    { bass: 38, notes: [53, 57, 60, 64, 69] }
   ];
-  const melody = [
-    [76, 79, 83, 79], [74, 71, 72, 76], [69, 72, 76, 79], [76, 74, 72, 69],
-    [67, 71, 74, 76], [74, 76, 71, 67], [71, 74, 76, 81], [79, 76, 74, 71]
+  const motif = [
+    [74, 77, 76, 72], [74, 77, 81, 77], [76, 79, 81, 79], [74, 79, 76, 72],
+    [74, 77, 81, 79], [74, 77, 72, 69], [76, 79, 74, 71], [77, 76, 74, 69]
   ];
   const frequency = note => 440 * Math.pow(2, (note - 69) / 12);
   let context = null, engine = null, pending = false, generation = 0;
@@ -63,7 +67,7 @@
   function createEngine(audio) {
     const voices = new Set(), graph = [], keep = node => { graph.push(node); return node; };
     let timer = 0, active = false, nextTime = 0, position = 0, scheduled = 0;
-    let mix, compressor, level, master, delay, noise;
+    let mix, pads, compressor, level, master, delay, noise;
     const disconnect = node => { try { node.disconnect(); } catch { /* Already detached. */ } };
     const voiceCount = () => { button.dataset.voices = String(voices.size); };
     function release(voice, stopSources = false) {
@@ -88,49 +92,68 @@
       gain.linearRampToValueAtTime(peak, at + attack);
       gain.exponentialRampToValueAtTime(.0001, at + duration);
     }
-    function pan(output, nodes, value) {
-      if (typeof audio.createStereoPanner !== 'function') { output.connect(mix); return; }
+    function pan(output, nodes, value, destination = mix) {
+      if (typeof audio.createStereoPanner !== 'function') { output.connect(destination); return; }
       const panner = audio.createStereoPanner(); panner.pan.value = value;
-      output.connect(panner); panner.connect(mix); nodes.push(panner);
+      output.connect(panner); panner.connect(destination); nodes.push(panner);
     }
-    function tone(note, at, duration, peak, { type = 'triangle', cutoff = 900, spread = 0, echo = false, attack = .012 } = {}) {
+    function tone(note, at, duration, peak, { type = 'triangle', cutoff = 900, spread = 0, echo = false, attack = .012, pad = false, metal = 0 } = {}) {
       if (voices.size >= MAX_VOICES) return;
       const oscillator = audio.createOscillator(), gain = audio.createGain(), filter = audio.createBiquadFilter();
-      const nodes = [oscillator, gain, filter];
+      const nodes = [oscillator, gain, filter], sources = [oscillator];
       oscillator.type = type; oscillator.frequency.setValueAtTime(frequency(note), at);
-      filter.type = 'lowpass'; filter.frequency.setValueAtTime(cutoff, at); filter.Q.value = .45;
-      oscillator.connect(filter); filter.connect(gain); pan(gain, nodes, spread);
+      filter.type = 'lowpass'; filter.frequency.setValueAtTime(cutoff * .6, at); filter.Q.value = .4;
+      filter.frequency.linearRampToValueAtTime(cutoff, at + attack + .03);
+      filter.frequency.exponentialRampToValueAtTime(Math.max(280, cutoff * .6), at + duration);
+      oscillator.connect(filter); filter.connect(gain); pan(gain, nodes, spread, pad ? pads : mix);
+      // A decaying FM sideband adds a gentle digital/bell attack, not a sample.
+      if (metal) {
+        const modulator = audio.createOscillator(), depth = audio.createGain();
+        modulator.type = 'sine'; modulator.frequency.setValueAtTime(frequency(note) * 2.01, at);
+        depth.gain.setValueAtTime(frequency(note) * metal, at); depth.gain.exponentialRampToValueAtTime(.01, at + duration * .7);
+        modulator.connect(depth); depth.connect(oscillator.frequency); nodes.push(modulator, depth); sources.push(modulator);
+      }
       if (echo) gain.connect(delay);
-      envelope(gain.gain, at, peak, attack, duration);
-      register([oscillator], nodes, at, duration + .025);
+      if (pad) {
+        gain.gain.setValueAtTime(.0001, at); gain.gain.linearRampToValueAtTime(peak, at + attack);
+        gain.gain.linearRampToValueAtTime(peak * .82, at + BEAT * 3.5); gain.gain.exponentialRampToValueAtTime(.0001, at + duration);
+      } else envelope(gain.gain, at, peak, attack, duration);
+      register(sources, nodes, at, duration + .025);
     }
     function kick(at) {
       if (voices.size >= MAX_VOICES) return;
       const oscillator = audio.createOscillator(), gain = audio.createGain();
-      oscillator.type = 'sine'; oscillator.frequency.setValueAtTime(112, at); oscillator.frequency.exponentialRampToValueAtTime(47, at + .14);
-      oscillator.connect(gain); gain.connect(mix); envelope(gain.gain, at, .44, .006, .32);
+      oscillator.type = 'sine'; oscillator.frequency.setValueAtTime(96, at); oscillator.frequency.exponentialRampToValueAtTime(46, at + .14);
+      oscillator.connect(gain); gain.connect(mix); envelope(gain.gain, at, .36, .006, .32);
       register([oscillator], [oscillator, gain], at, .35);
     }
     function percussion(at, { clap = false, open = false, soft = false } = {}) {
       if (voices.size >= MAX_VOICES) return;
       const source = audio.createBufferSource(), filter = audio.createBiquadFilter(), gain = audio.createGain();
-      source.buffer = noise; filter.type = clap ? 'bandpass' : 'highpass'; filter.frequency.value = clap ? 1850 : 6700; filter.Q.value = clap ? .7 : .45;
+      source.buffer = noise; filter.type = clap ? 'bandpass' : 'highpass'; filter.frequency.value = clap ? 1450 : 4900; filter.Q.value = clap ? .65 : .4;
       source.connect(filter); filter.connect(gain); gain.connect(mix);
-      const duration = clap ? .17 : open ? .15 : .055, peak = clap ? .05 : soft ? .007 : .023;
+      const duration = clap ? .14 : open ? .13 : .05, peak = clap ? .032 : soft ? .0045 : .015;
       envelope(gain.gain, at, peak, .004, duration);
       register([source], [source, filter, gain], at, duration + .015);
     }
     function step(index, at) {
-      const tick = index % 16, bar = Math.floor(index / 16) % 8, chord = harmony[Math.floor(bar / 2)];
-      if (tick % 4 === 0) kick(at);
-      if (tick === 4 || tick === 12) percussion(at, { clap: true });
-      if (tick % 4 === 2) percussion(at, { open: tick === 14 });
-      if (tick % 2 === 1) percussion(at, { soft: true });
-      if (tick === 0) chord.notes.forEach((note, i) => tone(note, at + i * .006, BEAT * 4 + .52, .043, { cutoff: 1050, spread: (i - 2) * .17, attack: .17 }));
-      const bassPattern = { 0: 0, 3: 12, 6: 0, 8: 7, 11: 0, 14: 12 };
-      if (Object.hasOwn(bassPattern, tick)) tone(chord.bass + bassPattern[tick], at, STEP * (tick === 8 ? 1.5 : 1.08), .16, { type: 'sine', cutoff: 380, attack: .009 });
-      const phrase = [2, 5, 9, 14].indexOf(tick);
-      if (phrase >= 0) tone(melody[bar][phrase], at, .56, .037, { cutoff: 2100, spread: phrase % 2 ? .24 : -.24, echo: true });
+      const tick = index % 16, bar = Math.floor(index / 16) % 32, chordIndex = Math.floor(bar / 4), chord = harmony[chordIndex];
+      const opening = bar < 4, breathing = bar >= 16 && bar < 20, closing = bar >= 28;
+      if (tick % 4 === 0 && (!breathing || tick % 8 === 0)) {
+        kick(at);
+        pads.gain.setValueAtTime(.48, at); pads.gain.exponentialRampToValueAtTime(.9, at + BEAT * .75);
+      }
+      if ((tick === 4 || tick === 12) && !breathing && bar >= 2) percussion(at, { clap: true });
+      if (tick % 4 === 2 && !breathing) percussion(at, { open: tick === 14 && bar % 4 === 3 });
+      if (tick % 2 === 1 && bar >= 2) percussion(at, { soft: true });
+      if (tick === 0) chord.notes.forEach((note, i) => tone(note, at + i * .009, BEAT * 4 + .34, .031, { cutoff: breathing ? 620 : 850, spread: (i - 2) * .24, attack: .28, pad: true }));
+      const bassPattern = { 0: 0, 2: 0, 5: 12, 8: 0, 10: 7, 14: 0 };
+      if (Object.hasOwn(bassPattern, tick) && (!opening || tick % 8 === 0) && (!breathing || tick === 0 || tick === 10)) tone(chord.bass + bassPattern[tick], at, STEP * 1.2, .13, { cutoff: 440, attack: .012 });
+      const arpeggio = [1, 4, 7, 10, 14].indexOf(tick);
+      if (arpeggio >= 0 && (!closing || arpeggio % 2 === 0)) tone(chord.notes[(arpeggio + bar) % 5] + 12, at, .4, opening || breathing ? .012 : .019, { type: 'sine', cutoff: 1450 + (bar % 8) * 55, spread: arpeggio % 2 ? .42 : -.42, echo: true, metal: .3 });
+      const phrase = [3, 11].indexOf(tick);
+      if (phrase >= 0 && bar % 2 === 1 && !breathing) tone(motif[chordIndex][(bar % 4 < 2 ? 0 : 2) + phrase], at, .95, .032, { type: 'sine', cutoff: 2200, spread: phrase ? .2 : -.2, echo: true, attack: .025, metal: .12 });
+      if (tick === 15 && bar % 4 === 3 && !closing) tone(chord.notes[2] + 24, at, .09, .006, { type: 'sine', cutoff: 2400, spread: .55, metal: .18 });
     }
     function queue() {
       const now = audio.currentTime;
@@ -155,13 +178,14 @@
     }
     try {
       mix = keep(audio.createGain()); compressor = keep(audio.createDynamicsCompressor()); level = keep(audio.createGain()); master = keep(audio.createGain());
+      pads = keep(audio.createGain()); pads.gain.value = .9; pads.connect(mix);
       compressor.threshold.value = -15; compressor.knee.value = 20; compressor.ratio.value = 4; compressor.attack.value = .003; compressor.release.value = .25;
       level.gain.value = volume / 100; master.gain.value = 0;
       mix.connect(compressor); compressor.connect(level); level.connect(master); master.connect(audio.destination);
-      // A short, quiet filtered echo gives the pluck space without a reverb sample.
+      // A quiet dotted echo extends the electronic attacks without a reverb file.
       delay = keep(audio.createDelay(1)); delay.delayTime.value = BEAT * .75;
       const shade = keep(audio.createBiquadFilter()), feedback = keep(audio.createGain()), wet = keep(audio.createGain());
-      shade.type = 'lowpass'; shade.frequency.value = 1800; feedback.gain.value = .16; wet.gain.value = .14;
+      shade.type = 'lowpass'; shade.frequency.value = 1450; feedback.gain.value = .2; wet.gain.value = .18;
       delay.connect(shade); shade.connect(feedback); feedback.connect(delay); shade.connect(wet); wet.connect(mix);
       const rate = audio.sampleRate || 44100; noise = audio.createBuffer(1, Math.ceil(rate * .5), rate);
       const samples = noise.getChannelData(0); let seed = 734159;
@@ -203,7 +227,7 @@
     }
   }
   if (player) player.hidden = false;
-  button.hidden = false; button.dataset.tempo = String(BPM); button.dataset.voices = '0'; button.dataset.context = 'closed'; display(Audio ? 'paused' : 'unavailable');
+  button.hidden = false; button.dataset.tempo = String(BPM); button.dataset.composition = 'orbita-digital'; button.dataset.cycleBars = '32'; button.dataset.voices = '0'; button.dataset.context = 'closed'; display(Audio ? 'paused' : 'unavailable');
   updateVolume(); volumeInput?.addEventListener('input', updateVolume);
   player?.addEventListener('keydown', event => { if (event.key === 'Escape' && volumePanel?.open) { event.preventDefault(); closeVolume(); volumePanel.querySelector('summary').focus(); } });
   document.addEventListener('pointerdown', event => { if (volumePanel?.open && !player?.contains(event.target)) closeVolume(); });
