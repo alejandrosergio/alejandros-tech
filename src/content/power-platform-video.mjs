@@ -50,13 +50,17 @@ export const projectVideoCopy = {
     title: 'El proyecto en acción', duration: '2:58 min',
     description: 'Capturas anonimizadas y esquemas simplificados. Narración sintética y textos en español; subtítulos ES/EN disponibles en los controles del video.',
     transcript: 'Leer la transcripción', fallback: 'Tu navegador no puede reproducir este video.',
-    download: 'Abrir el video MP4', captions: 'Español', subtitles: 'English'
+    download: 'Abrir el video MP4', captions: 'Español', subtitles: 'English',
+    play: 'Reproducir video', loading: 'Preparando el video…', ready: 'Video listo. Pulsa reproducir para empezar.',
+    error: 'No se pudo preparar el video. Puedes reintentar o abrir el archivo MP4.', retry: 'Reintentar'
   },
   en: {
     title: 'The project in action', duration: '2:58 min',
     description: 'Anonymised screenshots and simplified diagrams. Synthetic Spanish narration and Spanish on-screen text; ES/EN subtitles are available in the video controls.',
     transcript: 'Read the transcript', fallback: 'Your browser cannot play this video.',
-    download: 'Open the MP4 video', captions: 'Español', subtitles: 'English'
+    download: 'Open the MP4 video', captions: 'Español', subtitles: 'English',
+    play: 'Play video', loading: 'Preparing the video…', ready: 'Video ready. Press play to start.',
+    error: 'The video could not be prepared. Retry or open the MP4 file.', retry: 'Retry'
   }
 };
 

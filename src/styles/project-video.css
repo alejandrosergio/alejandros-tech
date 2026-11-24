@@ -7,6 +7,11 @@
 .project-video-heading h2 { margin: 0; font-size: clamp(1.35rem, 2.5vw, 1.8rem); }
 .project-video-heading > span { flex-shrink: 0; color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
 .project-video-media { margin: 0; }
+.project-video-stage { position: relative; }
+.project-video-start { position: absolute; inset: 50% auto auto 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: .6rem; min-height: 72px; padding: 1rem 1.25rem; border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent); border-radius: var(--card-radius); color: var(--button-text); background: var(--accent); box-shadow: 0 6px 30px #0005; font-size: .8125rem; line-height: 1.4; max-width: calc(100% - 2rem); }
+.project-video-start .icon { width: 28px; height: 28px; }
+.project-video-start[aria-disabled="true"] { cursor: progress; }
+.project-video-status { margin: .75rem 0 0; font-size: .8125rem; color: var(--muted); }
 .project-video-media video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #080a12; border: 1px solid var(--line); border-radius: var(--card-radius); }
 .project-video-media video:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
 .project-video-media figcaption { color: var(--muted); font-size: .75rem; line-height: 1.8; }
