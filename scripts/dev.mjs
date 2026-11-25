@@ -17,10 +17,10 @@ const server = createServer(async (req, res) => {
     let file = target;
     try { if ((await stat(file)).isDirectory()) file = path.join(file, 'index.html'); }
     catch { res.writeHead(404, { 'content-type': mime['.html'] }); res.end(await readFile(path.join(dist, '404.html'))); return; }
-    // Seeking in the recorded case should behave like static production hosting.
-    if (path.extname(file) === '.mp4') {
+    // Stream recorded media instead of buffering it; support native seeking.
+    if (['.mp4', '.mp3'].includes(path.extname(file))) {
       const { size } = await stat(file);
-      const headers = { 'content-type': mime['.mp4'], 'cache-control': 'no-store', 'accept-ranges': 'bytes' };
+      const headers = { 'content-type': path.extname(file) === '.mp3' ? 'audio/mpeg' : mime['.mp4'], 'cache-control': 'no-store', 'accept-ranges': 'bytes' };
       const range = req.headers.range?.match(/^bytes=(\d*)-(\d*)$/);
       let start = 0, end = size - 1;
       if (req.headers.range) {

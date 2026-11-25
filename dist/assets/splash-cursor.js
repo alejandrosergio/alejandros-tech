@@ -5,14 +5,7 @@
  * MIT + Commons Clause: /assets/licenses/react-bits.txt; docs/THIRD_PARTY.md.
  * Integrated use only. Local lifecycle, bounded quality and site wiring are original.
  */
-(() => {
-  const canvas = document.querySelector('[data-portrait-hero] > [data-splash-cursor]');
-  if (!canvas) return;
-  const home = canvas.closest('[data-portrait-hero]'), root = document.documentElement;
-  // Official Smoke preset plus the Studio URL’s direct intensity/size overrides.
-  const settings = Object.freeze({ color: [228 / 255, 228 / 255, 231 / 255], intensity: .6, size: .5, force: .8, swirl: 18, trail: 2.5, momentum: 1, shading: .4 });
-  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-const VERTEX = `#version 300 es
+(()=>{const i=document.querySelector("[data-portrait-hero] > [data-splash-cursor]");if(!i)return;const L=i.closest("[data-portrait-hero]"),O=document.documentElement,M=Object.freeze({color:[228/255,228/255,231/255],intensity:.6,size:.5,force:.8,swirl:18,trail:2.5,momentum:1,shading:.4}),ce=(e,l,c)=>Math.min(c,Math.max(l,e)),Re=`#version 300 es
 precision highp float;
 in vec2 aPosition;
 uniform vec2 texelSize;
@@ -28,9 +21,7 @@ void main() {
   vT = vUv + vec2(0.0, texelSize.y);
   vB = vUv - vec2(0.0, texelSize.y);
   gl_Position = vec4(aPosition, 0.0, 1.0);
-}`;
-
-const HEADER = `#version 300 es
+}`,be=`#version 300 es
 precision highp float;
 precision highp sampler2D;
 in vec2 vUv;
@@ -39,19 +30,14 @@ in vec2 vR;
 in vec2 vT;
 in vec2 vB;
 out vec4 outColor;
-`;
-
-const SHADERS = {
-  copy: `uniform sampler2D uTexture;
+`,we={copy:`uniform sampler2D uTexture;
 void main() {
   outColor = texture(uTexture, vUv);
-}`,
-  clear: `uniform sampler2D uTexture;
+}`,clear:`uniform sampler2D uTexture;
 uniform float value;
 void main() {
   outColor = value * texture(uTexture, vUv);
-}`,
-  splat: `uniform sampler2D uTarget;
+}`,splat:`uniform sampler2D uTarget;
 uniform float aspectRatio;
 uniform vec3 color;
 uniform vec2 pointA;
@@ -65,8 +51,7 @@ void main() {
   vec2 d = pa - ba * h;
   vec3 base = texture(uTarget, vUv).xyz;
   outColor = vec4(base + exp(-dot(d, d) / radius) * color, 1.0);
-}`,
-  burst: `uniform sampler2D uTarget;
+}`,burst:`uniform sampler2D uTarget;
 uniform float aspectRatio;
 uniform vec2 point;
 uniform float radius;
@@ -81,8 +66,7 @@ void main() {
   vec2 twist = vec2(-direction.y, direction.x) * 0.3 * sin(angle * 4.0 + seed * 2.3);
   float falloff = exp(-dot(d, d) / radius) * distance / sqrt(radius);
   outColor = vec4(texture(uTarget, vUv).xy + (direction * petals + twist) * falloff * strength, 0.0, 1.0);
-}`,
-  crown: `uniform sampler2D uTarget;
+}`,crown:`uniform sampler2D uTarget;
 uniform float aspectRatio;
 uniform vec2 point;
 uniform float radius;
@@ -101,8 +85,7 @@ void main() {
     ink += exp(-dot(q, q) / drop) * mix(colorA, colorB, fract(index * 0.37 + 0.2));
   }
   outColor = vec4(texture(uTarget, vUv).xyz + ink, 1.0);
-}`,
-  advection: `uniform sampler2D uVelocity;
+}`,advection:`uniform sampler2D uVelocity;
 uniform sampler2D uSource;
 uniform vec2 texelSize;
 uniform float dt;
@@ -110,8 +93,7 @@ uniform float dissipation;
 void main() {
   vec2 coord = vUv - dt * texture(uVelocity, vUv).xy * texelSize;
   outColor = texture(uSource, coord) / (1.0 + dissipation * dt);
-}`,
-  divergence: `uniform sampler2D uVelocity;
+}`,divergence:`uniform sampler2D uVelocity;
 void main() {
   float L = texture(uVelocity, vL).x;
   float R = texture(uVelocity, vR).x;
@@ -123,16 +105,14 @@ void main() {
   if (vT.y > 1.0) T = -C.y;
   if (vB.y < 0.0) B = -C.y;
   outColor = vec4(0.5 * (R - L + T - B), 0.0, 0.0, 1.0);
-}`,
-  curl: `uniform sampler2D uVelocity;
+}`,curl:`uniform sampler2D uVelocity;
 void main() {
   float L = texture(uVelocity, vL).y;
   float R = texture(uVelocity, vR).y;
   float T = texture(uVelocity, vT).x;
   float B = texture(uVelocity, vB).x;
   outColor = vec4(0.5 * (R - L - T + B), 0.0, 0.0, 1.0);
-}`,
-  vorticity: `uniform sampler2D uVelocity;
+}`,vorticity:`uniform sampler2D uVelocity;
 uniform sampler2D uCurl;
 uniform float curl;
 uniform float dt;
@@ -148,8 +128,7 @@ void main() {
   force.y *= -1.0;
   vec2 velocity = texture(uVelocity, vUv).xy + force * dt;
   outColor = vec4(clamp(velocity, -1000.0, 1000.0), 0.0, 1.0);
-}`,
-  pressure: `uniform sampler2D uPressure;
+}`,pressure:`uniform sampler2D uPressure;
 uniform sampler2D uDivergence;
 void main() {
   float L = texture(uPressure, vL).x;
@@ -158,8 +137,7 @@ void main() {
   float B = texture(uPressure, vB).x;
   float divergence = texture(uDivergence, vUv).x;
   outColor = vec4((L + R + B + T - divergence) * 0.25, 0.0, 0.0, 1.0);
-}`,
-  gradient: `uniform sampler2D uPressure;
+}`,gradient:`uniform sampler2D uPressure;
 uniform sampler2D uVelocity;
 void main() {
   float L = texture(uPressure, vL).x;
@@ -168,8 +146,7 @@ void main() {
   float B = texture(uPressure, vB).x;
   vec2 velocity = texture(uVelocity, vUv).xy - vec2(R - L, T - B);
   outColor = vec4(velocity, 0.0, 1.0);
-}`,
-  display: `uniform sampler2D uTexture;
+}`,display:`uniform sampler2D uTexture;
 uniform sampler2D uBloom;
 uniform vec2 texelSize;
 uniform float shading;
@@ -204,475 +181,4 @@ void main() {
     float alpha = clamp(max(c.r, max(c.g, c.b)), 0.0, 1.0);
     outColor = vec4(min(c, vec3(alpha)), alpha);
   }
-}`
-};
-
-
-  function createFluid() {
-    const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, preserveDrawingBuffer: false });
-    if (!gl) return null;
-    gl.getExtension('EXT_color_buffer_float');
-    gl.getExtension('EXT_color_buffer_half_float');
-    const linear = Boolean(gl.getExtension('OES_texture_float_linear'));
-    const renderable = (internal, format) => {
-      const texture = gl.createTexture(), fbo = gl.createFramebuffer();
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, internal, 4, 4, 0, format, gl.HALF_FLOAT, null);
-      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-      const complete = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE;
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.deleteFramebuffer(fbo); gl.deleteTexture(texture);
-      return complete;
-    };
-    const rgba = { internal: gl.RGBA16F, format: gl.RGBA };
-    if (!renderable(rgba.internal, rgba.format)) return null;
-    const rg = renderable(gl.RG16F, gl.RG) ? { internal: gl.RG16F, format: gl.RG } : rgba;
-    const r = renderable(gl.R16F, gl.RED) ? { internal: gl.R16F, format: gl.RED } : rg;
-    const targets = new Set(), programs = {}, shaders = new Set();
-    let buffer, vao;
-    function release() {
-      if (!gl.isContextLost()) {
-        targets.forEach(target => { gl.deleteFramebuffer(target.fbo); gl.deleteTexture(target.texture); });
-        Object.values(programs).forEach(item => gl.deleteProgram(item.program));
-        shaders.forEach(shader => gl.deleteShader(shader));
-        if (buffer) gl.deleteBuffer(buffer);
-        if (vao) gl.deleteVertexArray(vao);
-      }
-      targets.clear(); shaders.clear();
-    }
-    const compile = (type, source) => {
-      const shader = gl.createShader(type); shaders.add(shader);
-      gl.shaderSource(shader, source); gl.compileShader(shader);
-      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error('Fluid shader unavailable');
-      return shader;
-    };
-    try {
-      const vertex = compile(gl.VERTEX_SHADER, VERTEX);
-      for (const [name, body] of Object.entries(SHADERS)) {
-        const fragment = compile(gl.FRAGMENT_SHADER, HEADER + body), program = gl.createProgram();
-        programs[name] = { program, uniforms: {} };
-        gl.attachShader(program, vertex); gl.attachShader(program, fragment); gl.bindAttribLocation(program, 0, 'aPosition'); gl.linkProgram(program);
-        gl.deleteShader(fragment); shaders.delete(fragment);
-        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error('Fluid program unavailable');
-        const count = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
-        for (let index = 0; index < count; index++) {
-          const info = gl.getActiveUniform(program, index);
-          if (info) programs[name].uniforms[info.name] = gl.getUniformLocation(program, info.name);
-        }
-      }
-      gl.deleteShader(vertex); shaders.delete(vertex);
-      buffer = gl.createBuffer(); vao = gl.createVertexArray(); gl.bindVertexArray(vao);
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-      gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-    } catch (error) { release(); throw error; }
-    const use = name => {
-      const item = programs[name];
-      gl.useProgram(item.program);
-      return item.uniforms;
-    };
-
-    const blit = target => {
-      if (target) {
-        gl.viewport(0, 0, target.width, target.height);
-        gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo);
-      } else {
-        gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      }
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    };
-
-    const createTarget = (width, height, format, filter) => {
-      gl.activeTexture(gl.TEXTURE0);
-      const texture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texImage2D(gl.TEXTURE_2D, 0, format.internal, width, height, 0, format.format, gl.HALF_FLOAT, null);
-      const fbo = gl.createFramebuffer();
-      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-      gl.viewport(0, 0, width, height);
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      const target = {
-        texture,
-        fbo,
-        width,
-        height,
-        texelX: 1 / width,
-        texelY: 1 / height,
-        attach: unit => {
-          gl.activeTexture(gl.TEXTURE0 + unit);
-          gl.bindTexture(gl.TEXTURE_2D, texture);
-          return unit;
-        }
-      };
-      targets.add(target);
-      return target;
-    };
-
-    const destroyTarget = target => {
-      if (!target) return;
-      gl.deleteFramebuffer(target.fbo);
-      gl.deleteTexture(target.texture);
-      targets.delete(target);
-    };
-
-    const reshape = (target, width, height, format) => {
-      gl.bindTexture(gl.TEXTURE_2D, target.texture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, format.internal, width, height, 0, format.format, gl.HALF_FLOAT, null);
-      target.width = width;
-      target.height = height;
-      target.texelX = 1 / width;
-      target.texelY = 1 / height;
-    };
-
-    const createDouble = (width, height, format, filter) => {
-      const pair = {
-        read: createTarget(width, height, format, filter),
-        write: createTarget(width, height, format, filter),
-        width,
-        height,
-        texelX: 1 / width,
-        texelY: 1 / height,
-        swap: () => {
-          const current = pair.read;
-          pair.read = pair.write;
-          pair.write = current;
-        }
-      };
-      return pair;
-    };
-
-    const resizeDouble = (pair, width, height, format, filter, keep) => {
-      if (keep) {
-        const next = createTarget(width, height, format, filter);
-        const u = use('copy');
-        gl.uniform1i(u.uTexture, pair.read.attach(0));
-        blit(next);
-        destroyTarget(pair.read);
-        pair.read = next;
-      } else {
-        reshape(pair.read, width, height, format);
-      }
-      reshape(pair.write, width, height, format);
-      pair.width = width;
-      pair.height = height;
-      pair.texelX = 1 / width;
-      pair.texelY = 1 / height;
-    };
-
-
-    // Resolution is bounded by area as well as short edge: ultrawide and zoomed
-    // layouts cannot allocate an unbounded long-side texture.
-    const compact = () => canvas.getBoundingClientRect().width < 700 || matchMedia('(pointer: coarse)').matches;
-    let quality, dye, velocity, pressure, divergence, curl;
-    function fit() {
-      const box = canvas.getBoundingClientRect(), width = Math.max(1, box.width), height = Math.max(1, box.height), small = compact();
-      const pixelBudget = small ? 420000 : 960000;
-      const ratio = Math.min(devicePixelRatio || 1, small ? 1 : 1.25, Math.sqrt(pixelBudget / (width * height)));
-      canvas.width = Math.max(1, Math.floor(width * ratio)); canvas.height = Math.max(1, Math.floor(height * ratio));
-      quality = small ? { sim: 64, dye: 256, iterations: 10, area: 160000 } : { sim: 96, dye: 512, iterations: 16, area: 480000 };
-      const aspect = canvas.width / canvas.height;
-      const resolution = (short, area) => {
-        const base = Math.min(short, Math.sqrt(area / Math.max(aspect, 1 / aspect)));
-        return aspect > 1 ? { width: Math.max(1, Math.floor(base * aspect)), height: Math.max(1, Math.floor(base)) } : { width: Math.max(1, Math.floor(base)), height: Math.max(1, Math.floor(base / aspect)) };
-      };
-      return { sim: resolution(quality.sim, 40000), ink: resolution(quality.dye, quality.area) };
-    }
-    const filter = linear ? gl.LINEAR : gl.NEAREST;
-    function resize() {
-      const next = fit();
-      if (!dye) {
-        dye = createDouble(next.ink.width, next.ink.height, rgba, filter);
-        velocity = createDouble(next.sim.width, next.sim.height, rg, filter);
-        pressure = createDouble(next.sim.width, next.sim.height, r, gl.NEAREST);
-        divergence = createTarget(next.sim.width, next.sim.height, r, gl.NEAREST);
-        curl = createTarget(next.sim.width, next.sim.height, r, gl.NEAREST);
-      } else {
-        if (dye.width !== next.ink.width || dye.height !== next.ink.height) resizeDouble(dye, next.ink.width, next.ink.height, rgba, filter, false);
-        if (velocity.width !== next.sim.width || velocity.height !== next.sim.height) {
-          resizeDouble(velocity, next.sim.width, next.sim.height, rg, filter, false);
-          resizeDouble(pressure, next.sim.width, next.sim.height, r, gl.NEAREST, false);
-          reshape(divergence, next.sim.width, next.sim.height, r); reshape(curl, next.sim.width, next.sim.height, r);
-        }
-      }
-      canvas.dataset.simulation = velocity.width + 'x' + velocity.height;
-      canvas.dataset.dye = dye.width + 'x' + dye.height;
-      canvas.dataset.quality = compact() ? 'compact' : 'desktop';
-    }
-    const radiusFor = scale => {
-      const aspect = canvas.width / canvas.height;
-      return ((0.2 * settings.size * scale) / 100) * (aspect > 1 ? aspect : 1);
-    };
-
-    const splat = (ax, ay, bx, by, vx, vy, color, radius) => {
-      const u = use('splat');
-      gl.uniform1i(u.uTarget, velocity.read.attach(0));
-      gl.uniform1f(u.aspectRatio, canvas.width / canvas.height);
-      gl.uniform2f(u.pointA, ax, ay);
-      gl.uniform2f(u.pointB, bx, by);
-      gl.uniform3f(u.color, vx, vy, 0);
-      gl.uniform1f(u.radius, radius);
-      blit(velocity.write);
-      velocity.swap();
-      gl.uniform1i(u.uTarget, dye.read.attach(0));
-      gl.uniform3f(u.color, color[0], color[1], color[2]);
-      blit(dye.write);
-      dye.swap();
-    };
-
-    const colorAt = () => settings.color;
-    const inkFor = (color, amount) => color.map(channel => channel * amount);
-
-    const flush = (pointer, dt, now) => {
-      const s = settings;
-      const aspect = canvas.width / canvas.height;
-      const length = Math.hypot((pointer.x - pointer.px) * aspect, pointer.y - pointer.py);
-      if (length > 0.35) {
-        pointer.px = pointer.x;
-        pointer.py = pointer.y;
-        return;
-      }
-      let dx = pointer.x - pointer.px;
-      let dy = pointer.y - pointer.py;
-      if (aspect < 1) dx *= aspect;
-      else dy /= aspect;
-      const radius = radiusFor(1);
-      const spread = 1 + length / (1.77 * Math.sqrt(radius));
-      const push = (6000 * s.force) / Math.sqrt(spread);
-      const amount = (0.15 * s.intensity * Math.min(dt * 60, 1)) / Math.sqrt(spread);
-      const color = inkFor(colorAt(pointer.offset, now), amount);
-      splat(pointer.px, pointer.py, pointer.x, pointer.y, dx * push, dy * push, color, radius);
-      pointer.px = pointer.x;
-      pointer.py = pointer.y;
-    };
-
-    const burst = (x, y, now) => {
-      const s = settings;
-      const seed = Math.random() * Math.PI * 2;
-      const aspect = canvas.width / canvas.height;
-      let u = use('burst');
-      gl.uniform1i(u.uTarget, velocity.read.attach(0));
-      gl.uniform1f(u.aspectRatio, aspect);
-      gl.uniform2f(u.point, x, y);
-      gl.uniform1f(u.radius, radiusFor(3));
-      gl.uniform1f(u.strength, 1100 * s.force);
-      gl.uniform1f(u.seed, seed);
-      blit(velocity.write);
-      velocity.swap();
-      const offset = Math.random();
-      const amount = 1.6 * s.intensity;
-      const first = inkFor(colorAt(offset, now), amount);
-      const second = inkFor(colorAt(offset + 0.3, now), amount);
-      u = use('crown');
-      gl.uniform1i(u.uTarget, dye.read.attach(0));
-      gl.uniform1f(u.aspectRatio, aspect);
-      gl.uniform2f(u.point, x, y);
-      gl.uniform1f(u.radius, radiusFor(1.6));
-      gl.uniform3f(u.colorA, first[0], first[1], first[2]);
-      gl.uniform3f(u.colorB, second[0], second[1], second[2]);
-      gl.uniform1f(u.seed, seed);
-      blit(dye.write);
-      dye.swap();
-    };
-
-    const step = dt => {
-      const s = settings;
-      const iterations = quality.iterations;
-      gl.disable(gl.BLEND);
-
-      let u = use('curl');
-      gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
-      gl.uniform1i(u.uVelocity, velocity.read.attach(0));
-      blit(curl);
-
-      u = use('vorticity');
-      gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
-      gl.uniform1i(u.uVelocity, velocity.read.attach(0));
-      gl.uniform1i(u.uCurl, curl.attach(1));
-      gl.uniform1f(u.curl, s.swirl);
-      gl.uniform1f(u.dt, dt);
-      blit(velocity.write);
-      velocity.swap();
-
-      u = use('divergence');
-      gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
-      gl.uniform1i(u.uVelocity, velocity.read.attach(0));
-      blit(divergence);
-
-      u = use('clear');
-      gl.uniform1i(u.uTexture, pressure.read.attach(0));
-      gl.uniform1f(u.value, 0.1);
-      blit(pressure.write);
-      pressure.swap();
-
-      u = use('pressure');
-      gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
-      gl.uniform1i(u.uDivergence, divergence.attach(0));
-      for (let i = 0; i < iterations; i++) {
-        gl.uniform1i(u.uPressure, pressure.read.attach(1));
-        blit(pressure.write);
-        pressure.swap();
-      }
-
-      u = use('gradient');
-      gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
-      gl.uniform1i(u.uPressure, pressure.read.attach(0));
-      gl.uniform1i(u.uVelocity, velocity.read.attach(1));
-      blit(velocity.write);
-      velocity.swap();
-
-      u = use('advection');
-      gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
-      gl.uniform1i(u.uVelocity, velocity.read.attach(0));
-      gl.uniform1i(u.uSource, velocity.read.attach(0));
-      gl.uniform1f(u.dt, dt);
-      gl.uniform1f(u.dissipation, 2 / s.momentum);
-      blit(velocity.write);
-      velocity.swap();
-
-      gl.uniform1i(u.uVelocity, velocity.read.attach(0));
-      gl.uniform1i(u.uSource, dye.read.attach(1));
-      gl.uniform1f(u.dissipation, 3.5 / s.trail);
-      blit(dye.write);
-      dye.swap();
-    };
-
-
-    function clear() {
-      gl.clearColor(0, 0, 0, 0);
-      for (const target of targets) { gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo); gl.clear(gl.COLOR_BUFFER_BIT); }
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight); gl.clear(gl.COLOR_BUFFER_BIT);
-    }
-    function render() {
-      gl.disable(gl.BLEND);
-      const u = use('display');
-      gl.uniform2f(u.texelSize, 1 / canvas.width, 1 / canvas.height);
-      gl.uniform1i(u.uTexture, dye.read.attach(0)); gl.uniform1i(u.uBloom, dye.read.attach(1));
-      gl.uniform1f(u.shading, settings.shading); gl.uniform1f(u.bloom, 0); gl.uniform1f(u.light, 0);
-      blit(null);
-    }
-    try { resize(); clear(); } catch (error) { release(); throw error; }
-    return { resize, flush, burst, step, render, clear, dispose: release };
-  }
-
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)'), forced = matchMedia('(forced-colors: active)');
-  const background = document.querySelector('[data-letter-glitch]');
-  const pointers = new Map(), bursts = [];
-  const introPointer = { x: 0, y: 0, px: 0, py: 0, ready: false, offset: 0 };
-  let fluid = null, raf = 0, last = 0, lastDraw = 0, lastActivity = 0, frames = 0, introStart = -1;
-  let paused = background?.dataset.paused === 'true', lost = false, failed = false, visible = true, suspended = false, needsResize = false, introConsumed = false;
-  canvas.dataset.frames = '0'; canvas.dataset.state = 'idle';
-  const blocked = () => paused || suspended || lost || failed || !visible || document.hidden || reduced.matches || forced.matches || root.dataset.motion === 'true' || root.dataset.contrast === 'true' || root.dataset.loading === 'true' || Boolean(document.querySelector('dialog[open]'));
-  function stop() {
-    if (raf) cancelAnimationFrame(raf);
-    raf = 0; introStart = -1; pointers.clear(); bursts.length = 0;
-    if (fluid && !lost) fluid.clear();
-  }
-  function ensure() {
-    if (fluid) return true;
-    try { fluid = createFluid(); } catch { fluid = null; }
-    if (!fluid) { failed = true; canvas.dataset.state = 'unsupported'; delete canvas.dataset.enhanced; canvas.hidden = true; return false; }
-    canvas.dataset.enhanced = 'true'; return true;
-  }
-  function locate(event) {
-    const rect = canvas.getBoundingClientRect();
-    if (!rect.width || !rect.height) return null;
-    const x = (event.clientX - rect.left) / rect.width, y = 1 - (event.clientY - rect.top) / rect.height;
-    return x < 0 || x > 1 || y < 0 || y > 1 ? null : { x, y };
-  }
-  function wake() {
-    if (blocked() || !ensure()) return;
-    lastActivity = performance.now();
-    canvas.hidden = false; canvas.dataset.state = 'running';
-    if (!raf) { last = lastDraw = performance.now(); raf = requestAnimationFrame(frame); }
-  }
-  function frame(now) {
-    raf = 0;
-    if (blocked()) { sync(); return; }
-    // Render at most 30 times per second; no idle loop remains after the tail.
-    if (now - lastDraw < 1000 / 30 - .5) { raf = requestAnimationFrame(frame); return; }
-    const dt = clamp((now - last) / 1000, 0, 1 / 30); last = lastDraw = now;
-    if (needsResize) { fluid.resize(); needsResize = false; }
-    if (introStart >= 0) {
-      const t = clamp((now - introStart) / 1100, 0, 1), eased = t * t * (3 - 2 * t);
-      const x = .2 + .6 * eased, y = .5 + .12 * Math.sin(eased * Math.PI * 2);
-      if (!introPointer.ready) { introPointer.x = introPointer.px = x; introPointer.y = introPointer.py = y; introPointer.ready = true; }
-      else if (now >= introStart) { introPointer.x = x; introPointer.y = y; fluid.flush(introPointer, dt, now); }
-      if (t >= 1) introStart = -1;
-      lastActivity = now;
-    }
-    for (const pointer of pointers.values()) if (pointer.moved) { pointer.moved = false; fluid.flush(pointer, dt, now); }
-    for (const point of bursts.splice(0)) fluid.burst(point.x, point.y, now);
-    fluid.step(dt); fluid.render(); canvas.dataset.frames = String(++frames);
-    if (introStart >= 0 || now - lastActivity < 5900) raf = requestAnimationFrame(frame);
-    else { fluid.clear(); pointers.clear(); canvas.dataset.state = 'idle'; }
-  }
-  function sync() {
-    if (blocked()) {
-      stop(); canvas.hidden = true;
-      canvas.dataset.state = lost ? 'lost' : failed ? 'unsupported' : 'paused';
-      return;
-    }
-    if (!ensure()) return;
-    canvas.hidden = false;
-    if (needsResize) { fluid.resize(); needsResize = false; }
-    if (!introConsumed) {
-      // The official one-shot sweep starts only after the site's loader, in view.
-      introConsumed = true; introPointer.ready = false; introStart = performance.now() + 150; wake();
-    } else if (!raf) canvas.dataset.state = 'idle';
-  }
-  function track(event) {
-    if (blocked()) return;
-    if (event.pointerType === 'touch' && !pointers.has(event.pointerId)) return;
-    const point = locate(event);
-    if (!point) { pointers.delete(event.pointerId); return; }
-    let pointer = pointers.get(event.pointerId);
-    if (!pointer) {
-      if (pointers.size >= 2) return;
-      pointer = { x: point.x, y: point.y, px: point.x, py: point.y, offset: 0, moved: false };
-      pointers.set(event.pointerId, pointer); return;
-    }
-    if (point.x === pointer.x && point.y === pointer.y) return;
-    pointer.x = point.x; pointer.y = point.y; pointer.moved = true; wake();
-  }
-  home.addEventListener('pointermove', track, { passive: true });
-  home.addEventListener('pointerdown', event => {
-    if (blocked() || event.target.closest('a, button, input, textarea, select, summary, [role="button"]')) return;
-    const point = locate(event); if (!point) return;
-    if (!pointers.has(event.pointerId) && pointers.size < 2) pointers.set(event.pointerId, { ...point, px: point.x, py: point.y, offset: 0, moved: false });
-    if (bursts.length < 2) bursts.push(point);
-    wake();
-  }, { passive: true });
-  for (const name of ['pointerup', 'pointercancel']) window.addEventListener(name, event => { if (event.pointerType === 'touch') pointers.delete(event.pointerId); }, { passive: true });
-  home.addEventListener('pointerleave', () => pointers.clear(), { passive: true });
-  window.addEventListener('scroll', () => pointers.clear(), { passive: true });
-  document.addEventListener('alejandro:background-motion', event => { if (typeof event.detail?.paused === 'boolean') { paused = event.detail.paused; sync(); } });
-  document.addEventListener('alejandro:preferences', sync); document.addEventListener('visibilitychange', sync);
-  new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['data-motion', 'data-contrast', 'data-loading'] });
-  if (background) new MutationObserver(() => { paused = background.dataset.paused === 'true'; sync(); }).observe(background, { attributes: true, attributeFilter: ['data-paused'] });
-  for (const dialog of document.querySelectorAll('dialog')) {
-    new MutationObserver(sync).observe(dialog, { attributes: true, attributeFilter: ['open'] });
-    dialog.addEventListener('close', sync);
-  }
-  for (const media of [reduced, forced]) media.addEventListener('change', sync);
-  const resized = () => { needsResize = true; if (!blocked() && fluid && !raf) { fluid.resize(); needsResize = false; } };
-  window.addEventListener('resize', resized, { passive: true });
-  if ('ResizeObserver' in window) new ResizeObserver(resized).observe(home);
-  if ('IntersectionObserver' in window) new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }, { threshold: .05 }).observe(home);
-  canvas.addEventListener('webglcontextlost', event => {
-    event.preventDefault(); lost = true; stop(); fluid?.dispose(); fluid = null; delete canvas.dataset.enhanced; sync();
-  });
-  canvas.addEventListener('webglcontextrestored', () => { lost = false; failed = false; needsResize = false; sync(); });
-  window.addEventListener('pagehide', () => { suspended = true; stop(); fluid?.dispose(); fluid = null; delete canvas.dataset.enhanced; });
-  window.addEventListener('pageshow', () => { suspended = false; sync(); });
-  const box = home.getBoundingClientRect();
-  visible = box.bottom > 0 && box.top < innerHeight;
-  sync();
-})();
-
+}`};function Fe(){const e=i.getContext("webgl2",{alpha:!0,premultipliedAlpha:!0,antialias:!1,depth:!1,stencil:!1,preserveDrawingBuffer:!1});if(!e)return null;e.getExtension("EXT_color_buffer_float"),e.getExtension("EXT_color_buffer_half_float");const l=!!e.getExtension("OES_texture_float_linear"),c=(t,a)=>{const o=e.createTexture(),r=e.createFramebuffer();e.bindTexture(e.TEXTURE_2D,o),e.texImage2D(e.TEXTURE_2D,0,t,4,4,0,a,e.HALF_FLOAT,null),e.bindFramebuffer(e.FRAMEBUFFER,r),e.framebufferTexture2D(e.FRAMEBUFFER,e.COLOR_ATTACHMENT0,e.TEXTURE_2D,o,0);const n=e.checkFramebufferStatus(e.FRAMEBUFFER)===e.FRAMEBUFFER_COMPLETE;return e.bindFramebuffer(e.FRAMEBUFFER,null),e.deleteFramebuffer(r),e.deleteTexture(o),n},T={internal:e.RGBA16F,format:e.RGBA};if(!c(T.internal,T.format))return null;const D=c(e.RG16F,e.RG)?{internal:e.RG16F,format:e.RG}:T,w=c(e.R16F,e.RED)?{internal:e.R16F,format:e.RED}:D,C=new Set,k={},P=new Set;let N,Y;function ie(){e.isContextLost()||(C.forEach(t=>{e.deleteFramebuffer(t.fbo),e.deleteTexture(t.texture)}),Object.values(k).forEach(t=>e.deleteProgram(t.program)),P.forEach(t=>e.deleteShader(t)),N&&e.deleteBuffer(N),Y&&e.deleteVertexArray(Y)),C.clear(),P.clear()}const ge=(t,a)=>{const o=e.createShader(t);if(P.add(o),e.shaderSource(o,a),e.compileShader(o),!e.getShaderParameter(o,e.COMPILE_STATUS))throw new Error("Fluid shader unavailable");return o};try{const t=ge(e.VERTEX_SHADER,Re);for(const[a,o]of Object.entries(we)){const r=ge(e.FRAGMENT_SHADER,be+o),n=e.createProgram();if(k[a]={program:n,uniforms:{}},e.attachShader(n,t),e.attachShader(n,r),e.bindAttribLocation(n,0,"aPosition"),e.linkProgram(n),e.deleteShader(r),P.delete(r),!e.getProgramParameter(n,e.LINK_STATUS))throw new Error("Fluid program unavailable");const d=e.getProgramParameter(n,e.ACTIVE_UNIFORMS);for(let u=0;u<d;u++){const m=e.getActiveUniform(n,u);m&&(k[a].uniforms[m.name]=e.getUniformLocation(n,m.name))}}e.deleteShader(t),P.delete(t),N=e.createBuffer(),Y=e.createVertexArray(),e.bindVertexArray(Y),e.bindBuffer(e.ARRAY_BUFFER,N),e.bufferData(e.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),e.STATIC_DRAW),e.enableVertexAttribArray(0),e.vertexAttribPointer(0,2,e.FLOAT,!1,0,0)}catch(t){throw ie(),t}const E=t=>{const a=k[t];return e.useProgram(a.program),a.uniforms},g=t=>{t?(e.viewport(0,0,t.width,t.height),e.bindFramebuffer(e.FRAMEBUFFER,t.fbo)):(e.viewport(0,0,e.drawingBufferWidth,e.drawingBufferHeight),e.bindFramebuffer(e.FRAMEBUFFER,null)),e.drawArrays(e.TRIANGLE_STRIP,0,4)},z=(t,a,o,r)=>{e.activeTexture(e.TEXTURE0);const n=e.createTexture();e.bindTexture(e.TEXTURE_2D,n),e.texParameteri(e.TEXTURE_2D,e.TEXTURE_MIN_FILTER,r),e.texParameteri(e.TEXTURE_2D,e.TEXTURE_MAG_FILTER,r),e.texParameteri(e.TEXTURE_2D,e.TEXTURE_WRAP_S,e.CLAMP_TO_EDGE),e.texParameteri(e.TEXTURE_2D,e.TEXTURE_WRAP_T,e.CLAMP_TO_EDGE),e.texImage2D(e.TEXTURE_2D,0,o.internal,t,a,0,o.format,e.HALF_FLOAT,null);const d=e.createFramebuffer();e.bindFramebuffer(e.FRAMEBUFFER,d),e.framebufferTexture2D(e.FRAMEBUFFER,e.COLOR_ATTACHMENT0,e.TEXTURE_2D,n,0),e.viewport(0,0,t,a),e.clearColor(0,0,0,0),e.clear(e.COLOR_BUFFER_BIT);const u={texture:n,fbo:d,width:t,height:a,texelX:1/t,texelY:1/a,attach:m=>(e.activeTexture(e.TEXTURE0+m),e.bindTexture(e.TEXTURE_2D,n),m)};return C.add(u),u},Ue=t=>{t&&(e.deleteFramebuffer(t.fbo),e.deleteTexture(t.texture),C.delete(t))},H=(t,a,o,r)=>{e.bindTexture(e.TEXTURE_2D,t.texture),e.texImage2D(e.TEXTURE_2D,0,r.internal,a,o,0,r.format,e.HALF_FLOAT,null),t.width=a,t.height=o,t.texelX=1/a,t.texelY=1/o},oe=(t,a,o,r)=>{const n={read:z(t,a,o,r),write:z(t,a,o,r),width:t,height:a,texelX:1/t,texelY:1/a,swap:()=>{const d=n.read;n.read=n.write,n.write=d}};return n},ne=(t,a,o,r,n,d)=>{if(d){const u=z(a,o,r,n),m=E("copy");e.uniform1i(m.uTexture,t.read.attach(0)),g(u),Ue(t.read),t.read=u}else H(t.read,a,o,r);H(t.write,a,o,r),t.width=a,t.height=o,t.texelX=1/a,t.texelY=1/o},Te=()=>i.getBoundingClientRect().width<700||matchMedia("(pointer: coarse)").matches;let X,v,s,F,G,j;function Le(){const t=i.getBoundingClientRect(),a=Math.max(1,t.width),o=Math.max(1,t.height),r=Te(),d=Math.min(devicePixelRatio||1,r?1:1.25,Math.sqrt((r?42e4:96e4)/(a*o)));i.width=Math.max(1,Math.floor(a*d)),i.height=Math.max(1,Math.floor(o*d)),X=r?{sim:64,dye:256,iterations:10,area:16e4}:{sim:96,dye:512,iterations:16,area:48e4};const u=i.width/i.height,m=(x,A)=>{const y=Math.min(x,Math.sqrt(A/Math.max(u,1/u)));return u>1?{width:Math.max(1,Math.floor(y*u)),height:Math.max(1,Math.floor(y))}:{width:Math.max(1,Math.floor(y)),height:Math.max(1,Math.floor(y/u))}};return{sim:m(X.sim,4e4),ink:m(X.dye,X.area)}}const W=l?e.LINEAR:e.NEAREST;function Ee(){const t=Le();v?((v.width!==t.ink.width||v.height!==t.ink.height)&&ne(v,t.ink.width,t.ink.height,T,W,!1),(s.width!==t.sim.width||s.height!==t.sim.height)&&(ne(s,t.sim.width,t.sim.height,D,W,!1),ne(F,t.sim.width,t.sim.height,w,e.NEAREST,!1),H(G,t.sim.width,t.sim.height,w),H(j,t.sim.width,t.sim.height,w))):(v=oe(t.ink.width,t.ink.height,T,W),s=oe(t.sim.width,t.sim.height,D,W),F=oe(t.sim.width,t.sim.height,w,e.NEAREST),G=z(t.sim.width,t.sim.height,w,e.NEAREST),j=z(t.sim.width,t.sim.height,w,e.NEAREST)),i.dataset.simulation=s.width+"x"+s.height,i.dataset.dye=v.width+"x"+v.height,i.dataset.quality=Te()?"compact":"desktop"}const se=t=>{const a=i.width/i.height;return .2*M.size*t/100*(a>1?a:1)},Me=(t,a,o,r,n,d,u,m)=>{const x=E("splat");e.uniform1i(x.uTarget,s.read.attach(0)),e.uniform1f(x.aspectRatio,i.width/i.height),e.uniform2f(x.pointA,t,a),e.uniform2f(x.pointB,o,r),e.uniform3f(x.color,n,d,0),e.uniform1f(x.radius,m),g(s.write),s.swap(),e.uniform1i(x.uTarget,v.read.attach(0)),e.uniform3f(x.color,u[0],u[1],u[2]),g(v.write),v.swap()},ue=()=>M.color,le=(t,a)=>t.map(o=>o*a),_e=(t,a,o)=>{const r=M,n=i.width/i.height,d=Math.hypot((t.x-t.px)*n,t.y-t.py);if(d>.35){t.px=t.x,t.py=t.y;return}let u=t.x-t.px,m=t.y-t.py;n<1?u*=n:m/=n;const x=se(1),A=1+d/(1.77*Math.sqrt(x)),y=6e3*r.force/Math.sqrt(A),Pe=.15*r.intensity*Math.min(a*60,1)/Math.sqrt(A),ze=le(ue(t.offset,o),Pe);Me(t.px,t.py,t.x,t.y,u*y,m*y,ze,x),t.px=t.x,t.py=t.y},De=(t,a,o)=>{const r=M,n=Math.random()*Math.PI*2,d=i.width/i.height;let u=E("burst");e.uniform1i(u.uTarget,s.read.attach(0)),e.uniform1f(u.aspectRatio,d),e.uniform2f(u.point,t,a),e.uniform1f(u.radius,se(3)),e.uniform1f(u.strength,1100*r.force),e.uniform1f(u.seed,n),g(s.write),s.swap();const m=Math.random(),x=1.6*r.intensity,A=le(ue(m,o),x),y=le(ue(m+.3,o),x);u=E("crown"),e.uniform1i(u.uTarget,v.read.attach(0)),e.uniform1f(u.aspectRatio,d),e.uniform2f(u.point,t,a),e.uniform1f(u.radius,se(1.6)),e.uniform3f(u.colorA,A[0],A[1],A[2]),e.uniform3f(u.colorB,y[0],y[1],y[2]),e.uniform1f(u.seed,n),g(v.write),v.swap()},Se=t=>{const a=M,o=X.iterations;e.disable(e.BLEND);let r=E("curl");e.uniform2f(r.texelSize,s.texelX,s.texelY),e.uniform1i(r.uVelocity,s.read.attach(0)),g(j),r=E("vorticity"),e.uniform2f(r.texelSize,s.texelX,s.texelY),e.uniform1i(r.uVelocity,s.read.attach(0)),e.uniform1i(r.uCurl,j.attach(1)),e.uniform1f(r.curl,a.swirl),e.uniform1f(r.dt,t),g(s.write),s.swap(),r=E("divergence"),e.uniform2f(r.texelSize,s.texelX,s.texelY),e.uniform1i(r.uVelocity,s.read.attach(0)),g(G),r=E("clear"),e.uniform1i(r.uTexture,F.read.attach(0)),e.uniform1f(r.value,.1),g(F.write),F.swap(),r=E("pressure"),e.uniform2f(r.texelSize,s.texelX,s.texelY),e.uniform1i(r.uDivergence,G.attach(0));for(let n=0;n<o;n++)e.uniform1i(r.uPressure,F.read.attach(1)),g(F.write),F.swap();r=E("gradient"),e.uniform2f(r.texelSize,s.texelX,s.texelY),e.uniform1i(r.uPressure,F.read.attach(0)),e.uniform1i(r.uVelocity,s.read.attach(1)),g(s.write),s.swap(),r=E("advection"),e.uniform2f(r.texelSize,s.texelX,s.texelY),e.uniform1i(r.uVelocity,s.read.attach(0)),e.uniform1i(r.uSource,s.read.attach(0)),e.uniform1f(r.dt,t),e.uniform1f(r.dissipation,2/a.momentum),g(s.write),s.swap(),e.uniform1i(r.uVelocity,s.read.attach(0)),e.uniform1i(r.uSource,v.read.attach(1)),e.uniform1f(r.dissipation,3.5/a.trail),g(v.write),v.swap()};function ye(){e.clearColor(0,0,0,0);for(const t of C)e.bindFramebuffer(e.FRAMEBUFFER,t.fbo),e.clear(e.COLOR_BUFFER_BIT);e.bindFramebuffer(e.FRAMEBUFFER,null),e.viewport(0,0,e.drawingBufferWidth,e.drawingBufferHeight),e.clear(e.COLOR_BUFFER_BIT)}function Ce(){e.disable(e.BLEND);const t=E("display");e.uniform2f(t.texelSize,1/i.width,1/i.height),e.uniform1i(t.uTexture,v.read.attach(0)),e.uniform1i(t.uBloom,v.read.attach(1)),e.uniform1f(t.shading,M.shading),e.uniform1f(t.bloom,0),e.uniform1f(t.light,0),g(null)}try{Ee(),ye()}catch(t){throw ie(),t}return{resize:Ee,flush:_e,burst:De,step:Se,render:Ce,clear:ye,dispose:ie}}const fe=matchMedia("(prefers-reduced-motion: reduce)"),de=matchMedia("(forced-colors: active)"),V=document.querySelector("[data-letter-glitch]"),h=new Map,I=[],R={x:0,y:0,px:0,py:0,ready:!1,offset:0};let f=null,b=0,K=0,J=0,Q=0,Ae=0,B=-1,Z=V?.dataset.paused==="true",S=!1,q=!1,$=!0,ee=!1,U=!1,me=!1;i.dataset.frames="0",i.dataset.state="idle";const _=()=>Z||ee||S||q||!$||document.hidden||fe.matches||de.matches||O.dataset.motion==="true"||O.dataset.contrast==="true"||O.dataset.loading==="true"||!!document.querySelector("dialog[open]");function te(){b&&cancelAnimationFrame(b),b=0,B=-1,h.clear(),I.length=0,f&&!S&&f.clear()}function ve(){if(f)return!0;try{f=Fe()}catch{f=null}return f?(i.dataset.enhanced="true",!0):(q=!0,i.dataset.state="unsupported",delete i.dataset.enhanced,i.hidden=!0,!1)}function xe(e){const l=i.getBoundingClientRect();if(!l.width||!l.height)return null;const c=(e.clientX-l.left)/l.width,T=1-(e.clientY-l.top)/l.height;return c<0||c>1||T<0||T>1?null:{x:c,y:T}}function re(){_()||!ve()||(Q=performance.now(),i.hidden=!1,i.dataset.state="running",b||(K=J=performance.now(),b=requestAnimationFrame(ae)))}function ae(e){if(b=0,_()){p();return}if(e-J<1e3/30-.5){b=requestAnimationFrame(ae);return}const l=ce((e-K)/1e3,0,1/30);if(K=J=e,U&&(f.resize(),U=!1),B>=0){const c=ce((e-B)/1100,0,1),T=c*c*(3-2*c),D=.2+.6*T,w=.5+.12*Math.sin(T*Math.PI*2);R.ready?e>=B&&(R.x=D,R.y=w,f.flush(R,l,e)):(R.x=R.px=D,R.y=R.py=w,R.ready=!0),c>=1&&(B=-1),Q=e}for(const c of h.values())c.moved&&(c.moved=!1,f.flush(c,l,e));for(const c of I.splice(0))f.burst(c.x,c.y,e);f.step(l),f.render(),i.dataset.frames=String(++Ae),B>=0||e-Q<5900?b=requestAnimationFrame(ae):(f.clear(),h.clear(),i.dataset.state="idle")}function p(){if(_()){te(),i.hidden=!0,i.dataset.state=S?"lost":q?"unsupported":"paused";return}ve()&&(i.hidden=!1,U&&(f.resize(),U=!1),me?b||(i.dataset.state="idle"):(me=!0,R.ready=!1,B=performance.now()+150,re()))}function Be(e){if(_()||e.pointerType==="touch"&&!h.has(e.pointerId))return;const l=xe(e);if(!l){h.delete(e.pointerId);return}let c=h.get(e.pointerId);if(!c){if(h.size>=2)return;c={x:l.x,y:l.y,px:l.x,py:l.y,offset:0,moved:!1},h.set(e.pointerId,c);return}l.x===c.x&&l.y===c.y||(c.x=l.x,c.y=l.y,c.moved=!0,re())}L.addEventListener("pointermove",Be,{passive:!0}),L.addEventListener("pointerdown",e=>{if(_()||e.target.closest('a, button, input, textarea, select, summary, [role="button"]'))return;const l=xe(e);l&&(!h.has(e.pointerId)&&h.size<2&&h.set(e.pointerId,{...l,px:l.x,py:l.y,offset:0,moved:!1}),I.length<2&&I.push(l),re())},{passive:!0});for(const e of["pointerup","pointercancel"])window.addEventListener(e,l=>{l.pointerType==="touch"&&h.delete(l.pointerId)},{passive:!0});L.addEventListener("pointerleave",()=>h.clear(),{passive:!0}),window.addEventListener("scroll",()=>h.clear(),{passive:!0}),document.addEventListener("alejandro:background-motion",e=>{typeof e.detail?.paused=="boolean"&&(Z=e.detail.paused,p())}),document.addEventListener("alejandro:preferences",p),document.addEventListener("visibilitychange",p),new MutationObserver(p).observe(O,{attributes:!0,attributeFilter:["data-motion","data-contrast","data-loading"]}),V&&new MutationObserver(()=>{Z=V.dataset.paused==="true",p()}).observe(V,{attributes:!0,attributeFilter:["data-paused"]});for(const e of document.querySelectorAll("dialog"))new MutationObserver(p).observe(e,{attributes:!0,attributeFilter:["open"]}),e.addEventListener("close",p);for(const e of[fe,de])e.addEventListener("change",p);const he=()=>{U=!0,!_()&&f&&!b&&(f.resize(),U=!1)};window.addEventListener("resize",he,{passive:!0}),"ResizeObserver"in window&&new ResizeObserver(he).observe(L),"IntersectionObserver"in window&&new IntersectionObserver(e=>{$=e[0].isIntersecting,p()},{threshold:.05}).observe(L),i.addEventListener("webglcontextlost",e=>{e.preventDefault(),S=!0,te(),f?.dispose(),f=null,delete i.dataset.enhanced,p()}),i.addEventListener("webglcontextrestored",()=>{S=!1,q=!1,U=!1,p()}),window.addEventListener("pagehide",()=>{ee=!0,te(),f?.dispose(),f=null,delete i.dataset.enhanced}),window.addEventListener("pageshow",()=>{ee=!1,p()});const pe=L.getBoundingClientRect();$=pe.bottom>0&&pe.top<innerHeight,p()})();

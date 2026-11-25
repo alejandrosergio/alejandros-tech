@@ -52,7 +52,7 @@ Los efectos se suspenden con visibilidad y preferencias. Contraste alto y colore
 
 ## Audio opcional
 
-Un control Play/Pausa junto a accesibilidad inicia «Órbita digital», una composición original local de techno ambiental a 118 BPM mediante Web Audio. El icono de altavoz abre un panel compacto con volumen de 0 a 100%, inicialmente al 65%, con porcentaje visible, teclado y cierre con Escape. La guía deja espacio para ambos controles en móvil. La carga de la página nunca reproduce sonido; ocultar la pestaña o salir del documento detiene la interpretación, que requiere otro Play para comenzar de nuevo. El indicador visual respeta movimiento reducido. No se descargan pistas ni samples externos. La implementación y el alcance de esa procedencia se describen en [AUDIO.md](AUDIO.md).
+Un control Play/Pausa junto a accesibilidad inicia «Night Owl», de Broke For Free, una grabación local con licencia CC BY 3.0. El panel de volumen muestra el nivel 0–100%, título, autor, fuente, licencia y adaptación en ES/EN. El archivo se solicita solo tras Play. Pausa, video, pestaña oculta y navegación detienen y liberan el audio; volver exige Play. No se guarda un estado activo. Teclado y preferencias visuales siguen disponibles. Véase [AUDIO.md](AUDIO.md).
 
 ## Contenido y accesibilidad base
 

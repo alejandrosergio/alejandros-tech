@@ -1,0 +1,14 @@
+{
+  "verified": "2026-11-24",
+  "title": "Night Owl",
+  "artist": "Broke For Free",
+  "album": "Directionless EP",
+  "source": "https://freemusicarchive.org/music/Broke_For_Free/Directionless_EP/Broke_For_Free_-_Directionless_EP_-_01_Night_Owl/",
+  "download": "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Broke_For_Free/Directionless_EP/Broke_For_Free_-_01_-_Night_Owl.mp3",
+  "license": "CC-BY-3.0",
+  "licenseURL": "https://creativecommons.org/licenses/by/3.0/",
+  "evidence": "FMA rel=license links and original MP3 copyright tag identify CC BY 3.0.",
+  "original": { "bytes": 8054458, "sha256": "7952dce61b28f454ff3ee0183f85df52b2a9f2edfcd6a0ebafc12f981f666ed5" },
+  "published": { "path": "/assets/audio/night-owl.mp3", "bytes": 3883133, "sha256": "510e15eaaf04d24e68c67878d5edf378852a066a14d9be22a0c64530efe87bf8", "durationSeconds": 194.07, "bitrateKbps": 160, "sampleRate": 44100, "channels": 2 },
+  "adaptation": "Full recording transcoded to MP3 160 kbps; embedded cover removed; level reduced by 3 dB. No musical edits."
+}

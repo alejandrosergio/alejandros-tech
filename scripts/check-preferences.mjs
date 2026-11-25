@@ -18,7 +18,8 @@ assert.equal(submissionState(true, {}), 'failed');
 assert.equal(submissionState(false, { errors: [{ code: 'INACTIVE' }] }), 'activation');
 assert.deepEqual(providerFieldErrors({ errors: [{ field: 'email' }, { field: 'email' }, { field: '__proto__' }] }), ['email']);
 
-const init = await readFile(new URL('../src/client/theme-init.js', import.meta.url), 'utf8');
+// Exercise the shipped initializer, including the production minification step.
+const init = await readFile(new URL('../dist/assets/theme-init.js', import.meta.url), 'utf8');
 function boot({ consent = '', stored = null, blocked = false, reduced = false, forced = false, readyState = 'loading', pathname = '/', hash = '' } = {}) {
   const root = { dataset: {}, style: { setProperty() {} } }, timers = new Map(), reads = [], removals = [];
   const listeners = { document: new Map(), window: new Map() };

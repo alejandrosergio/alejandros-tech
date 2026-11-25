@@ -6,19 +6,13 @@
  * /assets/licenses/react-bits.txt; docs/THIRD_PARTY.md.
  * Local accent integration, single-pass glow and lifecycle/resource limits.
  */
-(() => {
-  const canvas = document.querySelector('[data-loader-grid]');
-  if (!canvas) return;
-  const root = document.documentElement, host = canvas.closest('[data-intro-loader]');
-  if (!host) return;
-  const VERTEX = `#version 300 es
+(()=>{const t=document.querySelector("[data-loader-grid]");if(!t)return;const p=document.documentElement,x=t.closest("[data-intro-loader]");if(!x)return;const B=`#version 300 es
 out vec2 vUv;
 void main() {
   vec2 p = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));
   vUv = p;
   gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
-}`;
-  const FRAGMENT = `#version 300 es
+}`,G=`#version 300 es
 precision highp float;
 precision highp int;
 uniform float uAspect;
@@ -251,143 +245,4 @@ void main() {
   // A bounded single-pass glow avoids offscreen textures for the short intro.
   vec4 glow = vec4(uScanColor * energy, energy) * uGlow * 0.65;
   outColor = color + glow * (1.0 - color.a);
-}`;
-
-  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)'), forced = matchMedia('(forced-colors: active)');
-  const preset = Object.freeze({ cells: 10, depth: 8, depthFade: .6, shading: .7, reflection: .35, scanDuration: 4, scanDelay: 1.6, scanWidth: 1, trail: .7, glow: .6 });
-  const INTRO_SECONDS = 2.2;
-  let renderer = null, raf = 0, last = 0, lastDraw = 0, time = 0, frames = 0;
-  let lost = false, failed = false, suspended = false, wasLoading = false, dirty = true, color = [1, 1, 1];
-  canvas.dataset.state = 'idle'; canvas.dataset.frames = '0';
-  const loading = () => root.dataset.loading === 'true';
-  const allowed = () => loading() && !suspended && !document.hidden && !lost && !failed && !reduced.matches && !forced.matches && root.dataset.motion !== 'true' && root.dataset.contrast !== 'true';
-  function accent() {
-    const value = getComputedStyle(root).getPropertyValue('--accent').trim();
-    const hex = /^#([\da-f]{3}|[\da-f]{6})$/i.exec(value);
-    if (hex) { const full = hex[1].length === 3 ? hex[1].replace(/./g, digit => digit + digit) : hex[1]; color = [0, 2, 4].map(index => parseInt(full.slice(index, index + 2), 16) / 255); }
-    else {
-      const rgb = /^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/i.exec(value);
-      if (rgb) color = rgb.slice(1, 4).map(channel => clamp(Number(channel) / 255, 0, 1));
-    }
-    canvas.dataset.color = value;
-  }
-  function createRenderer() {
-    const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, preserveDrawingBuffer: false, powerPreference: 'low-power' });
-    if (!gl) return null;
-    const shaders = new Set(); let program, vao;
-    function dispose() {
-      if (!gl.isContextLost()) {
-        for (const shader of shaders) gl.deleteShader(shader);
-        if (vao) gl.deleteVertexArray(vao);
-        if (program) gl.deleteProgram(program);
-        gl.bindVertexArray(null); gl.useProgram(null); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
-      }
-      shaders.clear(); program = vao = null;
-      // Release the drawing surface as well as programs/VAO after this brief use.
-      canvas.width = canvas.height = 1;
-    }
-    function compile(type, source) {
-      const shader = gl.createShader(type);
-      if (!shader) throw new Error('Loader shader unavailable');
-      shaders.add(shader); gl.shaderSource(shader, source); gl.compileShader(shader);
-      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error('Loader shader unavailable');
-      return shader;
-    }
-    const uniforms = {};
-    try {
-      const vertex = compile(gl.VERTEX_SHADER, VERTEX), fragment = compile(gl.FRAGMENT_SHADER, FRAGMENT);
-      program = gl.createProgram(); if (!program) throw new Error('Loader program unavailable');
-      gl.attachShader(program, vertex); gl.attachShader(program, fragment); gl.linkProgram(program);
-      for (const shader of shaders) gl.deleteShader(shader); shaders.clear();
-      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error('Loader program unavailable');
-      for (let index = 0; index < gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS); index++) {
-        const info = gl.getActiveUniform(program, index);
-        if (info) uniforms[info.name.replace(/\[0\]$/, '')] = gl.getUniformLocation(program, info.name);
-      }
-      vao = gl.createVertexArray(); if (!vao) throw new Error('Loader geometry unavailable');
-    } catch (error) { dispose(); throw error; }
-    const size = { width: 1, height: 1, ratio: 1 };
-    function resize() {
-      const box = host.getBoundingClientRect(), width = Math.max(1, box.width), height = Math.max(1, box.height);
-      const compact = width < 700 || matchMedia('(pointer: coarse)').matches, budget = compact ? 360000 : 900000;
-      const ratio = Math.min(devicePixelRatio || 1, compact ? 1 : 1.25, Math.sqrt(budget / (width * height)));
-      canvas.width = Math.max(1, Math.floor(width * ratio)); canvas.height = Math.max(1, Math.floor(height * ratio));
-      size.width = width; size.height = height; size.ratio = canvas.width / width;
-      canvas.dataset.quality = compact ? 'compact' : 'desktop'; canvas.dataset.pixels = String(canvas.width * canvas.height);
-    }
-    function render() {
-      const u = uniforms, aspect = size.width / size.height, cy = 1 / preset.cells;
-      const cx = aspect / Math.max(1, Math.round(aspect / cy));
-      const depth = Math.max(cy, Math.round(preset.depth / cy) * cy);
-      const intro = Math.min(1, time / INTRO_SECONDS);
-      const phase = (Math.max(0, time - INTRO_SECONDS)) % (preset.scanDuration + preset.scanDelay);
-      const progress = intro < 1 ? intro : clamp((phase - preset.scanDelay) / preset.scanDuration, 0, 1);
-      const scanZ = intro < 1 ? progress * (depth + .4) - .2 : progress * (depth + .3) - .15;
-      const scanAlpha = intro < 1 ? Math.min(1, progress * 6) * (1 - Math.max(0, progress - .85) / .15) : Math.min(1, progress / .12) * Math.min(1, (1 - progress) / .12);
-      const light = root.dataset.theme === 'light';
-      const core = light ? color : color.map(channel => channel + (1 - channel) * .65);
-      gl.viewport(0, 0, canvas.width, canvas.height); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.useProgram(program); gl.bindVertexArray(vao);
-      gl.uniform1f(u.uAspect, aspect); gl.uniform1f(u.uPixel, 1 / canvas.height);
-      gl.uniform3f(u.uEye, Math.sin(time * .21) * .025 * aspect, Math.sin(time * .17) * .018, -1.25);
-      gl.uniform1f(u.uDepth, depth); gl.uniform3f(u.uCell, cx, cy, cy);
-      gl.uniform1f(u.uThick, size.ratio * .5); gl.uniform1f(u.uDot, 1.8 * size.ratio);
-      gl.uniform3f(u.uLineColor, 77 / 255, 71 / 255, 87 / 255);
-      gl.uniform3f(u.uScanColor, ...color); gl.uniform3f(u.uCoreColor, ...core);
-      gl.uniform1f(u.uFade, preset.depthFade); gl.uniform1f(u.uScanZ, scanZ); gl.uniform1f(u.uScanDir, 1);
-      gl.uniform1f(u.uScanAlpha, scanAlpha); gl.uniform1f(u.uScanWidth, .006 * preset.scanWidth);
-      gl.uniform1f(u.uTrail, .04 + preset.trail * 1.1); gl.uniform1f(u.uReveal, intro < 1 ? scanZ + .05 : depth + 1);
-      gl.uniform1f(u.uPoints, 1); gl.uniform1f(u.uReflect, preset.reflection);
-      gl.uniform1f(u.uHaze, light ? .03 : .05); gl.uniform1f(u.uShade, preset.shading);
-      gl.uniform1f(u.uLight, light ? 1 : 0); gl.uniform1f(u.uGlow, preset.glow); gl.uniform1f(u.uTime, time);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-    }
-    return { resize, render, dispose };
-  }
-  function stop() {
-    if (raf) cancelAnimationFrame(raf);
-    raf = 0; canvas.hidden = true; delete canvas.dataset.enhanced; delete host.dataset.gridEnhanced;
-    renderer?.dispose(); renderer = null; dirty = true;
-  }
-  function frame(now) {
-    raf = 0;
-    if (!allowed()) { sync(); return; }
-    if (now - lastDraw < 1000 / 30 - .5) { raf = requestAnimationFrame(frame); return; }
-    // Analytical geometry follows visible elapsed time without catch-up passes.
-    const dt = clamp((now - last) / 1000, 0, 10); last = lastDraw = now;
-    time += dt;
-    try {
-      if (dirty) { renderer.resize(); dirty = false; }
-      renderer.render(); canvas.dataset.frames = String(++frames);
-      raf = requestAnimationFrame(frame);
-    } catch { failed = true; sync(); }
-  }
-  function sync() {
-    const isLoading = loading();
-    if (isLoading && !wasLoading) { time = frames = 0; canvas.dataset.frames = '0'; }
-    wasLoading = isLoading;
-    if (!allowed()) {
-      stop(); canvas.dataset.state = !isLoading ? 'finished' : failed ? 'fallback' : lost ? 'lost' : 'paused'; return;
-    }
-    accent();
-    if (!renderer) {
-      try { renderer = createRenderer(); } catch { renderer = null; }
-      if (!renderer) { failed = true; stop(); canvas.dataset.state = 'fallback'; return; }
-    }
-    canvas.hidden = false; canvas.dataset.enhanced = 'true'; host.dataset.gridEnhanced = 'true'; canvas.dataset.state = 'running';
-    if (!raf) { last = lastDraw = performance.now(); raf = requestAnimationFrame(frame); }
-  }
-  new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['data-loading', 'data-theme', 'data-tone', 'data-motion', 'data-contrast'] });
-  document.addEventListener('alejandro:preferences', sync); document.addEventListener('visibilitychange', sync);
-  for (const media of [reduced, forced]) media.addEventListener('change', sync);
-  const resize = () => { dirty = true; };
-  window.addEventListener('resize', resize, { passive: true });
-  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host);
-  canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); lost = true; sync(); });
-  canvas.addEventListener('webglcontextrestored', () => { lost = failed = false; sync(); });
-  window.addEventListener('pagehide', () => { suspended = true; sync(); });
-  window.addEventListener('pageshow', () => { suspended = false; sync(); });
-  sync();
-})();
-
+}`,C=(e,l,r)=>Math.min(r,Math.max(l,e)),R=matchMedia("(prefers-reduced-motion: reduce)"),T=matchMedia("(forced-colors: active)"),i=Object.freeze({cells:10,depth:8,depthFade:.6,shading:.7,reflection:.35,scanDuration:4,scanDelay:1.6,scanWidth:1,trail:.7,glow:.6}),q=2.2;let s=null,d=0,A=0,E=0,v=0,F=0,z=!1,y=!1,L=!1,P=!1,b=!0,w=[1,1,1];t.dataset.state="idle",t.dataset.frames="0";const U=()=>p.dataset.loading==="true",k=()=>U()&&!L&&!document.hidden&&!z&&!y&&!R.matches&&!T.matches&&p.dataset.motion!=="true"&&p.dataset.contrast!=="true";function H(){const e=getComputedStyle(p).getPropertyValue("--accent").trim(),l=/^#([\da-f]{3}|[\da-f]{6})$/i.exec(e);if(l){const r=l[1].length===3?l[1].replace(/./g,c=>c+c):l[1];w=[0,2,4].map(c=>parseInt(r.slice(c,c+2),16)/255)}else{const r=/^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/i.exec(e);r&&(w=r.slice(1,4).map(c=>C(Number(c)/255,0,1)))}t.dataset.color=e}function W(){const e=t.getContext("webgl2",{alpha:!0,premultipliedAlpha:!0,antialias:!1,depth:!1,stencil:!1,preserveDrawingBuffer:!1,powerPreference:"low-power"});if(!e)return null;const l=new Set;let r,c;function I(){if(!e.isContextLost()){for(const a of l)e.deleteShader(a);c&&e.deleteVertexArray(c),r&&e.deleteProgram(r),e.bindVertexArray(null),e.useProgram(null),e.clearColor(0,0,0,0),e.clear(e.COLOR_BUFFER_BIT)}l.clear(),r=c=null,t.width=t.height=1}function V(a,n){const o=e.createShader(a);if(!o)throw new Error("Loader shader unavailable");if(l.add(o),e.shaderSource(o,n),e.compileShader(o),!e.getShaderParameter(o,e.COMPILE_STATUS))throw new Error("Loader shader unavailable");return o}const j={};try{const a=V(e.VERTEX_SHADER,B),n=V(e.FRAGMENT_SHADER,G);if(r=e.createProgram(),!r)throw new Error("Loader program unavailable");e.attachShader(r,a),e.attachShader(r,n),e.linkProgram(r);for(const o of l)e.deleteShader(o);if(l.clear(),!e.getProgramParameter(r,e.LINK_STATUS))throw new Error("Loader program unavailable");for(let o=0;o<e.getProgramParameter(r,e.ACTIVE_UNIFORMS);o++){const u=e.getActiveUniform(r,o);u&&(j[u.name.replace(/\[0\]$/,"")]=e.getUniformLocation(r,u.name))}if(c=e.createVertexArray(),!c)throw new Error("Loader geometry unavailable")}catch(a){throw I(),a}const m={width:1,height:1,ratio:1};function X(){const a=x.getBoundingClientRect(),n=Math.max(1,a.width),o=Math.max(1,a.height),u=n<700||matchMedia("(pointer: coarse)").matches,h=Math.min(devicePixelRatio||1,u?1:1.25,Math.sqrt((u?36e4:9e5)/(n*o)));t.width=Math.max(1,Math.floor(n*h)),t.height=Math.max(1,Math.floor(o*h)),m.width=n,m.height=o,m.ratio=t.width/n,t.dataset.quality=u?"compact":"desktop",t.dataset.pixels=String(t.width*t.height)}function $(){const a=j,n=m.width/m.height,o=1/i.cells,u=n/Math.max(1,Math.round(n/o)),S=Math.max(o,Math.round(i.depth/o)*o),h=Math.min(1,v/q),K=Math.max(0,v-q)%(i.scanDuration+i.scanDelay),g=h<1?h:C((K-i.scanDelay)/i.scanDuration,0,1),N=h<1?g*(S+.4)-.2:g*(S+.3)-.15,J=h<1?Math.min(1,g*6)*(1-Math.max(0,g-.85)/.15):Math.min(1,g/.12)*Math.min(1,(1-g)/.12),D=p.dataset.theme==="light",Q=D?w:w.map(Z=>Z+(1-Z)*.65);e.viewport(0,0,t.width,t.height),e.clearColor(0,0,0,0),e.clear(e.COLOR_BUFFER_BIT),e.useProgram(r),e.bindVertexArray(c),e.uniform1f(a.uAspect,n),e.uniform1f(a.uPixel,1/t.height),e.uniform3f(a.uEye,Math.sin(v*.21)*.025*n,Math.sin(v*.17)*.018,-1.25),e.uniform1f(a.uDepth,S),e.uniform3f(a.uCell,u,o,o),e.uniform1f(a.uThick,m.ratio*.5),e.uniform1f(a.uDot,1.8*m.ratio),e.uniform3f(a.uLineColor,77/255,71/255,87/255),e.uniform3f(a.uScanColor,...w),e.uniform3f(a.uCoreColor,...Q),e.uniform1f(a.uFade,i.depthFade),e.uniform1f(a.uScanZ,N),e.uniform1f(a.uScanDir,1),e.uniform1f(a.uScanAlpha,J),e.uniform1f(a.uScanWidth,.006*i.scanWidth),e.uniform1f(a.uTrail,.04+i.trail*1.1),e.uniform1f(a.uReveal,h<1?N+.05:S+1),e.uniform1f(a.uPoints,1),e.uniform1f(a.uReflect,i.reflection),e.uniform1f(a.uHaze,D?.03:.05),e.uniform1f(a.uShade,i.shading),e.uniform1f(a.uLight,D?1:0),e.uniform1f(a.uGlow,i.glow),e.uniform1f(a.uTime,v),e.drawArrays(e.TRIANGLES,0,3)}return{resize:X,render:$,dispose:I}}function _(){d&&cancelAnimationFrame(d),d=0,t.hidden=!0,delete t.dataset.enhanced,delete x.dataset.gridEnhanced,s?.dispose(),s=null,b=!0}function M(e){if(d=0,!k()){f();return}if(e-E<1e3/30-.5){d=requestAnimationFrame(M);return}const l=C((e-A)/1e3,0,10);A=E=e,v+=l;try{b&&(s.resize(),b=!1),s.render(),t.dataset.frames=String(++F),d=requestAnimationFrame(M)}catch{y=!0,f()}}function f(){const e=U();if(e&&!P&&(v=F=0,t.dataset.frames="0"),P=e,!k()){_(),t.dataset.state=e?y?"fallback":z?"lost":"paused":"finished";return}if(H(),!s){try{s=W()}catch{s=null}if(!s){y=!0,_(),t.dataset.state="fallback";return}}t.hidden=!1,t.dataset.enhanced="true",x.dataset.gridEnhanced="true",t.dataset.state="running",d||(A=E=performance.now(),d=requestAnimationFrame(M))}new MutationObserver(f).observe(p,{attributes:!0,attributeFilter:["data-loading","data-theme","data-tone","data-motion","data-contrast"]}),document.addEventListener("alejandro:preferences",f),document.addEventListener("visibilitychange",f);for(const e of[R,T])e.addEventListener("change",f);const O=()=>{b=!0};window.addEventListener("resize",O,{passive:!0}),"ResizeObserver"in window&&new ResizeObserver(O).observe(x),t.addEventListener("webglcontextlost",e=>{e.preventDefault(),z=!0,f()}),t.addEventListener("webglcontextrestored",()=>{z=y=!1,f()}),window.addEventListener("pagehide",()=>{L=!0,f()}),window.addEventListener("pageshow",()=>{L=!1,f()}),f()})();

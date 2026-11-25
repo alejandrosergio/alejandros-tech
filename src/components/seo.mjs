@@ -1,19 +1,40 @@
 import { site } from '../content/site.mjs';
 import { locales } from '../content/locales.mjs';
-import { projectName, projectDestination } from '../content/projects.mjs';
+import { projects, projectName, projectDestination } from '../content/projects.mjs';
 import { escapeHTML as e, scriptJSON } from '../lib/html.mjs';
 
 const absolute = pathname => new URL(pathname, site.origin).href;
 const personID = `${site.origin}/#sergio-hernandez`;
 const websiteID = `${site.origin}/#website`;
 const portrait = '/assets/sergio-natural-appearance.webp';
+const imageSizes = new Map([
+  [portrait, { width: 1024, height: 1536 }],
+  ...projects.flatMap(project => Object.values(project.image).map(image => [image, project.imageSize]))
+]);
+const imageTypes = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', svg: 'image/svg+xml' };
+
+function imageDetails(image, size = imageSizes.get(image)) {
+  return { url: absolute(image), type: imageTypes[image.split('.').at(-1)], ...size };
+}
 
 function structuredData(lang, options, image) {
   const { title, description, paths, home, project, note } = options;
   const url = absolute(paths[lang]), pageID = `${url}#webpage`;
-  const person = { '@type': 'Person', '@id': personID, name: 'Sergio Alejandro Hernández Patiño', url: absolute('/'), image: absolute(portrait), jobTitle: lang === 'es' ? 'Desarrollador senior de software' : 'Senior Software Developer', description: locales[lang].about.intro, email: site.email, telephone: site.phone, address: { '@type': 'PostalAddress', addressLocality: 'Cali', addressCountry: 'CO' }, knowsAbout: ['.NET', 'Microsoft Power Platform', 'React', 'Copilot Studio', 'RAG', 'AI Builder', 'REST APIs'], sameAs: [site.linkedin, site.github, site.cv] };
+  const person = {
+    '@type': 'Person', '@id': personID,
+    name: 'Sergio Alejandro Hernández Patiño', url: absolute('/'), image: absolute(portrait),
+    jobTitle: lang === 'es' ? 'Analista y desarrollador de software' : 'Software Analyst and Developer',
+    description: locales[lang].about.intro, email: site.email, telephone: site.phone,
+    address: { '@type': 'PostalAddress', addressLocality: 'Cali', addressCountry: 'CO' },
+    knowsAbout: ['.NET', 'Microsoft Power Platform', 'React', 'Copilot Studio', 'RAG', 'AI Builder', 'REST APIs'],
+    sameAs: [site.linkedin, site.github, site.cv]
+  };
   const website = { '@type': 'WebSite', '@id': websiteID, name: site.name, url: absolute('/'), inLanguage: ['es', 'en'], publisher: { '@id': personID } };
-  const page = { '@type': home ? 'ProfilePage' : 'WebPage', '@id': pageID, url, name: title, description, inLanguage: lang, isPartOf: { '@id': websiteID }, primaryImageOfPage: { '@type': 'ImageObject', url: absolute(image) } };
+  const page = {
+    '@type': home ? 'ProfilePage' : 'WebPage', '@id': pageID, url, name: title, description,
+    inLanguage: lang, isPartOf: { '@id': websiteID },
+    primaryImageOfPage: { '@type': 'ImageObject', url: image.url, ...(image.width && { width: image.width, height: image.height }) }
+  };
   const graph = [person, website, page];
   if (home) page.mainEntity = { '@id': personID };
   else {
@@ -25,13 +46,28 @@ function structuredData(lang, options, image) {
     ] });
     if (note) {
       page.mainEntity = { '@id': `${url}#article` };
-      graph.push({ '@type': 'BlogPosting', '@id': `${url}#article`, headline: note[lang].title, description, datePublished: note.date, inLanguage: lang, author: { '@id': personID }, mainEntityOfPage: { '@id': pageID }, image: absolute(image) });
+      graph.push({
+        '@type': 'BlogPosting', '@id': `${url}#article`, url,
+        headline: note[lang].title, description, datePublished: note.date, inLanguage: lang,
+        author: { '@id': personID }, publisher: { '@id': personID },
+        mainEntityOfPage: { '@id': pageID }, image: image.url
+      });
     } else if (project) {
       page.mainEntity = { '@id': `${url}#project` };
-      graph.push({ '@type': 'CreativeWork', '@id': `${url}#project`, name: projectName(project, lang), description, url: absolute(projectDestination(project, lang)), creator: { '@id': personID }, mainEntityOfPage: { '@id': pageID }, image: absolute(image) });
+      graph.push({
+        '@type': 'CreativeWork', '@id': `${url}#project`, name: projectName(project, lang), description,
+        url: absolute(projectDestination(project, lang)), inLanguage: lang,
+        creator: { '@id': personID }, mainEntityOfPage: { '@id': pageID }, image: image.url
+      });
       if (project.video) {
         page.video = { '@id': `${url}#video` };
-        graph.push({ '@type': 'VideoObject', '@id': `${url}#video`, name: projectName(project, lang), description, thumbnailUrl: absolute(image), contentUrl: absolute(project.video.src), uploadDate: project.video.uploaded, duration: `PT${Math.floor(project.video.duration / 60)}M${project.video.duration % 60}S`, inLanguage: 'es', creator: { '@id': personID }, isPartOf: { '@id': `${url}#project` } });
+        graph.push({
+          '@type': 'VideoObject', '@id': `${url}#video`, name: projectName(project, lang), description,
+          thumbnailUrl: image.url, contentUrl: absolute(project.video.src), uploadDate: project.video.uploaded,
+          duration: `PT${Math.floor(project.video.duration / 60)}M${project.video.duration % 60}S`,
+          inLanguage: 'es', creator: { '@id': personID },
+          isPartOf: { '@id': `${url}#project` }, mainEntityOfPage: { '@id': pageID }
+        });
       }
     }
   }
@@ -40,7 +76,11 @@ function structuredData(lang, options, image) {
 
 export function metadata(lang, options) {
   const { title, description, paths, notFound, project, note } = options;
-  const image = options.image ?? project?.image[lang] ?? portrait, imageAlt = options.imageAlt ?? project?.[lang].imageAlt ?? locales[lang].hero.portrait;
+  const imagePath = options.image ?? project?.image[lang] ?? portrait;
+  const image = imageDetails(imagePath);
+  const imageAlt = options.imageAlt ?? project?.[lang].imageAlt ?? locales[lang].hero.portrait;
+  // Large cards are reserved for landscape raster assets; diagrams retain their original format.
+  const largeCard = image.type !== 'image/svg+xml' && image.width > image.height;
   const canonical = notFound ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${absolute(paths[lang])}">
   ${['es', 'en'].map(language => `<link rel="alternate" hreflang="${language}" href="${absolute(paths[language])}">`).join('\n  ')}
   <link rel="alternate" hreflang="x-default" href="${absolute(paths.es)}">`;
@@ -50,17 +90,17 @@ export function metadata(lang, options) {
   <meta name="theme-color" content="#0e0e10">
   ${canonical}
   <meta property="og:type" content="${note ? 'article' : 'website'}">
-  <meta property="og:site_name" content="${site.name}">
+  <meta property="og:site_name" content="${e(site.name)}">
   <meta property="og:title" content="${e(title)}">
   <meta property="og:description" content="${e(description)}">
   <meta property="og:url" content="${absolute(paths[lang])}">
   <meta property="og:locale" content="${lang === 'es' ? 'es_CO' : 'en_US'}">
   <meta property="og:locale:alternate" content="${lang === 'es' ? 'en_US' : 'es_CO'}">
-  <meta property="og:image" content="${absolute(image)}">
-  <meta property="og:image:alt" content="${e(imageAlt)}">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="${e(image.url)}">${image.type ? `\n  <meta property="og:image:type" content="${image.type}">` : ''}${image.width ? `\n  <meta property="og:image:width" content="${image.width}">\n  <meta property="og:image:height" content="${image.height}">` : ''}
+  <meta property="og:image:alt" content="${e(imageAlt)}">${note ? `\n  <meta property="article:published_time" content="${e(note.date)}">\n  <meta property="article:author" content="${personID}">` : ''}
+  <meta name="twitter:card" content="${largeCard ? 'summary_large_image' : 'summary'}">
   <meta name="twitter:title" content="${e(title)}">
   <meta name="twitter:description" content="${e(description)}">
-  <meta name="twitter:image" content="${absolute(image)}">
+  <meta name="twitter:image" content="${e(image.url)}">
   <meta name="twitter:image:alt" content="${e(imageAlt)}">${notFound ? '' : '\n  ' + structuredData(lang, options, image)}`;
 }

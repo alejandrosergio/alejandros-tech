@@ -1,0 +1,11 @@
+# Optimización y mantenimiento
+
+La generación conserva HTML estático, hojas de estilo y JavaScript de mejora progresiva. El código fuente permanece legible; `scripts/optimize-assets.mjs` usa esbuild, ya fijado en el proyecto, para minificar únicamente los archivos publicados. No se edita `dist/` a mano ni se incorporan herramientas adicionales.
+
+La revisión del 24 de noviembre de 2026 cubre las ocho secciones de inicio, casos, notas y laboratorios en ES/EN. La base ya tenía imágenes locales con dimensiones, carga diferida de tarjetas, scripts diferidos, navegación HTML y recursos opcionales separados. Se conservan esas decisiones y el diseño carbón/coral. Se retiran el sintetizador sustituido y declaraciones CSS sobrescritas; los estados y transiciones de revelado se concentran en `reveals.css`. Los comentarios explican contratos, procedencia y liberación de recursos en vez de repetir cada instrucción.
+
+La hoja global conserva las rutas existentes y evita una cadena de `@import`. Se minifican las entradas JavaScript manteniendo imports, semántica y avisos de terceros. La primera medición del cambio, antes de sustituir la música, redujo la hoja de 130.666 a 112.947 bytes y las entradas copiadas de 122.908 a 77.826 bytes. Las cifras finales cambian con las correcciones integradas; `pnpm check` imprime los tamaños actuales y comprueba la sintaxis de lo que se publica. Son tamaños de archivos, no una puntuación de velocidad ni una garantía de tiempos de carga.
+
+La grabación profesional pesa 3,88 MB y solo se solicita tras Play; no aumenta las descargas de entrada. Calendario, video y modelo descargable también requieren activación. La música se detiene y libera al pausar, ocultar la pestaña, iniciar un video o abandonar el documento. No se añade un sistema de caché que pueda servir versiones obsoletas.
+
+Las verificaciones incluyen licencias, imports locales, separación de recursos opcionales, controles de preferencias y audio, paridad de rutas, enlaces, metadatos y evaluación original. `check-seo.mjs` contrasta las dimensiones reales y la coherencia del grafo con los recursos. Una ejecución de pruebas no sustituye la revisión visual y de interacción en navegador; tampoco certifica accesibilidad universal ni posiciones en buscadores.

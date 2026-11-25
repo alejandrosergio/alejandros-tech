@@ -24,7 +24,6 @@
 .guide-actions a .icon { width: 14px; height: 14px; flex-shrink: 0; }
 .guide-dismiss { min-height: 36px; margin-top: .3rem; width: 100%; border: 0; background: none; color: var(--muted); font-size: .5625rem; }
 :root[data-guide-hidden="true"] .journey-guide { display: none !important; }
-.has-reveals [data-reveal] { transition-timing-function: cubic-bezier(.22,.68,.18,1); transition-delay: var(--reveal-delay, 0ms); transition-duration: 1.2s; }
 .section-label > span::after { transform-origin: left; transition: transform .5s, background .5s; }
 .is-current-section .section-label > span::after { transform: scaleX(1.25); background: var(--accent); }
 

@@ -1,140 +1,234 @@
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { interfaceCopy } from '../src/content/interface.mjs';
+import { soundtrackTrack } from '../src/content/soundtrack.mjs';
+import { soundtrack } from '../src/components/soundtrack.mjs';
 
+const production = await readFile(new URL('../dist/assets/soundtrack.js', import.meta.url), 'utf8');
 const source = await readFile(new URL('../src/client/soundtrack.js', import.meta.url), 'utf8');
 const styles = await readFile(new URL('../src/styles/soundtrack.css', import.meta.url), 'utf8');
+const provenance = JSON.parse(await readFile(new URL('../docs/music.json', import.meta.url), 'utf8'));
+assert.equal(soundtrackTrack.src, provenance.published.path);
+for (const directory of ['public', 'dist']) {
+  const recording = await readFile(new URL(`../${directory}${provenance.published.path}`, import.meta.url));
+  assert.equal(recording.length, provenance.published.bytes, `The ${directory} recording matches its documented size`);
+  assert.equal(createHash('sha256').update(recording).digest('hex'), provenance.published.sha256, `The ${directory} recording matches its documented fingerprint`);
+}
+const flush = async () => { for (let i = 0; i < 8; i++) await Promise.resolve(); };
+function gate() {
+  let resolve, reject;
+  const promise = new Promise((yes, no) => { resolve = yes; reject = no; });
+  return { promise, resolve, reject };
+}
 
-// The stateful audio graph checks transport correctness, timing, polyphony and
-// disposal. Native browser QA separately verifies real AudioContext playback.
-function fixture({ absent = false, unsupported = false, constructorFails = false, resumeFails = false, staysSuspended = false, deferred = false, noPanner = false } = {}) {
-  const handlers = new Map(), timers = new Map(), contexts = []; let timerID = 0;
-  const events = name => ({ addEventListener(type, callback) { const key = name + ':' + type; if (!handlers.has(key)) handlers.set(key, []); handlers.get(key).push(callback); } });
-  const label = { textContent: 'Play' }, status = { textContent: '' };
-  const button = { ...events('button'), hidden: true, dataset: { play: 'Play', pause: 'Pausa', playLabel: 'Reproducir música original', pauseLabel: 'Pausar música', playing: 'Música activada', stopped: 'Música pausada', unavailable: 'Audio no disponible' }, attributes: {},
-    querySelector: () => label, setAttribute(name, value) { this.attributes[name] = value; }
+// Stateful media mocks exercise the minified recording controller. They verify
+// user intent and cleanup; real playback/volume remain browser listening checks.
+function fixture(options = {}) {
+  const handlers = new Map(), media = [], contexts = [], requests = [];
+  const events = name => ({ addEventListener(type, callback, capture) {
+    const key = `${name}:${type}`;
+    if (!handlers.has(key)) handlers.set(key, []);
+    handlers.get(key).push({ callback, capture });
+  } });
+  const fire = (name, type, event = {}) => {
+    for (const { callback } of handlers.get(`${name}:${type}`) || []) callback(event);
   };
-  const volumeInput = { ...events('volume'), value: '65', attributes: {}, setAttribute(name, value) { this.attributes[name] = value; } }, volumeOutput = { textContent: '65%' };
-  const summary = { focused: false, focus() { this.focused = true; } }, volumePanel = { open: false, querySelector: () => summary };
-  const player = { ...events('player'), hidden: true, contains: target => [button, volumeInput, summary].includes(target) };
-  const elements = { '[data-soundtrack]': absent ? null : button, '[data-soundtrack-status]': status, '[data-soundtrack-player]': player, '[data-soundtrack-volume]': volumeInput, '[data-soundtrack-volume-value]': volumeOutput, '[data-soundtrack-volume-panel]': volumePanel };
+  const copy = interfaceCopy[options.lang || 'es'].audio;
+  const label = { textContent: copy.play }, status = { textContent: '' };
+  const button = { ...events('button'), dataset: { ...copy, src: options.noSrc ? '' : soundtrackTrack.src }, attributes: {},
+    querySelector: () => label, setAttribute(name, value) { this.attributes[name] = value; } };
+  const slider = { ...events('slider'), value: '65', attributes: {}, setAttribute(name, value) { this.attributes[name] = value; } };
+  const output = { textContent: '65%' }, summary = { focused: false, focus() { this.focused = true; } };
+  const panel = { open: false, querySelector: () => summary };
+  const player = { ...events('player'), hidden: true, contains: target => [button, slider, summary].includes(target) };
+  const elements = { '[data-soundtrack]': options.absent ? null : button, '[data-soundtrack-player]': player,
+    '[data-soundtrack-status]': status, '[data-soundtrack-volume]': slider,
+    '[data-soundtrack-volume-value]': output, '[data-soundtrack-volume-panel]': panel };
   const document = { ...events('document'), hidden: false, querySelector: selector => elements[selector] || null };
-  class Param {
-    constructor(value = 0) { this.value = value; this.events = []; }
-    record(type, value, at) { assert.ok(Number.isFinite(value) && Number.isFinite(at) && at >= 0); if (type === 'exponential') assert.ok(value > 0); this.events.push({ type, value, at }); this.value = value; }
-    setValueAtTime(value, at) { this.record('set', value, at); }
-    linearRampToValueAtTime(value, at) { this.record('linear', value, at); }
-    exponentialRampToValueAtTime(value, at) { this.record('exponential', value, at); }
-    cancelScheduledValues(at) { this.events.push({ type: 'cancel', at }); }
-    setTargetAtTime(value, at, timeConstant) { assert.equal(timeConstant, .025); this.record('target', value, at); }
-  }
-  class Node {
-    constructor(audio, kind) { this.audio = audio; this.kind = kind; this.outputs = new Set(); this.stopped = false; audio.nodes.add(this); }
-    connect(node) { this.outputs.add(node); return node; }
-    disconnect() { this.outputs.clear(); }
-    start(at) { assert.ok(at >= this.audio.currentTime, 'Sources are scheduled ahead of the audio clock'); this.startAt = at; }
-    stop(at = this.audio.currentTime) { this.stopAt = at; this.stopped = true; }
-  }
-  class Audio {
-    constructor(options) {
-      if (constructorFails) throw new Error('Unavailable');
-      assert.equal(options.latencyHint, 'playback'); this.nodes = new Set(); this.buffers = []; this.state = 'suspended'; this.sampleRate = 44100; this.currentTime = 0; this.listeners = []; this.destination = {}; this.closeCalls = 0; this.resumeCalls = 0; contexts.push(this);
-      if (noPanner) this.createStereoPanner = undefined;
+  class Recording {
+    constructor() {
+      if (options.mediaFails) throw new Error('Media constructor unavailable');
+      this.listeners = new Map(); this._src = ''; this.volume = 1; this.paused = true;
+      this.pauseCalls = 0; this.playCalls = 0; this.loadCalls = 0; this.playGate = gate(); media.push(this);
     }
-    node(kind) { return new Node(this, kind); }
-    createGain() { const n = this.node('gain'); n.gain = new Param(1); return n; }
-    createDynamicsCompressor() { const n = this.node('compressor'); for (const name of ['threshold', 'knee', 'ratio', 'attack', 'release']) n[name] = new Param(); return n; }
-    createDelay(max) { assert.equal(max, 1); const n = this.node('delay'); n.delayTime = new Param(); return n; }
-    createBiquadFilter() { const n = this.node('filter'); n.frequency = new Param(); n.Q = new Param(); return n; }
-    createStereoPanner() { const n = this.node('panner'); n.pan = new Param(); return n; }
-    createOscillator() { const n = this.node('oscillator'); n.frequency = new Param(); return n; }
-    createBufferSource() { return this.node('noise'); }
-    createBuffer(channels, length, rate) { assert.equal(channels, 1); assert.equal(rate, this.sampleRate); const data = new Float32Array(length), buffer = { getChannelData: () => data, data }; this.buffers.push(buffer); return buffer; }
-    addEventListener(type, callback) { assert.equal(type, 'statechange'); this.listeners.push(callback); }
+    set src(value) { this._src = value; requests.push(value); }
+    get src() { return this._src; }
+    addEventListener(type, callback) {
+      if (!this.listeners.has(type)) this.listeners.set(type, []);
+      this.listeners.get(type).push(callback);
+    }
+    emit(type) { for (const callback of this.listeners.get(type) || []) callback(); }
+    async play() {
+      this.playCalls++;
+      if (options.playFails) throw new Error('Playback rejected');
+      if (options.deferPlay) await this.playGate.promise;
+      this.paused = false;
+    }
+    pause() { this.pauseCalls++; this.paused = true; this.emit('pause'); }
+    removeAttribute(name) { assert.equal(name, 'src'); this._src = ''; }
+    load() { this.loadCalls++; }
+  }
+  class GraphNode {
+    constructor(context, kind) { this.kind = kind; this.outputs = new Set(); this.disconnects = 0; context.nodes.push(this); }
+    connect(target) { this.outputs.add(target); return target; }
+    disconnect() { this.disconnects++; this.outputs.clear(); }
+  }
+  class Context {
+    constructor(config) {
+      if (options.contextFails) throw new Error('Context unavailable');
+      assert.equal(config.latencyHint, 'playback');
+      this.state = 'suspended'; this.currentTime = 12; this.destination = {}; this.nodes = [];
+      this.resumeCalls = 0; this.closeCalls = 0; this.resumeGate = gate(); contexts.push(this);
+    }
+    createMediaElementSource(audio) {
+      if (options.sourceFails) throw new Error('Media source unavailable');
+      assert.ok(media.includes(audio)); const node = new GraphNode(this, 'source'); node.audio = audio; return node;
+    }
+    createGain() {
+      if (options.gainFails) throw new Error('Gain unavailable');
+      const node = new GraphNode(this, 'gain');
+      node.gain = { value: 1, events: [], setTargetAtTime(value, at, constant) {
+        assert.ok(value >= 0 && value <= 1); assert.equal(at, 12); assert.equal(constant, .025);
+        this.value = value; this.events.push({ value, at, constant });
+      } };
+      return node;
+    }
     async resume() {
       this.resumeCalls++;
-      if (resumeFails) throw new Error('Blocked');
-      if (deferred) await new Promise(resolve => { this.resolveResume = resolve; });
-      if (this.state !== 'closed' && !staysSuspended) this.state = 'running';
+      if (options.resumeFails) throw new Error('Resume rejected');
+      if (options.deferResume) await this.resumeGate.promise;
+      if (this.state !== 'closed' && !options.staysSuspended) this.state = 'running';
     }
-    async close() { this.closeCalls++; this.state = 'closed'; this.listeners.forEach(callback => callback()); }
-    advance(seconds) {
-      this.currentTime += seconds;
-      for (const node of [...this.nodes]) if (!node.ended && node.startAt !== undefined && node.stopAt <= this.currentTime) { node.ended = true; node.onended?.(); }
-    }
-    interrupt() { this.state = 'suspended'; this.listeners.forEach(callback => callback()); }
+    async close() { this.closeCalls++; this.state = 'closed'; }
   }
-  const window = { ...events('window'), AudioContext: unsupported ? undefined : Audio };
-  vm.runInNewContext(source, { window, document, Float32Array,
-    setTimeout(callback, delay) { assert.equal(delay, 25, 'One short scheduling lookahead timer'); timers.set(++timerID, callback); return timerID; }, clearTimeout(id) { timers.delete(id); },
-    fetch() { throw new Error('The composition must never request audio or services'); },
-    localStorage: { setItem() { throw new Error('Playback must not be persisted'); }, getItem() { throw new Error('Playback must not be restored'); } },
-    requestAnimationFrame() { throw new Error('Audio timing must use the audio clock, not a perpetual visual loop'); }
+  const window = { ...events('window'), Audio: options.noAudio ? undefined : Recording };
+  if (!options.nativeVolume) window[options.webkit ? 'webkitAudioContext' : 'AudioContext'] = Context;
+  vm.runInNewContext(production, { window, document,
+    fetch() { throw new Error('Only explicit media Play initiates a download'); },
+    localStorage: { getItem() { throw new Error('No persisted playback'); }, setItem() { throw new Error('No persisted playback'); } },
+    setInterval() { throw new Error('Recorded playback needs no scheduling loop'); },
+    requestAnimationFrame() { throw new Error('Recorded playback needs no animation loop'); }
   });
-  const fire = (target, type, event = {}) => { const callbacks = handlers.get(target + ':' + type); assert.ok(callbacks, 'Registered ' + target + ':' + type); callbacks.forEach(callback => callback(event)); };
-  return { contexts, button, label, status, document, timers, fire, player, volumeInput, volumeOutput, volumePanel, summary,
-    setVolume(value) { volumeInput.value = String(value); fire('volume', 'input'); },
-    async click() { fire('button', 'click'); await Promise.resolve(); await Promise.resolve(); await Promise.resolve(); },
-    tick(seconds = .025) { contexts.forEach(audio => { if (audio.state === 'running') audio.advance(seconds); }); const queued = [...timers.values()]; timers.clear(); queued.forEach(callback => callback()); },
-    async resolve() { contexts.at(-1).resolveResume(); await Promise.resolve(); await Promise.resolve(); await Promise.resolve(); },
-    live() { return [...contexts.at(-1).nodes].filter(node => node.outputs.size); }
+  return { options, handlers, media, contexts, requests, copy, button, label, status, slider, output, panel, summary, player, document, fire,
+    async click() { fire('button', 'click'); await flush(); },
+    setVolume(value) { slider.value = String(value); fire('slider', 'input'); },
+    async resolveResume(index = contexts.length - 1) { contexts[index].resumeGate.resolve(); await flush(); },
+    async resolvePlay(index = media.length - 1) { media[index].playGate.resolve(); await flush(); }
   };
 }
 
-const absent = fixture({ absent: true }); assert.equal(absent.contexts.length, 0); assert.equal(absent.timers.size, 0);
-const normal = fixture();
-assert.equal(normal.contexts.length, 0, 'Loading a page never creates an audio context'); assert.equal(normal.button.hidden, false); assert.equal(normal.button.dataset.state, 'paused'); assert.equal(normal.timers.size, 0); assert.equal(normal.status.textContent, '');
-await normal.click();
-const audio = normal.contexts[0];
-assert.equal(audio.state, 'running'); assert.equal(audio.resumeCalls, 1); assert.equal(normal.button.dataset.state, 'playing'); assert.equal(normal.button.attributes['aria-pressed'], 'true'); assert.equal(normal.label.textContent, 'Pausa'); assert.equal(normal.button.dataset.tooltip, 'Pausar música'); assert.equal(normal.button.attributes['aria-label'], 'Pausar música'); assert.equal(normal.status.textContent, 'Música activada'); assert.equal(normal.timers.size, 1);
-assert.equal(normal.button.dataset.tempo, '118'); assert.equal(normal.button.dataset.composition, 'orbita-digital'); assert.equal(normal.button.dataset.cycleBars, '32'); assert.ok(Number(normal.button.dataset.voices) > 0);
-const master = [...audio.nodes].find(node => node.outputs.has(audio.destination));
-assert.ok(master.gain.events.some(event => event.type === 'linear' && event.value === 1.4 && event.at === .55), 'The compensated mix still fades in');
-const compressor = [...audio.nodes].find(node => node.kind === 'compressor'); assert.equal(compressor.ratio.value, 4);
-const level = [...compressor.outputs][0];
-assert.equal(level.gain.value, .65); assert.ok(level.gain.value * master.gain.value > .15 * 2, 'The initial output gain is more than twice the former fixed output');
-const activeNodes = audio.nodes.size, scheduledAtLevelChange = normal.button.dataset.scheduled;
-normal.setVolume(0); assert.equal(level.gain.events.at(-1).type, 'target'); assert.equal(level.gain.value, 0, 'Zero percent fades toward silence');
-normal.setVolume(100); assert.equal(level.gain.value, 1); assert.equal(normal.volumeOutput.textContent, '100%'); assert.equal(normal.volumeInput.attributes['aria-valuetext'], '100%');
-normal.setVolume(300); assert.equal(normal.volumeInput.value, '100'); normal.setVolume(-20); assert.equal(level.gain.value, 0); normal.setVolume(65);
-assert.equal(audio.nodes.size, activeNodes); assert.equal(normal.contexts.length, 1); assert.equal(normal.button.dataset.scheduled, scheduledAtLevelChange); assert.equal(normal.timers.size, 1, 'Changing volume neither restarts playback nor allocates nodes/timers');
-assert.equal(master.gain.events.at(-1).at, .55, 'Volume automation leaves the entrance envelope intact');
-const noise = audio.buffers[0].data; assert.equal(noise.length, 22050); assert.ok(noise.every(value => value >= -1 && value <= 1)); assert.ok(Math.abs(noise.reduce((sum, value) => sum + value, 0) / noise.length) < .02); assert.ok(new Set(noise.slice(0, 100)).size > 90, 'Percussion noise is generated locally rather than fetched');
-let maximum = Number(normal.button.dataset.voices);
-for (let i = 0; i < 3200; i++) { normal.tick(); maximum = Math.max(maximum, Number(normal.button.dataset.voices)); assert.equal(normal.timers.size, 1); }
-assert.ok(maximum <= 32, 'Normal polyphony stays well below the hard 64-voice limit');
-assert.ok(Number(normal.button.dataset.scheduled) > 500, 'The 32-bar arrangement wraps and schedules continuously');
-const sources = [...audio.nodes].filter(node => node.startAt !== undefined);
-assert.ok(sources.every(node => node.stopAt - node.startAt < 3), 'Every source has a short scheduled lifetime');
-assert.ok(sources.filter(node => node.kind === 'oscillator').some(node => node.frequency.events.some(event => Math.abs(event.value - 440 * 2 ** ((76 - 69) / 12)) < .001)), 'The composed melody is scheduled as pitched oscillators');
-const beforeLag = Number(normal.button.dataset.scheduled); normal.tick(8); assert.ok(Number(normal.button.dataset.scheduled) - beforeLag <= 4, 'A delayed timer skips missed beats instead of bursting');
-await normal.click();
-assert.equal(normal.button.dataset.state, 'paused'); assert.equal(normal.button.attributes['aria-pressed'], 'false'); assert.equal(normal.label.textContent, 'Play'); assert.equal(normal.button.dataset.tooltip, 'Reproducir música original'); assert.equal(normal.status.textContent, 'Música pausada'); assert.equal(normal.timers.size, 0); assert.equal(audio.state, 'closed'); assert.equal(normal.live().length, 0); assert.equal(normal.button.dataset.voices, '0');
-assert.ok(sources.every(node => node.stopped && node.onended === null), 'Pause cancels all sources and their callbacks');
-await normal.click(); assert.equal(normal.contexts.length, 2); normal.document.hidden = true; normal.fire('document', 'visibilitychange'); assert.equal(normal.timers.size, 0); assert.equal(normal.contexts.at(-1).state, 'closed'); normal.document.hidden = false; normal.fire('document', 'visibilitychange'); assert.equal(normal.contexts.length, 2); assert.equal(normal.timers.size, 0, 'A visible page does not resume sound automatically');
-await normal.click(); normal.fire('window', 'pagehide'); assert.equal(normal.contexts.at(-1).state, 'closed'); assert.equal(normal.timers.size, 0);
-await normal.click(); normal.contexts.at(-1).interrupt(); assert.equal(normal.button.dataset.state, 'paused'); assert.equal(normal.timers.size, 0, 'An externally suspended context is released instead of silently claiming playback');
-
-for (const options of [{ unsupported: true }, { constructorFails: true }, { resumeFails: true }, { staysSuspended: true }]) {
-  const unavailable = fixture(options); await unavailable.click(); assert.equal(unavailable.button.dataset.state, 'unavailable'); assert.equal(unavailable.button.attributes['aria-pressed'], 'false'); assert.equal(unavailable.label.textContent, 'Play'); assert.equal(unavailable.status.textContent, 'Audio no disponible'); assert.equal(unavailable.timers.size, 0); assert.ok(unavailable.contexts.every(audio => audio.state === 'closed'));
+function released(test, { recordings = test.media, graphs = test.contexts } = {}) {
+  for (const audio of recordings) {
+    assert.equal(audio.src, '', 'Stopping clears the media URL');
+    assert.equal(audio.paused, true, 'Stopping pauses the recording');
+    assert.ok(audio.loadCalls > 0, 'Clearing src releases the media resource');
+  }
+  for (const context of graphs) {
+    assert.equal(context.state, 'closed', 'Stopping closes the audio context');
+    assert.equal(context.closeCalls, 1, 'Each graph is closed exactly once');
+    assert.ok(context.nodes.every(node => node.outputs.size === 0 && node.disconnects > 0), 'Stopping disconnects all allocated nodes');
+  }
 }
-const pending = fixture({ deferred: true }); await pending.click(); assert.equal(pending.button.dataset.state, 'starting'); assert.equal(pending.button.attributes['aria-pressed'], 'false'); assert.equal(pending.timers.size, 0); await pending.click(); await pending.resolve(); assert.equal(pending.button.dataset.state, 'paused'); assert.equal(pending.contexts.length, 1); assert.equal(pending.contexts[0].state, 'closed'); assert.equal(pending.timers.size, 0, 'A cancelled async resume cannot restart sound');
-const hiddenPending = fixture({ deferred: true }); await hiddenPending.click(); hiddenPending.document.hidden = true; hiddenPending.fire('document', 'visibilitychange'); await hiddenPending.resolve(); assert.equal(hiddenPending.button.dataset.state, 'paused'); assert.equal(hiddenPending.timers.size, 0);
-const mono = fixture({ noPanner: true }); await mono.click(); assert.equal(mono.button.dataset.state, 'playing'); await mono.click(); assert.equal(mono.live().length, 0, 'Stereo panning is optional');
-const videoPlayback = fixture(); await videoPlayback.click();
-videoPlayback.fire('document', 'play', { target: { matches: selector => selector === 'video' } });
-assert.equal(videoPlayback.button.dataset.state, 'paused'); assert.equal(videoPlayback.timers.size, 0); assert.equal(videoPlayback.contexts[0].state, 'closed', 'Native video playback releases the music graph');
-const pendingVideo = fixture({ deferred: true }); await pendingVideo.click();
-pendingVideo.fire('document', 'play', { target: { matches: () => true } }); await pendingVideo.resolve();
-assert.equal(pendingVideo.button.dataset.state, 'paused'); assert.equal(pendingVideo.timers.size, 0, 'Video cancels an in-flight music start');
+
+for (const options of [{ absent: true }, { noAudio: true }, { noSrc: true }]) {
+  const disabled = fixture(options);
+  assert.equal(disabled.player.hidden, true); assert.equal(disabled.media.length, 0); assert.equal(disabled.contexts.length, 0);
+  assert.equal(disabled.requests.length, 0); assert.equal(disabled.handlers.size, 0, 'Unavailable controls do not register inactive listeners');
+}
+
+for (const lang of ['es', 'en']) {
+  const markup = soundtrack(lang);
+  assert.ok(markup.includes(`data-src="${soundtrackTrack.src}"`) && markup.includes(`data-play-label="${interfaceCopy[lang].audio.playLabel}"`), 'The localized control selects the actual recording');
+  assert.ok(!/<audio\b|\bautoplay\b|<link\b[^>]*\bpreload\b/i.test(markup), 'The rendered player contains no eager media element or preload');
+  for (const credit of [soundtrackTrack.title, soundtrackTrack.artist, soundtrackTrack.source, soundtrackTrack.license, soundtrackTrack.licenseURL, interfaceCopy[lang].audio.adaptation]) {
+    assert.ok(credit && markup.includes(credit), 'Source, licence and adaptation credits remain visible in both languages');
+  }
+  const normal = fixture({ lang });
+  assert.equal(normal.player.hidden, false); assert.equal(normal.button.dataset.state, 'paused');
+  assert.equal(normal.media.length, 0); assert.equal(normal.contexts.length, 0); assert.equal(normal.requests.length, 0, 'A page load does not create or download audio');
+  normal.setVolume(32); assert.equal(normal.media.length, 0); assert.equal(normal.requests.length, 0, 'A paused volume edit does not download or start audio');
+  await normal.click();
+  const audio = normal.media[0], context = normal.contexts[0], gain = context.nodes.find(node => node.kind === 'gain');
+  assert.deepEqual(normal.requests, [soundtrackTrack.src]); assert.equal(audio.preload, 'none'); assert.equal(audio.loop, true);
+  assert.equal(audio.playCalls, 1); assert.equal(audio.volume, 1); assert.equal(gain.gain.value, .32);
+  assert.equal(context.resumeCalls, 1); assert.equal(context.state, 'running');
+  assert.equal(normal.button.dataset.state, 'playing'); assert.equal(normal.button.attributes['aria-pressed'], 'true');
+  assert.equal(normal.button.attributes['aria-busy'], 'false'); assert.equal(normal.button.attributes['aria-label'], normal.copy.pauseLabel);
+  assert.equal(normal.button.dataset.tooltip, normal.copy.pauseLabel); assert.equal(normal.label.textContent, normal.copy.pause); assert.equal(normal.status.textContent, normal.copy.playing);
+  normal.setVolume(0); assert.equal(gain.gain.value, 0); normal.setVolume(100); assert.equal(gain.gain.value, 1);
+  normal.setVolume(200); assert.equal(normal.slider.value, '100'); normal.setVolume(-1); assert.equal(gain.gain.value, 0);
+  normal.setVolume(70); normal.setVolume('invalid'); assert.equal(gain.gain.value, .7); assert.equal(normal.output.textContent, '70%');
+  assert.equal(normal.slider.attributes['aria-valuetext'], '70%'); assert.equal(context.nodes.length, 2); assert.equal(normal.contexts.length, 1); assert.equal(audio.playCalls, 1, 'Changing level never restarts playback or allocates a graph');
+  await normal.click(); released(normal);
+  assert.equal(normal.button.dataset.state, 'paused'); assert.equal(normal.button.attributes['aria-pressed'], 'false');
+  assert.equal(normal.button.dataset.tooltip, normal.copy.playLabel); assert.equal(normal.label.textContent, normal.copy.play); assert.equal(normal.status.textContent, normal.copy.stopped);
+  await normal.click(); assert.equal(normal.media.length, 2); assert.equal(normal.contexts[1].nodes.find(node => node.kind === 'gain').gain.value, .7, 'A later Play uses the visitor’s latest level');
+  await normal.click(); released(normal);
+}
+
+for (const event of ['hidden', 'pagehide', 'media-error', 'media-pause', 'video']) {
+  const test = fixture(); await test.click(); test.panel.open = true;
+  if (event === 'hidden') { test.document.hidden = true; test.fire('document', 'visibilitychange'); }
+  if (event === 'pagehide') test.fire('window', 'pagehide');
+  if (event === 'media-error') test.media[0].emit('error');
+  if (event === 'media-pause') test.media[0].emit('pause');
+  if (event === 'video') test.fire('document', 'play', { target: { matches: selector => selector === 'video' } });
+  released(test); assert.equal(test.button.dataset.state, event === 'media-error' ? 'unavailable' : 'paused');
+  if (event === 'hidden' || event === 'pagehide') assert.equal(test.panel.open, false);
+  test.document.hidden = false; test.fire('document', 'visibilitychange');
+  assert.equal(test.media.length, 1, 'Returning to a visible tab never resumes music automatically');
+}
+
+for (const mode of ['deferResume', 'deferPlay']) for (const interruption of ['pause', 'hidden', 'pagehide', 'video']) {
+  const test = fixture({ [mode]: true }); await test.click();
+  assert.equal(test.button.dataset.state, 'starting'); assert.equal(test.button.attributes['aria-busy'], 'true');
+  if (interruption === 'pause') await test.click();
+  if (interruption === 'hidden') { test.document.hidden = true; test.fire('document', 'visibilitychange'); }
+  if (interruption === 'pagehide') test.fire('window', 'pagehide');
+  if (interruption === 'video') test.fire('document', 'play', { target: { matches: () => true } });
+  if (mode === 'deferResume') { await test.resolveResume(); assert.equal(test.media[0].playCalls, 0, 'A cancelled resume cannot call Play'); }
+  else await test.resolvePlay();
+  released(test); assert.equal(test.button.dataset.state, 'paused'); assert.equal(test.button.attributes['aria-busy'], 'false', 'A stale promise cannot resurrect playback or its UI');
+}
+
+for (const mode of ['deferResume', 'deferPlay']) {
+  const replaced = fixture({ [mode]: true }); await replaced.click(); await replaced.click(); await replaced.click();
+  if (mode === 'deferResume') await replaced.resolveResume(0); else await replaced.resolvePlay(0);
+  released(replaced, { recordings: [replaced.media[0]], graphs: [replaced.contexts[0]] });
+  assert.equal(replaced.button.dataset.state, 'starting', 'An old promise cannot change a newer request');
+  if (mode === 'deferResume') await replaced.resolveResume(1); else await replaced.resolvePlay(1);
+  assert.equal(replaced.button.dataset.state, 'playing'); assert.equal(replaced.media[1].src, soundtrackTrack.src);
+  replaced.media[0].emit('error'); replaced.media[0].emit('pause');
+  assert.equal(replaced.button.dataset.state, 'playing', 'Events from a released recording cannot stop the new one');
+  await replaced.click(); released(replaced);
+}
+
+for (const failure of ['mediaFails', 'contextFails', 'sourceFails', 'gainFails', 'resumeFails', 'playFails', 'staysSuspended']) {
+  const test = fixture({ [failure]: true }); await test.click();
+  assert.equal(test.button.dataset.state, 'unavailable', `An audio failure is announced: ${failure}`); assert.equal(test.button.attributes['aria-pressed'], 'false');
+  assert.equal(test.status.textContent, test.copy.unavailable); released(test);
+  test.options[failure] = false; await test.click(); assert.equal(test.button.dataset.state, 'playing', 'An explicit retry can recover from a previous error'); await test.click(); released(test);
+}
+
+const native = fixture({ nativeVolume: true }); native.setVolume(42); await native.click();
+assert.equal(native.contexts.length, 0); assert.equal(native.media[0].volume, .42); assert.equal(native.button.dataset.state, 'playing');
+native.setVolume(15); assert.equal(native.media[0].volume, .15); await native.click(); released(native);
+const webkit = fixture({ webkit: true }); await webkit.click(); assert.equal(webkit.contexts.length, 1); await webkit.click(); released(webkit);
+
 const controls = fixture();
-controls.setVolume(20); assert.equal(controls.contexts.length, 0); assert.equal(controls.timers.size, 0, 'Setting a paused volume never starts audio');
-controls.volumePanel.open = true; controls.fire('player', 'keydown', { key: 'Escape', preventDefault() {} }); assert.equal(controls.volumePanel.open, false); assert.equal(controls.summary.focused, true);
-controls.volumePanel.open = true; controls.fire('document', 'pointerdown', { target: controls.volumeInput }); assert.equal(controls.volumePanel.open, true); controls.fire('document', 'pointerdown', { target: {} }); assert.equal(controls.volumePanel.open, false);
-controls.volumePanel.open = true; controls.fire('document', 'focusin', { target: {} }); assert.equal(controls.volumePanel.open, false);
-await controls.click(); assert.equal([...controls.contexts[0].nodes].find(node => node.kind === 'compressor').outputs.values().next().value.gain.value, .2, 'Play uses the level chosen before playback');
-controls.volumePanel.open = true; controls.document.hidden = true; controls.fire('document', 'visibilitychange'); assert.equal(controls.volumePanel.open, false); assert.equal(controls.contexts[0].state, 'closed');
-assert.ok(styles.includes('prefers-reduced-motion') && styles.includes('forced-colors') && styles.includes('data-motion'));
-assert.ok(styles.includes('min-height: 46px') && styles.includes('min-height: 44px') && styles.includes('var(--accent)'));
-assert.ok(!/fetch\(|localStorage|document\.cookie|https?:|<audio/.test(source), 'The soundtrack has no remote track, service, persistence or media autoplay');
-console.log('Soundtrack: opt-in ambient-techno synthesis at 118 BPM, bounded FM voices/lookahead, error/race handling, native context state and complete pause/navigation teardown verified.');
+controls.panel.open = true; let prevented = false;
+controls.fire('player', 'keydown', { key: 'Escape', preventDefault() { prevented = true; } });
+assert.equal(controls.panel.open, false); assert.equal(controls.summary.focused, true); assert.equal(prevented, true);
+controls.panel.open = true; controls.fire('document', 'pointerdown', { target: controls.slider }); assert.equal(controls.panel.open, true);
+controls.fire('document', 'pointerdown', { target: {} }); assert.equal(controls.panel.open, false);
+controls.panel.open = true; controls.fire('document', 'focusin', { target: controls.summary }); assert.equal(controls.panel.open, true);
+controls.fire('document', 'focusin', { target: {} }); assert.equal(controls.panel.open, false);
+await controls.click(); controls.fire('document', 'play', { target: { matches: () => false } }); assert.equal(controls.button.dataset.state, 'playing', 'Other media events do not impersonate video playback');
+assert.equal(controls.handlers.get('document:play')[0].capture, true, 'Native video Play is observed in the capture phase');
+await controls.click(); released(controls);
+
+assert.ok(!/createOscillator|createBufferSource|setInterval\(|requestAnimationFrame\(|localStorage|sessionStorage|fetch\(/.test(source), 'The recording controller contains no legacy synthesis, background scheduler or persisted playback');
+assert.ok(styles.includes('prefers-reduced-motion') && styles.includes('forced-colors') && styles.includes('var(--accent)'));
+console.log(JSON.stringify({ soundtrack: true, runtime: 'generated/minified', languages: ['es', 'en'], checks: ['no media allocation or download before Play', 'volume and native fallback', 'localized actions', 'pause/hidden/navigation/error cleanup', 'partial initialization failures', 'cancelled resume/play and newer request isolation', 'retry', 'video arbitration', 'volume-panel keyboard and outside dismissal'] }));

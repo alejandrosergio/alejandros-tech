@@ -169,6 +169,8 @@ await import('./check-booking.mjs');
 await import('./check-project-technologies.mjs');
 await import('./check-project-video.mjs');
 await import('./check-settings.mjs');
+await import('./check-performance.mjs');
+await import('./check-seo.mjs');
 await import('./check-document-assistant.mjs');
 await import('./check-workflow.mjs');
 await import('./check-evaluation.mjs');

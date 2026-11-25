@@ -12,9 +12,9 @@ import { routeGroups } from '../src/content/routes.mjs';
 import { build as bundle } from 'esbuild';
 import { projectCodeReports } from './project-code.mjs';
 import { videoCaptions } from '../src/content/power-platform-video.mjs';
+import { clientFiles, stylesheetFiles, optimizeAsset, pageEntryAssets } from './optimize-assets.mjs';
 
 export const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
-const clientFiles = ['theme-init.js', 'preferences.js', 'loader-grid.js', 'site.js', 'journey.js', 'letter-glitch.js', 'splash-cursor.js', 'soundtrack.js', 'project-video.js', 'contact.js', 'booking.js', 'booking-embed.js', 'form-rules.js', 'document-assistant.js'];
 
 async function copyDirectory(from, to) {
   await mkdir(to, { recursive: true });
@@ -34,12 +34,13 @@ export async function build() {
   await rm(dist, { recursive: true, force: true });
   await mkdir(path.join(dist, 'en'), { recursive: true });
   await copyDirectory(path.join(root, 'public'), dist);
-  const styles = await Promise.all(['styles.css', 'preferences.css', 'loader.css', 'journey.css', 'hero.css', 'background.css', 'splash.css', 'soundtrack.css', 'interactions.css', 'reveals.css', 'modules.css', 'document-assistant.css', 'lab.css', 'booking.css', 'project-technologies.css', 'project-video.css', 'footer.css'].map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
-  await writeFile(path.join(dist, 'assets/styles.css'), styles.join('\n'));
+  const styles = await Promise.all(stylesheetFiles.map(file => readFile(path.join(root, 'src/styles', file), 'utf8')));
+  await writeFile(path.join(dist, 'assets/styles.css'), await optimizeAsset(styles.join('\n'), { loader: 'css', sourcefile: 'styles.css' }));
   for (const lang of ['es', 'en']) await writeFile(path.join(dist, `assets/power-platform-${lang}.vtt`), videoCaptions(lang));
-  for (const file of clientFiles.filter(file => file !== 'document-assistant.js')) {
-    await copyFile(path.join(root, 'src/client', file), path.join(dist, 'assets', file));
-  }
+  await Promise.all(clientFiles.map(async file => {
+    const source = await readFile(path.join(root, 'src/client', file), 'utf8');
+    await writeFile(path.join(dist, 'assets', file), await optimizeAsset(source, { loader: 'js', sourcefile: file }));
+  }));
   // The lightweight controller and the large optional model worker have separate
   // entrypoints. No homepage or ordinary query imports the WebLLM runtime.
   await bundle({ entryPoints: ['src/client/document-assistant.js', 'src/client/document-model-worker.js', 'src/client/document-evaluation.js', 'src/client/workflow.js'], outdir: path.join(dist, 'assets'), absWorkingDir: root, bundle: true, format: 'esm', platform: 'browser', target: 'es2022', minify: true, legalComments: 'linked', logLevel: 'warning' });
@@ -64,8 +65,11 @@ export async function build() {
   await writeFile(path.join(dist, '404.html'), renderPage('es', { notFound: true }));
   await writeFile(path.join(dist, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${site.origin}/sitemap.xml\n`);
   await writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${routeGroups.flatMap(route => ['es', 'en'].map(lang => `<url><loc>${site.origin}${route.paths[lang]}</loc><xhtml:link rel="alternate" hreflang="es" href="${site.origin}${route.paths.es}"/><xhtml:link rel="alternate" hreflang="en" href="${site.origin}${route.paths.en}"/><xhtml:link rel="alternate" hreflang="x-default" href="${site.origin}${route.paths.es}"/></url>`)).join('')}</urlset>\n`);
-  const total = (await Promise.all(['index.html', 'assets/styles.css', ...clientFiles.filter(file => file !== 'document-assistant.js').map(file => `assets/${file}`)].map(file => stat(path.join(dist, file))))).reduce((sum, entry) => sum + entry.size, 0);
-  return { pages: routeGroups.flatMap(route => Object.values(route.paths)), initialAssetsBytes: total };
+  // Report the document and directly referenced CSS/JS, without counting
+  // optional video, agenda-frame or model assets as homepage downloads.
+  const entryFiles = ['index.html', ...pageEntryAssets(await readFile(path.join(dist, 'index.html'), 'utf8'))];
+  const entryBytes = (await Promise.all(entryFiles.map(file => stat(path.join(dist, file))))).reduce((sum, entry) => sum + entry.size, 0);
+  return { pages: routeGroups.flatMap(route => Object.values(route.paths)), homeDocumentAndEntryAssetsBytes: entryBytes };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

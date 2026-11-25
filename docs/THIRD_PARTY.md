@@ -54,9 +54,9 @@ La integración adapta la geometría de sala, trazado, barrido, reflejos y punto
 
 La permanencia de 2000ms después de window.load pertenece al sitio. Un vigilante de 10000ms cubre solo la espera del evento y se cancela al recibirlo, por lo que no acorta los dos segundos en una carga lenta. Botón y teclado conservan salida inmediata. Movimiento reducido, alto contraste y colores forzados permiten entrada directa. Sin WebGL aparece una rejilla CSS estática en el tono elegido.
 
-## Composición musical local
+## Grabación musical con licencia
 
-«Órbita digital», la composición de techno ambiental de 118 BPM en `src/client/soundtrack.js`, se escribió para Alejandro’sTech y usa síntesis Web Audio, sin grabaciones, pistas, samples ni servicios externos. No procede de React Bits ni reproduce una melodía de un artista de referencia. Los avisos anteriores no conceden una licencia sobre esa composición. Ver [AUDIO.md](AUDIO.md) para comportamiento y procedencia; no se presenta como «sin copyright».
+«Night Owl», de Broke For Free (Directionless EP, 2011), procede del [archivo oficial FMA](https://freemusicarchive.org/music/Broke_For_Free/Directionless_EP/Broke_For_Free_-_Directionless_EP_-_01_Night_Owl/) bajo [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). La copia completa se transcodificó a 160 kbps, sin portada incrustada y con nivel reducido 3 dB. El panel conserva crédito y enlaces; `/assets/licenses/night-owl.txt` acompaña al archivo. Véanse [AUDIO.md](AUDIO.md) y [music.json](music.json) para procedencia y huellas. No pertenece a React Bits ni se presenta como «sin copyright».
 
 ## Logos de tecnologías
 
