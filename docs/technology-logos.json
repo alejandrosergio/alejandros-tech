@@ -327,10 +327,12 @@
     {
       "file": "public/assets/technologies/oauth.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/oauth/oauth-original.svg",
-      "sha256": "a4040dba46f380d2637b1fef8f2393c3cf960108287f2e8339461249ae9e32ae",
+      "sha256": "60e19cbffacb49f238307f4e02895e1055d12c18db54d5936dfb928ffee20f85",
       "license": "MIT",
       "licenseFile": "public/assets/licenses/devicon.txt",
-      "bytes": 11230
+      "bytes": 11230,
+      "sourceSha256": "a4040dba46f380d2637b1fef8f2393c3cf960108287f2e8339461249ae9e32ae",
+      "transformation": "Line endings normalized to LF for portable verification; artwork unchanged."
     },
     {
       "file": "public/assets/technologies/onedrive.svg",
