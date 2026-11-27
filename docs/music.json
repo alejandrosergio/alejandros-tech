@@ -9,8 +9,8 @@
   "licenseURL": "https://creativecommons.org/licenses/by/3.0/",
   "evidence": "FMA rel=license links and original MP3 copyright tag identify CC BY 3.0.",
   "original": { "bytes": 8054458, "sha256": "7952dce61b28f454ff3ee0183f85df52b2a9f2edfcd6a0ebafc12f981f666ed5" },
-  "published": { "path": "/assets/audio/night-owl.mp3", "bytes": 1201486, "sha256": "e653f13eb45c762f14c44f2e27e109b7c0b498c0aaf647815567094427d69732", "durationSeconds": 60, "bitrateKbps": 160, "sampleRate": 44100, "channels": 2 },
+  "published": { "path": "/assets/audio/night-owl.mp3", "bytes": 1101698, "sha256": "0635e61d88ecf692ba68bd532845ac96c8348c6f333692f41aa824c5ff3efc67", "durationSeconds": 55, "bitrateKbps": 160, "sampleRate": 44100, "channels": 2 },
   "adapted": "2026-11-27",
-  "loop": { "sourceStartSeconds": 0, "sourceEndSeconds": 64, "bodyStartSeconds": 4, "bodyEndSeconds": 60, "crossfadeSeconds": 4, "crossfadeCurve": "linear", "levelChangeDb": -3 },
-  "adaptation": "60-second intro loop derived from the first 64 seconds: continuous body 4–60 s followed by a 4-second linear crossfade from 60–64 s to 0–4 s. No internal repeats, added instruments, synthesis or tempo/pitch changes. Transcoded to MP3 160 kbps; embedded cover removed; level reduced by 3 dB."
+  "loop": { "sourceStartSeconds": 0, "sourceEndSeconds": 59, "bodyStartSeconds": 4, "bodyEndSeconds": 55, "crossfadeSeconds": 4, "crossfadeCurve": "linear", "levelChangeDb": -3 },
+  "adaptation": "55-second intro loop derived from the first 59 seconds: continuous body 4–55 s followed by a 4-second linear crossfade from 55–59 s to 0–4 s. No internal repeats, added instruments, synthesis or tempo/pitch changes. Transcoded to MP3 160 kbps; embedded cover removed; level reduced by 3 dB."
 }

@@ -32,12 +32,12 @@
     ]
   },
   "alejandros-tech": {
-    "totalBytes": 624918,
+    "totalBytes": 624916,
     "fileCount": 85,
     "languages": [
       {
         "name": "JavaScript",
-        "bytes": 504722,
+        "bytes": 504720,
         "percentage": 80.8
       },
       {
