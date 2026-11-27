@@ -1,3 +1,4 @@
+import { completeTechnologies } from './technology-directory.mjs';
 // Facts confirmed by the owner’s master CV and public ES/EN résumé, 2026-11-17.
 export const experience = [
   {
@@ -120,7 +121,7 @@ export const experience = [
   }
 ];
 
-export const skills = [
+const coreSkills = [
   {
     "id": "net",
     "name": ".NET",
@@ -386,3 +387,5 @@ export const skills = [
     }
   }
 ];
+
+export const skills = completeTechnologies(coreSkills);

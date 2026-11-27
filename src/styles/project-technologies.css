@@ -22,7 +22,6 @@
 .project-technologies strong { display: block; font-size: .75rem; line-height: 1.5; font-weight: 500; overflow-wrap: anywhere; }
 .project-technologies small { display: block; margin-top: .2rem; font-size: .625rem; line-height: 1.7; color: var(--muted); overflow-wrap: anywhere; }
 .project-technologies .technology-mark { --logo-size: 1.6rem; flex-shrink: 0; }
-.project-tech-mark { display: grid; place-items: center; width: 1.6rem; min-width: 1.6rem; height: 1.6rem; border: 1px solid var(--line); border-radius: .25rem; color: var(--accent); font: .55rem ui-monospace, Consolas, monospace; }
 .professional-case .project-technologies { grid-template-columns: 1fr; }
 .professional-case .project-technologies li { padding: .55rem; }
 .project-code-unavailable { color: var(--muted); font-size: .6875rem; line-height: 1.7; }

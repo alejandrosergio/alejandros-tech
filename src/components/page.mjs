@@ -1,7 +1,7 @@
+import { technologyExplorer } from "./technology-explorer.mjs";
 import { site } from '../content/site.mjs';
 import { locales } from '../content/locales.mjs';
-import { experience, skills } from '../content/profile.mjs';
-import { technologyIcon } from './technology-icon.mjs';
+import { experience } from '../content/profile.mjs';
 import { bookingLink, bookingDialog } from './booking.mjs';
 import { footer } from './footer.mjs';
 import { projectVideo } from './project-video.mjs';
@@ -49,7 +49,7 @@ function head(lang, options) {
   <script src="/assets/loader-grid.js" defer></script>
   <script src="/assets/site.js" defer></script>
   <script src="/assets/journey.js" defer></script>
-  <script src="/assets/letter-glitch.js" defer></script>${options.home ? '\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>\n  <script src="/assets/booking.js" defer></script>' : ''}
+  <script src="/assets/letter-glitch.js" defer></script>${options.home ? '\n  <script src="/assets/technology-explorer.js" defer></script>\n  <script src="/assets/splash-cursor.js" defer></script>\n  <script src="/assets/contact.js" type="module"></script>\n  <script src="/assets/booking.js" defer></script>' : ''}
   <script src="/assets/soundtrack.js" defer></script>${options.project?.video ? '\n  <script src="/assets/project-video.js" defer></script>' : ''}${options.assistant ? '\n  <script src="/assets/document-assistant.js" type="module"></script>' : ''}${options.evaluation ? '\n  <script src="/assets/document-evaluation.js" type="module"></script>' : ''}${options.workflow ? '\n  <script src="/assets/workflow.js" type="module"></script>' : ''}
 </head>`;
 }
@@ -95,19 +95,7 @@ function about(lang, t) {
   </section>`;
 }
 
-function skillExplorer(lang, t) {
-  const first = skills[0];
-  return `<section class="section skills-section" id="tecnologias" aria-labelledby="skills-title"><div class="wrap">
-    <div class="section-heading" data-reveal><div>${sectionLabel('02', t.skills.label)}<h2 id="skills-title">${splitTitle(t.skills.title)}</h2></div><p>${t.skills.intro}</p></div>
-    <div class="skills-static" data-skills-static><h3 class="sr-only">${t.skills.fallback}</h3><ul>${skills.map(s => `<li><strong class="skill-static-name">${technologyIcon(s.id)}<span>${e(s.name)}</span></strong><p>${e(s[lang])}</p></li>`).join('')}</ul></div>
-    <div class="skill-explorer" data-skill-explorer aria-label="${t.skills.explorerLabel}" hidden>
-      <div class="skill-filters" role="group" aria-label="${t.skills.filterLabel}"><button type="button" data-skill-filter="all" aria-pressed="true">${t.skills.all}<span>${skills.length}</span></button>${Object.entries(t.skills.groups).map(([key, label]) => `<button type="button" data-skill-filter="${key}" aria-pressed="false">${label}<span>${skills.filter(s => s.group === key).length}</span></button>`).join('')}</div>
-      <div class="skill-explorer-body"><div class="skill-grid">${skills.map((s, i) => `<button type="button" class="skill-tile" data-skill="${s.id}" data-group="${s.group}" data-name="${e(s.name)}" data-description="${e(s[lang])}" data-context="${e(s.context[lang])}" data-category="${e(t.skills.groups[s.group])}" aria-pressed="${i === 0}" aria-controls="skill-inspector"><span class="skill-number" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><span class="skill-symbol">${technologyIcon(s.id)}</span><span class="skill-name">${e(s.name)}</span><span class="skill-tile-arrow" aria-hidden="true">↗</span></button>`).join('')}</div>
-      <aside class="skill-inspector" id="skill-inspector" aria-live="polite" aria-atomic="true"><span class="small-label">${t.skills.selected}</span><span class="inspector-symbol" data-inspector-symbol aria-hidden="true">${technologyIcon(first.id)}</span><p class="inspector-category" data-inspector-category>${t.skills.groups[first.group]}</p><h3 data-inspector-name>${e(first.name)}</h3><p data-inspector-description>${e(first[lang])}</p><div class="inspector-context"><span class="small-label">${t.skills.related}</span><p data-inspector-context>${e(first.context[lang])}</p></div></aside></div>
-    </div>
-    <details class="skills-background" data-reveal><summary>${e(t.skills.additionalLabel)}<span class="disclosure-plus" aria-hidden="true">+</span></summary><ul>${t.skills.additional.map(item => `<li>${e(item)}</li>`).join('')}</ul></details>
-  </div></section>`;
-}
+function skillExplorer(lang, t) { return technologyExplorer(lang, t.skills, sectionLabel("02", t.skills.label), splitTitle(t.skills.title)); }
 
 function career(lang, t) {
   return `<section class="section career-section wrap" id="trayectoria" aria-labelledby="career-title"><div class="career-intro" data-reveal>${sectionLabel('03', t.career.label)}<h2 id="career-title">${splitTitle(t.career.title)}</h2><p>${t.career.intro}</p><a class="text-link" href="${cvURL(lang)}" target="_blank" rel="noopener noreferrer">${t.career.cvLink}${icon('arrow')}</a><div class="education"><span class="small-label">${t.career.educationLabel} / ${t.career.educationDate}</span><h3>${t.career.educationTitle}</h3><p>${t.career.educationDegree}</p><p>${t.career.educationSchool}</p></div></div>

@@ -41,44 +41,6 @@
     root.classList.add('nav-enhanced'); menu.hidden = false;
   }
 
-  const explorer = document.querySelector('[data-skill-explorer]');
-  if (explorer) {
-    const tiles = [...explorer.querySelectorAll('[data-skill]')];
-    const filters = [...explorer.querySelectorAll('[data-skill-filter]')];
-    const fields = ['category', 'name', 'description', 'context'];
-    const select = tile => {
-      tiles.forEach(item => item.setAttribute('aria-pressed', String(item === tile)));
-      fields.forEach(field => { explorer.querySelector(`[data-inspector-${field}]`).textContent = tile.dataset[field]; });
-      explorer.querySelector('[data-inspector-symbol]').replaceChildren(tile.querySelector('.technology-mark').cloneNode(true));
-    };
-    tiles.forEach(tile => tile.addEventListener('click', () => select(tile)));
-    filters.forEach(filter => filter.addEventListener('click', () => {
-      const group = filter.dataset.skillFilter;
-      filters.forEach(item => item.setAttribute('aria-pressed', String(item === filter)));
-      tiles.forEach(tile => { tile.hidden = group !== 'all' && tile.dataset.group !== group; });
-      const selected = tiles.find(tile => tile.getAttribute('aria-pressed') === 'true');
-      if (!selected || selected.hidden) select(tiles.find(tile => !tile.hidden));
-    }));
-    explorer.querySelector('.skill-grid').addEventListener('keydown', event => {
-      const tile = event.target.closest('[data-skill]');
-      if (!tile || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
-      const visible = tiles.filter(item => !item.hidden), index = visible.indexOf(tile);
-      const columns = getComputedStyle(tile.parentElement).gridTemplateColumns.split(' ').length;
-      let next = index;
-      if (event.key === 'ArrowLeft') next--;
-      if (event.key === 'ArrowRight') next++;
-      if (event.key === 'ArrowUp') next -= columns;
-      if (event.key === 'ArrowDown') next += columns;
-      if (event.key === 'Home') next = 0;
-      if (event.key === 'End') next = visible.length - 1;
-      event.preventDefault();
-      const target = visible[Math.max(0, Math.min(visible.length - 1, next))];
-      target.focus(); select(target);
-    });
-    select(tiles[0]); explorer.hidden = false;
-    document.querySelector('[data-skills-static]').hidden = true;
-  }
-
   const copy = document.querySelector('[data-copy-email]');
   if (copy && navigator.clipboard?.writeText && window.isSecureContext) {
     copy.hidden = false;

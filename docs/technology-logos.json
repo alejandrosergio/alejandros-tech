@@ -1,115 +1,618 @@
 {
-  "checkedOn": "2026-11-17",
+  "checkedOn": "2026-11-27",
   "assets": [
     {
       "file": "public/assets/technologies/ai-builder.svg",
       "source": "https://download.microsoft.com/download/498606aa-6d27-4f13-aa5c-1401078c153b/Power-Platform-icons-scalable.zip#Power Platform/AIBuilder_scalable.svg",
-      "sha256": "09354060aae6bfd903f3ff8246e90fce8514f4c56c603e676931fd99d338cfa8"
+      "sha256": "09354060aae6bfd903f3ff8246e90fce8514f4c56c603e676931fd99d338cfa8",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/power-platform/guidance/icons",
+      "bytes": 7801
+    },
+    {
+      "file": "public/assets/technologies/aks.svg",
+      "source": "https://arch-center.azureedge.net/icons/Azure_Public_Service_Icons_V25.zip#Azure_Public_Service_Icons/Icons/containers/10023-icon-service-Kubernetes-Services.svg",
+      "sha256": "81954a481503057498d543a51863b2eb4673284e109662cdc421051d11dba25c",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/azure/architecture/icons/",
+      "bytes": 3943
+    },
+    {
+      "file": "public/assets/technologies/angular.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/angular/angular-original.svg",
+      "sha256": "9666f86466e1175ba5e0c685fb423123e93a544732fd7b241e92a192cbb613ab",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 1115
+    },
+    {
+      "file": "public/assets/technologies/applicationinsights.svg",
+      "source": "https://arch-center.azureedge.net/icons/Azure_Public_Service_Icons_V25.zip#Azure_Public_Service_Icons/Icons/devops/00012-icon-service-Application-Insights.svg",
+      "sha256": "36c73dea8b1598fbfff84890a2b409600f1339eec8c1bf1a896439e9da8f9dca",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/azure/architecture/icons/",
+      "bytes": 2320
+    },
+    {
+      "file": "public/assets/technologies/appservice.svg",
+      "source": "https://arch-center.azureedge.net/icons/Azure_Public_Service_Icons_V25.zip#Azure_Public_Service_Icons/Icons/app services/10035-icon-service-App-Services.svg",
+      "sha256": "529d83fc80637a96b6d27f6cfac7536e1c5f9b1b67f58aef4e2e3d6f47fd4925",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/azure/architecture/icons/",
+      "bytes": 3078
     },
     {
       "file": "public/assets/technologies/azure.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/azure/azure-original.svg",
-      "sha256": "7923db83e3f9755bd412241a683fa996fb7a9d0259b5084de449e6be92f7ca20"
+      "sha256": "7923db83e3f9755bd412241a683fa996fb7a9d0259b5084de449e6be92f7ca20",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 1713
     },
     {
       "file": "public/assets/technologies/azuredevops.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/azuredevops/azuredevops-original.svg",
-      "sha256": "49122a38457209cda2d22a1e3af1b4ff159b67714d4e7b43899544555ee2823c"
+      "sha256": "49122a38457209cda2d22a1e3af1b4ff159b67714d4e7b43899544555ee2823c",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 726
+    },
+    {
+      "file": "public/assets/technologies/azurefunctions.svg",
+      "source": "https://arch-center.azureedge.net/icons/Azure_Public_Service_Icons_V25.zip#Azure_Public_Service_Icons/Icons/compute/10029-icon-service-Function-Apps.svg",
+      "sha256": "1a6c9c108d5f63f7b78bc6fbc464059acd2eaa8c1d111e9bcd28a8b2cdf470b9",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/azure/architecture/icons/",
+      "bytes": 1747
+    },
+    {
+      "file": "public/assets/technologies/azuresql.svg",
+      "source": "https://arch-center.azureedge.net/icons/Azure_Public_Service_Icons_V25.zip#Azure_Public_Service_Icons/Icons/databases/10130-icon-service-SQL-Database.svg",
+      "sha256": "a26124a2b188ccf910520c935c726f7364e0f5935d7a4319ebcab9c80a40e475",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/azure/architecture/icons/",
+      "bytes": 2420
+    },
+    {
+      "file": "public/assets/technologies/bootstrap.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/bootstrap/bootstrap-original.svg",
+      "sha256": "016c324b3743e9be8dc2ca3a89bb5bd169d417f4f29fe5e731b16644abeb12cf",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 2075
+    },
+    {
+      "file": "public/assets/technologies/caldotcom.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/17cd4ee07612198a1d8777a060d4100423762a8b/icons/caldotcom.svg",
+      "sha256": "430d9f0fd446bba997084865a7acd8febdffb68e21526ee46e7eb1c6b0edf37b",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/licenses/simple-icons.txt",
+      "bytes": 1515
+    },
+    {
+      "file": "public/assets/technologies/chatgpt.svg",
+      "source": "https://cdn.openai.com/brand/openai-logos.zip#OpenAI-logos/SVGs/OAI_OpenAI-Blossom_Black.svg",
+      "sha256": "75c1e9fffa5e8c437bec1d67197a73992bca45d166c6ff23215185dea8fae92a",
+      "license": "OpenAI brand usage terms",
+      "licenseFile": "public/assets/licenses/openai-brand.txt",
+      "licenseURL": "https://openai.com/brand/",
+      "sourceArchiveSHA256": "c54e85ab5884228f89f0230dd8effa8d588cad78166fe954135f4afa553222db",
+      "bytes": 2415
+    },
+    {
+      "file": "public/assets/technologies/claude.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/claude/claude-original.svg",
+      "sha256": "807015de02a29683037772a6ef6328381138a3ceb8b3d53093ea27196d37ecdf",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 1835
     },
     {
       "file": "public/assets/technologies/copilot-studio.svg",
       "source": "https://download.microsoft.com/download/498606aa-6d27-4f13-aa5c-1401078c153b/Power-Platform-icons-scalable.zip#CopilotStudio_scalable.svg",
-      "sha256": "c614fa6b9b7d33048c6c4efcdd508e5b7818d296cbd1cd7d8848bb2dd1be4fd0"
+      "sha256": "c614fa6b9b7d33048c6c4efcdd508e5b7818d296cbd1cd7d8848bb2dd1be4fd0",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/power-platform/guidance/icons",
+      "bytes": 9738
     },
     {
       "file": "public/assets/technologies/csharp.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/csharp/csharp-original.svg",
-      "sha256": "7093478d0888e22a224b6fa832da6c9ffd14c433de8bd14aab0c1cb50925f3ee"
+      "sha256": "7093478d0888e22a224b6fa832da6c9ffd14c433de8bd14aab0c1cb50925f3ee",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 851
     },
     {
       "file": "public/assets/technologies/css3.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/css3/css3-original.svg",
-      "sha256": "36b7d94b657d571d3f94042acbf6a4c86a5301a222f83f4b4583ad2acf6e297d"
+      "sha256": "36b7d94b657d571d3f94042acbf6a4c86a5301a222f83f4b4583ad2acf6e297d",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 778
+    },
+    {
+      "file": "public/assets/technologies/databricks.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/17cd4ee07612198a1d8777a060d4100423762a8b/icons/databricks.svg",
+      "sha256": "454aa3efdb318c655e3da2ea844e3577a9c47a20e24d20fff6489362176e5fe4",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/licenses/simple-icons.txt",
+      "bytes": 422
+    },
+    {
+      "file": "public/assets/technologies/datadog.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/datadog/datadog-original.svg",
+      "sha256": "37536bdc59abe690f2f7b8b7913b9d761dfd70d9b8fda19e3faf0b3924b29496",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 3463
     },
     {
       "file": "public/assets/technologies/dataverse.svg",
       "source": "https://download.microsoft.com/download/498606aa-6d27-4f13-aa5c-1401078c153b/Power-Platform-icons-scalable.zip#Power Platform/Dataverse_scalable.svg",
-      "sha256": "df71c0111148d116515a02c5cb07483caad2bcb779664fa16fd837a4709504ab"
+      "sha256": "df71c0111148d116515a02c5cb07483caad2bcb779664fa16fd837a4709504ab",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/power-platform/guidance/icons",
+      "bytes": 5067
+    },
+    {
+      "file": "public/assets/technologies/docker.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/docker/docker-original.svg",
+      "sha256": "3fd830ea69431ed7a0b8d068cd5b34ad3f00a1a78195d50f13ff56713f2462e1",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 4452
     },
     {
       "file": "public/assets/technologies/dot-net.svg",
       "source": "https://api.github.com/repos/dotnet/brand/git/blobs/d204a0904247bd811d0d2b986c786b413659c465",
-      "sha256": "f222062c4f59b7864163bd54d24fafc40f1e2f2513672e50bc08e5025d73e4e5"
+      "sha256": "f222062c4f59b7864163bd54d24fafc40f1e2f2513672e50bc08e5025d73e4e5",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/licenses/dotnet-brand.txt",
+      "bytes": 1147
     },
     {
       "file": "public/assets/technologies/entityframeworkcore.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/entityframeworkcore/entityframeworkcore-original.svg",
-      "sha256": "b3877f0b5ee88d14d2c9c5c55a4b5568c1fbd0ee12a0973aad1f6c1ca2f22ec0"
+      "sha256": "b3877f0b5ee88d14d2c9c5c55a4b5568c1fbd0ee12a0973aad1f6c1ca2f22ec0",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 301
+    },
+    {
+      "file": "public/assets/technologies/esbuild.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/17cd4ee07612198a1d8777a060d4100423762a8b/icons/esbuild.svg",
+      "sha256": "a88b8a010587296270e0c8fce30f6c4fadba73ecf09275036b1e3b1b027ac9be",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/licenses/simple-icons.txt",
+      "bytes": 313
+    },
+    {
+      "file": "public/assets/technologies/excel.svg",
+      "source": "https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/excel_48x1.svg",
+      "sha256": "da91a550409ab355e664188a00135bc93603e5a8f53df3eeed8abc2ab3db8d71",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/previous-versions/microsoft-365/solutions/architecture-icons-templates",
+      "bytes": 1485
+    },
+    {
+      "file": "public/assets/technologies/formspree.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/17cd4ee07612198a1d8777a060d4100423762a8b/icons/formspree.svg",
+      "sha256": "efe46e24723e1c1bb0a1f8214e5b0e70cd7970797fb8a1387a97c913e195a899",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/licenses/simple-icons.txt",
+      "bytes": 358
     },
     {
       "file": "public/assets/technologies/git.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/git/git-original.svg",
-      "sha256": "717a57ea97bf7e86de721dab3e68afac66332a10676d5c9abce4ae6a5a9c9983"
+      "sha256": "717a57ea97bf7e86de721dab3e68afac66332a10676d5c9abce4ae6a5a9c9983",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 778
     },
     {
       "file": "public/assets/technologies/github.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/github/github-original.svg",
-      "sha256": "45262793de6292206a895ed63593cdb1eaed82074173f7f4b5bdb3e427ca805a"
+      "sha256": "45262793de6292206a895ed63593cdb1eaed82074173f7f4b5bdb3e427ca805a",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 1866
+    },
+    {
+      "file": "public/assets/technologies/githubactions.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/githubactions/githubactions-original.svg",
+      "sha256": "3a2524052ccf301d1a239f20cfef98d655e060c51cc29c5e94c867913899a47e",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 2854
+    },
+    {
+      "file": "public/assets/technologies/githubcopilot.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/githubcopilot/githubcopilot-original.svg",
+      "sha256": "1ece66eed3345051dde247bfebf426e4f7111f23ccf0df7d65e0e5af519e99e8",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 2770
+    },
+    {
+      "file": "public/assets/technologies/googlegemini.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/17cd4ee07612198a1d8777a060d4100423762a8b/icons/googlegemini.svg",
+      "sha256": "a6228d8846040401e941a39ed17459785e8324dbb7b870ce84233c9b3e9863a0",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/licenses/simple-icons.txt",
+      "bytes": 401
+    },
+    {
+      "file": "public/assets/technologies/grpc.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/grpc/grpc-original.svg",
+      "sha256": "91b240df26e443aafd6fbc303ee00f8ae60fcef5bb9136b54bdf7a6589a8c975",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 4733
     },
     {
       "file": "public/assets/technologies/html5.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/html5/html5-original.svg",
-      "sha256": "34826e5b3315daadf4fa15f723a3c1d5ba4a89277bfd94e22ac4d7d3d54338c5"
+      "sha256": "34826e5b3315daadf4fa15f723a3c1d5ba4a89277bfd94e22ac4d7d3d54338c5",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 607
+    },
+    {
+      "file": "public/assets/technologies/java.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/java/java-original.svg",
+      "sha256": "7582e518a9c02425f97155e5a3bd39d1a3a7d421b78caf9c8df7443dad3edc5d",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 1540
+    },
+    {
+      "file": "public/assets/technologies/javascript.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/javascript/javascript-original.svg",
+      "sha256": "0656ff65fc8eeacda5c78d7f9ffe91ec1eb919db64f56e0b7dcd460af4bbd36c",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 1144
+    },
+    {
+      "file": "public/assets/technologies/jenkins.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/jenkins/jenkins-original.svg",
+      "sha256": "917c7525a9d6c544f4b5d1d4318778e2dee5ef2d47be075ee494613cb10d2a4e",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 15407
     },
     {
       "file": "public/assets/technologies/microsoftsqlserver.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/microsoftsqlserver/microsoftsqlserver-original.svg",
-      "sha256": "f52b63cb5ff8c17efc079ae93eb7e2f1a04ca34eb736310c3576b19c0b9db21d"
+      "sha256": "f52b63cb5ff8c17efc079ae93eb7e2f1a04ca34eb736310c3576b19c0b9db21d",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 12102
+    },
+    {
+      "file": "public/assets/technologies/mongodb.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/mongodb/mongodb-original.svg",
+      "sha256": "d9f2bf7041264f4747e9969fb82ede0199c0ac97dfa8632aa0687d702ec05f7b",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 5611
+    },
+    {
+      "file": "public/assets/technologies/mysql.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/mysql/mysql-original.svg",
+      "sha256": "f73fa5d6b9da33fbf540ff96f5360c24b6d29d883ecfe6fcaecf89a8d3456067",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 2765
     },
     {
       "file": "public/assets/technologies/nodejs.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/nodejs/nodejs-original.svg",
-      "sha256": "3218687c5ea24a4d4c0a33dc5c287da38c33a72dcfe9382469d7ce4e0bf661fb"
+      "sha256": "3218687c5ea24a4d4c0a33dc5c287da38c33a72dcfe9382469d7ce4e0bf661fb",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 1806
     },
     {
       "file": "public/assets/technologies/oauth.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/oauth/oauth-original.svg",
-      "sha256": "a4040dba46f380d2637b1fef8f2393c3cf960108287f2e8339461249ae9e32ae"
+      "sha256": "a4040dba46f380d2637b1fef8f2393c3cf960108287f2e8339461249ae9e32ae",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 11230
+    },
+    {
+      "file": "public/assets/technologies/onedrive.svg",
+      "source": "https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/onedrive_48x1.svg",
+      "sha256": "393fe3509c33de52e4dcfb7aece1a5ea41d8114ac1be0d68b13948cc28962f6a",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/previous-versions/microsoft-365/solutions/architecture-icons-templates",
+      "bytes": 658
+    },
+    {
+      "file": "public/assets/technologies/openapi.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/openapi/openapi-original.svg",
+      "sha256": "ddb256e268a9e147d4edc6411062fe02b3c9fdd4b3b657d74aee15c4e6206e16",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 6894
+    },
+    {
+      "file": "public/assets/technologies/oracle.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/oracle/oracle-original.svg",
+      "sha256": "6afd3872d2ecb9a619fc10048b6a18bc3b948dfd7c97d1a694af26c6a7153cbf",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 1244
+    },
+    {
+      "file": "public/assets/technologies/outlook.svg",
+      "source": "https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/outlook_48x1.svg",
+      "sha256": "0884e0478f7e073163febe67eaff20be97ae38373b0866c9668f81c2f6bd26c2",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/previous-versions/microsoft-365/solutions/architecture-icons-templates",
+      "bytes": 3935
+    },
+    {
+      "file": "public/assets/technologies/pnpm.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/pnpm/pnpm-original.svg",
+      "sha256": "92032f79684805a7ee223dfc833a13e903632c1ca259fe39b6e69e0e4b3c38b4",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 302
     },
     {
       "file": "public/assets/technologies/powerapps.svg",
       "source": "https://download.microsoft.com/download/498606aa-6d27-4f13-aa5c-1401078c153b/Power-Platform-icons-scalable.zip#Power Platform/PowerApps_scalable.svg",
-      "sha256": "c357907ad0a2d24a6d8c82b23fe4d2aaa4a4524076991f74770fc043a4cc455a"
+      "sha256": "c357907ad0a2d24a6d8c82b23fe4d2aaa4a4524076991f74770fc043a4cc455a",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/power-platform/guidance/icons",
+      "bytes": 4398
     },
     {
       "file": "public/assets/technologies/powerautomate.svg",
       "source": "https://download.microsoft.com/download/498606aa-6d27-4f13-aa5c-1401078c153b/Power-Platform-icons-scalable.zip#Power Platform/PowerAutomate_scalable.svg",
-      "sha256": "2025db7bb3feec49d75681934b8561fb958cf11bdf0e2acf6e2b28db5c755e8d"
+      "sha256": "2025db7bb3feec49d75681934b8561fb958cf11bdf0e2acf6e2b28db5c755e8d",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/power-platform/guidance/icons",
+      "bytes": 2545
     },
     {
       "file": "public/assets/technologies/powerbi.svg",
       "source": "https://api.github.com/repos/microsoft/PowerBI-Icons/git/blobs/f5c066b134d5898553caa47656ec8fce9c3833a7",
-      "sha256": "55daee85ccbe0d410909cd3b2b2d974d9a450ca3c6208992eec99fa9fa7b0b8d"
+      "sha256": "55daee85ccbe0d410909cd3b2b2d974d9a450ca3c6208992eec99fa9fa7b0b8d",
+      "license": "CC-BY-4.0",
+      "licenseFile": "public/assets/licenses/powerbi-icons.txt",
+      "bytes": 4988
+    },
+    {
+      "file": "public/assets/technologies/powerpages.svg",
+      "source": "https://download.microsoft.com/download/498606aa-6d27-4f13-aa5c-1401078c153b/Power-Platform-icons-scalable.zip#Power Platform/PowerPages_scalable.svg",
+      "sha256": "7fdc8facba1b64c4e30fbed3d331ecab78746d0d29c29bae593b18788e870631",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/power-platform/guidance/icons",
+      "bytes": 5922
+    },
+    {
+      "file": "public/assets/technologies/python.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/python/python-original.svg",
+      "sha256": "71493b4a732f0532b3a03a7a95da3ee11a65766367c8303b901ffbe7bf91a3a2",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 2300
+    },
+    {
+      "file": "public/assets/technologies/qwen.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/17cd4ee07612198a1d8777a060d4100423762a8b/icons/qwen.svg",
+      "sha256": "36854c60b26bfa5a0cc0d4123727c0ef559efba6f129c0dfa623f3c443fe3e5b",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/licenses/simple-icons.txt",
+      "bytes": 805
+    },
+    {
+      "file": "public/assets/technologies/rabbitmq.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/rabbitmq/rabbitmq-original.svg",
+      "sha256": "3aad30605375d85bd2fc293880be7e1b07def3f7191c8f063feb775cca5b7006",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 634
     },
     {
       "file": "public/assets/technologies/react.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/react/react-original.svg",
-      "sha256": "5825b649c8c04dec13ecf01d0182401bd0ec71789d2fa06224866d882cd1515f"
+      "sha256": "5825b649c8c04dec13ecf01d0182401bd0ec71789d2fa06224866d882cd1515f",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 2387
+    },
+    {
+      "file": "public/assets/technologies/redis.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/redis/redis-original.svg",
+      "sha256": "4707378b190878f36f7e6e1c01fa3ee7e7884c76101809d191dddd943a2e6bdb",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 1728
     },
     {
       "file": "public/assets/technologies/sap.svg",
       "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/17cd4ee07612198a1d8777a060d4100423762a8b/icons/sap.svg",
-      "sha256": "79127bd0cdb41e5940ddbe895da58c4fe1fb6a912a7178f4bb4e108fb39c8758"
+      "sha256": "79127bd0cdb41e5940ddbe895da58c4fe1fb6a912a7178f4bb4e108fb39c8758",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/licenses/simple-icons.txt",
+      "bytes": 1027
+    },
+    {
+      "file": "public/assets/technologies/servicebus.svg",
+      "source": "https://arch-center.azureedge.net/icons/Azure_Public_Service_Icons_V25.zip#Azure_Public_Service_Icons/Icons/integration/10836-icon-service-Azure-Service-Bus.svg",
+      "sha256": "eaf42cb87aedf608f60d40b601eb86491daaa71b8eab40a935e8e7fa2e62a2cf",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/azure/architecture/icons/",
+      "bytes": 2683
     },
     {
       "file": "public/assets/technologies/sharepoint.svg",
       "source": "https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/sharepoint_48x1.svg",
-      "sha256": "7f260c54c77342eb16ce20ab132729c7e640e7ead6a4bb9e7d1b4a94bd0e8eda"
+      "sha256": "7f260c54c77342eb16ce20ab132729c7e640e7ead6a4bb9e7d1b4a94bd0e8eda",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/previous-versions/microsoft-365/solutions/architecture-icons-templates",
+      "bytes": 2286
+    },
+    {
+      "file": "public/assets/technologies/spring.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/spring/spring-original.svg",
+      "sha256": "4bae92720d27acb7d8cde3bed758a26aed07cd81c353f59ab379b8dd651ff973",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 943
+    },
+    {
+      "file": "public/assets/technologies/storage.svg",
+      "source": "https://arch-center.azureedge.net/icons/Azure_Public_Service_Icons_V25.zip#Azure_Public_Service_Icons/Icons/storage/10086-icon-service-Storage-Accounts.svg",
+      "sha256": "7190d3bb14ce30ce74bd0af873915830fe821e8c5f6ef6f3149e6f7cfb2aa4f7",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/azure/architecture/icons/",
+      "bytes": 1157
+    },
+    {
+      "file": "public/assets/technologies/subversion.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/subversion/subversion-original.svg",
+      "sha256": "503bd9ffc80261feabaaf3093b73fe6a16ee573a539c7e6186beea80d34747bd",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 1446
+    },
+    {
+      "file": "public/assets/technologies/teams.svg",
+      "source": "https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/teams_48x1.svg",
+      "sha256": "6ec0e1afd7359a71915430bab4a49554bcfd1f1b881db5108c807ed08f1a0afb",
+      "license": "Microsoft icon terms",
+      "licenseFile": "public/assets/licenses/microsoft-icons.txt",
+      "licenseURL": "https://learn.microsoft.com/en-us/previous-versions/microsoft-365/solutions/architecture-icons-templates",
+      "bytes": 2094
     },
     {
       "file": "public/assets/technologies/typescript.svg",
       "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/typescript/typescript-original.svg",
-      "sha256": "c9191199f4049920c2fc19035b8a6664f37f4689fcd9e8434e786097e78863f0"
+      "sha256": "c9191199f4049920c2fc19035b8a6664f37f4689fcd9e8434e786097e78863f0",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 943
+    },
+    {
+      "file": "public/assets/technologies/webassembly.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/17cd4ee07612198a1d8777a060d4100423762a8b/icons/webassembly.svg",
+      "sha256": "3084581108ad2077aff486edbe7c7f12a4c0495ff57717d233a37f5b7a9ce0da",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/licenses/simple-icons.txt",
+      "bytes": 562
+    },
+    {
+      "file": "public/assets/technologies/xamarin.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/32fe1d3b3f36ad11f90ab94f7db59738139c2bf6/icons/xamarin/xamarin-original.svg",
+      "sha256": "887dd35c9245f807d51548704764fef1e7e8ea1d76d6894901192a5dc9eda47d",
+      "license": "MIT",
+      "licenseFile": "public/assets/licenses/devicon.txt",
+      "bytes": 646
+    },
+    {
+      "file": "public/assets/technologies/zapier.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/17cd4ee07612198a1d8777a060d4100423762a8b/icons/zapier.svg",
+      "sha256": "51fa9cca6198c74f924600e6972520541261e2f74ff80b6bec5bbd60a4bdcc73",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/licenses/simple-icons.txt",
+      "bytes": 2832
+    }
+  ],
+  "unavailable": [
+    {
+      "technology": "microsoft365",
+      "reason": "No se verificó un SVG actual de Microsoft 365 con condiciones claras para este uso; no se sustituye por el antiguo logo de Office."
+    },
+    {
+      "technology": "planner",
+      "reason": "El paquete oficial revisado contiene pictogramas de contenido de Planner, no un logo de producto verificable para este uso."
+    },
+    {
+      "technology": "mscopilot",
+      "reason": "No se reutiliza el logo de Copilot Studio para representar Microsoft Copilot; se mantiene un símbolo original."
+    },
+    {
+      "technology": "powerfx",
+      "reason": "El ZIP oficial actual no incluye un SVG de Power Fx; se mantiene un símbolo original."
+    },
+    {
+      "technology": "entraid",
+      "reason": "El paquete oficial de Entra prohíbe su uso en comunicaciones de marketing; se mantiene un símbolo original.",
+      "source": "https://learn.microsoft.com/en-us/entra/architecture/architecture-icons"
+    },
+    {
+      "technology": "defender",
+      "reason": "No se sustituye Microsoft Defender por el icono específico de Defender for Cloud; se mantiene un símbolo original."
+    },
+    {
+      "technology": "appsheet",
+      "reason": "No se verificó un SVG oficial con condiciones claras para este uso; se mantiene un símbolo original."
+    },
+    {
+      "technology": "outsystems",
+      "reason": "Se localizó un kit oficial para prensa, pero no un permiso claro para este uso del portafolio; se mantiene un símbolo original.",
+      "source": "https://www.outsystems.com/media-kit"
+    },
+    {
+      "technology": "mendix",
+      "reason": "Se localizó un kit oficial para medios, pero no un permiso claro para este uso del portafolio; se mantiene un símbolo original.",
+      "source": "https://www.mendix.com/press/"
+    },
+    {
+      "technology": "webllm",
+      "reason": "La fuente oficial revisada publica el logo de MLC y un diagrama; no se atribuye a WebLLM un logo de otra entidad.",
+      "source": "https://github.com/mlc-ai/web-llm"
+    },
+    {
+      "technology": "fflate",
+      "reason": "Se identifica con un símbolo original, sin atribuirle un logotipo comercial."
+    },
+    {
+      "technology": "linkedom",
+      "reason": "Se identifica con un símbolo original, sin atribuirle un logotipo comercial."
+    },
+    {
+      "technology": "htmlminifier",
+      "reason": "Se identifica con un símbolo original, sin atribuirle un logotipo comercial."
+    },
+    {
+      "technology": "awslambda",
+      "reason": "Las condiciones de marca de AWS limitan el uso nominativo de terceros a texto sin logos; no se verificó un permiso específico para este portafolio.",
+      "source": "https://aws.amazon.com/trademark-guidelines/"
+    },
+    {
+      "technology": "amazons3",
+      "reason": "Las condiciones de marca de AWS limitan el uso nominativo de terceros a texto sin logos; no se verificó un permiso específico para este portafolio.",
+      "source": "https://aws.amazon.com/trademark-guidelines/"
+    },
+    {
+      "technology": "aws",
+      "reason": "El SVG de Devicon ofrece licencia MIT de copyright, pero no acredita permiso de marca para este uso; las condiciones de AWS limitan el uso nominativo de terceros a texto sin logos.",
+      "source": "https://aws.amazon.com/trademark-guidelines/"
     }
   ]
 }

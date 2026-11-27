@@ -4,7 +4,7 @@ export const stylesheetFiles = Object.freeze([
   'styles.css', 'preferences.css', 'loader.css', 'journey.css', 'hero.css',
   'background.css', 'splash.css', 'soundtrack.css', 'interactions.css',
   'reveals.css', 'modules.css', 'document-assistant.css', 'lab.css',
-  'booking.css', 'project-technologies.css', 'project-video.css', 'footer.css'
+  'booking.css', 'project-technologies.css', 'project-video.css', 'footer.css', 'technology-explorer.css'
 ]);
 
 // These files retain their entrypoints and relative imports. The optional AI
@@ -12,7 +12,7 @@ export const stylesheetFiles = Object.freeze([
 export const clientFiles = Object.freeze([
   'theme-init.js', 'preferences.js', 'loader-grid.js', 'site.js', 'journey.js',
   'letter-glitch.js', 'splash-cursor.js', 'soundtrack.js', 'project-video.js',
-  'contact.js', 'booking.js', 'booking-embed.js', 'form-rules.js'
+  'contact.js', 'booking.js', 'booking-embed.js', 'form-rules.js', 'technology-explorer.js'
 ]);
 
 export function attributionHeader(source) {

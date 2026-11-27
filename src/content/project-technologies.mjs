@@ -7,7 +7,7 @@ const definitions = [
   ['node', 'Node.js', 'node', 'Construcción y herramientas locales', 'Build and local tooling'],
   ['canvas', 'Canvas 2D', '2D', 'Fondos y efectos gráficos', 'Backgrounds and graphics'],
   ['webgl', 'WebGL 2 / GLSL', 'GL', 'Animación del loader con shaders', 'Shader-based loader animation'],
-  ['audio', 'Web Audio API', '♫', 'Composición musical opcional', 'Optional music composition'],
+  ['audio', 'Web Audio API', '♫', 'Reproducción opcional y control de volumen', 'Optional playback and volume control'],
   ['bm25', 'BM25', 'rag', 'Recuperación léxica de fragmentos', 'Lexical excerpt retrieval'],
   ['webllm', 'WebLLM', 'ai', 'Ejecución opcional del modelo local', 'Optional on-device model runtime'],
   ['qwen', 'Qwen3.5 · 0.8B', 'ai', 'Modelo descargable opcional', 'Optional downloadable model'],

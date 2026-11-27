@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { projects, projectPath, projectDestination } from '../src/content/projects.mjs';
 import { powerPlatformProject as project, projectVideoCopy, videoTranscript, videoCaptions } from '../src/content/power-platform-video.mjs';
 import { projectTechnologies } from '../src/content/project-technologies.mjs';
+import { site } from '../src/content/site.mjs';
 
 assert.equal(projects.filter(item => item.video).length, 1);
 assert.deepEqual(Object.keys(projectVideoCopy.es), Object.keys(projectVideoCopy.en));
@@ -25,7 +26,7 @@ for (const lang of ['es', 'en']) {
   assert.ok(html.includes('/assets/project-video.js') && !home.includes('/assets/project-video.js'));
   const graph = JSON.parse(html.match(/<script type="application\/ld\+json">([^]*?)<\/script>/)[1])['@graph'];
   const video = graph.find(item => item['@type'] === 'VideoObject');
-  assert.equal(video.contentUrl, `https://alejandros-tech.alejosergio3000.chatgpt.site${project.video.src}`);
+  assert.equal(video.contentUrl, `${site.origin}${project.video.src}`);
   assert.equal(video.duration, 'PT2M58S'); assert.equal(video.inLanguage, 'es');
   assert.ok(!video.interactionStatistic && !video.embedUrl, 'No invented views or video hosting service');
   const captions = await readFile(new URL(`../dist/assets/power-platform-${lang}.vtt`, import.meta.url), 'utf8');

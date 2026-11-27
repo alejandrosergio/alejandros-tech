@@ -1,0 +1,11 @@
+OpenAI Blossom — source and brand usage terms
+Reviewed 2026-11-27. Copyright OpenAI.
+
+Official artwork:
+https://cdn.openai.com/brand/openai-logos.zip
+OpenAI-logos/SVGs/OAI_OpenAI-Blossom_Black.svg
+
+Official design guidelines and usage terms:
+https://openai.com/brand/
+
+The original black Blossom identifies ChatGPT only in a context directly related to that service. It is displayed unchanged, with clear space and alongside the product name. It is not the primary branding of Alejandro’sTech. No colours, visual effects, endorsement, partnership or sponsorship are added or implied. OpenAI retains its marks and other rights. This notice records the applicable source and does not replace the official usage terms.

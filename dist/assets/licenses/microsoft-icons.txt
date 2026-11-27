@@ -1,0 +1,11 @@
+Microsoft product icons — sources and permitted use
+Reviewed 2026-11-27. Copyright Microsoft. All other rights reserved.
+
+Official conditions:
+https://learn.microsoft.com/en-us/azure/architecture/icons/
+https://learn.microsoft.com/en-us/power-platform/guidance/icons
+https://learn.microsoft.com/en-us/previous-versions/microsoft-365/solutions/architecture-icons-templates
+
+These sources permit copying, distributing and displaying their icons in architectural diagrams, training materials or documentation. Product names accompany the unmodified icons here to document the technologies discussed; the icons do not represent Alejandro’sTech and imply no Microsoft endorsement. Do not crop, distort, flip or rotate the artwork. This notice identifies the applicable sources and does not replace Microsoft's original conditions.
+
+The separately reviewed Entra package expressly excludes marketing communications and is not included.

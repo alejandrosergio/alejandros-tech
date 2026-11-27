@@ -1,3 +1,4 @@
+import { technologyInterface, technologyGroups } from './technology-interface.mjs';
 // Keep ES/EN keys aligned; labels describe the action or context accurately.
 export const locales = {
   "es": {
@@ -110,6 +111,7 @@ export const locales = {
       ]
     },
     "skills": {
+      ...technologyInterface.es,
       "label": "Tecnologías y conocimientos",
       "title": [
         "Las piezas con las",
@@ -121,22 +123,9 @@ export const locales = {
       "explorerLabel": "Explorador de tecnologías",
       "use": "En mi trabajo",
       "selected": "Tecnología seleccionada",
-      "groups": {
-        "backend": "Backend y datos",
-        "frontend": "Frontend",
-        "power": "Power Platform",
-        "ai": "IA aplicada",
-        "integration": "Integración",
-        "tools": "Entrega y herramientas"
-      },
-      "related": "Contexto profesional",
-      "fallback": "Tecnologías y aplicaciones",
-      "additionalLabel": "Más de mi experiencia técnica",
-      "additional": [
-        "Java y Spring Boot, Angular y Oracle/PL/SQL forman parte de mi trayectoria anterior.",
-        "React Native y Xamarin para móvil; Dapper, Redis, Databricks, gRPC y RabbitMQ para datos e integración.",
-        "Microsoft 365, SharePoint y administración de entornos. Docker y CI/CD para entrega; experiencia complementaria con Node.js y Python."
-      ]
+      groups: technologyGroups.es,
+      "related": "Contexto y procedencia",
+      "fallback": "Tecnologías y aplicaciones"
     },
     "career": {
       "label": "Trayectoria",
@@ -342,6 +331,7 @@ export const locales = {
       ]
     },
     "skills": {
+      ...technologyInterface.en,
       "label": "Technologies and knowledge",
       "title": [
         "The pieces",
@@ -353,22 +343,9 @@ export const locales = {
       "explorerLabel": "Technology explorer",
       "use": "In my work",
       "selected": "Selected technology",
-      "groups": {
-        "backend": "Backend & data",
-        "frontend": "Frontend",
-        "power": "Power Platform",
-        "ai": "Applied AI",
-        "integration": "Integration",
-        "tools": "Delivery & tools"
-      },
-      "related": "Professional context",
-      "fallback": "Technologies and applications",
-      "additionalLabel": "More of my technical background",
-      "additional": [
-        "Java and Spring Boot, Angular and Oracle/PL/SQL are part of my earlier professional experience.",
-        "React Native and Xamarin for mobile; Dapper, Redis, Databricks, gRPC and RabbitMQ for data and integration.",
-        "Microsoft 365, SharePoint and environment administration. Docker and CI/CD for delivery; additional experience with Node.js and Python."
-      ]
+      groups: technologyGroups.en,
+      "related": "Context and provenance",
+      "fallback": "Technologies and applications"
     },
     "career": {
       "label": "Professional journey",

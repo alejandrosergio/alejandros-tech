@@ -1,15 +1,17 @@
 import { technologyCatalog, projectTechnologies, projectTechnologyCopy } from '../content/project-technologies.mjs';
 import { technologyIcon } from './technology-icon.mjs';
 import { escapeHTML as e } from '../lib/html.mjs';
+import { projectSkillIds } from '../content/technology-directory.mjs';
+import { skills } from '../content/profile.mjs';
 
-const brandMarks = new Set(['html', 'css', 'node', 'rag', 'ai', 'csharp', 'net', 'api', 'automate', 'git', 'git-only', 'powerapps', 'dataverse', 'sap', 'oauth', 'ai-builder', 'sharepoint']);
+const marks = new Map(skills.map(skill => [skill.id, skill.mark]));
 const colors = { JavaScript: 'js', CSS: 'css', HTML: 'html', 'C#': 'csharp' };
 const percentage = (value, lang) => new Intl.NumberFormat(lang === 'es' ? 'es-CO' : 'en-GB', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value) + '%';
 
 export function technologyList(id, lang) {
   return `<ul class="project-technologies">${projectTechnologies[id].map(key => {
     const tech = technologyCatalog[key];
-    const mark = brandMarks.has(tech.mark) ? technologyIcon(tech.mark) : `<span class="project-tech-mark" aria-hidden="true">${e(tech.mark)}</span>`;
+    const mark = technologyIcon(key === 'git-version' ? 'git-only' : ['html', 'css'].includes(key) ? key : marks.get(projectSkillIds[key] || key));
     const name = key === 'connectors' ? (lang === 'es' ? 'Conectores personalizados' : 'Custom connectors') : tech.name;
     return `<li>${mark}<span><strong>${e(name)}</strong><small>${e(tech[lang])}</small></span></li>`;
   }).join('')}</ul>`;

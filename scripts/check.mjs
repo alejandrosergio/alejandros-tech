@@ -26,7 +26,7 @@ const manifest = JSON.parse(await readFile(path.join(root, '.openai/hosting.json
 assert.equal(manifest.project_id, 'appgprj_6aea35f321688191a6452b8b65f782ee', 'Preserve this Site identity');
 assert.equal(manifest.static.directory, 'dist');
 assert.ok(!manifest.d1 && !manifest.r2, 'The local demo does not provision paid inference or storage');
-assert.equal(new URL(site.origin).hostname, 'alejandros-tech.alejosergio3000.chatgpt.site');
+assert.equal(new URL(site.origin).hostname, 'alejandros-tech.alejandro-seeik.chatgpt.site');
 
 function compareShape(es, en, key = 'locales') {
   assert.equal(typeof es, typeof en, `Translation type: ${key}`);
@@ -171,6 +171,7 @@ await import('./check-project-video.mjs');
 await import('./check-settings.mjs');
 await import('./check-performance.mjs');
 await import('./check-seo.mjs');
+await import('./check-technology-directory.mjs');
 await import('./check-document-assistant.mjs');
 await import('./check-workflow.mjs');
 await import('./check-evaluation.mjs');

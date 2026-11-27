@@ -117,8 +117,6 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
 .technology-logo { display: grid; place-items: center; width: var(--logo-size); height: var(--logo-size); padding: .2rem; border-radius: .25rem; background: #fff; }
 .technology-logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .skill-name { font-size: .625rem; line-height: 1.3; overflow-wrap: anywhere; font-weight: 550; }
-.skill-tile-arrow { position: absolute; right: .5rem; top: .4rem; color: var(--family); font-size: .75rem; opacity: 0; }
-.skill-tile[aria-pressed="true"] .skill-tile-arrow { opacity: 1; }
 .skill-inspector { position: sticky; top: calc(var(--site-header-height, 96px) + 24px); min-height: 390px; border-left: 1px solid var(--line); padding-left: 2.4rem; }
 .inspector-symbol { display: block; margin-block: 1.8rem 1.5rem; }
 .inspector-symbol .technology-mark { --logo-size: 3.5rem; gap: .5rem; }
@@ -128,7 +126,7 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
 .skill-inspector > p:last-of-type { font-size: .875rem; line-height: 1.8; color: var(--muted); }
 .inspector-context { margin-top: 1.8rem; padding-top: 1rem; border-top: 1px solid var(--line); }
 .inspector-context p { font-size: .6875rem; margin: .6rem 0 0; }
-.skills-static > ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem 2rem; padding: 0; list-style: none; }
+.skills-static ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem 2rem; padding: 0; list-style: none; }
 .skills-static li { border-top: 1px solid var(--line); padding-top: 1rem; }
 .skill-static-name { display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem; }
 .skill-static-name .technology-mark { flex-shrink: 0; }
@@ -307,7 +305,7 @@ h2 em, h1 em { display: block; font-family: Georgia, "Times New Roman", serif; f
   .inspector-category { margin-top: 1.4rem; }
   .skill-inspector > p:last-of-type { max-width: 32rem; }
   .inspector-context { clear: both; margin-top: 1rem; }
-  .skills-static > ul { grid-template-columns: 1fr; }
+  .skills-static ul { grid-template-columns: 1fr; }
   .career-section { grid-template-columns: 1fr; gap: 2rem; }
   .career-intro { position: static; }
   .career-intro > p:not(.section-label) { max-width: 34rem; }
