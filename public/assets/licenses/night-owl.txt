@@ -10,13 +10,15 @@ Licensed under Creative Commons Attribution 3.0 Unported (CC BY 3.0).
 https://creativecommons.org/licenses/by/3.0/
 Legal code: https://creativecommons.org/licenses/by/3.0/legalcode
 
-Adaptation (2026-11-27): 36-second intro loop derived only from the first
-40 seconds. Body: 4–36 s; linear 4-second crossfade: 36–40 s into 0–4 s.
+Adaptation (2026-11-27): 60-second intro loop derived from the first
+64 seconds. Continuous body: 4–60 s; linear 4-second crossfade:
+60–64 s into 0–4 s. No internal repeats or tempo/pitch changes.
 Transcoded from 320 to 160 kbps MP3; embedded cover removed; level
 reduced by 3 dB for web playback. No added instruments or synthesis.
-Adaptación (27-11-2026): bucle de introducción de 36 segundos creado solo
-con los primeros 40 segundos. Cuerpo: 4–36 s; mezcla gradual lineal de
-4 segundos: 36–40 s con 0–4 s. Transcodificado de 320 a 160 kbps MP3;
+Adaptación (27-11-2026): bucle de introducción de 60 segundos creado
+con los primeros 64 segundos. Cuerpo continuo: 4–60 s; mezcla gradual
+lineal de 4 segundos: 60–64 s con 0–4 s. Sin repeticiones internas ni
+cambios de tempo o tono. Transcodificado de 320 a 160 kbps MP3;
 portada retirada; nivel reducido 3 dB para reproducción web.
 Sin instrumentos ni síntesis añadidos.
 
