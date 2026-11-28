@@ -4,9 +4,9 @@
 
 Sergio Hernández’s professional website, focused on applied AI integration in software and business workflows with .NET, Power Platform and React. It brings together his confirmed experience, public web projects and original technical notes. Project screenshots and social images match each page’s language.
 
-- [Spanish website](https://alejandros-tech.alejosergio3000.chatgpt.site/)
-- [English website](https://alejandros-tech.alejosergio3000.chatgpt.site/en/)
-- [Professional CV](https://sergio-hernandez-cv.alejosergio3000.chatgpt.site/en/)
+- [Spanish website](https://alejandros-tech.alejandro-seeik.chatgpt.site/)
+- [English website](https://alejandros-tech.alejandro-seeik.chatgpt.site/en/)
+- [Professional CV](https://sergio-hernandez-cv.alejandro-seeik.chatgpt.site/en/)
 - Contact: [alejandro.dev.sergio@outlook.com](mailto:alejandro.dev.sergio@outlook.com)
 
 ## Experience
