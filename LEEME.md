@@ -4,9 +4,9 @@
 
 Web profesional de Sergio Hernández, con enfoque en la integración de IA aplicada en software y procesos empresariales con .NET, Power Platform y React. Reúne experiencia confirmada, proyectos web públicos y notas técnicas originales. Las capturas e imágenes sociales de los proyectos corresponden al idioma de cada página.
 
-- [Web en español](https://alejandros-tech.alejosergio3000.chatgpt.site/)
-- [Web en inglés](https://alejandros-tech.alejosergio3000.chatgpt.site/en/)
-- [CV profesional](https://sergio-hernandez-cv.alejosergio3000.chatgpt.site/)
+- [Web en español](https://alejandros-tech.alejandro-seeik.chatgpt.site/)
+- [Web en inglés](https://alejandros-tech.alejandro-seeik.chatgpt.site/en/)
+- [CV profesional](https://sergio-hernandez-cv.alejandro-seeik.chatgpt.site/)
 - Contacto: [alejandro.dev.sergio@outlook.com](mailto:alejandro.dev.sergio@outlook.com)
 
 ## Experiencia
